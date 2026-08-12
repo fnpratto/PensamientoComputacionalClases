@@ -199,6 +199,23 @@
   .summary-table th{font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--bone-dim);}
   .summary-table td.ok{color:var(--gold);}
   .summary-table td.bad{color:#e78b78;}
+  /* En pantallas angostas una tabla de 4 columnas no entra: la nota quedaba cortada
+     y era imposible de leer. Por debajo de 700px, cada fila pasa a verse como una
+     tarjeta con etiquetas, en vez de columnas apretadas. */
+  @media (max-width:700px){
+    .summary-table, .summary-table thead, .summary-table tbody, .summary-table th, .summary-table td, .summary-table tr{
+      display:block;
+    }
+    .summary-table thead{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);}
+    .summary-table tr{
+      border:1px solid var(--stone-line); border-radius:6px; padding:0.9rem 1rem; margin-bottom:0.8rem; background:var(--stone);
+    }
+    .summary-table td{border-bottom:none; padding:0.4rem 0;}
+    .summary-table td::before{
+      content:attr(data-label); display:block; font-family:var(--font-mono); font-size:0.65rem;
+      letter-spacing:0.06em; text-transform:uppercase; color:var(--violet); margin-bottom:0.2rem;
+    }
+  }
 
   .boon-list{display:flex; flex-direction:column; gap:1.1rem;}
   .boon{background:var(--stone); border:1px solid var(--stone-line); border-radius:6px; padding:1.5rem 1.6rem; position:relative;}
@@ -937,10 +954,16 @@ function finishQuiz(){
   document.getElementById('final-msg').textContent = msg;
 
   const table = document.getElementById('summary-table');
-  let html = '<tr><th>Pregunta</th><th>Tu respuesta</th><th>¿Correcta?</th><th>Nota</th></tr>';
+  let html = '<thead><tr><th>Pregunta</th><th>Tu respuesta</th><th>¿Correcta?</th><th>Nota</th></tr></thead><tbody>';
   results.forEach(r => {
-    html += `<tr><td>${r.pregunta}</td><td>${r.respuesta || '—'}</td><td class="${r.correcta ? 'ok' : 'bad'}">${r.correcta ? 'Sí' : 'No'}</td><td>${r.nota || '—'}</td></tr>`;
+    html += `<tr>
+      <td data-label="Pregunta">${escapeHtml(r.pregunta)}</td>
+      <td data-label="Tu respuesta">${escapeHtml(r.respuesta || '—')}</td>
+      <td data-label="¿Correcta?" class="${r.correcta ? 'ok' : 'bad'}">${r.correcta ? 'Sí' : 'No'}</td>
+      <td data-label="Nota">${escapeHtml(r.nota || '—')}</td>
+    </tr>`;
   });
+  html += '</tbody>';
   table.innerHTML = html;
 }
 
