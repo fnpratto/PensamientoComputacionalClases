@@ -111,6 +111,40 @@
   }
   .notes-field textarea:focus{border-color:var(--styx-dim);}
 
+  /* Bloque de "tu respuesta" + verificación + comparativa (Cámaras II y III) */
+  .answer-box{margin-top:1.1rem;}
+  .answer-box textarea{
+    width:100%; min-height:150px; resize:vertical; background:var(--void-deep); border:1px solid var(--stone-line);
+    color:var(--bone); font-family:var(--font-mono); font-size:0.86rem; line-height:1.55; padding:0.8rem 0.9rem;
+    border-radius:4px; outline:none; tab-size:4;
+  }
+  .answer-box textarea:focus{border-color:var(--styx);}
+  .answer-box .verify-note{font-family:var(--font-mono); font-size:0.72rem; color:var(--bone-dim); margin-bottom:0.5rem; display:block;}
+  .verify-row{display:flex; align-items:center; gap:0.9rem; margin-top:0.8rem; flex-wrap:wrap;}
+  .verify-row .verify-note{margin:0;}
+
+  .test-results{margin-top:1.3rem;}
+  .test-summary{font-family:var(--font-mono); font-size:0.82rem; margin-bottom:0.7rem;}
+  .test-summary.all-pass{color:var(--gold);}
+  .test-summary.some-fail{color:#e78b78;}
+  .test-list{display:flex; flex-direction:column; gap:0.5rem;}
+  .test-item{border:1px solid var(--stone-line); border-radius:4px; padding:0.55rem 0.8rem; background:var(--void-deep);}
+  .test-item.pass{border-color:var(--styx-dim);}
+  .test-item.fail{border-color:var(--ember);}
+  .test-item .t-head{display:flex; justify-content:space-between; gap:0.6rem; font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.05em; text-transform:uppercase;}
+  .test-item.pass .t-head{color:var(--styx);}
+  .test-item.fail .t-head{color:#e78b78;}
+  .test-item .t-detail{margin-top:0.35rem; color:var(--bone-dim); font-size:0.85rem;}
+
+  .answer-box details.solution{margin-top:1.2rem; border:1px solid var(--stone-line); border-radius:4px; background:rgba(53,214,189,0.04);}
+  .answer-box details.solution summary{cursor:pointer; list-style:none; padding:0.6rem 0.9rem; font-family:var(--font-mono); font-size:0.75rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--styx); display:flex; align-items:center; gap:0.5rem;}
+  .answer-box details.solution summary::-webkit-details-marker{display:none;}
+  .answer-box details.solution summary::before{content:"▸"; transition:transform .2s ease;}
+  .answer-box details.solution[open] summary::before{transform:rotate(90deg);}
+  .answer-box details.solution[open] summary{border-bottom:1px solid var(--stone-line);}
+  .answer-box details.solution .sol-body{padding:0.9rem;}
+  .answer-box details.solution pre{margin:0;}
+
   .quiz-nav{display:flex; justify-content:flex-end; align-items:center; margin-top:1.6rem; gap:0.8rem; flex-wrap:wrap;}
   .quiz-nav .hint-note{font-family:var(--font-mono); font-size:0.72rem; color:var(--bone-dim);}
 
@@ -130,14 +164,6 @@
   .boon-title{font-family:var(--font-display); font-size:1.15rem; color:var(--bone); margin-bottom:0.15rem;}
   .boon-flavor{font-style:italic; color:var(--bone-dim); font-size:0.9rem; margin-bottom:0.9rem;}
   .boon p.statement{margin-bottom:0.9rem;}
-
-  details.solution{margin-top:0.9rem; border:1px solid var(--stone-line); border-radius:4px; background:rgba(53,214,189,0.04);}
-  details.solution summary{cursor:pointer; list-style:none; padding:0.6rem 0.9rem; font-family:var(--font-mono); font-size:0.75rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--styx); display:flex; align-items:center; gap:0.5rem;}
-  details.solution summary::-webkit-details-marker{display:none;}
-  details.solution summary::before{content:"▸"; transition:transform .2s ease;}
-  details.solution[open] summary::before{transform:rotate(90deg);}
-  details.solution[open] summary{border-bottom:1px solid var(--stone-line);}
-  details.solution .sol-body{padding:0.9rem;}
 
   .potion-card{background:var(--stone); border:1px solid var(--gold); border-radius:6px; padding:2rem;}
   .potion-card .boon-title{color:var(--gold); font-size:1.3rem;}
@@ -268,34 +294,7 @@ Total: <span class="s">$540.0</span>
       <summary>Ayuda de memoria de Hécate</summary>
       <div class="hint-body">Pensalo como una cadena de funciones: cada una recibe lo que devolvió la anterior. Primero el subtotal, después el descuento sobre ese subtotal, y por último armar el texto con f-strings.</div>
     </details>
-    <details class="solution">
-      <summary>Revelar solución sugerida</summary>
-      <div class="sol-body">
-<pre>def calcular_subtotal(precio_unitario, cantidad):
-    return precio_unitario * cantidad
-
-def aplicar_descuento(subtotal, cantidad):
-    if cantidad >= 5:
-        return subtotal * 0.9
-    return subtotal
-
-def generar_recibo(pocion, cantidad, subtotal, total):
-    descuento_aplicado = "Sí" if total &lt; subtotal else "No"
-    return (f"Poción: {pocion}\n"
-            f"Cantidad: {cantidad}\n"
-            f"Subtotal: ${subtotal}\n"
-            f"Descuento aplicado: {descuento_aplicado}\n"
-            f"Total: ${total}")
-
-pocion = input("Ingrese la poción: ")
-precio_unitario = float(input("Ingrese el precio unitario: "))
-cantidad = int(input("Ingrese la cantidad: "))
-
-subtotal = calcular_subtotal(precio_unitario, cantidad)
-total = aplicar_descuento(subtotal, cantidad)
-print(generar_recibo(pocion, cantidad, subtotal, total))</pre>
-      </div>
-    </details>
+    <div id="potion-verify"></div>
   </div>
 </section>
 
@@ -336,31 +335,61 @@ const BOONS = [
   {title:"El Peaje de Caronte", flavor:"Todo el que cruza, paga.",
    statement:"Pedirle al usuario el precio del pasaje y la cantidad de almas que cruzan, y calcular cuánto paga cada una si se reparte el costo en partes iguales.",
    hint:"Todo lo que llega por input() es texto: para dividir en partes iguales necesitás castear a int o float antes de operar.",
+   note:"Escribí el programa completo: pedí los datos con <code>input()</code> y mostrá el resultado con <code>print()</code>.",
    sol:`precio_pasaje = float(input("Ingrese el precio del pasaje: "))
 cantidad_almas = int(input("Ingrese la cantidad de almas: "))
 pago_por_alma = precio_pasaje / cantidad_almas
-print("Cada alma paga:", pago_por_alma)`},
+print("Cada alma paga:", pago_por_alma)`,
+   test:{type:'stdin', cases:[
+     {stdin:['100','4'], expectNumber:25, label:'Pasaje de $100 entre 4 almas'},
+     {stdin:['90','3'], expectNumber:30, label:'Pasaje de $90 entre 3 almas'},
+     {stdin:['7','2'], expectNumber:3.5, label:'Pasaje de $7 entre 2 almas'}
+   ]}},
   {title:"El Favor de los Dioses", flavor:"No todo descuento se pide en voz alta.",
    statement:"Función que reciba el costo de un pase y un porcentaje de favor (descuento) otorgado por los dioses, y devuelva el costo final.",
    hint:"Un descuento es un porcentaje del total: primero calculá cuánto es esa porción, después restala.",
+   note:"Para poder verificarla, definí una función llamada <code>calcular_costo_final(costo, porcentaje_favor)</code>.",
    sol:`def calcular_costo_final(costo, porcentaje_favor):
     descuento = costo * porcentaje_favor / 100
-    return costo - descuento`},
+    return costo - descuento`,
+   test:{type:'function', funcName:'calcular_costo_final', cases:[
+     {args:[100,10], expect:{type:'numeric', value:90}},
+     {args:[200,25], expect:{type:'numeric', value:150}},
+     {args:[50,0], expect:{type:'numeric', value:50}}
+   ]}},
   {title:"La Ofrenda Sagrada", flavor:"No todas las almas son iguales ante los dioses.",
    statement:"Función que reciba un número de alma y devuelva True si es una \"ofrenda sagrada\" (múltiplo de 5).",
    hint:"'Ser múltiplo de' se pregunta con el resto: %. Si el resto de dividir por 5 es 0, es múltiplo de 5.",
+   note:"Para poder verificarla, definí una función llamada <code>es_ofrenda_sagrada(numero_alma)</code>.",
    sol:`def es_ofrenda_sagrada(numero_alma):
-    return numero_alma % 5 == 0`},
+    return numero_alma % 5 == 0`,
+   test:{type:'function', funcName:'es_ofrenda_sagrada', cases:[
+     {args:[10], expect:{type:'bool', value:true}},
+     {args:[7], expect:{type:'bool', value:false}},
+     {args:[0], expect:{type:'bool', value:true}},
+     {args:[-5], expect:{type:'bool', value:true}}
+   ]}},
   {title:"El Sello del Héroe", flavor:"Un nombre grabado no necesita ser completo para ser reconocido.",
    statement:"Función que reciba el nombre de un héroe y devuelva sus primeras 3 letras en mayúscula, como sello grabado en su arma.",
    hint:"Para tomar solo una parte de un string usá slicing [inicio:fin]; para cambiar mayúsculas/minúsculas están .upper() / .lower().",
+   note:"Para poder verificarla, definí una función llamada <code>generar_sello(nombre_heroe)</code>.",
    sol:`def generar_sello(nombre_heroe):
-    return nombre_heroe[:3].upper()`},
+    return nombre_heroe[:3].upper()`,
+   test:{type:'function', funcName:'generar_sello', cases:[
+     {args:['hercules'], expect:{type:'exact', value:'HER'}},
+     {args:['Aquiles'], expect:{type:'exact', value:'AQU'}},
+     {args:['ab'], expect:{type:'exact', value:'AB'}}
+   ]}},
   {title:"La Lápida", flavor:"Lo último que queda escrito, se escribe una sola vez.",
    statement:"Función que reciba nombre, apellido y edad, y devuelva el texto grabado en una lápida: \"Apellido, Nombre (edad años)\".",
    hint:"Un f-string te deja meter variables directo dentro del texto con {}, sin tener que concatenar con +.",
+   note:"Para poder verificarla, definí una función llamada <code>grabar_lapida(nombre, apellido, edad)</code>.",
    sol:`def grabar_lapida(nombre, apellido, edad):
-    return f"{apellido}, {nombre} ({edad} años)"`},
+    return f"{apellido}, {nombre} ({edad} años)"`,
+   test:{type:'function', funcName:'grabar_lapida', cases:[
+     {args:['Juan','Perez',30], expect:{type:'contains', parts:['Perez','Juan','30']}},
+     {args:['Ana','Gomez',5], expect:{type:'contains', parts:['Gomez','Ana','5']}}
+   ]}},
   {title:"El Hechizo Roto", flavor:"Hécate dejó un hechizo a medio terminar. Para hacer en parejas.",
    statement:"El siguiente hechizo está roto. Encontrar y corregir los errores:",
    code:`def calcular_poder_hechizo(mana)
@@ -371,19 +400,289 @@ print("Cada alma paga:", pago_por_alma)`},
 resultado = calcular_poder_hechizo(5)
 print("El poder es:", resultado)`,
    hint:"Repasá tres cosas: ¿la firma termina en :? ¿print se usa como función, con paréntesis? ¿la función tiene return o se queda con el resultado adentro?",
+   note:"Mantené el nombre de la función, <code>calcular_poder_hechizo(mana)</code>, para que podamos verificarla.",
    sol:`def calcular_poder_hechizo(mana):
     factor = 3.14159
     poder = factor * mana ** 2
     return poder
 
 resultado = calcular_poder_hechizo(5)
-print("El poder es:", resultado)`},
+print("El poder es:", resultado)`,
+   test:{type:'function', funcName:'calcular_poder_hechizo', cases:[
+     {args:[5], expect:{type:'numeric', value:78.53975, tolerance:0.001}},
+     {args:[0], expect:{type:'numeric', value:0}},
+     {args:[2], expect:{type:'numeric', value:12.56636, tolerance:0.001}}
+   ]}},
 ];
+
+const POTION_NOTE = "Definí las tres funciones pedidas (<code>calcular_subtotal</code>, <code>aplicar_descuento</code>, <code>generar_recibo</code>) para que podamos verificarlas — no hace falta que incluyas los <code>input()</code>/<code>print()</code> finales.";
+
+const POTION_TESTS = [
+  {type:'function', funcName:'calcular_subtotal', cases:[
+    {args:[100,6], expect:{type:'numeric', value:600}},
+    {args:[50,2], expect:{type:'numeric', value:100}}
+  ]},
+  {type:'function', funcName:'aplicar_descuento', cases:[
+    {args:[600,6], expect:{type:'numeric', value:540}},
+    {args:[100,3], expect:{type:'numeric', value:100}},
+    {args:[200,5], expect:{type:'numeric', value:180}}
+  ]},
+  {type:'function', funcName:'generar_recibo', cases:[
+    {args:['Elixir de Ceniza',6,600,540], expect:{type:'contains', parts:['Elixir de Ceniza','6','600','540']}},
+    {args:['Tónico',2,100,100], expect:{type:'contains', parts:['Tónico','2','100']}}
+  ]}
+];
+
+const POTION_SOLUTION_HTML = `def calcular_subtotal(precio_unitario, cantidad):
+    return precio_unitario * cantidad
+
+def aplicar_descuento(subtotal, cantidad):
+    if cantidad >= 5:
+        return subtotal * 0.9
+    return subtotal
+
+def generar_recibo(pocion, cantidad, subtotal, total):
+    descuento_aplicado = "Sí" if total &lt; subtotal else "No"
+    return (f"Poción: {pocion}\\n"
+            f"Cantidad: {cantidad}\\n"
+            f"Subtotal: \${subtotal}\\n"
+            f"Descuento aplicado: {descuento_aplicado}\\n"
+            f"Total: \${total}")
+
+pocion = input("Ingrese la poción: ")
+precio_unitario = float(input("Ingrese el precio unitario: "))
+cantidad = int(input("Ingrese la cantidad: "))
+
+subtotal = calcular_subtotal(precio_unitario, cantidad)
+total = aplicar_descuento(subtotal, cantidad)
+print(generar_recibo(pocion, cantidad, subtotal, total))`;
 
 /* ================= UTILS ================= */
 function normalize(str){
   return str.toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
     .toLowerCase().trim().replace(/\s+/g,' ');
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+
+/* ================= INT\u00c9RPRETE DE PYTHON EN EL NAVEGADOR (Pyodide) =================
+   Se carga reci\u00e9n cuando alguien aprieta "Verificar" por primera vez, para no
+   demorar la carga inicial de la p\u00e1gina. Cada verificaci\u00f3n corre en un namespace
+   Python aislado, as\u00ed una respuesta no contamina la siguiente. */
+const PCC_HARNESS_PY = `
+import sys, io, json, builtins as _pcc_builtins
+
+def _pcc_run(code, func_name, args_json, stdin_json):
+    args_list = json.loads(args_json) if args_json else []
+    stdin_list = json.loads(stdin_json) if stdin_json else []
+    namespace = {}
+    output = io.StringIO()
+    old_stdout = sys.stdout
+    old_input = _pcc_builtins.input
+    inputs_iter = iter(stdin_list)
+    def _mock_input(prompt=""):
+        try:
+            return next(inputs_iter)
+        except StopIteration:
+            return "1"
+    _pcc_builtins.input = _mock_input
+    sys.stdout = output
+    result = {"ok": False, "error": None, "return_value": None, "stdout": ""}
+    try:
+        exec(code, namespace)
+        if func_name:
+            fn = namespace.get(func_name)
+            if not callable(fn):
+                raise NameError("No se encontro una funcion llamada '" + func_name + "'")
+            result["return_value"] = fn(*args_list)
+        result["ok"] = True
+    except Exception as e:
+        result["error"] = type(e).__name__ + ": " + str(e)
+    finally:
+        sys.stdout = old_stdout
+        _pcc_builtins.input = old_input
+        result["stdout"] = output.getvalue()
+    try:
+        return json.dumps(result)
+    except TypeError:
+        result["return_value"] = str(result["return_value"])
+        return json.dumps(result)
+`;
+
+let pyodidePromise = null;
+function getPyodide(){
+  if(!pyodidePromise){
+    pyodidePromise = new Promise((resolve, reject) => {
+      const init = () => {
+        loadPyodide().then(py => { py.runPython(PCC_HARNESS_PY); resolve(py); }).catch(reject);
+      };
+      if(window.loadPyodide){ init(); return; }
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+      script.onload = init;
+      script.onerror = () => reject(new Error('No se pudo cargar el int\u00e9rprete de Python (revis\u00e1 tu conexi\u00f3n).'));
+      document.head.appendChild(script);
+    });
+  }
+  return pyodidePromise;
+}
+
+async function pccRun(code, funcName, args, stdinArr){
+  const pyodide = await getPyodide();
+  const runFn = pyodide.globals.get('_pcc_run');
+  const jsonStr = runFn(code, funcName || null, JSON.stringify(args || []), JSON.stringify(stdinArr || []));
+  return JSON.parse(jsonStr);
+}
+
+/* ================= EVALUACI\u00d3N DE CASOS DE PRUEBA ================= */
+function fmtVal(v){
+  if(v === null || v === undefined) return '(nada)';
+  if(typeof v === 'string') return '"' + v + '"';
+  return String(v);
+}
+
+function evalCase(actual, expect){
+  switch(expect.type){
+    case 'numeric': {
+      const num = typeof actual === 'number' ? actual : parseFloat(actual);
+      if(Number.isNaN(num)) return false;
+      return Math.abs(num - expect.value) < (expect.tolerance ?? 0.001);
+    }
+    case 'bool':
+      return Boolean(actual) === Boolean(expect.value);
+    case 'exact':
+      return normalize(String(actual)) === normalize(String(expect.value));
+    case 'contains': {
+      const s = normalize(String(actual ?? ''));
+      return expect.parts.every(p => s.includes(normalize(p)));
+    }
+    default:
+      return false;
+  }
+}
+
+async function runFunctionTests(code, spec){
+  const rows = [];
+  for(const c of spec.cases){
+    const callLabel = spec.funcName + '(' + c.args.map(fmtVal).join(', ') + ')';
+    try{
+      const r = await pccRun(code, spec.funcName, c.args, []);
+      if(!r.ok){
+        rows.push({pass:false, label:callLabel, detail:'Error al ejecutar: ' + r.error});
+      } else {
+        const pass = evalCase(r.return_value, c.expect);
+        const expectedDesc = c.expect.value !== undefined ? fmtVal(c.expect.value) : c.expect.parts.join(', ');
+        rows.push({
+          pass, label:callLabel,
+          detail: pass
+            ? 'Devolvi\u00f3 ' + fmtVal(r.return_value) + ', como se esperaba.'
+            : 'Devolvi\u00f3 ' + fmtVal(r.return_value) + ' \u2014 se esperaba algo equivalente a ' + expectedDesc + '.'
+        });
+      }
+    }catch(err){
+      rows.push({pass:false, label:callLabel, detail:'Error inesperado: ' + (err.message || err)});
+    }
+  }
+  return rows;
+}
+
+async function runStdinTests(code, spec){
+  const rows = [];
+  for(const c of spec.cases){
+    try{
+      const r = await pccRun(code, null, [], c.stdin);
+      if(!r.ok){
+        rows.push({pass:false, label:c.label, detail:'Error al ejecutar: ' + r.error});
+      } else {
+        const nums = (r.stdout.match(/-?\d+(\.\d+)?/g) || []).map(Number);
+        const pass = nums.some(n => Math.abs(n - c.expectNumber) < 0.01);
+        rows.push({
+          pass, label:c.label,
+          detail: pass
+            ? 'La salida incluye ' + c.expectNumber + ', como se esperaba.'
+            : 'La salida fue: "' + r.stdout.trim() + '" \u2014 no se encontr\u00f3 el valor esperado (' + c.expectNumber + ').'
+        });
+      }
+    }catch(err){
+      rows.push({pass:false, label:c.label, detail:'Error inesperado: ' + (err.message || err)});
+    }
+  }
+  return rows;
+}
+
+function renderTestResults(container, rows){
+  const passCount = rows.filter(r => r.pass).length;
+  const summaryClass = passCount === rows.length ? 'all-pass' : 'some-fail';
+  const summaryText = passCount === rows.length
+    ? `Pasaron los ${rows.length} casos de prueba.`
+    : `Pasaron ${passCount} de ${rows.length} casos \u2014 revis\u00e1 los que fallaron.`;
+  let html = `<div class="test-summary ${summaryClass}">${summaryText}</div><div class="test-list">`;
+  rows.forEach(r => {
+    html += `<div class="test-item ${r.pass ? 'pass' : 'fail'}"><div class="t-head"><span>${r.pass ? '\u2713 Pas\u00f3' : '\u2715 Fall\u00f3'}</span><span>${escapeHtml(r.label)}</span></div><div class="t-detail">${escapeHtml(r.detail)}</div></div>`;
+  });
+  html += '</div>';
+  container.hidden = false;
+  container.innerHTML = html;
+}
+
+/* ================= BLOQUE "TU RESPUESTA" + TESTS + SOLUCI\u00d3N OPCIONAL ================= */
+function buildVerifyBlock(idPrefix, noteText, solutionHtml){
+  return `
+    <div class="answer-box">
+      <div class="notes-field">
+        <label for="${idPrefix}-answer">Tu soluci\u00f3n (c\u00f3digo Python)</label>
+        ${noteText ? `<span class="verify-note">${noteText}</span>` : ''}
+        <textarea id="${idPrefix}-answer" placeholder="Escrib\u00ed ac\u00e1 tu c\u00f3digo..." spellcheck="false"></textarea>
+      </div>
+      <div class="verify-row">
+        <button type="button" class="btn btn-primary" id="${idPrefix}-verify" disabled>Verificar mi respuesta</button>
+        <span class="verify-note" id="${idPrefix}-loading" hidden></span>
+      </div>
+      <div class="test-results" id="${idPrefix}-results" hidden></div>
+      <details class="solution" id="${idPrefix}-solution" hidden>
+        <summary>Mostrar soluci\u00f3n sugerida</summary>
+        <div class="sol-body"><pre>${solutionHtml}</pre></div>
+      </details>
+    </div>`;
+}
+
+function attachVerify(root, idPrefix, testSpecs){
+  const answerEl = root.querySelector('#' + idPrefix + '-answer');
+  const verifyBtn = root.querySelector('#' + idPrefix + '-verify');
+  const loadingEl = root.querySelector('#' + idPrefix + '-loading');
+  const resultsEl = root.querySelector('#' + idPrefix + '-results');
+  const solutionEl = root.querySelector('#' + idPrefix + '-solution');
+
+  answerEl.addEventListener('input', () => {
+    verifyBtn.disabled = answerEl.value.trim().length === 0;
+  });
+
+  verifyBtn.addEventListener('click', async () => {
+    const code = answerEl.value;
+    verifyBtn.disabled = true;
+    resultsEl.hidden = true;
+    loadingEl.hidden = false;
+    loadingEl.textContent = 'Cargando int\u00e9rprete de Python (puede tardar unos segundos la primera vez)\u2026';
+    try{
+      await getPyodide();
+      loadingEl.textContent = 'Ejecutando pruebas\u2026';
+      let rows = [];
+      for(const spec of testSpecs){
+        const specRows = spec.type === 'stdin' ? await runStdinTests(code, spec) : await runFunctionTests(code, spec);
+        rows = rows.concat(specRows);
+      }
+      renderTestResults(resultsEl, rows);
+    } catch(err){
+      resultsEl.hidden = false;
+      resultsEl.innerHTML = `<div class="test-summary some-fail">No se pudieron correr las pruebas: ${escapeHtml(err.message || String(err))}</div>`;
+    } finally {
+      loadingEl.hidden = true;
+      verifyBtn.disabled = false;
+      solutionEl.hidden = false;
+    }
+  });
 }
 
 /* ================= NAME GATE ================= */
@@ -561,7 +860,8 @@ document.getElementById('send-btn').addEventListener('click', () => {
 /* ================= BOONS RENDER ================= */
 function renderBoons(){
   const list = document.getElementById('boon-list');
-  BOONS.forEach(b => {
+  BOONS.forEach((b, i) => {
+    const idPrefix = 'boon-' + i;
     const card = document.createElement('div');
     card.className = 'boon';
     card.innerHTML = `
@@ -570,10 +870,18 @@ function renderBoons(){
       <p class="statement">${b.statement}</p>
       ${b.code ? `<pre>${b.code}</pre>` : ''}
       <details class="hint"><summary>Ayuda de memoria de Hécate</summary><div class="hint-body">${b.hint}</div></details>
-      <details class="solution"><summary>Revelar solución sugerida</summary><div class="sol-body"><pre>${b.sol}</pre></div></details>
+      ${buildVerifyBlock(idPrefix, b.note, b.sol)}
     `;
     list.appendChild(card);
+    attachVerify(card, idPrefix, [b.test]);
   });
+}
+
+/* ================= POTION (CÁMARA III) VERIFY ================= */
+function renderPotionVerify(){
+  const slot = document.getElementById('potion-verify');
+  slot.innerHTML = buildVerifyBlock('potion', POTION_NOTE, POTION_SOLUTION_HTML);
+  attachVerify(document.getElementById('camara-3'), 'potion', POTION_TESTS);
 }
 
 /* ================= INIT ================= */
@@ -582,6 +890,7 @@ document.getElementById('q-total-desc').textContent = QUESTIONS.length;
 renderLives();
 renderQuestion();
 renderBoons();
+renderPotionVerify();
 </script>
 
 </body>
