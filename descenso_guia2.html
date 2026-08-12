@@ -78,15 +78,18 @@
   .q-text code, .card code{font-family:var(--font-mono); background:var(--void-deep); padding:0.1rem 0.35rem; border-radius:3px; font-size:0.92em; color:var(--gold);}
   pre{font-family:var(--font-mono); background:var(--void-deep); border:1px solid var(--stone-line); border-radius:5px; padding:1rem 1.1rem; overflow-x:auto; font-size:0.85rem; color:var(--bone); line-height:1.55;}
 
-  .answer-row{display:flex; gap:0.6rem; flex-wrap:wrap;}
-  .fill-input{
-    flex:1 1 220px; background:var(--void-deep); border:1px solid var(--stone-line); color:var(--bone);
-    font-family:var(--font-mono); font-size:1rem; padding:0.75rem 0.9rem; border-radius:4px; outline:none;
+  .options-grid{display:flex; flex-direction:column; gap:0.7rem;}
+  .option-btn{
+    text-align:left; width:100%; background:var(--void-deep); border:1px solid var(--stone-line); color:var(--bone);
+    font-family:var(--font-body); font-size:1rem; padding:0.8rem 1.1rem; border-radius:4px; cursor:pointer;
+    transition:border-color .2s ease, background .2s ease, color .2s ease;
   }
-  .fill-input:focus{border-color:var(--styx);}
-  .fill-input.correct{border-color:var(--gold); background:rgba(212,169,76,0.1);}
-  .fill-input.wrong{border-color:var(--ember); background:rgba(200,69,44,0.1);}
-  .fill-input[disabled]{opacity:0.8;}
+  .option-btn:hover:not([disabled]){border-color:var(--styx); background:rgba(53,214,189,0.06);}
+  .option-btn:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+  .option-btn.correct{border-color:var(--gold); background:rgba(212,169,76,0.12); color:var(--gold);}
+  .option-btn.wrong{border-color:var(--ember); background:rgba(200,69,44,0.12); color:#e78b78;}
+  .option-btn[disabled]{cursor:not-allowed; opacity:0.85;}
+  .option-btn[disabled]:not(.correct):not(.wrong){opacity:0.5;}
 
   .feedback{margin-top:1rem; padding-top:1rem; border-top:1px dashed var(--stone-line); font-size:0.95rem; color:var(--bone-dim); display:none;}
   .feedback.show{display:block;}
@@ -108,7 +111,7 @@
   }
   .notes-field textarea:focus{border-color:var(--styx-dim);}
 
-  .quiz-nav{display:flex; justify-content:space-between; align-items:center; margin-top:1.6rem; gap:0.8rem; flex-wrap:wrap;}
+  .quiz-nav{display:flex; justify-content:flex-end; align-items:center; margin-top:1.6rem; gap:0.8rem; flex-wrap:wrap;}
   .quiz-nav .hint-note{font-family:var(--font-mono); font-size:0.72rem; color:var(--bone-dim);}
 
   .summary-card{text-align:center; padding:2.6rem 1.5rem; border:1px solid var(--stone-line); border-radius:6px; background:radial-gradient(ellipse at 50% 0%, rgba(212,169,76,0.08), transparent 70%);}
@@ -172,12 +175,12 @@
   <div class="chamber-head">
     <span class="eyebrow">Cámara I</span>
     <h2>La Prueba de Estigia</h2>
-    <p>15 pasos para completar con tu propia respuesta (no hay opciones para elegir). Si no te acordás algo, Hécate deja una pista, y podés anotar lo que quieras recordar en el cuaderno de cada pregunta.</p>
+    <p><span id="q-total-desc"></span> pasos de opción múltiple. Si no te acordás algo, Hécate deja una pista, y podés anotar lo que quieras recordar en el cuaderno de cada pregunta.</p>
   </div>
 
   <div class="status-row">
     <div class="lives" id="lives"></div>
-    <div class="score-tag">Pregunta <b id="q-num">1</b>/15 · Aciertos: <b id="q-score">0</b></div>
+    <div class="score-tag">Pregunta <b id="q-num">1</b>/<span id="q-total">15</span> · Aciertos: <b id="q-score">0</b></div>
   </div>
 
   <div class="river-wrap">
@@ -191,10 +194,7 @@
     <span class="q-section-tag" id="q-section">Campos de Asfódelos</span>
     <div class="q-text" id="q-text"></div>
 
-    <div class="answer-row">
-      <input type="text" class="fill-input" id="q-answer" placeholder="Escribí tu respuesta acá" autocomplete="off">
-      <button class="btn btn-primary" id="q-check">Confirmar</button>
-    </div>
+    <div class="options-grid" id="q-options"></div>
 
     <details class="hint">
       <summary>Ayuda de memoria de Hécate</summary>
@@ -209,7 +209,6 @@
     <div class="feedback" id="q-feedback"></div>
 
     <div class="quiz-nav">
-      <span class="hint-note">Enter también confirma</span>
       <button class="btn btn-primary" id="q-next" disabled>Cruzar a la próxima sala →</button>
     </div>
   </div>
@@ -245,7 +244,7 @@
   <div class="chamber-head">
     <span class="eyebrow">Cámara Final</span>
     <h2>La Botica de Hécate</h2>
-    <p>Antes de subir a la superficie, hay que pasar por la botica a comprar pociones para el próximo intento. Este es el ejercicio integrador.</p>
+    <p>Antes de subir a la superficie, hay que pasar por la botica a comprar pociones para el próximo intento.</p>
   </div>
 
   <div class="potion-card">
@@ -303,31 +302,32 @@ print(generar_recibo(pocion, cantidad, subtotal, total))</pre>
 <footer>El Descenso · Guía 2 — Tipos de Datos, Expresiones y Funciones</footer>
 
 <script>
-/* ================= CONFIG ================= */
-// Pegá acá la URL de tu Google Apps Script Web App (ver instrucciones que te pasé aparte).
-// Mientras esté vacía, el botón "Enviar al Inframundo" solo avisa que no está configurado.
-const SHEET_WEBHOOK_URL = "";
+const SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxixKO-IHvlg3OzajxcbINbx6UwP0Li_tTuhI8MLQiIqPrNnmq7XVW9Cm_15B-8c6Li/exec";
 
 /* ================= DATA ================= */
 const QUESTIONS = [
-  {section:"Campos de Asfódelos", q:"¿Cuál es el resultado de <code>7 / 2</code>?", answers:["3.5"], hint:"La barra simple <code>/</code> en Python siempre da un resultado con decimales (float), aunque la división sea exacta."},
-  {section:"Campos de Asfódelos", q:"¿Cuál es el resultado de <code>7 // 2</code>?", answers:["3"], hint:"La doble barra <code>//</code> es división entera: se queda solo con la parte entera, sin redondear."},
-  {section:"Campos de Asfódelos", q:"Al usar <code>input()</code>, el valor devuelto siempre es de tipo ___.", answers:["str","string"], hint:"input() no sabe qué tipeás vos: SIEMPRE te devuelve texto, incluso si escribís un número."},
-  {section:"Campos de Asfódelos", q:"El resultado de <code>5 == 5</code> es de tipo ___.", answers:["bool","booleano"], hint:"El operador <code>==</code> compara, y el resultado de una comparación siempre es verdadero o falso."},
+  {section:"Campos de Asfódelos", q:"¿Entraste al Discord de la materia?", answers:["Sí"], options:["Sí","No"], hint:"El link está en la pagina de la materia."},
+  {section:"Campos de Asfódelos", q:"¿Qué tipo de dato resulta de la operación <code>5 / 2</code> en Python?", answers:["float"], options:["integer","float","string","booleano"], hint:"La barra simple <code>/</code> en Python siempre da un resultado con decimales (float), aunque la división sea exacta."},
+  {section:"Campos de Asfódelos", q:"<code>True</code> y <code>False</code> son un dato de tipo ___.", answers:["booleano"], options:["integer","booleano","string","float"], hint:"True y False son los dos únicos valores posibles del tipo booleano (bool)."},
+  {section:"Campos de Asfódelos", q:"¿Cuál de las siguientes expresiones devuelve el resto de la división entre dos números?", answers:["%"], options:["//","%","/","**"], hint:"% es el operador módulo: te da el resto de la división, no el cociente."},
+  {section:"Campos de Asfódelos", q:"¿Qué tipo de dato es <code>\"hola\"</code>?", answers:["string"], options:["string","booleano","integer","float"], hint:"Todo lo que está entre comillas en Python es un string (texto)."},
+  {section:"Campos de Asfódelos", q:"El resultado de <code>5 == 5</code> es de tipo ___.", answers:["bool"], options:["bool","int","str","None"], hint:"El operador <code>==</code> compara, y el resultado de una comparación siempre es verdadero o falso."},
 
-  {section:"Estigia", q:"La palabra clave que hace que una función le entregue un valor a quien la llamó es ___.", answers:["return"], hint:"Pensá en return como la puerta de salida de la función: sin ella, el resultado no sale."},
-  {section:"Estigia", q:"La palabra clave que se usa para mostrar algo en pantalla (sin devolver nada al programa) es ___.", answers:["print"], hint:"print es para mostrar (para los ojos); return es para devolver el dato y seguir operando con él."},
-  {section:"Estigia", q:"Si una función no tiene return, el valor que devuelve al ser llamada es ___.", answers:["none"], hint:"Si no hay puerta de salida, lo que queda afuera es 'nada' — y ese 'nada' en Python tiene nombre propio: None."},
-  {section:"Estigia", q:"¿Qué imprime este código?<pre>def f(n):\n    n = n + 1\n    return n\n\nx = 5\nf(x)\nprint(x)</pre>", answers:["5"], hint:"Los parámetros son variables propias de la función: modificarlos ADENTRO no cambia la variable de AFUERA."},
+  {section:"Estigia", q:"¿Qué imprime este código?<pre>def f(n):\n    n = n + 1\n    return n\n\nx = 5\nf(x)\nprint(x)</pre>", answers:["5"], options:["5","6","None","Error"], hint:"Los parámetros son variables propias de la función: modificarlos ADENTRO no cambia la variable de AFUERA."},
+  {section:"Estigia", q:"Si queremos definir una función que reciba dos parámetros y devuelva su suma, ¿cuál es la forma correcta?", answers:["def sumar(a, b): return a + b"], options:["def sumar(a, b): return a + b","sumar(a, b): return a + b","def sumar a, b: return a + b","def sumar(a, b): print(a + b)"], hint:"Una función empieza con def, usa paréntesis para los parámetros, termina en : y necesita return para devolver el resultado (print no alcanza)."},
 
-  {section:"Tártaro", q:"Dado <code>x = \"5\"</code>, ¿qué tipo de error tira <code>x + 1</code>?", answers:["typeerror","type error"], hint:"Python no mezcla texto con número automáticamente: hay que castear primero."},
-  {section:"Tártaro", q:"¿Qué función se usa para convertir <code>\"3.14\"</code> en un número con decimales?", answers:["float","float()"], hint:"El casteo tiene que coincidir con el tipo: float() para decimales, int() para enteros."},
-  {section:"Tártaro", q:"¿Cómo se llama la acción de convertir un dato de un tipo a otro?", answers:["castear","casteo","cast"], hint:"Castear = cambiarle el 'disfraz' (tipo) a un dato sin cambiar su valor real."},
+  {section:"Tártaro", q:"¿Cómo se llama la acción de convertir un dato de un tipo a otro?", answers:["Castear"], options:["Castear","Declarar","Instanciar","Formatear"], hint:"Castear = cambiarle el 'disfraz' (tipo) a un dato sin cambiar su valor real."},
+  {section:"Tártaro", q:"¿Qué ocurre con este código si el usuario ingresa <code>20</code>?<pre>edad = input(\"Ingrese su edad: \")\nedad_siguiente = edad + 1\nprint(edad_siguiente)</pre>", answers:["Se producirá un error"], options:["Se imprimirá 21","Se imprimirá 201","Se producirá un error","Se imprimirá edad_siguiente"], hint:"input() siempre devuelve un string: sumarle un número sin castear antes rompe el programa (TypeError)."},
+  {section:"Tártaro", q:"¿Qué instrucción convierte un string en entero para poder operar con él?", answers:["int()"], options:["int()","str()","float()","bool()"], hint:"int() convierte a entero; float() convierte a decimal; str() convierte a texto."},
+  {section:"Tártaro", q:"¿Qué resultado produce la siguiente operación?<br><code>\"Hola\" + str(2)</code>", answers:["Hola2"], options:["Hola 2","Hola2","Error","Hola+2"], hint:"str(2) convierte el número en texto \"2\"; + concatena sin agregar espacios extra."},
 
-  {section:"Campos Elíseos", q:"¿Qué devuelve <code>\"Hola\"[1:3]</code>?", answers:["ol"], hint:"En [inicio:fin], el índice de inicio SE incluye, pero el de fin NUNCA se incluye."},
-  {section:"Campos Elíseos", q:"Corregí este nombre de función para que siga la convención de la materia: <code>EsPar</code>", answers:["es_par"], hint:"Las funciones se nombran como acciones: verbos, todo en minúscula, separado por guiones bajos (snake_case)."},
-  {section:"Campos Elíseos", q:"Según la convención de nombres, ¿con qué tipo de palabra se nombra una variable?", answers:["sustantivo","sustantivos"], hint:"Las variables son 'cosas', por eso se nombran como sustantivos, no como acciones."},
-  {section:"Campos Elíseos", q:"¿Qué símbolo falta justo después de <code>radio)</code> en la primera línea de esta función?<pre>def calcular_area(radio)\n    return 3.14 * radio ** 2</pre>", answers:[":"], hint:"Toda firma de función en Python termina en un mismo símbolo antes de bajar de línea."},
+  {section:"Campos Elíseos", q:"¿Qué devuelve <code>\"Hola\"[1:3]</code>?", answers:["ol"], options:["ol","Ho","ola","la"], hint:"En [inicio:fin], el índice de inicio SE incluye, pero el de fin NUNCA se incluye."},
+  {section:"Campos Elíseos", q:"Corregí este nombre de función para que siga la convención de la materia: <code>EsPar</code>", answers:["es_par"], options:["es_par","EsPar","ES_PAR","esPar"], hint:"Las funciones se nombran como acciones: verbos, todo en minúscula, separado por guiones bajos (snake_case)."},
+  {section:"Campos Elíseos", q:"Según la convención de nombres, ¿con qué tipo de palabra se nombra una variable?", answers:["Sustantivo"], options:["Sustantivo","Verbo","Adjetivo","Adverbio"], hint:"Las variables son 'cosas', por eso se nombran como sustantivos, no como acciones."},
+  {section:"Campos Elíseos", q:"El siguiente código tiene un error de sintaxis. ¿Qué símbolo falta en la función?<pre>def calcular_area(radio)\n    return 3.14 * radio ** 2</pre>", answers:[":"], options:[":",";","{","->"], hint:"Toda firma de función en Python termina en un mismo símbolo antes de bajar de línea."},
+  {section:"Campos Elíseos", q:"¿Qué mostrará en pantalla el siguiente código?<pre>x = \"Hola\"\nx += \" mundo\"\nprint(x)</pre>", answers:["Hola mundo"], options:["Hola","Hola mundo","mundo","x"], hint:"+= le agrega el texto de la derecha al final de lo que ya tenía x."},
+  {section:"Campos Elíseos", q:"¿Qué mostrará el siguiente código?<pre>print(\"Hola\" * 3)</pre>", answers:["HolaHolaHola"], options:["Hola Hola Hola","HolaHolaHola","Hola*3","Error"], hint:"Multiplicar un string por un número lo repite esa cantidad de veces, todo junto, sin espacios."},
+  {section:"Campos Elíseos", q:"<code>L = [\"S\", \"L\", \"I\", \"C\", \"E\", \"I\", \"T\"]</code><br>¿Cuál es el resultado de <code>L[2:5]</code>?", answers:["['I', 'C', 'E']"], options:["['L', 'I', 'C']","['L', 'I', 'C', 'E']","['I', 'C', 'E']","['L', 'I']"], hint:"El índice de inicio se incluye, el de fin no: [2:5] toma las posiciones 2, 3 y 4."},
 ];
 
 const SECTIONS = ["Campos de Asfódelos","Estigia","Tártaro","Campos Elíseos"];
@@ -413,6 +413,15 @@ function renderLives(){
   }
 }
 
+function shuffled(arr){
+  const a = [...arr];
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function renderQuestion(){
   answered = false;
   const item = QUESTIONS[current];
@@ -420,16 +429,23 @@ function renderQuestion(){
   document.getElementById('q-text').innerHTML = item.q;
   document.getElementById('q-num').textContent = current + 1;
   document.getElementById('q-score').textContent = score;
-  document.getElementById('q-hint').textContent = item.hint;
+  document.getElementById('q-hint').innerHTML = item.hint;
   document.querySelectorAll('#camara-1 details.hint').forEach(d => d.open = false);
 
-  const input = document.getElementById('q-answer');
-  input.value = ''; input.disabled = false; input.className = 'fill-input';
+  const optionsEl = document.getElementById('q-options');
+  optionsEl.innerHTML = '';
+  shuffled(item.options).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => checkAnswer(opt, btn));
+    optionsEl.appendChild(btn);
+  });
+
   document.getElementById('q-notes').value = '';
   document.getElementById('q-feedback').className = 'feedback';
-  document.getElementById('q-check').disabled = false;
   document.getElementById('q-next').disabled = true;
-  input.focus();
 
   const pct = (current / QUESTIONS.length) * 100;
   document.getElementById('river-fill').style.width = pct + '%';
@@ -438,17 +454,20 @@ function renderQuestion(){
   });
 }
 
-function checkAnswer(){
+function checkAnswer(given, chosenBtn){
   if(answered) return;
   answered = true;
   const item = QUESTIONS[current];
-  const input = document.getElementById('q-answer');
-  const given = input.value.trim();
   const isCorrect = item.answers.some(a => normalize(a) === normalize(given));
 
-  input.disabled = true;
-  document.getElementById('q-check').disabled = true;
-  input.classList.add(isCorrect ? 'correct' : 'wrong');
+  document.querySelectorAll('#q-options .option-btn').forEach(b => {
+    b.disabled = true;
+    if(item.answers.some(a => normalize(a) === normalize(b.textContent))){
+      b.classList.add('correct');
+    } else if(b === chosenBtn){
+      b.classList.add('wrong');
+    }
+  });
 
   const fb = document.getElementById('q-feedback');
   if(isCorrect){
@@ -472,11 +491,6 @@ function checkAnswer(){
   document.getElementById('q-score').textContent = score;
   document.getElementById('q-next').disabled = false;
 }
-
-document.getElementById('q-check').addEventListener('click', checkAnswer);
-document.getElementById('q-answer').addEventListener('keydown', (e) => {
-  if(e.key === 'Enter') checkAnswer();
-});
 
 function nextQuestion(){
   current++;
@@ -532,12 +546,11 @@ document.getElementById('send-btn').addEventListener('click', () => {
     statusEl.textContent = 'Todavía no está configurada la planilla de destino (SHEET_WEBHOOK_URL vacía). Usá la descarga en CSV mientras tanto.';
     return;
   }
-  const detalle = results.map(r => `${r.pregunta} | resp: ${r.respuesta} | ${r.correcta ? 'OK' : 'MAL'} | nota: ${r.nota}`).join(' // ');
   const body = new URLSearchParams({
     nombre: studentName,
     puntaje: `${score}/${QUESTIONS.length}`,
-    vidas: lives,
-    detalle: detalle
+    preguntas: JSON.stringify(results.map(r => r.pregunta)),
+    respuestas: JSON.stringify(results.map(r => r.respuesta))
   });
   statusEl.textContent = 'Enviando...';
   fetch(SHEET_WEBHOOK_URL, {method:'POST', mode:'no-cors', body})
@@ -564,6 +577,8 @@ function renderBoons(){
 }
 
 /* ================= INIT ================= */
+document.getElementById('q-total').textContent = QUESTIONS.length;
+document.getElementById('q-total-desc').textContent = QUESTIONS.length;
 renderLives();
 renderQuestion();
 renderBoons();
