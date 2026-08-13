@@ -1,0 +1,86 @@
+import { useState, useEffect } from 'react';
+import config from './courses/guia-2.js';
+import NameGate from './components/NameGate.jsx';
+import Quiz from './components/Quiz.jsx';
+import BoonList from './components/BoonList.jsx';
+import PotionCard from './components/PotionCard.jsx';
+
+export default function App() {
+  const [studentName, setStudentName] = useState('');
+
+  const { meta, questions, sections, sectionLabels, boons, potion, sheetWebhook } = config;
+
+  // Set page title from config
+  useEffect(() => {
+    document.title = meta.title;
+  }, [meta.title]);
+
+  function handleStart(name) {
+    setStudentName(name);
+    setTimeout(() => {
+      document.getElementById('camara-1')?.scrollIntoView({ behavior: 'smooth' });
+    }, 50);
+  }
+
+  return (
+    <>
+      {/* HERO */}
+      <div className="hero">
+        <span className="eyebrow">{meta.eyebrow}</span>
+        <h1 dangerouslySetInnerHTML={{ __html: meta.heroTitleHtml }} />
+        <p>{meta.heroDescription}</p>
+
+        {!studentName && <NameGate onStart={handleStart} />}
+
+        <div className="hero-note">
+          Cámara I · La Prueba de Estigia — Cámara II · Los Dones — Cámara Final · La Botica de Hécate
+        </div>
+      </div>
+
+      {/* CÁMARA I: QUIZ */}
+      <section className="chamber" id="camara-1">
+        <div className="chamber-head">
+          <span className="eyebrow">Cámara I</span>
+          <h2>La Prueba de Estigia</h2>
+          <p>
+            {questions.length} pasos de opción múltiple. Si no te acordás algo, Hécate deja una pista,
+            y podés anotar lo que quieras recordar en el cuaderno de cada pregunta.
+          </p>
+        </div>
+        <Quiz
+          questions={questions}
+          sections={sections}
+          sectionLabels={sectionLabels}
+          studentName={studentName || 'Anónimo'}
+          sheetWebhook={sheetWebhook}
+          onComplete={() => {}}
+        />
+      </section>
+
+      {/* CÁMARA II: LOS DONES */}
+      <section className="chamber" id="camara-2">
+        <div className="chamber-head">
+          <span className="eyebrow">Cámara II</span>
+          <h2>Los Dones</h2>
+          <p>
+            Seis dones para llevarse antes de subir. Cada uno tiene su ayuda de memoria y, si hace falta,
+            la solución sugerida — no hay una única forma correcta.
+          </p>
+        </div>
+        <BoonList boons={boons} />
+      </section>
+
+      {/* CÁMARA FINAL: BOTICA */}
+      <section className="chamber" id="camara-3">
+        <div className="chamber-head">
+          <span className="eyebrow">Cámara Final</span>
+          <h2>La Botica de Hécate</h2>
+          <p>Antes de subir a la superficie, hay que pasar por la botica a comprar pociones para el próximo intento.</p>
+        </div>
+        <PotionCard potion={potion} />
+      </section>
+
+      <footer>{meta.footerText}</footer>
+    </>
+  );
+}
