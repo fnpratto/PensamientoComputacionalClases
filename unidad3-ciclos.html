@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oceanus — Unidad 3: Ciclos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ─────────────────────────────────────────── */
+    :root {
+      --void:       #06090f;
+      --void-deep:  #030508;
+      --stone:      #0e1620;
+      --stone-line: #1a2535;
+      --styx:       #35d6bd;
+      --styx-dim:   #1c6f64;
+      --styx-glow:  rgba(53,214,189,0.12);
+      --ember:      #c8452c;
+      --gold:       #d4a94c;
+      --gold-lt:    #e8c36a;
+      --violet:     #8b6bd1;
+      --bone:       #dde8ef;
+      --bone-dim:   #7a96a8;
+      --ocean-1:    #071828;
+      --ocean-2:    #0a2038;
+      --ocean-3:    #0d2848;
+      --font-d: 'Cinzel', serif;
+      --font-b: 'Spectral', serif;
+      --font-m: 'JetBrains Mono', monospace;
+      --content-w: 760px;
+      --r: 6px;
+    }
+    @media (min-width:860px)  { :root { --content-w:840px; } }
+    @media (min-width:1100px) { :root { --content-w:980px; } }
+    @media (min-width:1440px) { :root { --content-w:1160px; } }
+
+    /* ── RESET ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body {
+      margin: 0; overflow-x: hidden;
+      background: var(--void-deep);
+      color: var(--bone);
+      font-family: var(--font-b); font-size: 17px; line-height: 1.65;
+      padding-bottom: 6rem;
+    }
+    ::selection { background: var(--styx-dim); color: var(--bone); }
+    h1,h2,h3 { font-family: var(--font-d); letter-spacing: .03em; color: var(--bone); margin: 0; }
+    code {
+      font-family: var(--font-m);
+      background: var(--void-deep); color: var(--gold);
+      padding: .1rem .35rem; border-radius: 3px; font-size: .9em;
+    }
+    pre {
+      font-family: var(--font-m);
+      background: var(--void-deep); border: 1px solid var(--stone-line);
+      border-radius: var(--r); padding: 1rem 1.1rem;
+      overflow-x: auto; font-size: .84rem; color: var(--bone); line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ── EYEBROW / LABELS ────────────────────────────────── */
+    .eyebrow {
+      font-family: var(--font-m); font-size: .72rem; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--violet); margin-bottom: .6rem; display: block;
+    }
+    .tag-styx {
+      font-family: var(--font-m); font-size: .68rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--styx); display: block; margin-bottom: .5rem;
+    }
+
+    /* ── WAVE ────────────────────────────────────────────── */
+    .wave { width: 100%; overflow: hidden; line-height: 0; margin: -1px 0; }
+    .wave svg { display: block; width: 100%; }
+
+    /* ── HERO ────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 1.5rem 4rem;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%,  rgba(53,214,189,.10) 0%, transparent 70%),
+        radial-gradient(ellipse 100% 60% at 50% 100%, rgba(13,40,72,.8) 0%, transparent 80%),
+        linear-gradient(180deg, var(--ocean-1) 0%, var(--ocean-2) 50%, var(--ocean-3) 100%);
+      position: relative;
+    }
+    #hero::before {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 1px; height: 4rem;
+      background: linear-gradient(to bottom, transparent, var(--styx));
+    }
+
+    .hero-badge {
+      font-family: var(--font-m); font-size: .72rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--styx);
+      border: 1px solid rgba(53,214,189,.3); padding: .3rem 1rem;
+      border-radius: 20px; margin-bottom: 1.6rem;
+    }
+    .hero-title {
+      font-size: clamp(2.2rem, 6vw, 3.8rem); line-height: 1.08;
+      margin-bottom: 1rem;
+    }
+    .hero-title span { color: var(--styx); }
+    .hero-sub {
+      color: var(--bone-dim); max-width: 520px;
+      margin: 0 auto 1.8rem; font-size: 1.05rem;
+    }
+    .hero-lore {
+      font-style: italic; font-size: .92rem; color: var(--bone-dim);
+      max-width: 560px; margin: 0 auto 2rem;
+      border-left: 2px solid var(--styx-dim); padding-left: 1rem; text-align: left;
+    }
+    .hero-chips {
+      display: flex; flex-wrap: wrap; gap: .65rem; justify-content: center; margin-bottom: 2.5rem;
+    }
+    .chip {
+      font-family: var(--font-m); font-size: .75rem;
+      background: rgba(53,214,189,.08); border: 1px solid rgba(53,214,189,.25);
+      color: var(--styx); padding: .3rem .9rem; border-radius: 20px;
+    }
+    .chip.gold { background: rgba(212,169,76,.1); border-color: rgba(212,169,76,.3); color: var(--gold-lt); }
+    .hero-note {
+      font-family: var(--font-m); font-size: .78rem; color: var(--bone-dim); opacity: .7;
+    }
+    .scroll-cue { color: var(--bone-dim); font-size: .82rem; animation: bob 2.5s ease-in-out infinite; }
+    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
+
+    /* ── SECTIONS ────────────────────────────────────────── */
+    .chamber {
+      max-width: var(--content-w); margin: 0 auto; padding: 4.5rem 1.5rem;
+    }
+    .section-bg-a { background: linear-gradient(180deg, var(--ocean-3) 0%, var(--ocean-2) 100%); }
+    .section-bg-b { background: linear-gradient(180deg, var(--ocean-2) 0%, var(--void) 100%); }
+    .section-bg-c { background: linear-gradient(180deg, var(--void) 0%, var(--void-deep) 100%); }
+
+    .chamber-head { margin-bottom: 2.2rem; }
+    .chamber-head h2 { font-size: clamp(1.6rem, 4vw, 2.1rem); }
+    .chamber-head p { color: var(--bone-dim); max-width: 560px; margin-top: .6rem; font-size: .98rem; }
+
+    /* ── RIVER PROGRESS ──────────────────────────────────── */
+    .river-wrap { margin: 1.4rem 0 2.2rem; }
+    .river-track {
+      position: relative; height: 2px;
+      background: var(--stone-line); border-radius: 2px; overflow: hidden; margin-bottom: .8rem;
+    }
+    .river-fill {
+      position: absolute; top: 0; left: 0; height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--styx-dim), var(--styx));
+      transition: width .5s ease;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .river-fill::after {
+        content: ''; position: absolute; inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent);
+        width: 40%; animation: flow 2.4s linear infinite;
+      }
+    }
+    @keyframes flow { from{transform:translateX(-100%)} to{transform:translateX(350%)} }
+    .river-labels {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-m); font-size: .63rem; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--bone-dim);
+    }
+    .river-labels span.done { color: var(--gold); }
+
+    /* ── STATUS ROW ──────────────────────────────────────── */
+    .status-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.2rem; flex-wrap: wrap; gap: .8rem;
+    }
+    .lives { display: flex; gap: .4rem; }
+    .flame {
+      width: 14px; height: 18px;
+      background: radial-gradient(circle at 50% 30%, var(--gold), var(--ember) 70%);
+      clip-path: path('M7 0 C 2 6, 0 10, 0 13 A7 7 0 0 0 14 13 C 14 10, 12 6, 7 0 Z');
+      transition: opacity .3s, filter .3s;
+    }
+    .flame.spent { opacity: .15; filter: grayscale(1); }
+    .score-tag { font-family: var(--font-m); font-size: .76rem; color: var(--bone-dim); }
+    .score-tag b { color: var(--styx); }
+
+    /* ── CARD ────────────────────────────────────────────── */
+    .card {
+      background: var(--stone); border: 1px solid var(--stone-line);
+      border-radius: var(--r); padding: 1.8rem;
+    }
+    .q-text { font-size: 1.1rem; margin-bottom: 1.2rem; color: var(--bone); max-width: 70ch; }
+
+    /* ── OPTIONS ─────────────────────────────────────────── */
+    .options-grid { display: flex; flex-direction: column; gap: .65rem; }
+    .option-btn {
+      text-align: left; width: 100%;
+      background: rgba(6,9,15,.6); border: 1px solid var(--stone-line); color: var(--bone);
+      font-family: var(--font-b); font-size: 1rem;
+      padding: .8rem 1.1rem; border-radius: 4px; cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .option-btn:hover:not([disabled]) {
+      border-color: var(--styx); background: var(--styx-glow);
+    }
+    .option-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .option-btn.correct { border-color: var(--gold); background: rgba(212,169,76,.12); color: var(--gold); }
+    .option-btn.wrong   { border-color: var(--ember); background: rgba(200,69,44,.12); color: #e78b78; }
+    .option-btn[disabled] { cursor: not-allowed; }
+    .option-btn[disabled]:not(.correct):not(.wrong) { opacity: .5; }
+
+    /* ── FEEDBACK ────────────────────────────────────────── */
+    .feedback {
+      margin-top: 1rem; padding-top: 1rem;
+      border-top: 1px dashed var(--stone-line);
+      font-size: .94rem; color: var(--bone-dim); display: none;
+    }
+    .feedback.show { display: block; }
+    .feedback.ok  { color: var(--gold); }
+    .feedback.bad { color: #e78b78; }
+
+    /* ── HINT ────────────────────────────────────────────── */
+    details.hint {
+      margin-top: 1.1rem;
+      border: 1px solid var(--stone-line); border-radius: 4px;
+      background: rgba(139,107,209,.05);
+    }
+    details.hint summary {
+      cursor: pointer; list-style: none; padding: .6rem .9rem;
+      font-family: var(--font-m); font-size: .73rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--violet);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    details.hint summary::-webkit-details-marker { display: none; }
+    details.hint summary::before { content: '✦'; font-size: .85rem; }
+    details.hint[open] summary { border-bottom: 1px solid var(--stone-line); }
+    details.hint .hint-body { padding: .8rem .9rem .9rem; font-size: .9rem; color: var(--bone-dim); max-width: 70ch; }
+
+    /* ── NOTES ───────────────────────────────────────────── */
+    .notes-field { margin-top: 1rem; }
+    .notes-field label {
+      font-family: var(--font-m); font-size: .67rem; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--bone-dim); display: block; margin-bottom: .4rem;
+    }
+    .notes-field textarea {
+      width: 100%; min-height: 56px; resize: vertical;
+      background: var(--void-deep); border: 1px solid var(--stone-line);
+      color: var(--bone); font-family: var(--font-b); font-size: .9rem;
+      padding: .55rem .8rem; border-radius: 4px; outline: none;
+    }
+    .notes-field textarea:focus { border-color: var(--styx-dim); }
+
+    /* ── BUTTONS ─────────────────────────────────────────── */
+    .btn {
+      font-family: var(--font-m); font-size: .83rem; letter-spacing: .08em;
+      text-transform: uppercase; background: transparent; color: var(--bone);
+      border: 1px solid var(--styx-dim); padding: .8rem 1.5rem;
+      border-radius: 2px; cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .btn:hover { border-color: var(--styx); background: var(--styx-glow); }
+    .btn-primary { background: var(--styx); border-color: var(--styx); color: var(--void-deep); font-weight: 600; }
+    .btn-primary:hover { background: #4fe6cd; }
+    .btn[disabled] { opacity: .35; cursor: not-allowed; }
+    .quiz-nav { display: flex; justify-content: flex-end; margin-top: 1.5rem; }
+
+    /* ── SUMMARY ─────────────────────────────────────────── */
+    .summary-card {
+      text-align: center; padding: 2.6rem 1.5rem;
+      border: 1px solid var(--stone-line); border-radius: var(--r);
+      background: radial-gradient(ellipse at 50% 0%, rgba(212,169,76,.07), transparent 70%);
+    }
+    .big-score { font-family: var(--font-d); font-size: 2.6rem; color: var(--gold); }
+    .summary-card p { color: var(--bone-dim); max-width: 460px; margin: .6rem auto 0; }
+    .cta-row { margin-top: 1.8rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .summary-table {
+      width: 100%; border-collapse: collapse; margin-top: 1.6rem;
+      font-size: .84rem; text-align: left;
+    }
+    .summary-table th, .summary-table td {
+      border-bottom: 1px solid var(--stone-line); padding: .5rem .6rem; vertical-align: top;
+    }
+    .summary-table th {
+      font-family: var(--font-m); font-size: .67rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--bone-dim);
+    }
+    .summary-table td.ok  { color: var(--gold); }
+    .summary-table td.bad { color: #e78b78; }
+    @media (max-width:640px) {
+      .summary-table, .summary-table thead, .summary-table tbody,
+      .summary-table th, .summary-table td, .summary-table tr { display: block; }
+      .summary-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+      .summary-table tr { border: 1px solid var(--stone-line); border-radius: 5px; padding: .8rem 1rem; margin-bottom: .8rem; background: var(--stone); }
+      .summary-table td { border-bottom: none; padding: .3rem 0; }
+      .summary-table td::before { content: attr(data-label); display: block; font-family: var(--font-m); font-size: .64rem; letter-spacing: .06em; text-transform: uppercase; color: var(--violet); margin-bottom: .15rem; }
+    }
+
+    /* ── BOONS ───────────────────────────────────────────── */
+    .boon-list { display: flex; flex-direction: column; gap: 1rem; }
+    .boon {
+      background: var(--stone); border: 1px solid var(--stone-line);
+      border-radius: var(--r); padding: 1.5rem 1.6rem; position: relative;
+      transition: border-color .25s;
+    }
+    .boon:hover { border-color: rgba(53,214,189,.2); }
+    .boon::before {
+      content: ''; position: absolute; left: 0; top: 1.4rem; bottom: 1.4rem;
+      width: 2px; background: linear-gradient(to bottom, var(--gold), transparent);
+      border-radius: 0 0 2px 2px;
+    }
+    .boon-title { font-family: var(--font-d); font-size: 1.1rem; color: var(--bone); margin-bottom: .15rem; }
+    .boon-flavor { font-style: italic; color: var(--bone-dim); font-size: .88rem; margin-bottom: .9rem; max-width: 70ch; }
+    .statement { margin-bottom: .9rem; max-width: 70ch; font-size: .97rem; }
+
+    details.solution {
+      margin-top: 1.1rem; border: 1px solid var(--stone-line);
+      border-radius: 4px; background: rgba(53,214,189,.03);
+    }
+    details.solution summary {
+      cursor: pointer; list-style: none; padding: .6rem .9rem;
+      font-family: var(--font-m); font-size: .73rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--styx);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    details.solution summary::-webkit-details-marker { display: none; }
+    details.solution summary::before { content: '▸'; transition: transform .2s; }
+    details.solution[open] summary::before { transform: rotate(90deg); }
+    details.solution[open] summary { border-bottom: 1px solid var(--stone-line); }
+    details.solution .sol-body { padding: .9rem; }
+
+    /* ── POTION CARD ─────────────────────────────────────── */
+    .potion-card {
+      background: var(--stone); border: 1px solid var(--gold);
+      border-radius: var(--r); padding: 2rem;
+      box-shadow: 0 0 40px rgba(212,169,76,.06);
+    }
+    .potion-title { font-family: var(--font-d); font-size: 1.3rem; color: var(--gold); margin-bottom: .2rem; }
+    .potion-flavor { font-style: italic; color: var(--bone-dim); font-size: .9rem; margin-bottom: 1.2rem; max-width: 70ch; }
+    ul.reqs { padding-left: 1.2rem; color: var(--bone-dim); display: flex; flex-direction: column; gap: .3rem; }
+    ul.reqs li { font-size: .95rem; }
+    ul.reqs code { color: var(--styx); background: var(--void-deep); }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      max-width: var(--content-w); margin: 0 auto; padding: 3rem 1.5rem 0;
+      text-align: center; color: var(--bone-dim);
+      font-family: var(--font-m); font-size: .73rem; opacity: .6;
+    }
+
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- ══ HERO ══════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-badge">Pensamiento Computacional · FIUBA · Unidad 3</div>
+  <h1 class="hero-title">Las Corrientes de <span>Oceanus</span></h1>
+  <p class="hero-sub">
+    El río eterno que rodea el mundo. Quien aprende a dominarlo domina el ciclo mismo del tiempo.
+  </p>
+  <blockquote class="hero-lore">
+    "En las profundidades de Oceanus, las corrientes no cesan jamás. El ciclo del agua —
+    como el ciclo del código — avanza, gira y concluye cuando la condición se cumple.
+    Scylla y Caribdis aguardan a quienes pierden el control de sus iteraciones."
+  </blockquote>
+  <div class="hero-chips">
+    <span class="chip">for · range()</span>
+    <span class="chip">while · condición</span>
+    <span class="chip">break · continue</span>
+    <span class="chip">ciclos anidados</span>
+    <span class="chip gold">⚓ Python 3</span>
+  </div>
+  <div class="hero-note" style="margin-bottom:1.5rem;">
+    Cámara I · La Prueba de las Corrientes — Cámara II · Los Dones del Río — Cámara Final · La Travesía
+  </div>
+  <div class="scroll-cue">▼</div>
+</section>
+
+<div class="wave">
+  <svg viewBox="0 0 1440 56" preserveAspectRatio="none" fill="#0d2848">
+    <path d="M0,28 C360,56 720,0 1080,28 C1260,42 1380,14 1440,28 L1440,56 L0,56 Z"/>
+  </svg>
+</div>
+
+<!-- ══ CÁMARA I: QUIZ ════════════════════════════════════════ -->
+<div class="section-bg-a">
+  <div class="chamber" id="camara-1">
+    <div class="chamber-head">
+      <span class="eyebrow">Cámara I</span>
+      <h2>La Prueba de las Corrientes</h2>
+      <p>
+        11 preguntas sobre ciclos, una por vez. Si no te acordás algo, Hécate deja una pista
+        y podés anotar lo que quieras en el cuaderno de cada pregunta.
+      </p>
+    </div>
+    <div id="quiz-root"></div>
+  </div>
+</div>
+
+<div class="wave">
+  <svg viewBox="0 0 1440 56" preserveAspectRatio="none" fill="#0a2038">
+    <path d="M0,14 C240,56 480,0 720,28 C960,56 1200,0 1440,28 L1440,56 L0,56 Z"/>
+  </svg>
+</div>
+
+<!-- ══ CÁMARA II: DONES ══════════════════════════════════════ -->
+<div class="section-bg-b">
+  <div class="chamber" id="camara-2">
+    <div class="chamber-head">
+      <span class="eyebrow">Cámara II</span>
+      <h2>Los Dones del Río</h2>
+      <p>
+        Ocho dones para practicar antes de cruzar. Cada uno tiene su ayuda de memoria y,
+        si hace falta, la solución sugerida — no hay una única forma correcta.
+      </p>
+    </div>
+    <div class="boon-list" id="boon-list"></div>
+  </div>
+</div>
+
+<div class="wave">
+  <svg viewBox="0 0 1440 56" preserveAspectRatio="none" fill="#06090f">
+    <path d="M0,28 C180,0 360,56 540,28 C720,0 900,56 1080,28 C1260,0 1380,42 1440,28 L1440,56 L0,56 Z"/>
+  </svg>
+</div>
+
+<!-- ══ CÁMARA FINAL ══════════════════════════════════════════ -->
+<div class="section-bg-c">
+  <div class="chamber" id="camara-3">
+    <div class="chamber-head">
+      <span class="eyebrow">Cámara Final</span>
+      <h2>La Travesía por Oceanus</h2>
+      <p>Antes de llegar a la otra orilla, hay que enfrentar la última prueba: un programa que combina todo.</p>
+    </div>
+    <div id="potion-root"></div>
+  </div>
+</div>
+
+<footer>Oceanus · Unidad 3 — Estructuras de Control: Ciclos (for, while, break, continue)</footer>
+
+
+<!-- ══ SCRIPT ════════════════════════════════════════════════ -->
+<script>
+/* ─── DATA ───────────────────────────────────────────────── */
+
+const sections      = ["Aguas Quietas", "Caribdis", "Paso de Scylla", "La Otra Orilla"];
+const sectionLabels = ["for", "while", "break/continue", "Anidados"];
+
+const questions = [
+  {
+    section: "Aguas Quietas",
+    q: "V o F: «El ciclo <code>for</code> se usa para repetir un bloque de código una cantidad de veces <em>indefinida</em>.»",
+    answers: ["Falso"],
+    options: ["Verdadero", "Falso"],
+    hint: "El <code>for</code> es un ciclo <strong>definido</strong>: sabemos de antemano cuántas iteraciones realizará (por ejemplo, al iterar sobre un rango o una lista). El indefinido es el <code>while</code>.",
+    feedback_ok: "Correcto. El <code>for</code> es definido: conocemos de antemano la cantidad de iteraciones.",
+    feedback_bad: "Era Falso. El <code>for</code> es un ciclo <strong>definido</strong>. El ciclo indefinido es el <code>while</code>.",
+  },
+  {
+    section: "Aguas Quietas",
+    q: "¿Cuál es la forma <strong>correcta</strong> de <code>range()</code> con tres parámetros?",
+    answers: ["range(start, end, step)"],
+    options: ["range(end, start, step)", "range(start, end, step)", "range(step, start, end)", "range(start, step, end)"],
+    hint: "El orden es: inicio, fin (excluido) y paso. Ejemplo: <code>range(0, 10, 2)</code> genera 0, 2, 4, 6, 8.",
+    feedback_ok: "Exacto: <code>range(start, end, step)</code>.",
+    feedback_bad: "La forma correcta es <code>range(start, end, step)</code>: inicio, fin (excluido) y paso.",
+  },
+  {
+    section: "Aguas Quietas",
+    q: "¿Qué imprime este código?<pre>for i in range(2, 12, 3):\n    print(i)</pre>",
+    answers: ["2\n5\n8\n11"],
+    options: ["2\n5\n8\n11", "2\n3\n4", "2\n5\n8", "Error de sintaxis"],
+    hint: "<code>range(2, 12, 3)</code>: empieza en 2, suma 3 en cada paso, termina antes de llegar a 12.",
+    feedback_ok: "Correcto. 2 → 5 → 8 → 11. El siguiente sería 14, que ya supera el límite.",
+    feedback_bad: "La respuesta correcta es 2 / 5 / 8 / 11. <code>range(2, 12, 3)</code> empieza en 2 y avanza de a 3.",
+  },
+  {
+    section: "Aguas Quietas",
+    q: "¿Qué imprime este código?<pre>total = 0\nfor i in range(1, 6):\n    total += i\nprint(total)</pre>",
+    answers: ["15"],
+    options: ["15", "10", "5", "0"],
+    hint: "<code>range(1, 6)</code> genera 1, 2, 3, 4, 5. La suma acumulada es 1+2+3+4+5.",
+    feedback_ok: "Perfecto. 1+2+3+4+5 = 15.",
+    feedback_bad: "La respuesta es 15. <code>range(1, 6)</code> genera 1, 2, 3, 4, 5 → suma = 15.",
+  },
+  {
+    section: "Caribdis",
+    q: "V o F: «El ciclo <code>while</code> es <em>definido</em>, porque sabemos de antemano cuántas veces se va a ejecutar.»",
+    answers: ["Falso"],
+    options: ["Verdadero", "Falso"],
+    hint: "El <code>while</code> es un ciclo <strong>indefinido</strong>: se ejecuta mientras la condición sea verdadera, y no sabemos de antemano cuántas veces ocurrirá.",
+    feedback_ok: "Correcto. El <code>while</code> es indefinido — depende de cuándo la condición se vuelva falsa.",
+    feedback_bad: "Era Falso. El <code>while</code> es un ciclo <strong>indefinido</strong>, no definido.",
+  },
+  {
+    section: "Caribdis",
+    q: "¿Qué imprime este código?<pre>n = 20\nwhile n > 0:\n    n -= 5\nprint(n)</pre>",
+    answers: ["0"],
+    options: ["0", "5", "-5", "20"],
+    hint: "n va 20 → 15 → 10 → 5 → 0. Cuando n vale 5 se resta 5 y queda 0; la condición <code>n > 0</code> falla y el ciclo termina.",
+    feedback_ok: "Correcto. n llega a 0 y el while termina. Se imprime 0.",
+    feedback_bad: "La respuesta es 0. n pasa por 20, 15, 10, 5, 0. Al llegar a 0 la condición <code>n > 0</code> ya no se cumple.",
+  },
+  {
+    section: "Caribdis",
+    q: "Un <code>while</code> bien formado necesita cuatro elementos. ¿Cuáles son?",
+    answers: ["Cuerpo, condición, estado previo y paso (actualización)"],
+    options: [
+      "Cuerpo, condición, estado previo y paso (actualización)",
+      "Variable, función, clase e import",
+      "Inicio, fin, paso y retorno",
+      "Condición, break, continue y return"
+    ],
+    hint: "Sin <strong>actualización</strong> (paso), la condición nunca cambia y el ciclo corre para siempre — Caribdis te atrapa.",
+    feedback_ok: "Exacto: estado previo, condición, cuerpo y paso. Los cuatro son necesarios.",
+    feedback_bad: "La respuesta es: estado previo (inicialización), condición, cuerpo y paso (actualización). Sin el paso el ciclo es infinito.",
+  },
+  {
+    section: "Paso de Scylla",
+    q: "¿Qué imprime este código?<pre>for i in range(1, 20):\n    if i % 7 == 0:\n        print(\"Encontrado:\", i)\n        break</pre>",
+    answers: ["Encontrado: 7"],
+    options: ["Encontrado: 7", "Encontrado: 14", "Encontrado: 19", "No imprime nada"],
+    hint: "El primer múltiplo de 7 en el rango 1–19 es 7. El <code>break</code> detiene el ciclo inmediatamente después de encontrarlo.",
+    feedback_ok: "Correcto. El for llega a 7 (7%7==0), imprime y hace break. El 14 nunca se alcanza.",
+    feedback_bad: "La respuesta es «Encontrado: 7». El break detiene el ciclo al primer múltiplo de 7.",
+  },
+  {
+    section: "Paso de Scylla",
+    q: "¿Qué imprime este código?<pre>for i in range(1, 8):\n    if i % 2 == 0:\n        continue\n    print(i)</pre>",
+    answers: ["1\n3\n5\n7"],
+    options: ["1\n3\n5\n7", "2\n4\n6", "1\n2\n3\n4\n5\n6\n7", "Error de ejecución"],
+    hint: "<code>continue</code> salta al inicio del ciclo sin ejecutar el resto del cuerpo. Los pares (2, 4, 6) se saltan; los impares se imprimen.",
+    feedback_ok: "Perfecto. continue saltea los pares e imprime solo los impares: 1, 3, 5, 7.",
+    feedback_bad: "La respuesta es 1 / 3 / 5 / 7. El <code>continue</code> salta al inicio del ciclo cuando el número es par.",
+  },
+  {
+    section: "Paso de Scylla",
+    q: "V o F: «Usar <code>while True</code> sin una condición de corte clara es una mala práctica porque puede generar un loop infinito.»",
+    answers: ["Verdadero"],
+    options: ["Verdadero", "Falso"],
+    hint: "<code>while True</code> sin un <code>break</code> bien definido crea un loop infinito. Si se usa, siempre debe existir una condición de salida explícita.",
+    feedback_ok: "Correcto. while True sin break definido es peligroso. Siempre debe haber una salida clara.",
+    feedback_bad: "Era Verdadero. while True sin condición de corte es una mala práctica que puede colgar el programa.",
+  },
+  {
+    section: "La Otra Orilla",
+    q: "¿Qué imprime este código?<pre>for i in range(1, 3):\n    for j in range(1, 3):\n        print(i, j)</pre>",
+    answers: ["1 1\n1 2\n2 1\n2 2"],
+    options: ["1 1\n1 2\n2 1\n2 2", "1 1\n2 2", "1 2\n1 2", "1 1\n2 1\n1 2\n2 2"],
+    hint: "El for externo fija i; el interno recorre todos los j para ese i. Para i=1: (1,1) y (1,2). Para i=2: (2,1) y (2,2).",
+    feedback_ok: "Exacto. El bucle externo (i) combina con el interno (j): 4 combinaciones en orden.",
+    feedback_bad: "La respuesta es 1 1 / 1 2 / 2 1 / 2 2. El for externo fija i y el interno recorre todos los j para ese i.",
+  },
+];
+
+const boons = [
+  {
+    title: "Cantos de Sirena",
+    flavor: "Las sirenas entonan un canto por cada número sagrado que reciben. Cuantos más cantos, más poderoso el hechizo.",
+    tag: "for · range()",
+    statement: "Escribí una función <code>cantos_sirena(n)</code> que imprima todos los números del 1 al N recibido por parámetro, usando <code>for</code>.",
+    hint: "<code>range(1, n + 1)</code> genera los números del 1 al n inclusive. Recordá que el segundo argumento de range es excluido.",
+    sol: `def cantos_sirena(n):
+    for i in range(1, n + 1):
+        print(i)
+
+cantos_sirena(5)   # imprime 1 2 3 4 5`,
+  },
+  {
+    title: "Letras de la Criatura Marina",
+    flavor: "Para invocar a una criatura de Oceanus, hay que pronunciar su nombre letra por letra, con pausa entre cada sonido.",
+    tag: "for · string",
+    statement: "Escribí una función <code>invocar_criatura(nombre)</code> que reciba un string e imprima cada letra en una línea separada.",
+    hint: "En Python podés iterar directamente sobre un string con <code>for letra in nombre</code>.",
+    sol: `def invocar_criatura(nombre):
+    for letra in nombre:
+        print(letra)
+
+invocar_criatura("Scylla")`,
+  },
+  {
+    title: "Corrientes Pares de Oceanus",
+    flavor: "Las corrientes pares fluyen con armonía. Las impares chocan contra las rocas de Scylla.",
+    tag: "for · if · módulo",
+    statement: "Escribí una función <code>corrientes_pares(a, b)</code> que imprima todos los números <strong>pares</strong> entre los valores a y b (inclusive).",
+    hint: "Un número es par cuando <code>n % 2 == 0</code>. Usá <code>range(a, b + 1)</code> para incluir a b.",
+    sol: `def corrientes_pares(a, b):
+    for n in range(a, b + 1):
+        if n % 2 == 0:
+            print(n)
+
+corrientes_pares(3, 12)   # imprime 4 6 8 10 12`,
+  },
+  {
+    title: "Ofrendas a Caribdis",
+    flavor: "Caribdis exige 100 monedas antes de calmarse. Los navegantes arrojan monedas hasta completar la suma.",
+    tag: "while · acumulador · input",
+    statement: "Escribí una función <code>ofrendas_caribdis()</code> que solicite al usuario números (ofrendas) con <code>input()</code> hasta que la suma supere las 100 monedas. Al final, imprimí el total.",
+    hint: "Usá una variable acumuladora inicializada en 0. La condición del while es que el total aún no supere 100.",
+    sol: `def ofrendas_caribdis():
+    total = 0
+    while total <= 100:
+        ofrenda = int(input("¿Cuántas monedas ofrendás? "))
+        total += ofrenda
+        print(f"Total acumulado: {total} monedas")
+    print(f"¡Caribdis acepta la ofrenda! Total: {total} monedas.")`,
+  },
+  {
+    title: "Ofrendas Limitadas",
+    flavor: "Oceanus es generoso pero no ilimitado. Solo permite cinco intentos de ofrenda.",
+    tag: "while · contador · dos condiciones",
+    statement: "Modificá el ejercicio anterior: la función <code>ofrendas_limitadas()</code> debe permitir como máximo <strong>5 ofrendas</strong>. Si no se llega a 100 en cinco turnos, informar que Caribdis no fue aplacada.",
+    hint: "Necesitás controlar dos condiciones en el while: el total y el conteo de intentos. Podés usar <code>and</code> en la condición.",
+    sol: `def ofrendas_limitadas():
+    total = 0
+    MAX_INTENTOS = 5
+    intento = 0
+    while total <= 100 and intento < MAX_INTENTOS:
+        ofrenda = int(input(f"Ofrenda {intento + 1}/{MAX_INTENTOS}: ¿cuántas monedas? "))
+        total += ofrenda
+        intento += 1
+        print(f"Total: {total} monedas.")
+    if total > 100:
+        print("¡Caribdis acepta la ofrenda!")
+    else:
+        print("Caribdis no fue aplacada. Las aguas se agitan...")`,
+  },
+  {
+    title: "El Peaje de Scylla",
+    flavor: "Scylla exige un peaje exacto para dejar pasar a los navegantes. Si pagás de más, no hay vuelto.",
+    tag: "while · acumulador · resta",
+    statement: "Escribí una función <code>peaje_scylla(monto)</code> que reciba el total a pagar. En cada vuelta, el usuario ingresa un valor; mostrar cuánto falta. Terminar cuando se alcance o supere el monto.",
+    hint: "Calculá <code>falta = monto - pagado</code> antes de pedir cada pago. El while continúa mientras <code>pagado < monto</code>.",
+    sol: `def peaje_scylla(monto):
+    pagado = 0
+    print(f"Scylla exige {monto} monedas de peaje.")
+    while pagado < monto:
+        falta = monto - pagado
+        pago = int(input(f"Falta {falta} monedas. ¿Cuánto pagás ahora? "))
+        pagado += pago
+        print(f"Pagado hasta ahora: {pagado} monedas.")
+    print(f"¡Paso habilitado! Pagaste {pagado} monedas en total.")`,
+  },
+  {
+    title: "La Palabra de Paso de Némesis",
+    flavor: "Némesis guarda la puerta entre Oceanus y el mundo de los vivos. Solo quien conozca la palabra de paso puede cruzar — pero los intentos son contados.",
+    tag: "for · return · intentos",
+    statement: "Escribí una función <code>palabra_nemesis(password, intentos_max)</code> que pida la contraseña hasta que se ingrese correctamente o se agoten los intentos. Devolver <code>True</code> si accedió, <code>False</code> si fracasó.",
+    hint: "Usá <code>for intento in range(1, intentos_max + 1)</code>. Si la respuesta es correcta, <code>return True</code> inmediatamente dentro del loop.",
+    sol: `def palabra_nemesis(password, intentos_max):
+    for intento in range(1, intentos_max + 1):
+        ingresada = input(f"Intento {intento}/{intentos_max} — Pronunciá la palabra de paso: ")
+        if ingresada == password:
+            print("✓ Némesis te permite el paso.")
+            return True
+        restantes = intentos_max - intento
+        if restantes > 0:
+            print(f"Incorrecto. Te quedan {restantes} intentos.")
+    print("El acceso está sellado.")
+    return False`,
+  },
+  {
+    title: "El Sello Primo de Oceanus",
+    flavor: "Los sellos de Oceanus son números primos. Solo un número primo puede abrir la compuerta de las corrientes profundas.",
+    tag: "for · módulo · primos",
+    statement: "Escribí una función <code>es_primo(n)</code> que devuelva <code>True</code> si el número es primo, <code>False</code> en caso contrario. Usá el operador módulo <code>%</code>.",
+    hint: "Un número es primo si solo es divisible por 1 y por sí mismo. Alcanza con probar divisores hasta <code>int(n**0.5) + 1</code>.",
+    sol: `def es_primo(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+for n in [1, 2, 3, 7, 11, 15, 17, 25]:
+    print(n, "→ primo" if es_primo(n) else "→ no primo")`,
+  },
+];
+
+const potion = {
+  title: "Rema por las Corrientes de Oceanus",
+  flavor: "Selene ilumina el camino, pero las corrientes son traicioneras. En cada brazada podrías cruzarte con Scylla o con el remolino de Caribdis. Si te quedás sin brazadas antes de llegar a la orilla, Sisyphus te condena a empezar de nuevo.",
+  reqs: [
+    "Pedir al usuario cuántas <strong>brazadas</strong> tiene disponibles. Validar con <code>while</code> que sea un número positivo.",
+    "Simular cada brazada con un número aleatorio entre 1 y 10 (<code>random.randint</code>).",
+    "Si el número es 1 o 2 → «¡Caribdis te arrastra!» (pierde 2 brazadas extra).",
+    "Si el número es 3 o 4 → «Scylla te roza, perdés una brazada.»",
+    "Si el número es 5 a 8 → «Remás con fuerza — avanzás.» (brazada normal).",
+    "Si el número es 9 o 10 → «¡Corriente a favor!» — avanzás dos casilleros (usá <code>continue</code> para no gastar brazada extra).",
+    "Usar <code>break</code> cuando llegás a la orilla (≥ 10 casilleros) o se acaban las brazadas.",
+    "Informar al final si llegaste a la otra orilla o si Oceanus te venció.",
+  ],
+  sol: `import random
+
+def travesia_oceanus():
+    # Validar entrada
+    brazadas = 0
+    while brazadas <= 0:
+        try:
+            brazadas = int(input("¿Cuántas brazadas tenés disponibles? "))
+            if brazadas <= 0:
+                print("Oceanus no acepta navegantes sin fuerzas. Ingresá un número positivo.")
+        except ValueError:
+            print("El oráculo no comprende ese valor. Ingresá un número entero.")
+
+    META = 10
+    avance = 0
+    brazada_actual = 0
+    print(f"\\n⚓ Iniciás con {brazadas} brazadas. ¡Que Selene te guíe!\\n")
+
+    while brazada_actual < brazadas:
+        dado = random.randint(1, 10)
+        brazada_actual += 1
+
+        if dado <= 2:
+            print(f"Brazada {brazada_actual}: ¡Caribdis te arrastra! (dado={dado}) — perdés 2 extra.")
+            brazada_actual += 2
+            avance += 1
+        elif dado <= 4:
+            print(f"Brazada {brazada_actual}: Scylla te roza (dado={dado}) — perdés una brazada.")
+            brazada_actual += 1
+            avance += 1
+        elif dado <= 8:
+            print(f"Brazada {brazada_actual}: Remás con fuerza (dado={dado}) — avanzás.")
+            avance += 1
+        else:
+            print(f"Brazada {brazada_actual}: ¡Corriente a favor! (dado={dado}) — avanzás dos casilleros.")
+            avance += 2
+            continue  # ya se avanzó doble, no sumamos brazada extra
+
+        if avance >= META:
+            break
+
+    print(f"\\n--- Avanzaste {avance}/{META} casilleros ---")
+    if avance >= META:
+        print("¡Llegaste a la otra orilla! Oceanus te ha concedido el paso.")
+        return True
+    else:
+        print("Las corrientes te vencieron. Sisyphus te espera...")
+        return False
+
+travesia_oceanus()`,
+};
+
+/* ─── QUIZ ENGINE ────────────────────────────────────────── */
+
+let state = { current: 0, lives: 3, score: 0, results: [], done: false };
+
+function renderQuiz() {
+  const root = document.getElementById('quiz-root');
+  root.innerHTML = '';
+  if (state.done) { renderSummary(root); return; }
+
+  const q   = questions[state.current];
+  const pct = (state.current / questions.length) * 100;
+  const si  = sections.indexOf(q.section);
+  const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+
+  root.append(
+    mkEl('div', 'status-row', `
+      <div class="lives">
+        ${[0,1,2].map(i => `<div class="flame${i >= state.lives ? ' spent' : ''}"></div>`).join('')}
+      </div>
+      <div class="score-tag">
+        Pregunta <b>${state.current + 1}</b>/${questions.length} · Aciertos: <b>${state.score}</b>
+      </div>
+    `),
+    mkEl('div', 'river-wrap', `
+      <div class="river-track"><div class="river-fill" style="width:${pct}%"></div></div>
+      <div class="river-labels">
+        ${sectionLabels.map((l, i) => `<span class="${si >= i ? 'done' : ''}">${l}</span>`).join('')}
+      </div>
+    `),
+    mkEl('div', 'card', `
+      <span class="tag-styx">${q.section}</span>
+      <div class="q-text">${q.q}</div>
+      <div class="options-grid">
+        ${shuffled.map(opt =>
+          `<button class="option-btn" onclick="checkAnswer(this,'${esc(opt)}')">${opt}</button>`
+        ).join('')}
+      </div>
+      <details class="hint">
+        <summary>Ayuda de memoria de Hécate</summary>
+        <div class="hint-body">${q.hint}</div>
+      </details>
+      <div class="notes-field">
+        <label for="q-notes">Cuaderno de notas (opcional)</label>
+        <textarea id="q-notes" placeholder="Anotá acá lo que quieras recordar de esta pregunta..."></textarea>
+      </div>
+      <div class="feedback" id="q-feedback"></div>
+      <div class="quiz-nav">
+        <button class="btn btn-primary" id="next-btn" disabled onclick="goNext()">
+          Cruzar a la próxima sala →
+        </button>
+      </div>
+    `)
+  );
+}
+
+function checkAnswer(btn, chosen) {
+  const q    = questions[state.current];
+  const isOk = q.answers.some(a => norm(a) === norm(chosen));
+  const note = document.getElementById('q-notes')?.value?.trim() || '';
+
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = true;
+    const v = b.textContent;
+    if (q.answers.some(a => norm(a) === norm(v)))  b.classList.add('correct');
+    else if (norm(v) === norm(chosen))              b.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('q-feedback');
+  fb.className = 'feedback show ' + (isOk ? 'ok' : 'bad');
+  fb.innerHTML = isOk ? q.feedback_ok : q.feedback_bad;
+
+  if (isOk) state.score++;
+  else       state.lives = Math.max(0, state.lives - 1);
+
+  state.results.push({
+    pregunta: q.q.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
+    respuesta: chosen, correcta: isOk, nota: note,
+  });
+  document.getElementById('next-btn').disabled = false;
+}
+
+function goNext() {
+  state.current++;
+  if (state.current >= questions.length) state.done = true;
+  renderQuiz();
+}
+
+function renderSummary(root) {
+  const { score, lives, results } = state;
+  const total = questions.length;
+  const msg = score === total
+    ? 'Cruzaste sin perder una sola llama. Las corrientes te obedecen.'
+    : lives === 0
+    ? 'Las llamas se apagaron, pero el bote igual cruza. Oceanus deja pasar.'
+    : `El río quedó atrás. Quedan ${lives} llama(s) encendida(s).`;
+
+  root.append(mkEl('div', '', `
+    <div class="river-wrap">
+      <div class="river-track"><div class="river-fill" style="width:100%"></div></div>
+      <div class="river-labels">
+        ${sectionLabels.map(l => `<span class="done">${l}</span>`).join('')}
+      </div>
+    </div>
+    <div class="summary-card">
+      <span class="eyebrow">Veredicto de Oceanus</span>
+      <div class="big-score">${score} / ${total}</div>
+      <p>${msg}</p>
+      <table class="summary-table">
+        <thead><tr><th>Pregunta</th><th>Tu respuesta</th><th>¿Correcta?</th><th>Nota</th></tr></thead>
+        <tbody>
+          ${results.map(r => `<tr>
+            <td data-label="Pregunta">${r.pregunta}</td>
+            <td data-label="Tu respuesta">${r.respuesta || '—'}</td>
+            <td data-label="¿Correcta?" class="${r.correcta ? 'ok' : 'bad'}">${r.correcta ? 'Sí' : 'No'}</td>
+            <td data-label="Nota">${r.nota || '—'}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      <div class="cta-row">
+        <button class="btn btn-primary"
+          onclick="document.getElementById('camara-2').scrollIntoView({behavior:'smooth'})">
+          Entrar a la Cámara de los Dones →
+        </button>
+      </div>
+    </div>
+  `));
+}
+
+/* ─── BOONS ──────────────────────────────────────────────── */
+
+function renderBoons() {
+  const list = document.getElementById('boon-list');
+  boons.forEach(b => {
+    list.appendChild(mkEl('div', 'boon', `
+      <span class="tag-styx">${b.tag}</span>
+      <div class="boon-title">${b.title}</div>
+      <div class="boon-flavor">${b.flavor}</div>
+      <div class="statement">${b.statement}</div>
+      <details class="hint">
+        <summary>Ayuda de memoria de Hécate</summary>
+        <div class="hint-body">${b.hint}</div>
+      </details>
+      <details class="solution">
+        <summary>Solución sugerida</summary>
+        <div class="sol-body"><pre>${escHtml(b.sol)}</pre></div>
+      </details>
+    `));
+  });
+}
+
+/* ─── POTION ─────────────────────────────────────────────── */
+
+function renderPotion() {
+  document.getElementById('potion-root').innerHTML = `
+    <div class="potion-card">
+      <div class="potion-title">${potion.title}</div>
+      <div class="potion-flavor">${potion.flavor}</div>
+      <ul class="reqs">${potion.reqs.map(r => `<li>${r}</li>`).join('')}</ul>
+      <details class="solution" style="margin-top:1.5rem;">
+        <summary>Solución sugerida</summary>
+        <div class="sol-body"><pre>${escHtml(potion.sol)}</pre></div>
+      </details>
+    </div>`;
+}
+
+/* ─── UTILS ──────────────────────────────────────────────── */
+
+function mkEl(tag, cls, html) {
+  const d = document.createElement(tag);
+  if (cls) d.className = cls;
+  d.innerHTML = html;
+  return d;
+}
+function norm(s)   { return (s||'').toLowerCase().trim().replace(/\s+/g,' '); }
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function esc(s)    { return s.replace(/'/g,"\\'"); }
+
+/* ─── INIT ───────────────────────────────────────────────── */
+renderQuiz();
+renderBoons();
+renderPotion();
+</script>
+</body>
+</html>
