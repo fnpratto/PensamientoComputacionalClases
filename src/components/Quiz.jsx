@@ -18,6 +18,7 @@ export default function Quiz({ questions, sections, sectionLabels, studentName, 
   const [results, setResults] = useState([]);
   const [done, setDone] = useState(false);
   const [sendStatus, setSendStatus] = useState('');
+  const [sent, setSent] = useState(false);
   const [noteValue, setNoteValue] = useState('');
   const [feedback, setFeedback] = useState(null); // {text, cls}
   const [optionStates, setOptionStates] = useState({}); // {option: 'correct'|'wrong'|null}
@@ -103,7 +104,7 @@ export default function Quiz({ questions, sections, sectionLabels, studentName, 
     });
     setSendStatus('Enviando...');
     fetch(sheetWebhook, { method: 'POST', mode: 'no-cors', body })
-      .then(() => { setSendStatus('Enviado. Ya debería estar en la planilla.'); })
+      .then(() => { setSendStatus('Enviado. Ya debería estar en la planilla.'); setSent(true); })
       .catch(() => { setSendStatus('No se pudo enviar — descargá el CSV y mandalo por otro medio.'); });
   }
 
@@ -131,11 +132,26 @@ export default function Quiz({ questions, sections, sectionLabels, studentName, 
           <span className="eyebrow">Bendición de Caronte</span>
           <div className="big-score">{score} / {questions.length}</div>
           <p>{msg}</p>
-          <div className="cta-row">
-            <button className="btn" onClick={downloadCSV}>Descargar mis respuestas (CSV)</button>
-            <button className="btn btn-primary" onClick={sendToSheets}>Enviar al Inframundo</button>
+          <div className="cta-row" style={{ flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+            {!sent ? (
+              <>
+                <button className="btn btn-primary" onClick={sendToSheets} style={{ width: '100%', maxWidth: '360px' }}>
+                  Enviar mis respuestas →
+                </button>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--bone-dim)' }}>
+                  Paso obligatorio antes de continuar.
+                </span>
+              </>
+            ) : (
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.82rem', color: 'var(--styx)' }}>
+                ✓ Respuestas enviadas
+              </span>
+            )}
+            <button className="btn" onClick={downloadCSV} style={{ fontSize: '0.78rem', opacity: 0.65 }}>
+              Descargar copia en CSV
+            </button>
           </div>
-          {sendStatus && <div className="status-note">{sendStatus}</div>}
+          {sendStatus && !sent && <div className="status-note">{sendStatus}</div>}
           <table className="summary-table">
             <thead>
               <tr>
@@ -156,14 +172,16 @@ export default function Quiz({ questions, sections, sectionLabels, studentName, 
               ))}
             </tbody>
           </table>
-          <div className="cta-row">
-            <button
-              className="btn btn-primary"
-              onClick={() => document.getElementById('camara-2').scrollIntoView({ behavior: 'smooth' })}
-            >
-              Entrar a la Cámara de los Dones →
-            </button>
-          </div>
+          {sent && (
+            <div className="cta-row">
+              <button
+                className="btn btn-primary"
+                onClick={() => document.getElementById('camara-2').scrollIntoView({ behavior: 'smooth' })}
+              >
+                Entrar a la Cámara de los Dones →
+              </button>
+            </div>
+          )}
         </div>
       </>
     );

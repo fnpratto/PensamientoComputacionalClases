@@ -32,6 +32,12 @@ export default function App() {
 
         {!studentName && <NameGate onStart={handleStart} />}
 
+        {studentName && (
+          <div className="hero-note" style={{ marginTop: '1rem' }}>
+            Cruzando como <strong style={{ color: 'var(--styx)' }}>{studentName}</strong>
+          </div>
+        )}
+
         <div className="hero-note">
           Cámara I · La Prueba de Estigia — Cámara II · Los Dones — Cámara Final · La Botica de Hécate
         </div>
@@ -47,14 +53,24 @@ export default function App() {
             y podés anotar lo que quieras recordar en el cuaderno de cada pregunta.
           </p>
         </div>
-        <Quiz
-          questions={questions}
-          sections={sections}
-          sectionLabels={sectionLabels}
-          studentName={studentName || 'Anónimo'}
-          sheetWebhook={sheetWebhook}
-          onComplete={() => {}}
-        />
+
+        {!studentName ? (
+          <div className="gate" style={{ textAlign: 'center', padding: '2.4rem 1.5rem' }}>
+            <div style={{ fontSize: '1.6rem', marginBottom: '0.75rem' }}>🔒</div>
+            <p style={{ color: 'var(--bone-dim)', margin: 0 }}>
+              Ingresá tu nombre arriba para desbloquear la prueba.
+            </p>
+          </div>
+        ) : (
+          <Quiz
+            questions={questions}
+            sections={sections}
+            sectionLabels={sectionLabels}
+            studentName={studentName}
+            sheetWebhook={sheetWebhook}
+            onComplete={() => {}}
+          />
+        )}
       </section>
 
       {/* CÁMARA II: LOS DONES */}
