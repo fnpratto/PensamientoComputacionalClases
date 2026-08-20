@@ -1,11 +1,11 @@
 const config = {
 
   meta: {
-    title: "El Descenso — Guía 2",
-    eyebrow: "Pensamiento Computacional — Guía 2",
+    title: "El Descenso — Unidad 2",
+    eyebrow: "Pensamiento Computacional — Unidad 2",
     heroTitleHtml: "El <span>Descenso</span>",
     heroDescription: "Antes de cruzar, Caronte quiere saber quién sos. Después, tres cámaras: un río para completar de a un dato por vez, dones para practicar y una botica de cierre. Anotá lo que quieras recordar en el camino.",
-    footerText: "El Descenso · Guía 2 — Tipos de Datos, Expresiones y Funciones",
+    footerText: "El Descenso · Unidad 2 — Tipos de Datos, Expresiones y Funciones",
   },
 
   sheetWebhook: "https://script.google.com/macros/s/AKfycbxixKO-IHvlg3OzajxcbINbx6UwP0Li_tTuhI8MLQiIqPrNnmq7XVW9Cm_15B-8c6Li/exec",
@@ -44,7 +44,7 @@ const config = {
     {
       title: "El Peaje de Caronte",
       flavor: "Todo el que cruza, paga.",
-      statement: "Función que reciba el precio del pasaje y la cantidad de almas que cruzan, y devuelva cuánto paga cada una si se reparte el costo en partes iguales. Podés pedir los datos con <code>input()</code> y mostrar el resultado con <code>print()</code> por fuera de la función.",
+      statement: "En las orillas del Aqueronte, Caronte espera con su barca. Ninguna alma cruza gratis: el costo del pasaje se reparte entre todas las que suben a bordo en ese viaje. Tu tarea es calcular cuánto le toca pagar a cada alma.<br><br>Escribí una función que reciba el precio total del pasaje y la cantidad de almas que cruzan, y devuelva cuánto paga cada una si el costo se reparte en partes iguales. Podés pedir los datos con <code>input()</code> y mostrar el resultado con <code>print()</code> por fuera de la función.",
       hint: "Toda buena práctica de Python pide separar el cálculo (la función) de la entrada/salida (input/print). Si el dato llega por input(), es texto: castealo a int o float antes de operar.",
       note: "Para poder verificarla, definí una función llamada <code>calcular_pago_por_alma(precio_pasaje, cantidad_almas)</code>.",
       sol: `def calcular_pago_por_alma(precio_pasaje, cantidad_almas):
@@ -62,7 +62,7 @@ print("Cada alma paga:", calcular_pago_por_alma(precio_pasaje, cantidad_almas))`
     {
       title: "El Favor de los Dioses",
       flavor: "No todo descuento se pide en voz alta.",
-      statement: "Función que reciba el costo de un pase y un porcentaje de favor (descuento) otorgado por los dioses, y devuelva el costo final.",
+      statement: "A veces, un dios se apiada de un alma y le concede un favor: un descuento sobre el costo de su pase, silencioso pero real. Nadie lo anuncia, pero el número final refleja esa gracia.<br><br>Escribí una función que reciba el costo de un pase y un porcentaje de favor (descuento) otorgado por los dioses, y devuelva el costo final.",
       hint: "Un descuento es un porcentaje del total: primero calculá cuánto es esa porción, después restala.",
       note: "Para poder verificarla, definí una función llamada <code>calcular_costo_final(costo, porcentaje_favor)</code>.",
       sol: `def calcular_costo_final(costo, porcentaje_favor):
@@ -77,7 +77,7 @@ print("Cada alma paga:", calcular_pago_por_alma(precio_pasaje, cantidad_almas))`
     {
       title: "La Ofrenda Sagrada",
       flavor: "No todas las almas son iguales ante los dioses.",
-      statement: "Función que reciba un número de alma y devuelva True si es una \"ofrenda sagrada\" (múltiplo de 5).",
+      statement: "Entre la multitud que cruza el Inframundo, algunas almas llevan un número especial: aquellas cuyo número es múltiplo de 5 son consideradas \"ofrendas sagradas\", dignas de una mención aparte en los registros de Hécate.<br><br>Escribí una función que reciba un número de alma y devuelva <code>True</code> si es una \"ofrenda sagrada\" (múltiplo de 5), o <code>False</code> en caso contrario.",
       hint: "'Ser múltiplo de' se pregunta con el resto: %. Si el resto de dividir por 5 es 0, es múltiplo de 5.",
       note: "Para poder verificarla, definí una función llamada <code>es_ofrenda_sagrada(numero_alma)</code>.",
       sol: `def es_ofrenda_sagrada(numero_alma):
@@ -92,7 +92,7 @@ print("Cada alma paga:", calcular_pago_por_alma(precio_pasaje, cantidad_almas))`
     {
       title: "El Sello del Héroe",
       flavor: "Un nombre grabado no necesita ser completo para ser reconocido.",
-      statement: "Función que reciba el nombre de un héroe y devuelva sus primeras 3 letras en mayúscula, como sello grabado en su arma.",
+      statement: "Cuando un héroe cae en batalla, su arma queda como testimonio. Los herreros del Inframundo no tienen tiempo de grabar un nombre entero: graban apenas sus primeras letras, un sello que basta para que cualquiera sepa a quién perteneció.<br><br>Escribí una función que reciba el nombre de un héroe y devuelva sus primeras 3 letras en mayúscula, como sello grabado en su arma.",
       hint: "Para tomar solo una parte de un string usá slicing [inicio:fin]; para cambiar mayúsculas/minúsculas están .upper() / .lower().",
       note: "Para poder verificarla, definí una función llamada <code>generar_sello(nombre_heroe)</code>.",
       sol: `def generar_sello(nombre_heroe):
@@ -106,7 +106,7 @@ print("Cada alma paga:", calcular_pago_por_alma(precio_pasaje, cantidad_almas))`
     {
       title: "La Lápida",
       flavor: "Lo último que queda escrito, se escribe una sola vez.",
-      statement: "Función que reciba nombre, apellido y edad, y devuelva el texto grabado en una lápida: \"Apellido, Nombre (edad años)\".",
+      statement: "Al final del camino, cada alma recibe una lápida. En ella se graba lo esencial: quién fue y cuánto vivió. No hay lugar para errores, porque la piedra no perdona.<br><br>Escribí una función que reciba nombre, apellido y edad, y devuelva el texto grabado en una lápida: \"Apellido, Nombre (edad años)\".",
       hint: "Un f-string te deja meter variables directo dentro del texto con {}, sin tener que concatenar con +.",
       note: "Para poder verificarla, definí una función llamada <code>grabar_lapida(nombre, apellido, edad)</code>.",
       sol: `def grabar_lapida(nombre, apellido, edad):
@@ -119,7 +119,7 @@ print("Cada alma paga:", calcular_pago_por_alma(precio_pasaje, cantidad_almas))`
     {
       title: "El Hechizo Roto",
       flavor: "Hécate dejó un hechizo a medio terminar. Para hacer en parejas.",
-      statement: "El siguiente hechizo está roto. Encontrar y corregir los errores:",
+      statement: "Hécate estaba forjando un hechizo de poder cuando algo la interrumpió. Lo dejó a medio terminar, con errores que un aprendiz distraído no notaría... pero vos sí. El siguiente hechizo está roto: encontrá y corregí los errores:",
       code: `def calcular_poder_hechizo(mana)
     factor = 3.14159
     poder = factor * mana ** 2
@@ -148,7 +148,7 @@ print("El poder es:", resultado)`,
     title: "El Cobro de Pociones",
     flavor: '"Nada sube gratis del Inframundo." — Hécate',
     // statementHtml y receiptHtml pueden contener HTML
-    statementHtml: 'Pedirle al usuario el nombre de la poción, su precio unitario y la cantidad comprada. Calcular el subtotal, aplicar un <b>10% de descuento</b> si se compran <b>5 o más</b> pociones, y devolver un recibo con este formato:',
+    statementHtml: 'La boticaria del Inframundo no regala nada, pero premia la lealtad: quien compra suficientes pociones de una sola vez, se gana un descuento.<br><br>Pedirle al usuario el nombre de la poción, su precio unitario y la cantidad comprada. Calcular el subtotal, aplicar un <b>10% de descuento</b> si se compran <b>5 o más</b> pociones, y devolver un recibo con este formato:',
     receiptHtml: `Poción: <span class="g">Elixir de Ceniza</span><br>
 Cantidad: <span class="s">6</span><br>
 Subtotal: <span class="s">$600.0</span><br>

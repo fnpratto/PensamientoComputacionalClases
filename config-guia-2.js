@@ -1,11 +1,11 @@
 const COURSE_CONFIG = {
 
   meta: {
-    title: "El Descenso — Guía 2",
-    eyebrow: "Pensamiento Computacional — Guía 2",
+    title: "El Descenso — Unidad 2",
+    eyebrow: "Pensamiento Computacional — Unidad 2",
     heroTitleHtml: "El <span>Descenso</span>",
     heroDescription: "Antes de cruzar, Caronte quiere saber quién sos. Después, tres cámaras: un río para completar de a un dato por vez, dones para practicar y una botica de cierre. Anotá lo que quieras recordar en el camino.",
-    footerText: "El Descenso · Guía 2 — Tipos de Datos, Expresiones y Funciones",
+    footerText: "El Descenso · Unidad 2 — Tipos de Datos, Expresiones y Funciones",
   },
 
   sheetWebhook: "https://script.google.com/macros/s/AKfycbxixKO-IHvlg3OzajxcbINbx6UwP0Li_tTuhI8MLQiIqPrNnmq7XVW9Cm_15B-8c6Li/exec",
