@@ -253,10 +253,6 @@ function buildVerifyBlock(idPrefix, noteText, solutionHtml){
       </div>
       <div class="practice-note" id="${idPrefix}-practice" hidden></div>
       <div class="test-results" id="${idPrefix}-results" hidden></div>
-      <details class="solution" id="${idPrefix}-solution" hidden>
-        <summary>Mostrar solución sugerida</summary>
-        <div class="sol-body"><pre>${solutionHtml}</pre></div>
-      </details>
     </div>`;
 }
 

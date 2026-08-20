@@ -4,6 +4,7 @@ import NameGate from './components/NameGate.jsx';
 import Quiz from './components/Quiz.jsx';
 import BoonList from './components/BoonList.jsx';
 import PotionCard from './components/PotionCard.jsx';
+import Nav from './components/Nav.jsx';
 
 const STORAGE_KEY = 'guia-2';
 
@@ -29,6 +30,8 @@ export default function App() {
 
   return (
     <>
+      <Nav />
+
       {/* HERO */}
       <div className="hero">
         <span className="eyebrow">{meta.eyebrow}</span>
@@ -36,16 +39,6 @@ export default function App() {
         <p>{meta.heroDescription}</p>
 
         {!studentName && <NameGate onStart={handleStart} />}
-
-        {studentName && (
-          <div className="hero-note" style={{ marginTop: '1rem' }}>
-            Cruzando como <strong style={{ color: 'var(--styx)' }}>{studentName}</strong>
-          </div>
-        )}
-
-        <div className="hero-note">
-          Cámara I · La Prueba de Estigia — Cámara II · Los Dones — Cámara Final · La Botica de Hécate
-        </div>
       </div>
 
       {/* CÁMARA I: QUIZ */}
