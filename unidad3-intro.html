@@ -712,6 +712,56 @@
      UNIDAD 2 — EL DESCENSO
      ══════════════════════════════════════════════════════════ -->
 
+<!-- ══ NAME GATE ══════════════════════════════════════════════ -->
+<div id="name-gate" style="
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(ellipse 80% 40% at 50% 30%, rgba(139,107,209,.18) 0%, transparent 70%),
+             linear-gradient(180deg,#0a0818 0%,#0d0b20 100%);
+  padding:2rem;
+">
+  <div style="
+    max-width:420px; width:100%;
+    background:rgba(255,255,255,.03); border:1px solid rgba(139,107,209,.2);
+    border-radius:12px; padding:2.4rem 2rem; text-align:center;
+  ">
+    <div style="font-family:var(--font-d);font-size:.7rem;letter-spacing:.2em;color:rgba(139,107,209,.7);text-transform:uppercase;margin-bottom:1.4rem">
+      Pensamiento Computacional · FIUBA
+    </div>
+    <h1 style="font-family:var(--font-d);font-size:1.6rem;color:var(--bone);margin:0 0 .4rem">
+      Bienvenido al <span style="color:var(--violet)">Inframundo</span>
+    </h1>
+    <p style="color:var(--bone-dim);font-size:.92rem;margin:0 0 1.8rem;line-height:1.6">
+      Antes de cruzar el Aqueronte, Caronte quiere saber quién sos.
+    </p>
+    <label style="display:block;text-align:left;font-family:var(--font-m);font-size:.78rem;color:var(--bone-dim);margin-bottom:.35rem">
+      Nombre completo
+    </label>
+    <input id="name-input" type="text" placeholder="Ej: María García"
+      style="
+        width:100%;box-sizing:border-box;
+        background:rgba(255,255,255,.05);border:1px solid rgba(139,107,209,.25);
+        border-radius:6px;padding:.65rem .9rem;
+        color:var(--bone);font-family:var(--font-m);font-size:.95rem;
+        outline:none;margin-bottom:1rem;
+      "
+      onkeydown="if(event.key==='Enter')startSession()"
+    />
+    <button onclick="startSession()" style="
+      width:100%;padding:.75rem;border:none;border-radius:6px;
+      background:var(--violet);color:#fff;cursor:pointer;
+      font-family:var(--font-d);font-size:.85rem;letter-spacing:.08em;
+    ">
+      Cruzar el Aqueronte →
+    </button>
+    <p id="name-gate-err" style="color:#e78b78;font-size:.8rem;margin:.6rem 0 0;display:none">
+      Ingresá tu nombre para continuar.
+    </p>
+  </div>
+</div>
+
+<!-- ══ CONTENIDO PRINCIPAL ════════════════════════════════════ -->
+<div id="main-content" style="display:none">
+
 <section class="hero-u2" id="hero-u2">
   <div class="hero-badge">Pensamiento Computacional · FIUBA · Unidad 2</div>
   <h1 class="hero-title">El <span>Descenso</span></h1>
@@ -1215,6 +1265,8 @@ print(primer_par_desde(9))</pre>
 
 <footer>Unidad 3 · Decisiones, Ciclos y Estructuras de Control · Pensamiento Computacional FIUBA</footer>
 
+</div><!-- /#main-content -->
+
 <!-- ══ SITE NAVIGATION ═══════════════════════════════════════ -->
 <div class="snav-overlay" id="snav-overlay" onclick="snavClose()"></div>
 
@@ -1256,6 +1308,40 @@ print(primer_par_desde(9))</pre>
 
 <!-- ══ SCRIPT ════════════════════════════════════════════════ -->
 <script>
+/* ─── CONFIG ─────────────────────────────────────────────── */
+const SHEET_WEBHOOK = "https://script.google.com/macros/s/AKfycbxixKO-IHvlg3OzajxcbINbx6UwP0Li_tTuhI8MLQiIqPrNnmq7XVW9Cm_15B-8c6Li/exec";
+let studentName = '';
+
+/* ─── NAME GATE ──────────────────────────────────────────── */
+function startSession() {
+  const val = document.getElementById('name-input').value.trim();
+  if (!val) {
+    document.getElementById('name-gate-err').style.display = 'block';
+    return;
+  }
+  studentName = val;
+  document.getElementById('name-gate').style.display = 'none';
+  document.getElementById('main-content').style.display = 'block';
+}
+
+/* ─── SHEET SUBMIT ───────────────────────────────────────── */
+function sendToSheet(sheetName, results, score, total, statusElId) {
+  const statusEl = document.getElementById(statusElId);
+  if (!SHEET_WEBHOOK) { statusEl.textContent = 'Webhook no configurado.'; return; }
+  statusEl.textContent = 'Enviando…';
+  const body = new URLSearchParams({
+    sheet:     sheetName,
+    nombre:    studentName,
+    puntaje:   score + '/' + total,
+    preguntas: JSON.stringify(results.map(r => r.pregunta || r.q || '')),
+    respuestas:JSON.stringify(results.map(r => r.respuesta || r.chosen || '')),
+    correctas: JSON.stringify(results.map(r => r.correcta !== undefined ? r.correcta : r.correct)),
+  });
+  fetch(SHEET_WEBHOOK, { method:'POST', mode:'no-cors', body })
+    .then(() => { statusEl.textContent = '✓ Enviado a la planilla.'; })
+    .catch(() => { statusEl.textContent = '✗ Error al enviar. Avisale al docente.'; });
+}
+
 /* ═══════════════════════════════════════════════════════════
    UNIDAD 2 — DATA
    ═══════════════════════════════════════════════════════════ */
@@ -2221,10 +2307,15 @@ function renderSummary(root) {
       </table>
       <div class="cta-row">
         <button class="btn btn-primary"
+          onclick="sendToSheet('U3-Quiz1',state.results,state.score,${questions.length},'u3q1-send-status')">
+          Enviar a planilla
+        </button>
+        <button class="btn"
           onclick="document.getElementById('camara-4').scrollIntoView({behavior:'smooth'})">
           Pasar a Evaluación de Código →
         </button>
       </div>
+      <p id="u3q1-send-status" style="font-size:.82rem;color:var(--styx);margin-top:.5rem"></p>
     </div>
   `));
 }
@@ -2377,11 +2468,16 @@ function renderSummaryU2(root) {
   const pct = Math.round((stateU2.score / questionsU2.length) * 100);
   root.innerHTML = `
     <div class="summary-card">
+      <span class="eyebrow">Resultado · Unidad 2</span>
       <div class="big-score">${stateU2.score} / ${questionsU2.length}</div>
       <p>${pct >= 75 ? '¡Bien hecho! Estás listo para cruzar.' : 'Repasá los temas antes de continuar.'}</p>
       <div class="cta-row">
+        <button class="btn btn-primary" onclick="sendToSheet('U2-Quiz',stateU2.results,stateU2.score,${questionsU2.length},'u2-send-status')">
+          Enviar a planilla
+        </button>
         <button class="btn" onclick="stateU2={current:0,lives:3,score:0,results:[],done:false};renderQuizU2()">Volver a intentar</button>
       </div>
+      <p id="u2-send-status" style="font-size:.82rem;color:var(--styx);margin-top:.5rem"></p>
     </div>`;
 }
 
@@ -2834,10 +2930,15 @@ function renderSummary2(root) {
       </table>
       <div class="cta-row">
         <button class="btn btn-primary"
+          onclick="sendToSheet('U3-Quiz2',state2.results,state2.score,${total},'u3q2-send-status')">
+          Enviar a planilla
+        </button>
+        <button class="btn"
           onclick="document.getElementById('camara-final-2').scrollIntoView({behavior:'smooth'})">
           Ver el Desafío Final →
         </button>
       </div>
+      <p id="u3q2-send-status" style="font-size:.82rem;color:var(--styx);margin-top:.5rem"></p>
     </div>
   `));
 }
