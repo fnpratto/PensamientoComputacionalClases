@@ -2,8 +2,12 @@ import { useState } from 'react';
 
 export default function NameGate({ onStart }) {
   const [name, setName] = useState('');
+  const [touched, setTouched] = useState(false);
+
+  const invalid = touched && !name.trim();
 
   function handleStart() {
+    setTouched(true);
     const trimmed = name.trim();
     if (trimmed) onStart(trimmed);
   }
@@ -16,14 +20,22 @@ export default function NameGate({ onStart }) {
         id="nombre-input"
         placeholder="Nombre y apellido"
         value={name}
-        onChange={e => setName(e.target.value)}
-        onKeyDown={e => e.key === 'Enter' && name.trim() && handleStart()}
+        onChange={e => { setName(e.target.value); setTouched(true); }}
+        onKeyDown={e => e.key === 'Enter' && handleStart()}
+        style={invalid ? { borderColor: 'var(--ember)' } : {}}
+        autoFocus
       />
-      <small>Esto queda guardado junto con tus respuestas al final del recorrido.</small>
+      {invalid && (
+        <small style={{ color: 'var(--ember)', marginTop: '0.3rem', display: 'block' }}>
+          Tenés que ingresar tu nombre para comenzar.
+        </small>
+      )}
+      {!invalid && (
+        <small>Esto queda guardado junto con tus respuestas al final del recorrido.</small>
+      )}
       <div className="cta-row">
         <button
           className="btn btn-primary"
-          disabled={!name.trim()}
           onClick={handleStart}
         >
           Comenzar la prueba

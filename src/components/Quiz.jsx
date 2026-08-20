@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { normalize, escapeHtml } from '../engine/testRunner.js';
 
 function shuffled(arr) {
@@ -10,18 +10,40 @@ function shuffled(arr) {
   return a;
 }
 
+const QUIZ_KEY = 'guia-2:quiz';
+
+function loadQuizState(questions) {
+  try {
+    const saved = JSON.parse(localStorage.getItem(QUIZ_KEY));
+    if (saved && typeof saved.current === 'number' && saved.current < questions.length) {
+      return saved;
+    }
+  } catch (_) {}
+  return null;
+}
+
 export default function Quiz({ questions, sections, sectionLabels, studentName, sheetWebhook, onComplete }) {
-  const [current, setCurrent] = useState(0);
-  const [lives, setLives] = useState(3);
-  const [score, setScore] = useState(0);
-  const [answered, setAnswered] = useState(false);
-  const [results, setResults] = useState([]);
-  const [done, setDone] = useState(false);
+  const saved = loadQuizState(questions);
+
+  const [current, setCurrent] = useState(saved?.current ?? 0);
+  const [lives, setLives] = useState(saved?.lives ?? 3);
+  const [score, setScore] = useState(saved?.score ?? 0);
+  const [answered, setAnswered] = useState(saved?.answered ?? false);
+  const [results, setResults] = useState(saved?.results ?? []);
+  const [done, setDone] = useState(saved?.done ?? false);
   const [sendStatus, setSendStatus] = useState('');
+  const [sent, setSent] = useState(saved?.sent ?? false);
   const [noteValue, setNoteValue] = useState('');
   const [feedback, setFeedback] = useState(null); // {text, cls}
-  const [optionStates, setOptionStates] = useState({}); // {option: 'correct'|'wrong'|null}
-  const [shuffledOptions, setShuffledOptions] = useState(() => shuffled(questions[0].options));
+  const [optionStates, setOptionStates] = useState(saved?.optionStates ?? {}); // {option: 'correct'|'wrong'|null}
+  const [shuffledOptions, setShuffledOptions] = useState(() => {
+    const idx = saved?.current ?? 0;
+    return shuffled(questions[idx].options);
+  });
+
+  useEffect(() => {
+    localStorage.setItem(QUIZ_KEY, JSON.stringify({ current, lives, score, answered, results, done, sent, optionStates }));
+  }, [current, lives, score, answered, results, done, sent, optionStates]);
 
   // Move to next question or finish
   function goNext() {
@@ -103,7 +125,11 @@ export default function Quiz({ questions, sections, sectionLabels, studentName, 
     });
     setSendStatus('Enviando...');
     fetch(sheetWebhook, { method: 'POST', mode: 'no-cors', body })
-      .then(() => { setSendStatus('Enviado. Ya debería estar en la planilla.'); })
+      .then(() => {
+        setSendStatus('Enviado. Ya debería estar en la planilla.');
+        setSent(true);
+        localStorage.removeItem(QUIZ_KEY);
+      })
       .catch(() => { setSendStatus('No se pudo enviar — descargá el CSV y mandalo por otro medio.'); });
   }
 
@@ -131,11 +157,26 @@ export default function Quiz({ questions, sections, sectionLabels, studentName, 
           <span className="eyebrow">Bendición de Caronte</span>
           <div className="big-score">{score} / {questions.length}</div>
           <p>{msg}</p>
-          <div className="cta-row">
-            <button className="btn" onClick={downloadCSV}>Descargar mis respuestas (CSV)</button>
-            <button className="btn btn-primary" onClick={sendToSheets}>Enviar al Inframundo</button>
+          <div className="cta-row" style={{ flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+            {!sent ? (
+              <>
+                <button className="btn btn-primary" onClick={sendToSheets} style={{ width: '100%', maxWidth: '360px' }}>
+                  Enviar mis respuestas →
+                </button>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--bone-dim)' }}>
+                  Paso obligatorio antes de continuar.
+                </span>
+              </>
+            ) : (
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.82rem', color: 'var(--styx)' }}>
+                ✓ Respuestas enviadas
+              </span>
+            )}
+            <button className="btn" onClick={downloadCSV} style={{ fontSize: '0.78rem', opacity: 0.65 }}>
+              Descargar copia en CSV
+            </button>
           </div>
-          {sendStatus && <div className="status-note">{sendStatus}</div>}
+          {sendStatus && !sent && <div className="status-note">{sendStatus}</div>}
           <table className="summary-table">
             <thead>
               <tr>
@@ -156,14 +197,16 @@ export default function Quiz({ questions, sections, sectionLabels, studentName, 
               ))}
             </tbody>
           </table>
-          <div className="cta-row">
-            <button
-              className="btn btn-primary"
-              onClick={() => document.getElementById('camara-2').scrollIntoView({ behavior: 'smooth' })}
-            >
-              Entrar a la Cámara de los Dones →
-            </button>
-          </div>
+          {sent && (
+            <div className="cta-row">
+              <button
+                className="btn btn-primary"
+                onClick={() => document.getElementById('camara-2').scrollIntoView({ behavior: 'smooth' })}
+              >
+                Entrar a la Cámara de los Dones →
+              </button>
+            </div>
+          )}
         </div>
       </>
     );

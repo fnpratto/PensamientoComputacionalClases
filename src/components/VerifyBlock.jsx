@@ -89,6 +89,7 @@ function buildTestResultsHtml(rows) {
 export default function VerifyBlock({ idPrefix, noteText, solutionHtml, testSpecs }) {
   const textareaRef = useRef(null);
   const editorRef = useRef(null);
+  const storageKey = `guia-2:code:${idPrefix}`;
 
   const [canVerify, setCanVerify] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -99,10 +100,19 @@ export default function VerifyBlock({ idPrefix, noteText, solutionHtml, testSpec
   useEffect(() => {
     const ta = textareaRef.current;
     if (!ta || ta.CodeMirror) return; // ya inicializado, no crear un segundo
+
+    const savedCode = localStorage.getItem(storageKey) || '';
+    if (savedCode) ta.value = savedCode;
+
     const editor = initCodeEditor(ta);
     editorRef.current = editor;
+
+    if (savedCode) setCanVerify(true);
+
     editor.onChange(() => {
-      setCanVerify(editor.getValue().trim().length > 0);
+      const val = editor.getValue();
+      setCanVerify(val.trim().length > 0);
+      localStorage.setItem(storageKey, val);
     });
     return () => {
       if (ta.CodeMirror) ta.CodeMirror.toTextArea();

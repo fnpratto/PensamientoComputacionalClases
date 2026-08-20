@@ -6,8 +6,12 @@ import BoonList from './components/BoonList.jsx';
 import PotionCard from './components/PotionCard.jsx';
 import Nav from './components/Nav.jsx';
 
+const STORAGE_KEY = 'guia-2';
+
 export default function App() {
-  const [studentName, setStudentName] = useState('');
+  const [studentName, setStudentName] = useState(
+    () => localStorage.getItem(`${STORAGE_KEY}:studentName`) || ''
+  );
 
   const { meta, questions, sections, sectionLabels, boons, potion, sheetWebhook } = config;
 
@@ -18,6 +22,7 @@ export default function App() {
 
   function handleStart(name) {
     setStudentName(name);
+    localStorage.setItem(`${STORAGE_KEY}:studentName`, name);
     setTimeout(() => {
       document.getElementById('camara-1')?.scrollIntoView({ behavior: 'smooth' });
     }, 50);
@@ -46,14 +51,24 @@ export default function App() {
             y podés anotar lo que quieras recordar en el cuaderno de cada pregunta.
           </p>
         </div>
-        <Quiz
-          questions={questions}
-          sections={sections}
-          sectionLabels={sectionLabels}
-          studentName={studentName || 'Anónimo'}
-          sheetWebhook={sheetWebhook}
-          onComplete={() => {}}
-        />
+
+        {!studentName ? (
+          <div className="gate" style={{ textAlign: 'center', padding: '2.4rem 1.5rem' }}>
+            <div style={{ fontSize: '1.6rem', marginBottom: '0.75rem' }}>🔒</div>
+            <p style={{ color: 'var(--bone-dim)', margin: 0 }}>
+              Ingresá tu nombre arriba para desbloquear la prueba.
+            </p>
+          </div>
+        ) : (
+          <Quiz
+            questions={questions}
+            sections={sections}
+            sectionLabels={sectionLabels}
+            studentName={studentName}
+            sheetWebhook={sheetWebhook}
+            onComplete={() => {}}
+          />
+        )}
       </section>
 
       {/* CÁMARA II: LOS DONES */}
