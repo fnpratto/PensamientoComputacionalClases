@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { normalize, escapeHtml } from '../engine/testRunner.js';
 
 function shuffled(arr) {
@@ -10,19 +10,40 @@ function shuffled(arr) {
   return a;
 }
 
+const QUIZ_KEY = 'guia-2:quiz';
+
+function loadQuizState(questions) {
+  try {
+    const saved = JSON.parse(localStorage.getItem(QUIZ_KEY));
+    if (saved && typeof saved.current === 'number' && saved.current < questions.length) {
+      return saved;
+    }
+  } catch (_) {}
+  return null;
+}
+
 export default function Quiz({ questions, sections, sectionLabels, studentName, sheetWebhook, onComplete }) {
-  const [current, setCurrent] = useState(0);
-  const [lives, setLives] = useState(3);
-  const [score, setScore] = useState(0);
-  const [answered, setAnswered] = useState(false);
-  const [results, setResults] = useState([]);
-  const [done, setDone] = useState(false);
+  const saved = loadQuizState(questions);
+
+  const [current, setCurrent] = useState(saved?.current ?? 0);
+  const [lives, setLives] = useState(saved?.lives ?? 3);
+  const [score, setScore] = useState(saved?.score ?? 0);
+  const [answered, setAnswered] = useState(saved?.answered ?? false);
+  const [results, setResults] = useState(saved?.results ?? []);
+  const [done, setDone] = useState(saved?.done ?? false);
   const [sendStatus, setSendStatus] = useState('');
-  const [sent, setSent] = useState(false);
+  const [sent, setSent] = useState(saved?.sent ?? false);
   const [noteValue, setNoteValue] = useState('');
   const [feedback, setFeedback] = useState(null); // {text, cls}
-  const [optionStates, setOptionStates] = useState({}); // {option: 'correct'|'wrong'|null}
-  const [shuffledOptions, setShuffledOptions] = useState(() => shuffled(questions[0].options));
+  const [optionStates, setOptionStates] = useState(saved?.optionStates ?? {}); // {option: 'correct'|'wrong'|null}
+  const [shuffledOptions, setShuffledOptions] = useState(() => {
+    const idx = saved?.current ?? 0;
+    return shuffled(questions[idx].options);
+  });
+
+  useEffect(() => {
+    localStorage.setItem(QUIZ_KEY, JSON.stringify({ current, lives, score, answered, results, done, sent, optionStates }));
+  }, [current, lives, score, answered, results, done, sent, optionStates]);
 
   // Move to next question or finish
   function goNext() {
@@ -104,7 +125,11 @@ export default function Quiz({ questions, sections, sectionLabels, studentName, 
     });
     setSendStatus('Enviando...');
     fetch(sheetWebhook, { method: 'POST', mode: 'no-cors', body })
-      .then(() => { setSendStatus('Enviado. Ya debería estar en la planilla.'); setSent(true); })
+      .then(() => {
+        setSendStatus('Enviado. Ya debería estar en la planilla.');
+        setSent(true);
+        localStorage.removeItem(QUIZ_KEY);
+      })
       .catch(() => { setSendStatus('No se pudo enviar — descargá el CSV y mandalo por otro medio.'); });
   }
 

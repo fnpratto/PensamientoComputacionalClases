@@ -5,8 +5,12 @@ import Quiz from './components/Quiz.jsx';
 import BoonList from './components/BoonList.jsx';
 import PotionCard from './components/PotionCard.jsx';
 
+const STORAGE_KEY = 'guia-2';
+
 export default function App() {
-  const [studentName, setStudentName] = useState('');
+  const [studentName, setStudentName] = useState(
+    () => localStorage.getItem(`${STORAGE_KEY}:studentName`) || ''
+  );
 
   const { meta, questions, sections, sectionLabels, boons, potion, sheetWebhook } = config;
 
@@ -17,6 +21,7 @@ export default function App() {
 
   function handleStart(name) {
     setStudentName(name);
+    localStorage.setItem(`${STORAGE_KEY}:studentName`, name);
     setTimeout(() => {
       document.getElementById('camara-1')?.scrollIntoView({ behavior: 'smooth' });
     }, 50);
