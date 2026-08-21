@@ -548,6 +548,35 @@
     .warn-box p, .tip-box p { margin: 0; color: var(--bone-dim); }
     .warn-box code, .tip-box code { font-size: .85em; }
 
+    /* ── CALL CELL ── */
+    .call-cell {
+      margin-top: .7rem; display: flex; align-items: center; gap: .5rem;
+      background: rgba(46,216,192,.04); border: 1px solid var(--stone-line);
+      border-radius: 6px; padding: .4rem .7rem;
+    }
+    .call-cell-prompt { font-family: var(--font-m); font-size: .8rem; color: var(--styx); flex-shrink: 0; }
+    .call-cell-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      font-family: var(--font-m); font-size: .84rem; color: var(--bone);
+      min-width: 0;
+    }
+    .call-cell-input::placeholder { color: var(--bone-dim); opacity: .5; }
+    .call-cell-btn {
+      background: var(--styx); border: none; border-radius: 4px;
+      color: var(--void-deep); font-family: var(--font-m); font-size: .75rem;
+      font-weight: 600; padding: .25rem .6rem; cursor: pointer; flex-shrink: 0;
+    }
+    .call-cell-btn:disabled { opacity: .5; cursor: default; }
+    .call-cell-output {
+      display: none; margin-top: .4rem;
+      font-family: var(--font-m); font-size: .83rem;
+      padding: .35rem .7rem; border-radius: 4px;
+      background: var(--stone); color: var(--styx);
+      white-space: pre-wrap; word-break: break-all;
+    }
+    .call-cell-output.err { color: #e78b78; }
+    .call-cell-output.show { display: block; }
+
 /* ── FLOW DIAGRAMS GRID ── */
     .flow-grid { display: flex; flex-wrap: wrap; gap: 1.2rem; justify-content: center; margin: 1.2rem 0; }
     .flow-grid > div { flex: 1 1 220px; max-width: 320px; }
@@ -689,6 +718,69 @@
     .section-bg-u2-trans {
       background: linear-gradient(180deg, #0a081a 0%, #040e1e 40%, #072c46 100%);
       height: 12rem;
+    }
+    /* ── PYTHON CONSOLE ── */
+    #py-console-btn {
+      position: fixed; bottom: 1.4rem; right: 1.4rem; z-index: 8990;
+      background: var(--styx); color: var(--void-deep);
+      border: none; border-radius: 999px;
+      padding: .55rem 1.1rem; font-family: var(--font-m); font-size: .82rem; font-weight: 600;
+      cursor: pointer; box-shadow: 0 4px 18px rgba(46,216,192,.25);
+      display: flex; align-items: center; gap: .45rem;
+      transition: transform .15s, box-shadow .15s;
+    }
+    #py-console-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(46,216,192,.35); }
+    #py-console-panel {
+      position: fixed; bottom: 5rem; right: 1.4rem; z-index: 8989;
+      width: min(520px, calc(100vw - 2.8rem));
+      background: #0b0f1a; border: 1px solid var(--stone-line);
+      border-radius: 10px; box-shadow: 0 12px 40px rgba(0,0,0,.6);
+      display: none; flex-direction: column; overflow: hidden;
+    }
+    #py-console-panel.open { display: flex; }
+    .pycon-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .55rem .9rem; background: var(--stone);
+      border-bottom: 1px solid var(--stone-line);
+      font-family: var(--font-m); font-size: .72rem; color: var(--bone-dim);
+    }
+    .pycon-header span { color: var(--styx); font-weight: 600; }
+    .pycon-header button {
+      background: none; border: none; color: var(--bone-dim);
+      cursor: pointer; font-size: 1rem; line-height: 1; padding: .1rem .3rem;
+    }
+    .pycon-output {
+      min-height: 80px; max-height: 220px; overflow-y: auto;
+      padding: .65rem .9rem; font-family: var(--font-m); font-size: .82rem;
+      color: var(--bone); white-space: pre-wrap; word-break: break-all;
+      line-height: 1.5;
+    }
+    .pycon-output .pycon-in  { color: var(--bone-dim); }
+    .pycon-output .pycon-out { color: var(--styx); }
+    .pycon-output .pycon-err { color: #e78b78; }
+    .pycon-input-row {
+      display: flex; align-items: flex-start; gap: .5rem;
+      padding: .55rem .9rem; border-top: 1px solid var(--stone-line);
+    }
+    .pycon-input-row .pycon-prompt {
+      color: var(--styx); font-family: var(--font-m); font-size: .82rem;
+      padding-top: .35rem; flex-shrink: 0;
+    }
+    #py-console-input {
+      flex: 1; background: transparent; border: none; outline: none; resize: none;
+      color: var(--bone); font-family: var(--font-m); font-size: .82rem;
+      line-height: 1.5; min-height: 1.5em;
+    }
+    #py-console-run {
+      background: var(--styx); border: none; border-radius: 4px;
+      color: var(--void-deep); font-family: var(--font-m); font-size: .75rem;
+      font-weight: 600; padding: .3rem .65rem; cursor: pointer; flex-shrink: 0;
+      align-self: flex-end;
+    }
+    #py-console-clear {
+      background: none; border: 1px solid var(--stone-line); border-radius: 4px;
+      color: var(--bone-dim); font-family: var(--font-m); font-size: .72rem;
+      padding: .2rem .5rem; cursor: pointer;
     }
   </style>
 </head>
@@ -1254,6 +1346,27 @@ print(primer_par_desde(9))</pre>
 </div><!-- /#main-content -->
 
 <!-- ══ SITE NAVIGATION ═══════════════════════════════════════ -->
+<!-- ── PYTHON CONSOLE ── -->
+<button id="py-console-btn" onclick="pyconToggle()">🐍 Consola Python</button>
+<div id="py-console-panel">
+  <div class="pycon-header">
+    <span>Consola Python</span>
+    <div style="display:flex;gap:.5rem;align-items:center">
+      <button id="py-console-clear" onclick="pyconClear()">limpiar</button>
+      <button onclick="pyconToggle()">✕</button>
+    </div>
+  </div>
+  <div class="pycon-output" id="py-console-output">
+    <span class="pycon-out"># Escribí código Python abajo. El estado persiste entre ejecuciones.</span>
+  </div>
+  <div class="pycon-input-row">
+    <span class="pycon-prompt">&gt;&gt;&gt;</span>
+    <textarea id="py-console-input" rows="1" placeholder="calcular_pago_por_alma(40, 2)"
+      onkeydown="pyconKey(event)"></textarea>
+    <button id="py-console-run" onclick="pyconRun()">▶ Enter</button>
+  </div>
+</div>
+
 <div class="snav-overlay" id="snav-overlay" onclick="snavClose()"></div>
 
 <button class="snav-tab" onclick="snavToggle()" aria-label="Abrir menú">nav</button>
@@ -2123,6 +2236,44 @@ function setupVerifyBlock(boonEl, boon) {
 
   const verifyStatus = boonEl.querySelector('.verify-status');
 
+  // ── Call cell ──
+  const callInput  = boonEl.querySelector('.call-cell-input');
+  const callBtn    = boonEl.querySelector('.call-cell-btn');
+  const callOutput = boonEl.querySelector('.call-cell-output');
+
+  async function runCall() {
+    const call = callInput.value.trim();
+    if (!call) return;
+    callBtn.disabled = true;
+    callOutput.className = 'call-cell-output';
+    try {
+      const defCode = editor.getValue().trim();
+      // Run definitions silently, then evaluate the call expression
+      const r = await pccRun(defCode, null, [], []);
+      if (!r.ok) throw new Error(r.error);
+      // Now run defCode + call, capturing stdout and return value
+      const r2 = await pccRun(defCode + '\n_result = ' + call, '_result_reader', [], []);
+      // _result_reader won't exist — use a simpler trick: eval the call via pccRun with funcName=null
+      // pccRun executes code and if funcName=null just runs it. We wrap call in a print to get output.
+      const r3 = await pccRun(defCode + '\nprint(repr(' + call + '))', null, [], []);
+      callOutput.classList.add('show');
+      if (!r3.ok) {
+        callOutput.classList.add('err');
+        callOutput.textContent = r3.error;
+      } else {
+        callOutput.textContent = r3.stdout?.trimEnd() || '(sin salida)';
+      }
+    } catch(e) {
+      callOutput.classList.add('show', 'err');
+      callOutput.textContent = e.message || String(e);
+    } finally {
+      callBtn.disabled = false;
+    }
+  }
+
+  callBtn.addEventListener('click', runCall);
+  callInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); runCall(); } });
+
   if (!boon.test) return;
 
   const verifyBtn    = boonEl.querySelector('.verify-btn');
@@ -2279,7 +2430,13 @@ function renderBoons(boons, containerId) {
         ${b.test ? `<button class="btn btn-primary verify-btn">Verificar</button>` : ''}
         <span class="verify-status"></span>
       </div>
-      ${b.test ? `<div class="practice-note-area"></div><div class="test-results"></div>` : ''}`;
+      ${b.test ? `<div class="practice-note-area"></div><div class="test-results"></div>` : ''}
+      <div class="call-cell">
+        <span class="call-cell-prompt">&gt;&gt;&gt;</span>
+        <input class="call-cell-input" type="text" placeholder="${b.test ? b.test.funcName + '(...)' : 'llamar función...'}">
+        <button class="call-cell-btn">▶</button>
+      </div>
+      <div class="call-cell-output"></div>`;
 
     const boonEl = mkEl('div', 'boon', `
       <span class="tag-styx">${b.tag}</span>
@@ -2889,7 +3046,13 @@ function renderBoonsOceanus() {
         ${b.test ? `<button class="btn btn-primary verify-btn">Verificar</button>` : ''}
         <span class="verify-status"></span>
       </div>
-      ${b.test ? `<div class="practice-note-area"></div><div class="test-results"></div>` : ''}`;
+      ${b.test ? `<div class="practice-note-area"></div><div class="test-results"></div>` : ''}
+      <div class="call-cell">
+        <span class="call-cell-prompt">&gt;&gt;&gt;</span>
+        <input class="call-cell-input" type="text" placeholder="${b.test ? b.test.funcName + '(...)' : 'llamar función...'}">
+        <button class="call-cell-btn">▶</button>
+      </div>
+      <div class="call-cell-output"></div>`;
 
     const boonEl = mkEl('div', 'boon', `
       <span class="tag-styx">${b.tag}</span>
@@ -2923,6 +3086,107 @@ function renderPotion() {
 }
 
 /* renderBoonsOceanus, renderQuiz2, renderPotion → llamados desde initPage() */
+
+/* ── PYTHON CONSOLE ─────────────────────────────────────── */
+let pyconNamespace = null;
+
+function pyconToggle() {
+  document.getElementById('py-console-panel').classList.toggle('open');
+}
+function pyconClear() {
+  document.getElementById('py-console-output').innerHTML =
+    '<span class="pycon-out"># Consola limpiada. El estado de variables se conserva.</span>';
+}
+
+async function pyconRun() {
+  const input  = document.getElementById('py-console-input');
+  const output = document.getElementById('py-console-output');
+  const btn    = document.getElementById('py-console-run');
+  const code   = input.value;
+  if (!code.trim()) return;
+
+  const inLine = document.createElement('div');
+  inLine.className = 'pycon-in';
+  inLine.textContent = '>>> ' + code;
+  output.appendChild(inLine);
+  input.value = '';
+  input.style.height = 'auto';
+
+  btn.disabled = true;
+  btn.textContent = '…';
+  try {
+    const py = await getPyodide();
+
+    // Init persistent namespace once
+    if (!pyconNamespace) {
+      py.runPython('import sys, io, ast as _pycon_ast');
+      pyconNamespace = py.runPython('{}');
+    }
+
+    // Inject code into Python side and run inside persistent namespace
+    py.globals.set('_pycon_code', code);
+    py.globals.set('_pycon_ns',   pyconNamespace);
+    const result = py.runPython(`
+import sys, io, ast as _pycon_ast
+_pycon_buf = io.StringIO()
+_pycon_err_msg = None
+_pycon_repr = None
+_old = sys.stdout
+sys.stdout = _pycon_buf
+try:
+    try:
+        _tree = _pycon_ast.parse(_pycon_code, mode='eval')
+        _pycon_repr = repr(eval(compile(_tree, '<consola>', 'eval'), _pycon_ns))
+        if _pycon_repr == 'None': _pycon_repr = None
+    except SyntaxError:
+        exec(compile(_pycon_code, '<consola>', 'exec'), _pycon_ns)
+except Exception as _e:
+    _pycon_err_msg = type(_e).__name__ + ': ' + str(_e)
+finally:
+    sys.stdout = _old
+[_pycon_buf.getvalue(), _pycon_err_msg, _pycon_repr]
+`);
+
+    const stdout = result.get(0);
+    const err    = result.get(1);
+    const val    = result.get(2);
+    result.destroy();
+
+    const addLine = (text, cls) => {
+      if (!text) return;
+      const d = document.createElement('div');
+      d.className = cls;
+      d.textContent = text.trimEnd();
+      output.appendChild(d);
+    };
+    addLine(stdout, 'pycon-out');
+    if (err) addLine(err, 'pycon-err');
+    else if (val) addLine(val, 'pycon-out');
+
+  } catch(e) {
+    const d = document.createElement('div');
+    d.className = 'pycon-err';
+    d.textContent = e.message || String(e);
+    output.appendChild(d);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '▶ Enter';
+    output.scrollTop = output.scrollHeight;
+  }
+}
+
+function pyconKey(e) {
+  // Shift+Enter → nueva línea; Enter solo → ejecutar
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    pyconRun();
+  }
+  // Auto-resize textarea
+  setTimeout(() => {
+    e.target.style.height = 'auto';
+    e.target.style.height = e.target.scrollHeight + 'px';
+  }, 0);
+}
 
 /* ─── SITE NAV ───────────────────────────────────────────── */
 function snavToggle() {
