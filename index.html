@@ -1427,6 +1427,7 @@ function sendToSheet(sheetName, results, score, total, statusElId) {
     preguntas: JSON.stringify(results.map(r => r.pregunta || r.q || '')),
     respuestas:JSON.stringify(results.map(r => r.respuesta || r.chosen || '')),
     correctas: JSON.stringify(results.map(r => r.correcta !== undefined ? r.correcta : r.correct)),
+    notas:     JSON.stringify(results.map(() => '')),
   });
   fetch(SHEET_WEBHOOK, { method:'POST', mode:'no-cors', body })
     .then(() => { statusEl.textContent = '✓ Enviado a la planilla.'; })
@@ -2954,7 +2955,7 @@ function renderQuiz2() {
       <div class="q-text">${q.q}</div>
       <div class="options-grid">
         ${shuffled.map(opt =>
-          `<button class="option-btn" onclick="checkAnswer2(this,'${esc(opt)}')">${opt}</button>`
+          `<button class="option-btn" data-val="${escHtml(opt).replace(/"/g,'&quot;')}" onclick="checkAnswer2(this)">${escHtml(opt)}</button>`
         ).join('')}
       </div>
       <details class="hint">
@@ -2971,16 +2972,16 @@ function renderQuiz2() {
   );
 }
 
-function checkAnswer2(btn, chosen) {
+function checkAnswer2(btn) {
+  const chosen = btn.dataset.val;
   const q    = questions2[state2.current];
   const isOk = q.answers.some(a => norm(a) === norm(chosen));
-  const note = document.getElementById('q2-notes')?.value?.trim() || '';
 
   document.querySelectorAll('#quiz-root-2 .option-btn').forEach(b => {
     b.disabled = true;
-    const v = b.textContent;
+    const v = b.dataset.val;
     if (q.answers.some(a => norm(a) === norm(v))) b.classList.add('correct');
-    else if (norm(v) === norm(chosen))            b.classList.add('wrong');
+    else if (norm(v) === norm(chosen))             b.classList.add('wrong');
   });
 
   const fb = document.getElementById('q2-feedback');
@@ -2991,7 +2992,7 @@ function checkAnswer2(btn, chosen) {
 
   state2.results.push({
     pregunta: q.q.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
-    respuesta: chosen, correcta: isOk, nota: note,
+    respuesta: chosen, correcta: isOk,
   });
   document.getElementById('next-btn-2').disabled = false;
 }
