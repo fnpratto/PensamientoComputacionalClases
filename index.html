@@ -195,15 +195,7 @@
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 1.2rem; flex-wrap: wrap; gap: .8rem;
     }
-    .lives { display: flex; gap: .4rem; }
-    .flame {
-      width: 14px; height: 18px;
-      background: radial-gradient(circle at 50% 30%, var(--gold), var(--ember) 70%);
-      clip-path: path('M7 0 C 2 6, 0 10, 0 13 A7 7 0 0 0 14 13 C 14 10, 12 6, 7 0 Z');
-      transition: opacity .3s, filter .3s;
-    }
-    .flame.spent { opacity: .15; filter: grayscale(1); }
-    .score-tag { font-family: var(--font-m); font-size: .76rem; color: var(--bone-dim); }
+.score-tag { font-family: var(--font-m); font-size: .76rem; color: var(--bone-dim); }
     .score-tag b { color: var(--styx); }
 
     /* ── CARD ── */
@@ -290,19 +282,25 @@
     .big-score { font-family: var(--font-d); font-size: 2.6rem; color: var(--gold); }
     .summary-card p { color: var(--bone-dim); max-width: 460px; margin: .6rem auto 0; }
     .cta-row { margin-top: 1.8rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-    .summary-table { width: 100%; border-collapse: collapse; margin-top: 1.6rem; font-size: .84rem; text-align: left; }
-    .summary-table th, .summary-table td { border-bottom: 1px solid var(--stone-line); padding: .5rem .6rem; vertical-align: top; }
-    .summary-table th { font-family: var(--font-m); font-size: .67rem; letter-spacing: .06em; text-transform: uppercase; color: var(--bone-dim); }
-    .summary-table td.ok  { color: var(--gold); }
-    .summary-table td.bad { color: #e78b78; }
-    @media (max-width:640px) {
-      .summary-table, .summary-table thead, .summary-table tbody,
-      .summary-table th, .summary-table td, .summary-table tr { display: block; }
-      .summary-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-      .summary-table tr { border: 1px solid var(--stone-line); border-radius: 5px; padding: .8rem 1rem; margin-bottom: .8rem; background: var(--stone); }
-      .summary-table td { border-bottom: none; padding: .3rem 0; }
-      .summary-table td::before { content: attr(data-label); display: block; font-family: var(--font-m); font-size: .64rem; letter-spacing: .06em; text-transform: uppercase; color: var(--violet); margin-bottom: .15rem; }
+    .result-grid { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.6rem; text-align: left; }
+    .result-chip {
+      flex: 1 1 260px; min-width: 0;
+      border: 1px solid var(--stone-line); border-radius: 6px;
+      padding: .7rem .9rem; background: var(--stone);
+      border-left: 3px solid var(--stone-line);
     }
+    .result-chip.ok  { border-left-color: var(--styx); }
+    .result-chip.bad { border-left-color: #c0503a; }
+    .result-chip-top {
+      display: flex; align-items: flex-start; gap: .5rem;
+      font-family: var(--font-m); font-size: .78rem; color: var(--bone);
+      line-height: 1.4; margin-bottom: .4rem;
+    }
+    .result-chip-top .rc-icon { flex-shrink: 0; font-size: .85rem; margin-top: .05rem; }
+    .result-chip-answer {
+      font-family: var(--font-m); font-size: .72rem; color: var(--bone-dim);
+    }
+    .result-chip-answer span { color: var(--bone); }
 
     /* ── ANSWER BOX / CODEMIRROR ── */
     .answer-box { margin-top: 1.1rem; }
@@ -550,19 +548,7 @@
     .warn-box p, .tip-box p { margin: 0; color: var(--bone-dim); }
     .warn-box code, .tip-box code { font-size: .85em; }
 
-    /* ── EXEC OUTPUT ── */
-    .exec-output {
-      display: none; margin-top: .6rem;
-      background: var(--void-deep); border: 1px solid var(--stone-line);
-      border-left: 3px solid var(--styx-dim);
-      border-radius: 0 var(--r) var(--r) 0;
-      padding: .55rem .9rem; font-family: var(--font-m); font-size: .84rem;
-      color: var(--styx); white-space: pre-wrap; word-break: break-all;
-    }
-    .exec-output.error { border-left-color: var(--ember); color: #e78b78; }
-    .exec-output.show { display: block; }
-
-    /* ── FLOW DIAGRAMS GRID ── */
+/* ── FLOW DIAGRAMS GRID ── */
     .flow-grid { display: flex; flex-wrap: wrap; gap: 1.2rem; justify-content: center; margin: 1.2rem 0; }
     .flow-grid > div { flex: 1 1 220px; max-width: 320px; }
     .flow-grid .flow-caption {
@@ -1322,6 +1308,7 @@ function startSession() {
   studentName = val;
   document.getElementById('name-gate').style.display = 'none';
   document.getElementById('main-content').style.display = 'block';
+  initPage();
 }
 
 /* ─── SHEET SUBMIT ───────────────────────────────────────── */
@@ -1363,7 +1350,7 @@ const questionsU2 = [
   { section:"Tártaro", q:"¿Qué instrucción convierte un string en entero para poder operar con él?", answers:["int()"], options:["int()","str()","float()","bool()"], hint:"int() convierte a entero; float() convierte a decimal; str() convierte a texto." },
   { section:"Tártaro", q:"¿Qué resultado produce la siguiente operación?<br><code>\"Hola\" + str(2)</code>", answers:["Hola2"], options:["Hola 2","Hola2","Error","Hola+2"], hint:"str(2) convierte el número en texto \"2\"; + concatena sin agregar espacios extra." },
   { section:"Elíseos", q:"¿Qué devuelve <code>\"Hola\"[1:3]</code>?", answers:["ol"], options:["ol","Ho","ola","la"], hint:"En [inicio:fin], el índice de inicio SE incluye, pero el de fin NUNCA se incluye." },
-  { section:"Elíseos", q:"Corregí este nombre de función para que siga la convención de la materia: <code>EsPar</code>", answers:["es_par"], options:["es_par","EsPar","ES_PAR","esPar"], hint:"Las funciones se nombran: verbos, todo en minúscula, separado por guiones bajos (snake_case)." },
+  { section:"Elíseos", q:"Corregí este nombre de función para que siga la convención de la materia: <code>EsPar</code>", answers:["es_par"], options:["es_par","EsPar","par_es","esPar"], hint:"Las funciones se nombran: verbos, todo en minúscula, separado por guiones bajos (snake_case)." },
   { section:"Elíseos", q:"Según la convención de nombres, ¿con qué tipo de palabra se nombra una variable?", answers:["Sustantivo"], options:["Sustantivo","Verbo","Adjetivo","Adverbio"], hint:"Las variables son 'cosas', por eso se nombran como sustantivos." },
   { section:"Elíseos", q:"El siguiente código tiene un error de sintaxis. ¿Qué símbolo falta?<pre>def calcular_area(radio)\n    return 3.14 * radio ** 2</pre>", answers:[":"], options:[":",";","{","->"], hint:"Toda firma de función en Python termina en un mismo símbolo antes de bajar de línea." },
   { section:"Elíseos", q:"¿Qué mostrará en pantalla el siguiente código?<pre>x = \"Hola\"\nx += \" mundo\"\nprint(x)</pre>", answers:["Hola mundo"], options:["Hola","Hola mundo","mundo","x"], hint:"+= le agrega el texto de la derecha al final de lo que ya tenía x." },
@@ -1993,21 +1980,28 @@ let pyodidePromise = null;
 function getPyodide() {
   if (!pyodidePromise) {
     pyodidePromise = new Promise((resolve, reject) => {
+      const PYODIDE_URL = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
       const init = () => {
-        window.loadPyodide()
-          .then(py => { py.runPython(PCC_HARNESS_PY); resolve(py); })
-          .catch(reject);
+        window.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/' })
+          .then(py => {
+            py.runPython(PCC_HARNESS_PY);
+            resolve(py);
+          })
+          .catch(err => reject(err));
       };
       if (window.loadPyodide) { init(); return; }
       const script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+      script.src = PYODIDE_URL;
       script.onload = init;
-      script.onerror = () => reject(new Error('No se pudo cargar el intérprete de Python.'));
+      script.onerror = () => reject(new Error('No se pudo descargar Pyodide. Verificá tu conexión a internet.'));
       document.head.appendChild(script);
     });
   }
   return pyodidePromise;
 }
+
+// Pre-carga Pyodide en segundo plano al abrir la página
+getPyodide().catch(() => {});
 
 async function pccRun(code, funcName, args, stdinArr) {
   const py = await getPyodide();
@@ -2127,36 +2121,7 @@ function setupVerifyBlock(boonEl, boon) {
   });
   editor.setSize(null, 'auto');
 
-  const runBtn      = boonEl.querySelector('.run-btn');
-  const execOutput  = boonEl.querySelector('.exec-output');
   const verifyStatus = boonEl.querySelector('.verify-status');
-
-  if (runBtn && execOutput) {
-    runBtn.addEventListener('click', async () => {
-      const code = editor.getValue().trim();
-      if (!code) return;
-      runBtn.disabled = true;
-      verifyStatus.textContent = 'Ejecutando…';
-      execOutput.className = 'exec-output';
-      try {
-        const r = await pccRun(code, null, [], []);
-        execOutput.classList.add('show');
-        if (!r.ok) {
-          execOutput.classList.add('error');
-          execOutput.textContent = r.error || 'Error desconocido';
-        } else {
-          execOutput.classList.remove('error');
-          execOutput.textContent = r.stdout || '(sin salida)';
-        }
-      } catch (err) {
-        execOutput.classList.add('show', 'error');
-        execOutput.textContent = err.message || String(err);
-      } finally {
-        runBtn.disabled = false;
-        verifyStatus.textContent = '';
-      }
-    });
-  }
 
   if (!boon.test) return;
 
@@ -2193,7 +2158,7 @@ function setupVerifyBlock(boonEl, boon) {
 
 /* ─── QUIZ ENGINE ────────────────────────────────────────── */
 
-let state = { current: 0, lives: 3, score: 0, results: [], done: false };
+let state = { current: 0, score: 0, results: [], done: false };
 
 function renderQuiz() {
   const root = document.getElementById('quiz-root');
@@ -2207,9 +2172,6 @@ function renderQuiz() {
 
   root.append(
     mkEl('div', 'status-row', `
-      <div class="lives">
-        ${[0,1,2].map(i => `<div class="flame${i >= state.lives ? ' spent' : ''}"></div>`).join('')}
-      </div>
       <div class="score-tag">
         Pregunta <b>${state.current + 1}</b>/${questions.length} &nbsp;·&nbsp; Aciertos: <b>${state.score}</b>
       </div>
@@ -2259,7 +2221,6 @@ function checkAnswer(btn, chosen) {
   fb.innerHTML = isOk ? q.feedback_ok : q.feedback_bad;
 
   if (isOk) state.score++;
-  else       state.lives = Math.max(0, state.lives - 1);
 
   state.results.push({
     pregunta: q.q.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
@@ -2275,13 +2236,11 @@ function goNext() {
 }
 
 function renderSummary(root) {
-  const { score, lives, results } = state;
+  const { score, results } = state;
   const total = questions.length;
   const msg = score === total
     ? 'Perfecto. Estás listo para cruzar.'
-    : lives === 0
-    ? 'Las llamas se apagaron, pero el camino sigue abierto.'
-    : `Quedan ${lives} llama(s). Ya podés pasar a los ejercicios.`;
+    : 'Podés pasar a los ejercicios cuando quieras.';
 
   root.append(mkEl('div', '', `
     <div class="river-wrap">
@@ -2294,17 +2253,7 @@ function renderSummary(root) {
       <span class="eyebrow">Resultado</span>
       <div class="big-score">${score} / ${total}</div>
       <p>${msg}</p>
-      <table class="summary-table">
-        <thead><tr><th>Pregunta</th><th>Tu respuesta</th><th>¿Correcta?</th><th>Nota</th></tr></thead>
-        <tbody>
-          ${results.map(r => `<tr>
-            <td data-label="Pregunta">${r.pregunta}</td>
-            <td data-label="Tu respuesta">${r.respuesta || '—'}</td>
-            <td data-label="¿Correcta?" class="${r.correcta ? 'ok' : 'bad'}">${r.correcta ? 'Sí' : 'No'}</td>
-            <td data-label="Nota">${r.nota || '—'}</td>
-          </tr>`).join('')}
-        </tbody>
-      </table>
+      ${buildResultGrid(results)}
       <div class="cta-row">
         <button class="btn btn-primary"
           onclick="sendToSheet('U3-Quiz1',state.results,state.score,${questions.length},'u3q1-send-status')">
@@ -2327,11 +2276,9 @@ function renderBoons(boons, containerId) {
   boons.forEach((b, idx) => {
     const verifyHtml = `
       <div class="verify-row">
-        <button class="btn run-btn">▶ Ejecutar</button>
         ${b.test ? `<button class="btn btn-primary verify-btn">Verificar</button>` : ''}
         <span class="verify-status"></span>
       </div>
-      <div class="exec-output"></div>
       ${b.test ? `<div class="practice-note-area"></div><div class="test-results"></div>` : ''}`;
 
     const boonEl = mkEl('div', 'boon', `
@@ -2386,6 +2333,21 @@ function mkEl(tag, cls, html) {
   return d;
 }
 function norm(s)    { return (s || '').toLowerCase().trim().replace(/\s+/g, ' '); }
+
+function buildResultGrid(results) {
+  return `<div class="result-grid">${results.map((r, i) => {
+    const ok = r.correcta !== undefined ? r.correcta : r.correct;
+    const pregunta = (r.pregunta || r.q || '').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+    const respuesta = r.respuesta || r.chosen || '—';
+    return `<div class="result-chip ${ok ? 'ok' : 'bad'}">
+      <div class="result-chip-top">
+        <span class="rc-icon">${ok ? '✓' : '✗'}</span>
+        <span>${i+1}. ${escHtml(pregunta.length > 80 ? pregunta.slice(0,80)+'…' : pregunta)}</span>
+      </div>
+      <div class="result-chip-answer">Tu respuesta: <span>${escHtml(String(respuesta))}</span></div>
+    </div>`;
+  }).join('')}</div>`;
+}
 function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function esc(s)     { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
 
@@ -2405,7 +2367,7 @@ function theoryTab(name) {
    UNIDAD 2 — QUIZ ENGINE
    ═══════════════════════════════════════════════════════════ */
 
-let stateU2 = { current:0, lives:3, score:0, results:[], done:false };
+let stateU2 = { current:0, score:0, results:[], done:false };
 
 function renderQuizU2() {
   const root = document.getElementById('quiz-u2-root');
@@ -2419,7 +2381,6 @@ function renderQuizU2() {
 
   root.append(
     mkEl('div','status-row',`
-      <div class="lives">${[0,1,2].map(i=>`<div class="flame${i>=stateU2.lives?' spent':''}"></div>`).join('')}</div>
       <div class="score-tag">Pregunta <b>${stateU2.current+1}</b>/${questionsU2.length} &nbsp;·&nbsp; Aciertos: <b>${stateU2.score}</b></div>
     `),
     mkEl('div','river-wrap',`
@@ -2446,7 +2407,6 @@ function checkAnswerU2(btn, chosen) {
   if (correct) {
     stateU2.score++;
   } else {
-    stateU2.lives--;
     const correctBtn = [...document.querySelectorAll('#quiz-u2-root .option-btn')]
       .find(b => q.answers.some(a => norm(a) === norm(b.textContent)));
     if (correctBtn) correctBtn.classList.add('correct');
@@ -2460,7 +2420,7 @@ function checkAnswerU2(btn, chosen) {
 
 function goNextU2() {
   stateU2.current++;
-  if (stateU2.current >= questionsU2.length || stateU2.lives <= 0) stateU2.done = true;
+  if (stateU2.current >= questionsU2.length) stateU2.done = true;
   renderQuizU2();
 }
 
@@ -2471,11 +2431,11 @@ function renderSummaryU2(root) {
       <span class="eyebrow">Resultado · Unidad 2</span>
       <div class="big-score">${stateU2.score} / ${questionsU2.length}</div>
       <p>${pct >= 75 ? '¡Bien hecho! Estás listo para cruzar.' : 'Repasá los temas antes de continuar.'}</p>
+      ${buildResultGrid(stateU2.results)}
       <div class="cta-row">
         <button class="btn btn-primary" onclick="sendToSheet('U2-Quiz',stateU2.results,stateU2.score,${questionsU2.length},'u2-send-status')">
           Enviar a planilla
         </button>
-        <button class="btn" onclick="stateU2={current:0,lives:3,score:0,results:[],done:false};renderQuizU2()">Volver a intentar</button>
       </div>
       <p id="u2-send-status" style="font-size:.82rem;color:var(--styx);margin-top:.5rem"></p>
     </div>`;
@@ -2499,11 +2459,9 @@ function renderPotionU2() {
       <span class="verify-note">Tu solución en Python</span>
       <textarea class="cm-target" id="potion-u2-editor">${escHtml(p.starter)}</textarea>
       <div class="verify-row">
-        <button class="btn run-btn" id="potion-u2-run">▶ Ejecutar</button>
         <button class="btn btn-primary" id="potion-u2-verify">Verificar</button>
         <span class="verify-status" id="potion-u2-status"></span>
       </div>
-      <div class="exec-output" id="potion-u2-exec"></div>
       <div class="test-results" id="potion-u2-results"></div>
     </div>
   `);
@@ -2516,21 +2474,6 @@ function renderPotionU2() {
     extraKeys:{ Tab: cm => cm.execCommand('insertSoftTab') },
   });
   editor.setSize(null, 'auto');
-
-  const runBtn = document.getElementById('potion-u2-run');
-  const execOut = document.getElementById('potion-u2-exec');
-  runBtn.addEventListener('click', async () => {
-    const code = editor.getValue().trim();
-    if (!code) return;
-    runBtn.disabled = true;
-    execOut.className = 'exec-output';
-    try {
-      const r = await pccRun(code, null, [], []);
-      execOut.classList.add('show');
-      execOut.classList.toggle('error', !r.ok);
-      execOut.textContent = r.ok ? (r.stdout || '(sin salida)') : (r.error || 'Error');
-    } finally { runBtn.disabled = false; }
-  });
 
   const verifyBtn = document.getElementById('potion-u2-verify');
   const status    = document.getElementById('potion-u2-status');
@@ -2555,11 +2498,20 @@ function renderPotionU2() {
 }
 
 /* ─── INIT ───────────────────────────────────────────────── */
-renderQuizU2();
-renderBoons(boonsU2, 'boon-list-u2');
-renderPotionU2();
-renderQuiz();
-renderReviews();
+function initPage() {
+  renderQuizU2();
+  renderBoons(boonsU2, 'boon-list-u2');
+  renderPotionU2();
+  renderQuiz();
+  renderReviews();
+  renderBoonsOceanus();
+  renderQuiz2();
+  renderPotion();
+  // Después de mostrar el contenido, forzar refresh de todos los editores CodeMirror
+  setTimeout(() => {
+    document.querySelectorAll('.CodeMirror').forEach(cm => cm.CodeMirror && cm.CodeMirror.refresh());
+  }, 50);
+}
 
 /* ══════════════════════════════════════════════════════════
    PARTE 2 — OCEANUS (datos y lógica del segundo bloque)
@@ -2816,7 +2768,7 @@ const potion = {
 
 /* ─── QUIZ 2 ENGINE ──────────────────────────────────────── */
 
-let state2 = { current: 0, lives: 3, score: 0, results: [], done: false };
+let state2 = { current: 0, score: 0, results: [], done: false };
 
 function renderQuiz2() {
   const root = document.getElementById('quiz-root-2');
@@ -2830,9 +2782,6 @@ function renderQuiz2() {
 
   root.append(
     mkEl('div', 'status-row', `
-      <div class="lives">
-        ${[0,1,2].map(i => `<div class="flame${i >= state2.lives ? ' spent' : ''}"></div>`).join('')}
-      </div>
       <div class="score-tag">
         Pregunta <b>${state2.current + 1}</b>/${questions2.length} &nbsp;·&nbsp; Aciertos: <b>${state2.score}</b>
       </div>
@@ -2882,7 +2831,6 @@ function checkAnswer2(btn, chosen) {
   fb.innerHTML = isOk ? q.feedback_ok : q.feedback_bad;
 
   if (isOk) state2.score++;
-  else       state2.lives = Math.max(0, state2.lives - 1);
 
   state2.results.push({
     pregunta: q.q.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
@@ -2898,13 +2846,11 @@ function goNext2() {
 }
 
 function renderSummary2(root) {
-  const { score, lives, results } = state2;
+  const { score, results } = state2;
   const total = questions2.length;
   const msg = score === total
-    ? 'Cruzaste sin perder una sola llama. Las corrientes te obedecen.'
-    : lives === 0
-    ? 'Las llamas se apagaron, pero el bote igual cruza. Oceanus deja pasar.'
-    : `El río quedó atrás. Quedan ${lives} llama(s) encendida(s).`;
+    ? 'Cruzaste perfecto. Las corrientes te obedecen.'
+    : 'El río quedó atrás. Podés seguir al Desafío Final.';
 
   root.append(mkEl('div', '', `
     <div class="river-wrap">
@@ -2917,17 +2863,7 @@ function renderSummary2(root) {
       <span class="eyebrow">Veredicto de Oceanus</span>
       <div class="big-score">${score} / ${total}</div>
       <p>${msg}</p>
-      <table class="summary-table">
-        <thead><tr><th>Pregunta</th><th>Tu respuesta</th><th>¿Correcta?</th><th>Nota</th></tr></thead>
-        <tbody>
-          ${results.map(r => `<tr>
-            <td data-label="Pregunta">${r.pregunta}</td>
-            <td data-label="Tu respuesta">${r.respuesta || '—'}</td>
-            <td data-label="¿Correcta?" class="${r.correcta ? 'ok' : 'bad'}">${r.correcta ? 'Sí' : 'No'}</td>
-            <td data-label="Nota">${r.nota || '—'}</td>
-          </tr>`).join('')}
-        </tbody>
-      </table>
+      ${buildResultGrid(results)}
       <div class="cta-row">
         <button class="btn btn-primary"
           onclick="sendToSheet('U3-Quiz2',state2.results,state2.score,${total},'u3q2-send-status')">
@@ -2950,11 +2886,9 @@ function renderBoonsOceanus() {
   boonsOceanus.forEach((b, idx) => {
     const verifyHtml = `
       <div class="verify-row">
-        <button class="btn run-btn">▶ Ejecutar</button>
         ${b.test ? `<button class="btn btn-primary verify-btn">Verificar</button>` : ''}
         <span class="verify-status"></span>
       </div>
-      <div class="exec-output"></div>
       ${b.test ? `<div class="practice-note-area"></div><div class="test-results"></div>` : ''}`;
 
     const boonEl = mkEl('div', 'boon', `
@@ -2988,10 +2922,7 @@ function renderPotion() {
     </div>`;
 }
 
-/* ─── INIT PARTE 2 ───────────────────────────────────────── */
-renderBoonsOceanus();
-renderQuiz2();
-renderPotion();
+/* renderBoonsOceanus, renderQuiz2, renderPotion → llamados desde initPage() */
 
 /* ─── SITE NAV ───────────────────────────────────────────── */
 function snavToggle() {
