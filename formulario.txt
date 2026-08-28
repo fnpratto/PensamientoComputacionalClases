@@ -1,0 +1,82 @@
+## Quiz
+
+- ¿Cuál de las siguientes expresiones devuelve True?
+    - len(”hola”) % 2 != 0
+    - (4 * 4) == (3 * 6)
+    - (5 * 5) > 25
+    - “hola” ≠ “HOLA”
+- ¿Cuál de las sigiuentes expresiones es falsa?
+    - (5 ≠ ‘5’) and (5 * 3 < 20)
+    - (2 % 2 == 0) or (2 * 4 == 8)
+    - (9 * 9 == 99) or (9 < 9)
+    - ("a" < "z”) or (”E” < “A”)
+- ¿Cuál es el resultado del siguiente bloque de código?
+    
+    ```python
+    edad = 15
+    rol = "administrador"
+    if edad < 18:
+    	print("Tiene acceso restringido para menores")
+    elif edad > 18:
+    	print("Tiene acceso general")
+    elif rol == "administrador":
+    	print("Tiene acceso total")
+    else:
+    	print("No puede pasar")
+    ```
+    
+    - "Tiene acceso restringido para menores"
+    - "Tiene acceso general"
+    - "Tiene acceso total"
+    - "No puede pasar"
+- ¿Cuál es el problema del siguiente código?
+    
+    ```python
+    def es_par(numero):
+    		if numero % 2 == 0:
+    				return True
+    		return False
+    ```
+    
+    - Falta el else
+    - Falta castear a int
+    - Es redundante usar un if para devolver un booleano
+    - El nombre de la función debe tener un verbo en infinitivo
+- ¿Cuándo se usa for y cuándo while?
+    - Ambos se pueden usar indistintamente, funcionan igual
+    - For es para ciclos definidos y While para ciclos indefinidos
+    - While es para cuando el usuario ingresa información y For cuando hay parámetros
+    - For es solo para rangos, while para el resto de ciclos
+- ¿Qué secuencia genera **range(2, 10, 2)**?
+    - 2 4 6 8
+    - 2 4 6 8 10
+    - 3 5 7 9
+    - 2 5 8
+- ¿Qué imprimirá por pantalla el siguiente código?
+    
+    ```python
+    for letra in "Pensamiento":
+    		if letra not in "aeiou":
+    				print(letra.upper())
+    		else:
+    				print(letra)
+    ```
+    
+    - PEnsAmIEntO
+    - PeNSaMieNTo
+    - PENSAMIENTO
+    - PNSMNT
+- ¿Cuál es el problema de la siguiente función?
+    
+    ```python
+    def pagar_cuenta(monto):
+    		pagado = 0
+    		ingreso = int(input("Ingrese monto: "))
+    		while pagado < monto:
+    				pagado += int(ingreso)
+    ```
+    
+    - Falta un break
+    - No es necesario castear a int
+    - El input debe ir siempre dentro del while
+    - Falta actualizar la condición

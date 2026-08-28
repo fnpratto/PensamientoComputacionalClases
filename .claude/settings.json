@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css)",
+      "Bash(node -e ' *)",
+      "Bash(cp /home/flor/Desktop/PensamientoComputacionalClases/index.html /tmp/preview.html)",
+      "Bash(google-chrome --headless=new --disable-gpu --no-sandbox --window-size=1400,1300 --virtual-time-budget=4000 --screenshot=/tmp/shot_exam.png \"file:///tmp/preview.html\")",
+      "Read(//tmp/**)",
+      "Bash(python3 - *)"
+    ],
+    "additionalDirectories": [
+      "/tmp"
+    ]
+  }
+}
