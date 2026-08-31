@@ -1,82 +1,150 @@
-## Quiz
-
-- ¿Cuál de las siguientes expresiones devuelve True?
-    - len(”hola”) % 2 != 0
-    - (4 * 4) == (3 * 6)
-    - (5 * 5) > 25
-    - “hola” ≠ “HOLA”
-- ¿Cuál de las sigiuentes expresiones es falsa?
-    - (5 ≠ ‘5’) and (5 * 3 < 20)
-    - (2 % 2 == 0) or (2 * 4 == 8)
-    - (9 * 9 == 99) or (9 < 9)
-    - ("a" < "z”) or (”E” < “A”)
-- ¿Cuál es el resultado del siguiente bloque de código?
-    
-    ```python
-    edad = 15
-    rol = "administrador"
-    if edad < 18:
-    	print("Tiene acceso restringido para menores")
-    elif edad > 18:
-    	print("Tiene acceso general")
-    elif rol == "administrador":
-    	print("Tiene acceso total")
-    else:
-    	print("No puede pasar")
-    ```
-    
-    - "Tiene acceso restringido para menores"
-    - "Tiene acceso general"
-    - "Tiene acceso total"
-    - "No puede pasar"
-- ¿Cuál es el problema del siguiente código?
-    
-    ```python
-    def es_par(numero):
-    		if numero % 2 == 0:
-    				return True
-    		return False
-    ```
-    
-    - Falta el else
-    - Falta castear a int
-    - Es redundante usar un if para devolver un booleano
-    - El nombre de la función debe tener un verbo en infinitivo
-- ¿Cuándo se usa for y cuándo while?
-    - Ambos se pueden usar indistintamente, funcionan igual
-    - For es para ciclos definidos y While para ciclos indefinidos
-    - While es para cuando el usuario ingresa información y For cuando hay parámetros
-    - For es solo para rangos, while para el resto de ciclos
-- ¿Qué secuencia genera **range(2, 10, 2)**?
-    - 2 4 6 8
-    - 2 4 6 8 10
-    - 3 5 7 9
-    - 2 5 8
-- ¿Qué imprimirá por pantalla el siguiente código?
-    
-    ```python
-    for letra in "Pensamiento":
-    		if letra not in "aeiou":
-    				print(letra.upper())
-    		else:
-    				print(letra)
-    ```
-    
-    - PEnsAmIEntO
-    - PeNSaMieNTo
-    - PENSAMIENTO
-    - PNSMNT
-- ¿Cuál es el problema de la siguiente función?
-    
-    ```python
-    def pagar_cuenta(monto):
-    		pagado = 0
-    		ingreso = int(input("Ingrese monto: "))
-    		while pagado < monto:
-    				pagado += int(ingreso)
-    ```
-    
-    - Falta un break
-    - No es necesario castear a int
-    - El input debe ir siempre dentro del while
-    - Falta actualizar la condición
+{
+  "titulo": "Quiz de nivelación: Cadenas, Rangos, Tuplas y Estructuras de Control (for / while / if)",
+  "materia": "Pensamiento Computacional - Unidad 3 y 4",
+  "preguntas": [
+    {
+      "numero": 1,
+      "pregunta": "¿Qué imprime el siguiente código?\n\ncancion = \"Envolver\"\ncancion[0] = \"e\"\nprint(cancion)",
+      "opciones": {
+        "a": "envolver",
+        "b": "Se produce un TypeError, el código no llega a imprimir nada",
+        "c": "Envolver",
+        "d": "Se imprime una cadena vacía"
+      },
+      "respuesta_correcta": "b",
+      "explicacion": "Las cadenas son inmutables: no se puede reasignar un caracter en una posición existente. La línea cancion[0] = 'e' lanza un TypeError antes de llegar al print."
+    },
+    {
+      "numero": 2,
+      "pregunta": "¿Qué imprime el siguiente código?\n\ntexto = \"dale dale que dale\"\nposicion = texto.find(\"dale\", 5)\nprint(posicion)",
+      "opciones": {
+        "a": "0",
+        "b": "5",
+        "c": "15",
+        "d": "-1"
+      },
+      "respuesta_correcta": "b",
+      "explicacion": "find() con un segundo parámetro busca la subcadena a partir de esa posición (inclusive). Como en la posición 5 arranca justamente la segunda aparición de 'dale', el resultado es 5."
+    },
+    {
+      "numero": 3,
+      "pregunta": "¿Qué imprime el siguiente código?\n\ntexto = \"Hola Mundo\"\nprint(texto.index(\"Chau\"))",
+      "opciones": {
+        "a": "-1",
+        "b": "0",
+        "c": "None",
+        "d": "Se produce un ValueError"
+      },
+      "respuesta_correcta": "d",
+      "explicacion": "A diferencia de find(), el método index() lanza un ValueError cuando la subcadena buscada no está presente en el texto, en vez de devolver -1."
+    },
+    {
+      "numero": 4,
+      "pregunta": "¿Qué imprime el siguiente código?\n\nfor minuto in range(10, 30, 15):\n    print(minuto)",
+      "opciones": {
+        "a": "10\n25",
+        "b": "10\n25\n40",
+        "c": "10",
+        "d": "No imprime nada"
+      },
+      "respuesta_correcta": "a",
+      "explicacion": "range(10, 30, 15) empieza en 10. El siguiente valor sería 25, que es menor a 30, así que también se incluye. El siguiente sería 40, que ya no es menor a 30, así que ahí se corta. La secuencia es 10, 25."
+    },
+    {
+      "numero": 5,
+      "pregunta": "¿Qué imprime el siguiente código?\n\nfor volumen in range(100, -20, -20):\n    print(volumen)",
+      "opciones": {
+        "a": "100, 80, 60, 40, 20, 0 (seis líneas)",
+        "b": "100, 80, 60, 40, 20 (cinco líneas, sin llegar al 0)",
+        "c": "100, 80, 60, 40, 20, 0, -20 (siete líneas)",
+        "d": "Se produce un error porque el paso es negativo"
+      },
+      "respuesta_correcta": "a",
+      "explicacion": "Con paso negativo, el ciclo continúa mientras el valor sea mayor (estrictamente) que el límite. El límite es -20, que no se incluye. La secuencia es 100, 80, 60, 40, 20, 0: el siguiente valor sería -20, que queda excluido por ser igual al límite."
+    },
+    {
+      "numero": 6,
+      "pregunta": "¿Qué imprime el siguiente código?\n\nalbum = (\"Trilogy\", 2011, \"R&B\")\nalbum[1] = 2012\nprint(album)",
+      "opciones": {
+        "a": "('Trilogy', 2012, 'R&B')",
+        "b": "Se produce un TypeError, las tuplas no admiten asignación por índice",
+        "c": "('Trilogy', 2011, 'R&B', 2012)",
+        "d": "Se imprime una lista en vez de una tupla"
+      },
+      "respuesta_correcta": "b",
+      "explicacion": "Las tuplas son inmutables, igual que las cadenas. No se puede modificar un elemento por índice; hay que armar una tupla nueva combinando slices con el valor corregido."
+    },
+    {
+      "numero": 7,
+      "pregunta": "¿Qué imprime el siguiente código?\n\ncancion = (\"Envolver\", \"Anitta\", 210, \"pop\")\nnombre, artista, duracion = cancion\nprint(nombre)",
+      "opciones": {
+        "a": "Envolver",
+        "b": "('Envolver', 'Anitta', 210)",
+        "c": "Se produce un ValueError, porque hay 4 elementos y solo 3 variables",
+        "d": "Anitta"
+      },
+      "respuesta_correcta": "c",
+      "explicacion": "Al desempaquetar una tupla, la cantidad de variables tiene que ser exactamente igual a la cantidad de elementos de la tupla. Como 'cancion' tiene 4 elementos y se intentan desempaquetar en solo 3 variables, Python lanza un ValueError ('too many values to unpack')."
+    },
+    {
+      "numero": 8,
+      "pregunta": "¿Qué imprime el siguiente código?\n\nsetlist = (\"Envolver\", \"Cairo\", \"Rara Vez\")\nnueva = setlist[:1] + (\"Bzrp\",) + setlist[2:]\nprint(nueva)",
+      "opciones": {
+        "a": "('Envolver', 'Bzrp', 'Rara Vez')",
+        "b": "('Envolver', 'Cairo', 'Bzrp', 'Rara Vez')",
+        "c": "Se produce un TypeError, no se pueden concatenar tuplas con +",
+        "d": "('Bzrp', 'Envolver', 'Cairo', 'Rara Vez')"
+      },
+      "respuesta_correcta": "a",
+      "explicacion": "setlist[:1] toma solo ('Envolver',), luego se concatena la tupla ('Bzrp',), y por último setlist[2:] toma ('Rara Vez',). El resultado reemplaza 'Cairo' por 'Bzrp' en la posición 1: ('Envolver', 'Bzrp', 'Rara Vez'). Ojo con la coma en ('Bzrp',): sin ella no sería una tupla y el '+' fallaría."
+    },
+    {
+      "numero": 9,
+      "pregunta": "¿Qué imprime el siguiente código?\n\nfor i in range(5):\n    if i % 2 == 0:\n        continue\n    print(i)",
+      "opciones": {
+        "a": "0\n1\n2\n3\n4",
+        "b": "0\n2\n4",
+        "c": "1\n3",
+        "d": "No imprime nada"
+      },
+      "respuesta_correcta": "c",
+      "explicacion": "continue corta la iteración actual y pasa directamente a la siguiente, sin ejecutar el resto del cuerpo del for. Como la condición filtra los números pares (i % 2 == 0), el print() solo se ejecuta para los impares: 1 y 3."
+    },
+    {
+      "numero": 10,
+      "pregunta": "¿Qué pasa al ejecutar el siguiente código?\n\ncontador = 0\nwhile contador < 5:\n    print(contador)\n    contador -= 1",
+      "opciones": {
+        "a": "Imprime 0, 1, 2, 3, 4 y termina normalmente",
+        "b": "Imprime solamente 0 y termina",
+        "c": "Es un ciclo infinito: contador nunca llega a valer 5 o más, porque en cada vuelta decrece",
+        "d": "Se produce un error de sintaxis"
+      },
+      "respuesta_correcta": "c",
+      "explicacion": "La condición es contador < 5, pero dentro del ciclo contador se decrementa (-= 1) en vez de incrementarse. Como nunca deja de ser menor a 5, el ciclo while nunca termina: queda imprimiendo 0, -1, -2, -3... para siempre."
+    },
+    {
+      "numero": 11,
+      "pregunta": "¿Qué imprime el siguiente código?\n\nnota = 7\nif nota >= 9:\n    print(\"Excelente\")\nelif nota >= 7:\n    print(\"Muy bien\")\nelif nota >= 4:\n    print(\"Aprobado\")\nelse:\n    print(\"Desaprobado\")",
+      "opciones": {
+        "a": "Excelente",
+        "b": "Muy bien",
+        "c": "Aprobado",
+        "d": "Desaprobado"
+      },
+      "respuesta_correcta": "b",
+      "explicacion": "Python evalúa los if/elif en orden y ejecuta solo el primero que sea verdadero. nota >= 9 es False (7 no es >= 9), pero nota >= 7 es True, así que se imprime 'Muy bien' y no se evalúan las condiciones siguientes, aunque también sean verdaderas."
+    },
+    {
+      "numero": 12,
+      "pregunta": "¿Qué imprime el siguiente código?\n\nfor numero in range(1, 10):\n    if numero == 5:\n        break\n    print(numero)",
+      "opciones": {
+        "a": "1\n2\n3\n4",
+        "b": "1\n2\n3\n4\n5",
+        "c": "1\n2\n3\n4\n6\n7\n8\n9",
+        "d": "No imprime nada"
+      },
+      "respuesta_correcta": "a",
+      "explicacion": "break corta el ciclo por completo apenas se cumple la condición, sin ejecutar el resto del cuerpo en esa vuelta ni las vueltas siguientes. Como numero llega a valer 5 antes del print() de esa iteración, el ciclo se corta ahí: solo se llegaron a imprimir 1, 2, 3 y 4."
+    }
+  ]
+}
