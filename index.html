@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unidad 3 — Estructuras de Control</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
+  <title>Unidad 4 — Estructuras de Datos</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
@@ -14,38 +14,38 @@
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
   <style>
     :root {
-      /* ── Palette: modern & minimal, modo oscuro ── */
-      --bg:           #0b0d12;
-      --bg-soft:      #14171f;
-      --bg-muted:     #1a1e27;
-      --surface:      #14171f;
-      --border:       #262b35;
-      --border-strong:#383e4a;
+      /* ── Palette: Spotify Green ── */
+      --bg:           #121212;
+      --bg-soft:      #181818;
+      --bg-muted:     #282828;
+      --surface:      #282828;
+      --border:       #3E3E3E;
+      --border-strong:#535353;
 
-      --text:         #e7e9ee;
-      --text-dim:     #9198a3;
-      --text-faint:   #676d78;
+      --text:         #FFFFFF;
+      --text-dim:     #B3B3B3;
+      --text-faint:   #6A6A6A;
 
-      --accent:       #8b8ff5;
-      --accent-dim:   rgba(139,143,245,.14);
-      --accent-strong:#aab0f9;
+      --accent:       #1DB954;
+      --accent-dim:   rgba(29,185,84,.15);
+      --accent-strong:#1ed760;
 
-      --good:         #34d399;
-      --good-bg:      rgba(52,211,153,.12);
-      --bad:          #f87171;
-      --bad-bg:       rgba(248,113,113,.12);
-      --amber:        #fbbf24;
-      --amber-bg:     rgba(251,191,36,.12);
-      --violet:       #c4b5fd;
-      --violet-bg:    rgba(196,181,253,.12);
+      --good:         #1DB954;
+      --good-bg:      rgba(29,185,84,.13);
+      --bad:          #e22134;
+      --bad-bg:       rgba(226,33,52,.13);
+      --amber:        #f59b00;
+      --amber-bg:     rgba(245,155,0,.12);
+      --violet:       #1ed760;
+      --violet-bg:    rgba(30,215,96,.12);
 
-      /* ── Backwards-compat aliases (misma variable, look plano) ── */
+      /* ── Backwards-compat aliases ── */
       --stone:      var(--surface);
       --stone-line: var(--border);
       --void:       var(--bg-soft);
-      --void-deep:  var(--bg-soft);
+      --void-deep:  var(--bg-muted);
       --styx:       var(--accent);
-      --styx-dim:   var(--accent-strong);
+      --styx-dim:   var(--accent-dim);
       --styx-glow:  var(--accent-dim);
       --gold:       var(--amber);
       --gold-lt:    var(--amber);
@@ -74,7 +74,7 @@
       padding-bottom: 4rem;
       -webkit-font-smoothing: antialiased;
     }
-    ::selection { background: var(--accent-dim); color: var(--accent-strong); }
+    ::selection { background: rgba(29,185,84,.3); color: var(--accent-strong); }
     h1,h2,h3 { font-family: var(--font-d); font-weight: 700; letter-spacing: -0.01em; color: var(--text); margin: 0; }
     code {
       font-family: var(--font-m);
@@ -101,12 +101,9 @@
       margin-bottom: .7rem;
     }
 
-    /* ── WAVE (desactivadas: diseño plano) ── */
-    .wave { display: none; }
-
     /* ── HERO ── */
     #hero {
-      min-height: 70vh;
+      min-height: 65vh;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       text-align: center; padding: 6rem 1.5rem 4rem;
       background: var(--bg);
@@ -121,40 +118,21 @@
     .hero-title { font-size: clamp(2.1rem, 5.5vw, 3.4rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
     .hero-title span { color: var(--accent); }
     .hero-sub { color: var(--text-dim); max-width: 520px; margin: 0 auto 1.8rem; font-size: 1.05rem; }
-    .hero-lore {
-      font-style: italic; font-size: .92rem; color: var(--text-dim);
-      max-width: 560px; margin: 0 auto 2rem;
-      border-left: 2px solid var(--border-strong); padding-left: 1rem; text-align: left;
-    }
-    .hero-chips {
-      display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; margin-bottom: 2.2rem;
-    }
-    .chip {
-      font-family: var(--font-m); font-size: .74rem;
-      background: var(--bg-soft); border: 1px solid var(--border);
-      color: var(--text-dim); padding: .3rem .85rem; border-radius: 999px;
-    }
-    .chip.styx { background: var(--accent-dim); border-color: var(--accent-dim); color: var(--accent); }
-    .chip.gold  { background: var(--amber-bg);  border-color: var(--amber-bg);  color: var(--amber); }
-    .hero-note { font-family: var(--font-m); font-size: .78rem; color: var(--text-faint); margin-bottom: 1.5rem; }
     .scroll-cue { color: var(--text-faint); font-size: .8rem; animation: bob 2.5s ease-in-out infinite; }
     @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
 
-    /* ── SECTIONS: fondo plano, sin gradientes ── */
-    .section-bg-prologo,
-    .section-bg-cam1,
-    .section-bg-cam3,
-    .section-bg-cam5,
+    /* ── SECTIONS ── */
     .section-bg-a, .section-bg-b, .section-bg-c, .section-bg-d {
       background: var(--bg);
       border-top: 1px solid var(--border);
     }
+    .section-bg-b { background: var(--bg-soft); }
     .chamber { max-width: var(--content-w); margin: 0 auto; padding: 4.5rem 1.5rem; }
     .chamber-head { margin-bottom: 2.2rem; }
     .chamber-head h2 { font-size: clamp(1.5rem, 3.6vw, 2rem); }
     .chamber-head p { color: var(--text-dim); max-width: 560px; margin-top: .6rem; font-size: .98rem; }
 
-    /* ── RIVER (barra de progreso) ── */
+    /* ── RIVER (progress bar) ── */
     .river-wrap { margin: 1.4rem 0 2.2rem; }
     .river-track {
       position: relative; height: 4px;
@@ -184,6 +162,10 @@
     /* ── CARD ── */
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 1.8rem; }
     .q-text { font-size: 1.1rem; font-weight: 500; margin-bottom: 1.2rem; color: var(--text); max-width: 70ch; }
+    .q-text pre, .card pre {
+      background: var(--bg-soft); border-color: var(--border);
+      font-size: .83rem; margin: .6rem 0;
+    }
 
     /* ── OPTIONS ── */
     .options-grid { display: flex; flex-direction: column; gap: .6rem; }
@@ -193,555 +175,314 @@
       font-family: var(--font-b); font-size: 1rem;
       padding: .8rem 1.1rem; border-radius: var(--r-sm); cursor: pointer;
       transition: border-color .15s, background .15s;
+      position: relative;
     }
-    .option-btn:hover:not([disabled]) { border-color: var(--accent); background: var(--accent-dim); }
+    .option-btn:hover:not([disabled]):not(.selected) { border-color: var(--border-strong); background: rgba(255,255,255,.04); }
     .option-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .option-btn.selected {
+      border-color: var(--accent);
+      background: rgba(29,185,84,.12);
+      color: var(--accent-strong);
+      font-weight: 600;
+      box-shadow: 0 0 0 1px var(--accent) inset;
+    }
     .option-btn.correct { border-color: var(--good); background: var(--good-bg); color: var(--good); }
     .option-btn.wrong   { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
     .option-btn[disabled] { cursor: not-allowed; }
-    .option-btn[disabled]:not(.correct):not(.wrong) { opacity: .5; }
+    .option-btn[disabled]:not(.correct):not(.wrong):not(.selected) { opacity: .5; }
+
+    /* ── CONFIRM + NEXT BUTTONS ── */
+    .quiz-nav { display: flex; justify-content: flex-end; gap: .7rem; margin-top: 1.4rem; flex-wrap: wrap; }
 
     /* ── FEEDBACK ── */
-    .feedback {
-      margin-top: 1rem; padding-top: 1rem;
-      border-top: 1px solid var(--border);
-      font-size: .94rem; display: none;
-    }
+    .feedback { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: .95rem; color: var(--text-dim); display: none; }
     .feedback.show { display: block; }
     .feedback.ok  { color: var(--good); }
     .feedback.bad { color: var(--bad); }
 
     /* ── HINT ── */
     details.hint {
-      margin-top: 1.1rem;
-      border: 1px solid var(--border); border-radius: var(--r-sm);
-      background: var(--bg-soft);
+      margin-top: 1rem; border: 1px solid var(--border);
+      border-radius: var(--r-sm); background: rgba(29,185,84,.03);
     }
     details.hint summary {
       cursor: pointer; list-style: none; padding: .6rem .9rem;
-      font-family: var(--font-m); font-size: .72rem; letter-spacing: .04em;
-      text-transform: uppercase; color: var(--text-dim);
+      font-family: var(--font-m); font-size: .73rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--accent);
       display: flex; align-items: center; gap: .5rem;
     }
     details.hint summary::-webkit-details-marker { display: none; }
-    details.hint summary::before { content: '+'; color: var(--accent); font-weight: 700; }
-    details.hint[open] summary::before { content: '–'; }
+    details.hint summary::before { content: "♪"; font-size: .9rem; }
     details.hint[open] summary { border-bottom: 1px solid var(--border); }
-    details.hint .hint-body { padding: .8rem .9rem .9rem; font-size: .9rem; color: var(--text-dim); max-width: 70ch; }
-
-    /* ── NOTES ── */
-    .notes-field { margin-top: 1rem; }
-    .notes-field label {
-      font-family: var(--font-m); font-size: .67rem; letter-spacing: .06em;
-      text-transform: uppercase; color: var(--text-faint); display: block; margin-bottom: .4rem;
-    }
-    .notes-field textarea {
-      width: 100%; min-height: 56px; resize: vertical;
-      background: var(--bg); border: 1px solid var(--border);
-      color: var(--text); font-family: var(--font-b); font-size: .9rem;
-      padding: .55rem .8rem; border-radius: var(--r-sm); outline: none;
-    }
-    .notes-field textarea:focus { border-color: var(--accent); }
-
-    /* ── BUTTONS ── */
-    .btn {
-      font-family: var(--font-b); font-size: .92rem; font-weight: 600;
-      background: var(--bg); color: var(--text);
-      border: 1px solid var(--border); padding: .7rem 1.4rem;
-      border-radius: var(--r-sm); cursor: pointer;
-      transition: border-color .15s, background .15s;
-    }
-    .btn:hover { border-color: var(--border-strong); background: var(--bg-soft); }
-    .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 700; }
-    .btn-primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
-    .btn[disabled] { opacity: .4; cursor: not-allowed; }
-    .quiz-nav { display: flex; justify-content: flex-end; margin-top: 1.5rem; }
+    details.hint .hint-body { padding: .8rem .9rem .9rem; font-size: .92rem; color: var(--text-dim); max-width: 70ch; }
+    details.hint .hint-body code { color: var(--accent-strong); }
 
     /* ── SUMMARY ── */
     .summary-card {
       text-align: center; padding: 2.6rem 1.5rem;
       border: 1px solid var(--border); border-radius: var(--r);
-      background: var(--bg-soft);
+      background: radial-gradient(ellipse at 50% 0%, rgba(29,185,84,.07), transparent 70%);
     }
-    .big-score { font-family: var(--font-d); font-weight: 800; font-size: 2.5rem; color: var(--accent); }
+    .summary-card .big-score { font-size: 2.8rem; font-weight: 800; color: var(--accent); margin: .4rem 0; }
     .summary-card p { color: var(--text-dim); max-width: 460px; margin: .6rem auto 0; }
-    .cta-row { margin-top: 1.8rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-    .result-grid { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.6rem; text-align: left; }
-    .result-chip {
-      flex: 1 1 260px; min-width: 0;
-      border: 1px solid var(--border); border-radius: var(--r-sm);
-      padding: .7rem .9rem; background: var(--surface);
-      border-left: 3px solid var(--border);
-    }
-    .result-chip.ok  { border-left-color: var(--good); }
-    .result-chip.bad { border-left-color: var(--bad); }
-    .result-chip-top {
-      display: flex; align-items: flex-start; gap: .5rem;
-      font-family: var(--font-m); font-size: .78rem; color: var(--text);
-      line-height: 1.4; margin-bottom: .4rem;
-    }
-    .result-chip-top .rc-icon { flex-shrink: 0; font-size: .85rem; margin-top: .05rem; }
-    .result-chip-answer {
-      font-family: var(--font-m); font-size: .72rem; color: var(--text-dim);
-    }
-    .result-chip-answer span { color: var(--text); }
+    .cta-row { display: flex; justify-content: center; flex-wrap: wrap; gap: .7rem; margin-top: 1.4rem; }
 
-    /* ── ANSWER BOX / CODEMIRROR ── */
-    .answer-box { margin-top: 1.1rem; }
-    .answer-box .verify-note {
-      font-family: var(--font-m); font-size: .72rem; color: var(--text-dim);
-      margin-bottom: .5rem; display: block;
+    /* ── RESULT GRID ── */
+    .result-grid { display: flex; flex-direction: column; gap: .5rem; margin-top: 1.4rem; text-align: left; }
+    .result-chip {
+      border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: .6rem .9rem; font-size: .84rem;
     }
+    .result-chip.ok   { border-color: var(--good); background: var(--good-bg); }
+    .result-chip.bad  { border-color: var(--bad); background: var(--bad-bg); }
+    .result-chip-top  { display: flex; gap: .5rem; align-items: flex-start; }
+    .rc-icon          { font-weight: 700; flex-shrink: 0; }
+    .result-chip.ok .rc-icon  { color: var(--good); }
+    .result-chip.bad .rc-icon { color: var(--bad); }
+    .result-chip-answer { margin-top: .2rem; color: var(--text-faint); font-size: .8rem; }
+    .result-chip-answer span { color: var(--text-dim); }
+
+    /* ── BTN ── */
+    .btn {
+      font-family: var(--font-m); font-size: .82rem; letter-spacing: .06em; text-transform: uppercase;
+      background: transparent; color: var(--text); border: 1px solid var(--border-strong);
+      padding: .72rem 1.4rem; border-radius: var(--r-sm); cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .btn:hover { border-color: var(--accent); background: rgba(29,185,84,.08); }
+    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .btn[disabled] { opacity: .4; cursor: not-allowed; }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 700; }
+    .btn-primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
+    .btn-primary[disabled] { background: var(--border); border-color: var(--border); color: var(--text-faint); }
+
+    /* ── BOONS ── */
+    .boon-list { display: flex; flex-direction: column; gap: 1.2rem; }
+    .boon {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 1.6rem;
+      border-left: 3px solid var(--accent);
+    }
+    .boon-title { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: .2rem; }
+    .boon-flavor { font-style: italic; color: var(--text-faint); font-size: .88rem; margin-bottom: .9rem; }
+    .statement { color: var(--text-dim); font-size: .97rem; max-width: 70ch; margin-bottom: .9rem; }
+
+    /* ── POTION CARD ── */
+    .potion-card {
+      background: var(--surface); border: 1px solid var(--accent);
+      border-radius: var(--r); padding: 2rem;
+    }
+    .potion-title { font-size: 1.3rem; font-weight: 800; color: var(--accent); margin-bottom: .2rem; }
+    .potion-flavor { font-style: italic; color: var(--text-faint); font-size: .88rem; margin-bottom: 1rem; }
+    ul.reqs { padding-left: 1.2rem; color: var(--text-dim); margin: .6rem 0 0; }
+    ul.reqs li { margin-bottom: .35rem; font-size: .95rem; }
+    ul.reqs code { color: var(--accent-strong); }
+
+    /* ── ANSWER BOX / CODE EDITOR ── */
+    .answer-box { margin-top: 1.2rem; }
+    .verify-note {
+      font-family: var(--font-m); font-size: .72rem; letter-spacing: .06em;
+      color: var(--text-faint); display: block; margin-bottom: .4rem;
+    }
+    .answer-box textarea {
+      width: 100%; min-height: 130px; resize: vertical;
+      background: var(--bg-soft); border: 1px solid var(--border);
+      color: var(--text); font-family: var(--font-m); font-size: .85rem;
+      line-height: 1.55; padding: .8rem .9rem;
+      border-radius: var(--r-sm); outline: none; tab-size: 4;
+    }
+    .answer-box textarea:focus { border-color: var(--accent); }
+
+    /* ── CODEMIRROR: underworld theme (mapped to spotify colors) ── */
     .answer-box .CodeMirror {
       height: auto; min-height: 130px; border: 1px solid var(--border);
-      border-radius: var(--r-sm); font-family: var(--font-m); font-size: .86rem; line-height: 1.55;
+      border-radius: var(--r-sm); font-family: var(--font-m); font-size: .85rem; line-height: 1.55;
     }
     .answer-box .CodeMirror-focused { border-color: var(--accent); }
-    .cm-s-underworld.CodeMirror { background: var(--bg-muted); color: var(--text); }
-    .cm-s-underworld .CodeMirror-gutters { background: var(--bg-soft); border-right: 1px solid var(--border); }
+    .cm-s-underworld.CodeMirror { background: var(--bg-soft); color: var(--text); }
+    .cm-s-underworld .CodeMirror-gutters { background: var(--bg-muted); border-right: 1px solid var(--border); }
     .cm-s-underworld .CodeMirror-linenumber { color: var(--text-faint); padding: 0 .6rem 0 .4rem; }
     .cm-s-underworld .CodeMirror-cursor { border-left: 1.5px solid var(--accent); }
-    .cm-s-underworld .CodeMirror-selected { background: var(--accent-dim); }
-    .cm-s-underworld .CodeMirror-activeline-background { background: var(--bg-soft); }
-    .cm-s-underworld .CodeMirror-scrollbar-filler,
-    .cm-s-underworld .CodeMirror-gutter-filler,
-    .cm-s-underworld .CodeMirror-hscrollbar,
-    .cm-s-underworld .CodeMirror-vscrollbar { background: var(--bg-muted) !important; }
-    .answer-box ::-webkit-scrollbar { height: 8px; width: 8px; }
-    .answer-box ::-webkit-scrollbar-track { background: var(--bg-muted); }
-    .answer-box ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
-    .answer-box ::-webkit-scrollbar-corner { background: var(--bg-muted); }
-    .cm-s-underworld .CodeMirror-matchingbracket { color: var(--accent) !important; text-decoration: underline; }
-    .cm-s-underworld .cm-keyword { color: var(--violet); font-weight: 600; }
-    .cm-s-underworld .cm-def { color: var(--accent); font-weight: 600; }
+    .cm-s-underworld .CodeMirror-selected { background: rgba(29,185,84,.18); }
+    .cm-s-underworld .CodeMirror-activeline-background { background: rgba(29,185,84,.05); }
+    .cm-s-underworld .CodeMirror-matchingbracket { color: var(--amber) !important; text-decoration: underline; }
+    .cm-s-underworld .cm-keyword { color: var(--accent); font-weight: 600; }
+    .cm-s-underworld .cm-def { color: var(--accent-strong); font-weight: 600; }
     .cm-s-underworld .cm-builtin { color: var(--amber); }
-    .cm-s-underworld .cm-string, .cm-s-underworld .cm-string-2 { color: var(--good); }
+    .cm-s-underworld .cm-string, .cm-s-underworld .cm-string-2 { color: #ce9178; }
     .cm-s-underworld .cm-number { color: var(--amber); }
     .cm-s-underworld .cm-atom { color: var(--amber); }
     .cm-s-underworld .cm-comment { color: var(--text-faint); font-style: italic; }
     .cm-s-underworld .cm-operator { color: var(--text); }
     .cm-s-underworld .cm-variable, .cm-s-underworld .cm-property { color: var(--text); }
     .cm-s-underworld .cm-punctuation, .cm-s-underworld .cm-bracket { color: var(--text-dim); }
-    .CodeMirror-placeholder { color: var(--text-faint) !important; opacity: .8; }
+    .CodeMirror-placeholder { color: var(--text-faint) !important; opacity: .7; }
 
-    .verify-row { display: flex; align-items: center; gap: .9rem; margin-top: .8rem; flex-wrap: wrap; }
-    .verify-status { font-family: var(--font-m); font-size: .76rem; color: var(--text-dim); }
+    /* ── VERIFY ROW ── */
+    .verify-row { display: flex; align-items: center; gap: .8rem; margin-top: .8rem; flex-wrap: wrap; }
+    .verify-status { font-family: var(--font-m); font-size: .75rem; color: var(--text-faint); }
 
-    .test-results { display: flex; flex-direction: column; gap: .5rem; margin-top: 1rem; }
-    .test-item { border: 1px solid var(--border); border-radius: var(--r-sm); padding: .55rem .8rem; background: var(--bg-soft); }
+    /* ── PRACTICE NOTE ── */
+    .practice-note-area, .test-results { margin-top: .9rem; }
+    .practice-note {
+      font-family: var(--font-m); font-size: .8rem; padding: .6rem .9rem;
+      border-radius: var(--r-sm); border: 1px solid var(--border); line-height: 1.5;
+    }
+    .practice-note.ok   { color: var(--good); border-color: var(--good); background: var(--good-bg); }
+    .practice-note.warn { color: var(--bad); border-color: var(--bad); background: var(--bad-bg); }
+
+    /* ── TEST ITEMS ── */
+    .test-item {
+      border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: .55rem .8rem; background: var(--bg-soft); margin-bottom: .4rem;
+    }
     .test-item.pass { border-color: var(--good); }
     .test-item.fail { border-color: var(--bad); }
-    .test-item .t-head {
+    .t-head {
       display: flex; justify-content: space-between; gap: .6rem;
       font-family: var(--font-m); font-size: .68rem; letter-spacing: .04em; text-transform: uppercase;
     }
     .test-item.pass .t-head { color: var(--good); }
     .test-item.fail .t-head { color: var(--bad); }
-    .test-item .t-detail { margin-top: .35rem; color: var(--text-dim); font-size: .85rem; }
-
-    .practice-note {
-      margin-top: 1rem; font-family: var(--font-m); font-size: .8rem;
-      padding: .65rem .9rem; border-radius: var(--r-sm); border: 1px solid var(--border); line-height: 1.5;
-    }
-    .practice-note.ok  { color: var(--good); border-color: var(--good); background: var(--good-bg); }
-    .practice-note.warn { color: var(--bad); border-color: var(--bad); background: var(--bad-bg); }
-
-    /* ── BOONS (ejercicios) ── */
-    .boon-list { display: flex; flex-direction: column; gap: 1rem; }
-    .boon {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); padding: 1.5rem 1.6rem;
-      transition: border-color .2s;
-    }
-    .boon:hover { border-color: var(--border-strong); }
-    .boon-title { font-family: var(--font-d); font-weight: 700; font-size: 1.1rem; color: var(--text); margin-bottom: .15rem; }
-    .boon-flavor { font-style: italic; color: var(--text-dim); font-size: .88rem; margin-bottom: .9rem; max-width: 70ch; }
-    .statement { margin-bottom: .9rem; max-width: 70ch; font-size: .97rem; }
-
-    /* ── FOOTER ── */
-    footer {
-      max-width: var(--content-w); margin: 0 auto; padding: 3rem 1.5rem 0;
-      text-align: center; color: var(--text-faint);
-      font-family: var(--font-m); font-size: .73rem;
-      background: var(--bg);
-    }
-
-    [hidden] { display: none !important; }
-
-    /* ── THEORY TABS ── */
-    .theory-tabs { display: flex; gap: .3rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
-    .theory-tab {
-      font-family: var(--font-b); font-size: .88rem; font-weight: 600;
-      padding: .65rem 1.2rem;
-      background: transparent; border: none; color: var(--text-dim);
-      cursor: pointer; border-bottom: 2px solid transparent;
-      transition: color .2s, border-color .2s;
-    }
-    .theory-tab:hover { color: var(--text); }
-    .theory-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-    .theory-panel { display: none; }
-    .theory-panel.active { display: block; }
-
-    /* ── CONCEPT BOX ── */
-    .concept-box {
-      border-left: 3px solid var(--accent);
-      background: var(--accent-dim);
-      border-radius: 0 var(--r-sm) var(--r-sm) 0;
-      padding: 1rem 1.2rem; margin: 1.2rem 0;
-    }
-    .concept-box.styx { border-left-color: var(--accent); background: var(--accent-dim); }
-    .concept-box.gold  { border-left-color: var(--amber); background: var(--amber-bg); }
-    .concept-box .concept-label {
-      font-family: var(--font-m); font-size: .68rem; letter-spacing: .1em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: .4rem; display: block;
-    }
-    .concept-box.styx .concept-label { color: var(--accent); }
-    .concept-box.gold .concept-label { color: var(--amber); }
-    .concept-box p { margin: 0; color: var(--text-dim); font-size: .95rem; }
-
-    /* ── ANNOTATED CODE ── */
-    .ann {
-      display: inline-block; font-family: var(--font-m); font-size: .72rem;
-      background: var(--accent-dim); color: var(--accent);
-      border: 1px solid var(--accent-dim); border-radius: 3px;
-      padding: .05rem .35rem; margin-left: .5rem; vertical-align: middle;
-      white-space: nowrap;
-    }
-    .ann.gold   { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-bg); }
-    .ann.violet { background: var(--violet-bg); color: var(--violet); border-color: var(--violet-bg); }
-
-    /* ── OPERATOR TABLE ── */
-    .op-table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 1rem 0; }
-    .op-table th, .op-table td { border-bottom: 1px solid var(--border); padding: .5rem .8rem; text-align: left; }
-    .op-table th { font-family: var(--font-m); font-size: .67rem; letter-spacing: .06em; text-transform: uppercase; color: var(--text-faint); }
-    .op-table td:first-child { font-family: var(--font-m); color: var(--accent); }
-
-    /* ── TRUTH TABLE ── */
-    .truth-table { width: 100%; border-collapse: collapse; font-size: .88rem; margin: 1rem 0; }
-    .truth-table th {
-      font-family: var(--font-m); font-size: .67rem; letter-spacing: .06em; text-transform: uppercase;
-      color: var(--text-faint); border-bottom: 2px solid var(--border); padding: .4rem .7rem; text-align: center;
-    }
-    .truth-table td { padding: .4rem .7rem; text-align: center; border-bottom: 1px solid var(--border); }
-    .truth-table td.t { color: var(--good); font-family: var(--font-m); font-weight: 600; }
-    .truth-table td.f { color: var(--bad); font-family: var(--font-m); }
-
-    /* ── FLOW DIAGRAM ── */
-    .flow-diagram { width: 100%; max-width: 380px; margin: 1.5rem auto; display: block; }
-
-    /* ── THEORY EXAMPLES ── */
-    details.theory-ex {
-      border: 1px solid var(--border); border-radius: var(--r-sm);
-      background: var(--bg-soft); margin: .8rem 0;
-    }
-    details.theory-ex summary {
-      cursor: pointer; list-style: none; padding: .7rem 1rem;
-      font-family: var(--font-b); font-size: .88rem; font-weight: 600;
-      color: var(--text);
-      display: flex; align-items: center; gap: .6rem;
-    }
-    details.theory-ex summary::-webkit-details-marker { display: none; }
-    details.theory-ex summary::before { content: '›'; color: var(--accent); transition: transform .2s; }
-    details.theory-ex[open] summary::before { transform: rotate(90deg); }
-    details.theory-ex[open] summary { border-bottom: 1px solid var(--border); }
-    details.theory-ex .ex-body { padding: 1rem 1.1rem; }
-    details.theory-ex pre { margin: .6rem 0 0; }
-    details.theory-ex .ex-body p { color: var(--text-dim); font-size: .93rem; margin: 0 0 .6rem; }
-
-    /* ── FOR VS WHILE CARDS ── */
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin: 1.2rem 0; }
-    @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
-    .two-col-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 1.2rem; }
-    .tc-label {
-      font-family: var(--font-m); font-size: .68rem; letter-spacing: .08em;
-      text-transform: uppercase; margin-bottom: .6rem; display: block;
-    }
-    .tc-label.for   { color: var(--accent); }
-    .tc-label.while { color: var(--amber); }
-    .two-col-card ul { color: var(--text-dim); font-size: .88rem; padding-left: 1.2rem; margin: 0; line-height: 1.8; }
-
-    /* ── WHILE ANATOMY LIST ── */
-    .anatomy-list { counter-reset: anatomy; list-style: none; padding: 0; margin: 1rem 0; display: flex; flex-direction: column; gap: .5rem; }
-    .anatomy-list li {
-      counter-increment: anatomy;
-      display: flex; align-items: flex-start; gap: .8rem;
-      padding: .6rem .9rem; background: var(--bg-soft);
-      border: 1px solid var(--border); border-radius: var(--r-sm);
-    }
-    .anatomy-list li::before {
-      content: counter(anatomy);
-      font-family: var(--font-m); font-size: .8rem; min-width: 1.4rem; text-align: center;
-      background: var(--accent-dim); color: var(--accent);
-      border-radius: 3px; padding: .15rem .3rem; flex-shrink: 0; margin-top: .05rem;
-    }
-    .anatomy-list li strong { font-family: var(--font-m); color: var(--text); font-size: .9rem; display: block; margin-bottom: .15rem; }
-    .anatomy-list li span { color: var(--text-dim); font-size: .88rem; }
-
-    .theory-h3 { font-size: 1.05rem; font-weight: 700; margin: 1.6rem 0 .7rem; color: var(--text); font-family: var(--font-d); }
-
-    /* ── OUTPUT BLOCK ── */
-    .output-block {
-      background: var(--bg-soft); border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      border-radius: 0 var(--r-sm) var(--r-sm) 0;
-      padding: .6rem 1rem; margin: .5rem 0 1rem;
-      font-family: var(--font-m); font-size: .84rem; color: var(--text);
-      white-space: pre;
-    }
-    .output-label {
-      font-family: var(--font-m); font-size: .63rem; letter-spacing: .08em;
-      text-transform: uppercase; color: var(--accent); display: block; margin-bottom: .3rem;
-    }
-
-    /* ── WARN / TIP BOXES ── */
-    .warn-box, .tip-box {
-      border-radius: var(--r-sm); padding: 1rem 1.2rem; margin: 1.2rem 0;
-      font-size: .93rem;
-    }
-    .warn-box {
-      background: var(--bad-bg); border: 1px solid rgba(248,113,113,.3);
-    }
-    .warn-box .box-label { color: var(--bad); }
-    .tip-box {
-      background: var(--accent-dim); border: 1px solid rgba(139,143,245,.3);
-    }
-    .tip-box .box-label { color: var(--accent); }
-    .box-label {
-      font-family: var(--font-m); font-size: .68rem; letter-spacing: .1em;
-      text-transform: uppercase; display: block; margin-bottom: .5rem;
-    }
-    .warn-box p, .tip-box p { margin: 0; color: var(--text-dim); }
-    .warn-box code, .tip-box code { font-size: .85em; }
+    .t-detail { margin-top: .3rem; color: var(--text-dim); font-size: .84rem; }
 
     /* ── CALL CELL ── */
     .call-cell {
-      margin-top: .7rem; display: flex; align-items: center; gap: .5rem;
+      display: flex; align-items: center; gap: .5rem; margin-top: .9rem;
       background: var(--bg-soft); border: 1px solid var(--border);
       border-radius: var(--r-sm); padding: .4rem .7rem;
     }
-    .call-cell-prompt { font-family: var(--font-m); font-size: .8rem; color: var(--accent); flex-shrink: 0; }
+    .call-cell-prompt { font-family: var(--font-m); font-size: .85rem; color: var(--accent); user-select: none; }
     .call-cell-input {
-      flex: 1; background: transparent; border: none; outline: none;
-      font-family: var(--font-m); font-size: .84rem; color: var(--text);
-      min-width: 0;
+      flex: 1; background: none; border: none; outline: none;
+      font-family: var(--font-m); font-size: .85rem; color: var(--text);
     }
     .call-cell-input::placeholder { color: var(--text-faint); }
     .call-cell-btn {
-      background: var(--accent); border: none; border-radius: 4px;
-      color: var(--bg); font-family: var(--font-m); font-size: .75rem;
-      font-weight: 600; padding: .25rem .6rem; cursor: pointer; flex-shrink: 0;
+      background: none; border: none; cursor: pointer; color: var(--accent);
+      font-size: 1rem; padding: 0 .3rem; border-radius: 3px;
+      transition: background .15s;
     }
-    .call-cell-btn:disabled { opacity: .5; cursor: default; }
+    .call-cell-btn:hover { background: rgba(29,185,84,.12); }
     .call-cell-output {
-      display: none; margin-top: .4rem;
-      font-family: var(--font-m); font-size: .83rem;
-      padding: .35rem .7rem; border-radius: var(--r-sm);
-      background: var(--surface); border: 1px solid var(--border); color: var(--text);
-      white-space: pre-wrap; word-break: break-all;
+      font-family: var(--font-m); font-size: .83rem; color: var(--accent-strong);
+      padding: .35rem .7rem; border-radius: var(--r-sm); display: none; margin-top: .3rem;
+      background: var(--bg-soft); border: 1px solid var(--border);
     }
-    .call-cell-output.err { color: var(--bad); }
     .call-cell-output.show { display: block; }
+    .call-cell-output.err  { color: var(--bad); border-color: var(--bad); }
 
-    /* ── FLOW DIAGRAMS GRID ── */
-    .flow-grid { display: flex; flex-wrap: wrap; gap: 1.2rem; justify-content: center; margin: 1.2rem 0; }
-    .flow-grid > div { flex: 1 1 220px; max-width: 320px; }
-    .flow-grid .flow-caption {
-      text-align: center; font-family: var(--font-m); font-size: .7rem;
-      letter-spacing: .06em; text-transform: uppercase;
-      color: var(--text-faint); margin-top: .4rem;
+    /* ── SOLUTION DETAILS ── */
+    details.solution {
+      margin-top: 1.1rem; border: 1px solid var(--border);
+      border-radius: var(--r-sm); background: rgba(29,185,84,.03);
     }
+    details.solution summary {
+      cursor: pointer; list-style: none; padding: .55rem .9rem;
+      font-family: var(--font-m); font-size: .73rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--accent);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    details.solution summary::-webkit-details-marker { display: none; }
+    details.solution summary::before { content: "▸"; transition: transform .2s ease; }
+    details.solution[open] summary::before { transform: rotate(90deg); }
+    details.solution[open] summary { border-bottom: 1px solid var(--border); }
+    details.solution .sol-body { padding: .9rem; }
+    details.solution pre { margin: 0; }
 
-    /* ── SECTION DIVIDER ── */
-    .theory-divider {
-      border: none; border-top: 1px solid var(--border);
-      margin: 2rem 0;
-    }
-
-    /* ── POTION CARD (Desafío Final) ── */
-    .potion-card {
-      background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent);
-      border-radius: var(--r); padding: 2rem;
-    }
-    .potion-title { font-family: var(--font-d); font-weight: 800; font-size: 1.3rem; color: var(--text); margin-bottom: .2rem; }
-    .potion-flavor { font-style: italic; color: var(--text-dim); font-size: .9rem; margin-bottom: 1.2rem; max-width: 70ch; }
-    ul.reqs { padding-left: 1.2rem; color: var(--text-dim); display: flex; flex-direction: column; gap: .3rem; }
-    ul.reqs li { font-size: .95rem; }
-    ul.reqs code { color: var(--accent); background: var(--bg-soft); }
+    /* ── SEND STATUS ── */
+    .send-status { font-family: var(--font-m); font-size: .8rem; color: var(--accent); margin-top: .5rem; }
 
     /* ── SITE NAV ── */
     .snav-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,.55);
-      z-index: 8999; display: none;
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.6); backdrop-filter: blur(3px); z-index: 8999;
     }
     .snav-overlay.open { display: block; }
-
     .snav-tab {
       position: fixed; left: 0; top: 50%; transform: translateY(-50%);
-      z-index: 9001;
-      width: 26px; height: 80px;
-      background: var(--surface);
-      border: 1px solid var(--border); border-left: none;
-      border-radius: 0 8px 8px 0;
-      box-shadow: 2px 0 10px rgba(0,0,0,.35);
-      color: var(--text-dim); cursor: pointer;
-      font-family: var(--font-m); font-size: .6rem; letter-spacing: .1em;
-      writing-mode: vertical-rl; text-orientation: mixed;
+      z-index: 9001; width: 26px; height: 80px;
+      background: rgba(24,24,24,.95); border: 1px solid rgba(29,185,84,.25);
+      border-left: none; border-radius: 0 6px 6px 0;
+      color: var(--accent); cursor: pointer;
+      font-family: var(--font-m); font-size: .6rem; letter-spacing: .12em;
+      writing-mode: vertical-rl;
       display: flex; align-items: center; justify-content: center;
-      transition: color .2s, border-color .2s;
+      transition: border-color .2s;
     }
-    .snav-tab:hover { color: var(--accent); border-color: var(--accent); }
-
+    .snav-tab:hover { border-color: var(--accent); }
     .snav-panel {
-      position: fixed; left: 0; top: 0; bottom: 0; width: 252px;
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      box-shadow: 4px 0 24px rgba(0,0,0,.45);
-      z-index: 9000;
-      transform: translateX(-100%);
-      transition: transform .24s cubic-bezier(.25,.8,.25,1);
-      display: flex; flex-direction: column;
-      overflow-y: auto;
+      position: fixed; left: 0; top: 0; bottom: 0; width: 248px;
+      background: rgba(18,18,18,.97);
+      border-right: 1px solid rgba(29,185,84,.15);
+      backdrop-filter: blur(12px); z-index: 9000;
+      transform: translateX(-100%); transition: transform .24s cubic-bezier(.25,.8,.25,1);
+      display: flex; flex-direction: column; overflow-y: auto;
     }
     .snav-panel.open { transform: translateX(0); }
-
     .snav-header {
       padding: 1.4rem 1.1rem 1rem;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid rgba(29,185,84,.1);
       display: flex; align-items: center; justify-content: space-between;
     }
-    .snav-logo {
-      font-family: var(--font-d); font-weight: 700; font-size: .85rem;
-      color: var(--text);
-    }
+    .snav-logo { font-family: var(--font-m); font-size: .8rem; letter-spacing: .12em; color: var(--accent); }
     .snav-close {
-      background: none; border: none; color: var(--text-dim); cursor: pointer;
-      font-size: 1.1rem; line-height: 1; padding: .2rem .4rem;
-      border-radius: 3px; transition: color .15s;
+      background: none; border: none; color: var(--text-dim);
+      cursor: pointer; font-size: 1.1rem; line-height: 1;
+      padding: .2rem .4rem; border-radius: 3px;
     }
-    .snav-close:hover { color: var(--text); }
-
     .snav-body { padding: 1rem .8rem 2rem; flex: 1; }
-
     .snav-section-label {
-      font-family: var(--font-m); font-size: .6rem; letter-spacing: .12em;
+      font-family: var(--font-m); font-size: .6rem; letter-spacing: .18em;
       text-transform: uppercase; color: var(--text-faint);
-      margin: 1.2rem 0 .4rem .3rem; display: block;
+      margin: 0 0 .5rem .3rem; display: block;
     }
-    .snav-unit {
+    .snav-unit, .snav-anchor {
       display: flex; align-items: center; gap: .6rem;
-      font-family: var(--font-m); font-size: .74rem; color: var(--text-dim);
-      text-decoration: none; padding: .5rem .7rem; border-radius: var(--r-sm);
-      border-left: 2px solid transparent;
-      transition: color .15s, border-color .15s, background .15s;
-      margin-bottom: .2rem;
-    }
-    .snav-unit:hover { color: var(--text); background: var(--bg-soft); }
-    .snav-unit.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-dim); }
-    .snav-unit .u-num {
-      font-size: .6rem; color: inherit; opacity: .7; min-width: 1.2rem; text-align: right;
-    }
-
-    .snav-divider { border: none; border-top: 1px solid var(--border); margin: 1rem 0 .8rem; }
-
-    .snav-anchor {
-      display: block; font-family: var(--font-m); font-size: .69rem;
+      font-family: var(--font-m); font-size: .74rem;
       color: var(--text-dim); text-decoration: none;
-      padding: .38rem .7rem .38rem 1.3rem; border-radius: var(--r-sm);
-      transition: color .15s, background .15s; margin-bottom: .05rem;
-      position: relative;
+      padding: .5rem .7rem; border-radius: 4px;
+      border-left: 2px solid transparent;
+      background: transparent; margin-bottom: .2rem;
+      transition: color .15s, background .15s;
     }
-    .snav-anchor::before {
-      content: ''; position: absolute; left: .6rem; top: 50%; transform: translateY(-50%);
-      width: 4px; height: 4px; border-radius: 50%;
-      background: var(--border-strong); transition: background .15s;
-    }
-    .snav-anchor:hover { color: var(--accent); background: var(--accent-dim); }
-    .snav-anchor:hover::before { background: var(--accent); }
+    .snav-unit:hover, .snav-anchor:hover { color: var(--text); background: rgba(29,185,84,.06); }
+    .snav-unit.active { color: var(--accent); border-left-color: var(--accent); background: rgba(29,185,84,.08); }
     .snav-anchor.current { color: var(--accent); }
-    .snav-anchor.current::before { background: var(--accent); }
-
-    /* ══ RESPONSIVE ══════════════════════════════════════════ */
+    .u-num { font-size: .6rem; opacity: .7; min-width: 1.8rem; text-align: right; }
+    .snav-divider { border: none; border-top: 1px solid var(--border); margin: .6rem 0; }
     @media (max-width: 600px) {
-      /* Hero */
-      .hero-sub { font-size: .95rem; }
-      .hero-lore { font-size: .85rem; padding: .7rem 1rem; }
-
-      /* Chamber */
-      .chamber { padding: 3rem 1rem; }
-      .chamber-head h2 { font-size: 1.5rem; }
-
-      /* Quiz river labels: wrap and center */
-      .river-labels { flex-wrap: wrap; gap: .25rem .5rem; justify-content: center; }
-      .river-labels span { font-size: .6rem; }
-
-      /* Quiz status row */
-      .status-row { flex-direction: column; align-items: flex-start; gap: .3rem; }
-
-      /* Theory tabs: wrap */
-      .theory-tabs { flex-wrap: wrap; }
-      .theory-tab { font-size: .82rem; padding: .5rem .8rem; }
-
-      /* Options */
-      .option-btn { font-size: .9rem; padding: .65rem .9rem; }
-      .q-text { font-size: .97rem; }
-
-      /* Cards */
-      .card { padding: 1.2rem 1rem; }
-      .summary-card { padding: 1.5rem 1rem; }
-      .big-score { font-size: 2rem; }
-
-      /* Result chips: full width on mobile */
-      .result-chip { flex: 1 1 100%; }
-
-      /* Boons */
-      .boon { padding: 1.2rem 1rem; }
-      .answer-box .CodeMirror { min-height: 100px; font-size: .8rem; }
-
-      /* Call cell */
-      .call-cell { gap: .35rem; padding: .35rem .55rem; }
-      .call-cell-input { font-size: .78rem; }
-
-      /* Verify row */
-      .verify-row { gap: .5rem; }
-
-      /* Test items */
-      .t-header { flex-direction: column; align-items: flex-start; gap: .2rem; }
-
-      /* Potion */
-      .potion-card { padding: 1.2rem 1rem; }
-
-      /* pre blocks inside questions: scroll horizontally */
-      pre { overflow-x: auto; font-size: .78rem; }
-
-      /* Nav panel: full width on mobile */
-      .snav-panel { width: 100%; }
-
-      /* Name gate */
-      #name-gate > div { padding: 1.8rem 1.2rem; }
-
-      /* CTA row */
-      .cta-row { flex-direction: column; align-items: center; }
-      .cta-row .btn { width: 100%; max-width: 320px; }
+      .snav-tab { height: 60px; }
     }
 
-    @media (max-width: 400px) {
-      .hero-title { font-size: 1.9rem; }
-      .theory-tab { padding: .4rem .6rem; font-size: .78rem; }
-      .snav-tab { height: 60px; }
+    footer {
+      max-width: var(--content-w); margin: 0 auto;
+      padding: 3rem 1.5rem 0; text-align: center;
+      color: var(--text-faint); font-family: var(--font-m); font-size: .74rem; opacity: .7;
+    }
+
+    /* ── NAME AUTOCOMPLETE ── */
+    .name-ac-item {
+      padding: .6rem .9rem;
+      color: var(--text-dim);
+      font-size: .9rem;
+      font-family: var(--font-m);
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+    }
+    .name-ac-item:last-child { border-bottom: none; }
+    .name-ac-item:hover, .name-ac-item.ac-active {
+      background: rgba(29,185,84,.12);
+      color: var(--accent-strong);
     }
   </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════════════
-     UNIDAD 3 — ESTRUCTURAS DE CONTROL
-     ══════════════════════════════════════════════════════════ -->
-
 <!-- ══ NAME GATE ══════════════════════════════════════════════ -->
 <div id="name-gate" style="
   min-height:100vh; display:flex; align-items:center; justify-content:center;
-  background:var(--bg);
-  padding:2rem;
+  background:var(--bg); padding:2rem;
 ">
   <div style="
     max-width:420px; width:100%;
@@ -751,31 +492,45 @@
     <div style="font-family:var(--font-m);font-size:.7rem;letter-spacing:.14em;color:var(--text-faint);text-transform:uppercase;margin-bottom:1.4rem">
       Pensamiento Computacional · FIUBA
     </div>
-    <h1 style="font-family:var(--font-d);font-weight:800;font-size:1.6rem;color:var(--text);margin:0 0 .4rem">
-      Unidad 3 — <span style="color:var(--accent)">Estructuras de Control</span>
+    <div style="font-size:2rem;margin-bottom:.8rem">🎵</div>
+    <h1 style="font-weight:800;font-size:1.6rem;color:var(--text);margin:0 0 .4rem">
+      Unidad 4 — <span style="color:var(--accent)">Estructuras de Datos</span>
     </h1>
     <p style="color:var(--text-dim);font-size:.92rem;margin:0 0 1.8rem;line-height:1.6">
-      Antes de sumergirte en las corrientes, contanos quién sos.
+      Antes de empezar, contanos quién sos.
     </p>
     <label style="display:block;text-align:left;font-family:var(--font-m);font-size:.78rem;color:var(--text-faint);margin-bottom:.35rem">
       Nombre completo
     </label>
-    <input id="name-input" type="text" placeholder="Ej: María García"
-      style="
-        width:100%;box-sizing:border-box;
-        background:var(--bg);border:1px solid var(--border);
-        border-radius:6px;padding:.65rem .9rem;
-        color:var(--text);font-family:var(--font-m);font-size:.95rem;
-        outline:none;margin-bottom:1rem;
-      "
-      onkeydown="if(event.key==='Enter')startSession()"
-    />
+    <div style="position:relative;margin-bottom:1rem;">
+      <input id="name-input" type="text" placeholder="Buscá tu nombre o escribilo..."
+        autocomplete="off"
+        style="
+          width:100%;box-sizing:border-box;
+          background:var(--bg);border:1px solid var(--border);
+          border-radius:6px;padding:.65rem .9rem;
+          color:var(--text);font-family:var(--font-m);font-size:.95rem;
+          outline:none;
+        "
+        oninput="nameAcFilter()"
+        onfocus="nameAcFilter()"
+        onblur="setTimeout(nameAcHide,180)"
+        onkeydown="nameAcKeydown(event)"
+      />
+      <div id="name-ac-list" style="
+        display:none;position:absolute;left:0;right:0;top:100%;
+        background:var(--surface);border:1px solid var(--border);
+        border-top:none;border-radius:0 0 6px 6px;
+        max-height:220px;overflow-y:auto;z-index:100;
+        text-align:left;
+      "></div>
+    </div>
     <button onclick="startSession()" style="
       width:100%;padding:.75rem;border:none;border-radius:6px;
-      background:var(--accent);color:#fff;cursor:pointer;
-      font-family:var(--font-b);font-weight:600;font-size:.92rem;
+      background:var(--accent);color:#000;cursor:pointer;
+      font-family:var(--font-b);font-weight:700;font-size:.95rem;
     ">
-      Sumergirse →
+      Empezar →
     </button>
     <p id="name-gate-err" style="color:var(--bad);font-size:.8rem;margin:.6rem 0 0;display:none">
       Ingresá tu nombre para continuar.
@@ -789,417 +544,83 @@
 <!-- ══ HERO ══════════════════════════════════════════════════ -->
 <section id="hero">
   <div class="hero-badge">Pensamiento Computacional · Curso 11: Retamozo, Pratto</div>
-  <h1 class="hero-title">Estructuras de <span>Control</span></h1>
-  <p class="hero-sub">Unidad 3</p>
+  <h1 class="hero-title">Estructuras de <span>Datos</span></h1>
+  <p class="hero-sub">Unidad 4 (Pt. 1) — Cadenas, Rangos y Tuplas</p>
   <div class="scroll-cue">▼</div>
 </section>
 
-<!-- ══ PRÓLOGO: TEORÍA ═══════════════════════════════════════ -->
-<div class="section-bg-prologo">
-  <div class="chamber" id="prologo">
-    <div class="chamber-head">
-      </div>
-
-    <div class="theory-tabs" role="tablist">
-      <button class="theory-tab active" role="tab" aria-controls="panel-decisiones" aria-selected="true"
-              onclick="theoryTab('decisiones')">if · elif · else</button>
-      <button class="theory-tab" role="tab" aria-controls="panel-ciclos" aria-selected="false"
-              onclick="theoryTab('ciclos')">for · while</button>
-    </div>
-
-    <!-- ── PANEL: DECISIONES ── -->
-    <div class="theory-panel active" id="panel-decisiones" role="tabpanel">
-
-      <!-- 1. EXPRESIONES BOOLEANAS -->
-      <h3 class="theory-h3">Expresiones Booleanas</h3>
-      <p style="color:var(--bone-dim);font-size:.97rem;max-width:72ch">
-        Las expresiones booleanas solo pueden tener dos valores: <code>True</code> (verdadero) o <code>False</code> (falso).
-        Son complementarios: algo que no es <code>True</code> es <code>False</code>, y viceversa.
-        Python tiene un tipo de dato <code>bool</code> para representarlos.
-      </p>
-
-      <!-- 2. OPERADORES DE COMPARACIÓN -->
-      <h3 class="theory-h3">Operadores de Comparación</h3>
-      <p style="color:var(--bone-dim);font-size:.97rem;max-width:72ch;margin-bottom:.8rem">
-        Sirven para comparar valores y construir una pregunta en forma de código. Siempre devuelven <code>True</code> o <code>False</code>.
-      </p>
-
-      <!-- 3. OPERADORES LÓGICOS -->
-      <h3 class="theory-h3">Operadores Lógicos</h3>
-      <p style="color:var(--bone-dim);font-size:.97rem;max-width:72ch;margin-bottom:.8rem">
-        Permiten combinar expresiones booleanas para construir condiciones más complejas.
-      </p>
-      <table class="op-table">
-        <thead><tr><th>Operador</th><th>Significado</th></tr></thead>
-        <tbody>
-          <tr><td>a and b</td><td>True solo si <strong>ambos</strong> son True. Si alguno es False, devuelve False.</td></tr>
-          <tr><td>a or b</td><td>True si <strong>al menos uno</strong> es True. False solo si ambos son False.</td></tr>
-          <tr><td>not a</td><td>Invierte el valor: True → False, False → True.</td></tr>
-        </tbody>
-      </table>
-
-      <hr class="theory-divider">
-
-      <!-- 4. IF -->
-      <h3 class="theory-h3">Decisión simple — if</h3>
-      <p style="color:var(--bone-dim);font-size:.97rem;max-width:72ch">
-        Ejecuta un bloque de código <em>solo si</em> la condición es verdadera. Si es falsa, no hace nada.
-      </p>
-
-      <pre>def imprimir_si_positivo(x):
-    <span style="color:var(--violet);font-weight:600">if</span> x > 0:
-        <span style="color:var(--gold)">print</span>(<span style="color:var(--styx)">"Número positivo"</span>)
-
-imprimir_si_positivo(5)
-imprimir_si_positivo(-5)</pre>
-      <div class="output-block"><span class="output-label">salida</span>Número positivo
-</div>
-
-      <!-- 5. IF-ELSE -->
-      <h3 class="theory-h3">Dos caminos — if / else</h3>
-      <p style="color:var(--bone-dim);font-size:.97rem;max-width:72ch">
-        Cuando queremos hacer algo diferente si la condición es falsa, agregamos <code>else</code>.
-        Los dos bloques son caminos paralelos: <strong>nunca se ejecutan ambos</strong>.
-      </p>
-    
-
-      <pre>def imprimir_si_positivo_o_no(x):
-    <span style="color:var(--violet);font-weight:600">if</span> x > 0:
-        <span style="color:var(--gold)">print</span>(<span style="color:var(--styx)">"Número positivo"</span>)
-    <span style="color:var(--violet);font-weight:600">else</span>:
-        <span style="color:var(--gold)">print</span>(<span style="color:var(--styx)">"Número no positivo"</span>)
-
-imprimir_si_positivo_o_no(5)
-imprimir_si_positivo_o_no(-5)
-imprimir_si_positivo_o_no(0)</pre>
-      <div class="output-block"><span class="output-label">salida</span>Número positivo
-Número no positivo
-Número no positivo</div>
-
-      <!-- 6. IF-ELIF-ELSE -->
-      <h3 class="theory-h3">Múltiples caminos — if / elif / else</h3>
-      <p style="color:var(--bone-dim);font-size:.97rem;max-width:72ch">
-        <code>elif</code> es una abreviatura de <em>else if</em>. Python evalúa las condiciones <strong>en orden</strong>: en cuanto una es verdadera, ejecuta ese bloque y <strong>no evalúa el resto</strong>.
-      </p>
-     
-      <pre>def clasificar(x):
-    <span style="color:var(--violet);font-weight:600">if</span> x > 0:
-        <span style="color:var(--gold)">print</span>(<span style="color:var(--styx)">"Número positivo"</span>)
-    <span style="color:var(--violet);font-weight:600">elif</span> x == 0:
-        <span style="color:var(--gold)">print</span>(<span style="color:var(--styx)">"Número cero"</span>)
-    <span style="color:var(--violet);font-weight:600">else</span>:
-        <span style="color:var(--gold)">print</span>(<span style="color:var(--styx)">"Número negativo"</span>)
-
-clasificar(5)
-clasificar(0)
-clasificar(-3)</pre>
-      <div class="output-block"><span class="output-label">salida</span>Número positivo
-Número cero
-Número negativo</div>
-
-      <!-- EJEMPLOS COLAPSABLES -->
-      <h3 class="theory-h3">Más ejemplos</h3>
-
-      <details class="theory-ex">
-        <summary>Ejemplo — Día hábil con and / not</summary>
-        <div class="ex-body">
-          <p>Un día es hábil si va de lunes (1) a viernes (5) <em>y</em> no es feriado.</p>
-          <pre>def es_habil(dia, feriado):
-    if 1 &lt;= dia &lt;= 5 and not feriado:
-        return True
-    return False</pre>
-        </div>
-      </details>
-
-      <details class="theory-ex">
-        <summary>Ejemplo — Clasificar temperatura con varios elif</summary>
-        <div class="ex-body">
-          <p>Python entra al <strong>primer</strong> bloque cuya condición sea True y no evalúa el resto.</p>
-          <pre>def clima(temp):
-    if temp &lt; 0:
-        print("Congelando")
-    elif temp &lt; 15:
-        print("Frío")
-    elif temp &lt; 25:
-        print("Templado")
-    else:
-        print("Calor")
-
-clima(-5)   # → Congelando
-clima(10)   # → Frío
-clima(22)   # → Templado
-clima(35)   # → Calor</pre>
-        </div>
-      </details>
-
-    </div><!-- /panel-decisiones -->
-
-    <!-- ── PANEL: CICLOS ── -->
-    <div class="theory-panel" id="panel-ciclos" role="tabpanel">
-
-      <div class="concept-box styx">
-        <span class="concept-label">Concepto</span>
-        <p>Un <strong>ciclo</strong> repite un bloque de código. <code>for</code> se usa cuando sabés cuántas veces repetir (ciclo <em>definido</em>); <code>while</code> cuando repetís hasta que una condición cambie (ciclo <em>indefinido</em>).</p>
-      </div>
-
-      <!-- FOR -->
-      <h3 class="theory-h3">Ciclo for</h3>
-      <p style="color:var(--bone-dim);font-size:.97rem;max-width:72ch">
-        La variable toma el valor de cada elemento del iterable en cada iteración.
-        Una vez evaluado el iterable, se sabe cuántas veces se ejecuta el cuerpo.
-      </p>
-
-      <h3 class="theory-h3">range()</h3>
-      <table class="op-table">
-        <thead><tr><th>Forma</th><th>Genera</th><th>Ejemplo</th></tr></thead>
-        <tbody>
-          <tr><td>range(n)</td><td>0, 1, …, n-1</td><td><code>range(5)</code> → 0,1,2,3,4</td></tr>
-          <tr><td>range(a, b)</td><td>a, a+1, …, b-1</td><td><code>range(1,11)</code> → 1…10</td></tr>
-          <tr><td>range(a, b, paso)</td><td>a, a+paso, … (hasta antes de b)</td><td><code>range(0,10,2)</code> → 0,2,4,6,8</td></tr>
-        </tbody>
-      </table>
-
-      <pre><span style="color:var(--violet);font-weight:600">for</span> i <span style="color:var(--violet);font-weight:600">in</span> <span style="color:var(--gold)">range</span>(1, 11):
-    <span style="color:var(--gold)">print</span>(i)</pre>
-      <div class="output-block"><span class="output-label">salida</span>1
-2
-3
-4
-5
-6
-7
-8
-9
-10</div>
-
-      <details class="theory-ex">
-        <summary>Ejemplo — Imprimir pares entre a y b</summary>
-        <div class="ex-body">
-          <pre>def imprimir_pares(a, b):
-    for i in range(a, b):
-        if i % 2 == 0:
-            print(i)
-
-imprimir_pares(1, 15)</pre>
-          <div class="output-block"><span class="output-label">salida</span>2  4  6  8  10  12  14</div>
-        </div>
-      </details>
-
-      <details class="theory-ex">
-        <summary>Ejemplo — Cuenta regresiva con paso negativo</summary>
-        <div class="ex-body">
-          <pre>def imprimir_inverso():
-    for i in range(10, 0, -1):
-        print(i)
-
-imprimir_inverso()</pre>
-          <div class="output-block"><span class="output-label">salida</span>10  9  8  7  6  5  4  3  2  1</div>
-        </div>
-      </details>
-
-      <details class="theory-ex">
-        <summary>Iterables — for sobre listas y strings</summary>
-        <div class="ex-body">
-          <p>El <code>for</code> puede recorrer cualquier iterable, no solo rangos:</p>
-          <pre>for num in [1, 3, 7, 5, 2]:
-    print(num)   # → 1, 3, 7, 5, 2
-
-for c in "Hola":
-    print(c)     # → H, o, l, a</pre>
-        </div>
-      </details>
-
-      <hr class="theory-divider">
-
-      <!-- WHILE -->
-      <h3 class="theory-h3">Ciclo while</h3>
-      <p style="color:var(--bone-dim);font-size:.97rem;max-width:72ch">
-        El cuerpo se ejecuta <strong>mientras</strong> la expresión sea <code>True</code>. No se sabe de antemano cuántas iteraciones habrá.
-      </p>
-      <pre><span style="color:var(--violet);font-weight:600">while</span> &lt;expresion&gt;:
-    &lt;cuerpo&gt;</pre>
-
-      <h3 class="theory-h3">Los 4 elementos necesarios</h3>
-      <p style="color:var(--bone-dim);font-size:.93rem;max-width:72ch;margin-bottom:.8rem">
-        Para que el while funcione correctamente y no caiga en un loop infinito, necesitás estos cuatro elementos:
-      </p>
-      <ol class="anatomy-list">
-        <li><strong>Estado previo</strong><span>Inicializá las variables que participan de la condición <em>antes</em> del while.</span></li>
-        <li><strong>Condición</strong><span>La expresión booleana que se evalúa antes de cada iteración.</span></li>
-        <li><strong>Cuerpo</strong><span>El bloque que se ejecuta mientras la condición sea True.</span></li>
-        <li><strong>Paso / actualización</strong><span>Modificá las variables de la condición <em>dentro</em> del while — sin esto, loop infinito.</span></li>
-      </ol>
-
-      <hr class="theory-divider">
-
-      <!-- CONSIDERACIONES -->
-      <h3 class="theory-h3">Consideraciones del while</h3>
-
-      <div class="warn-box" style="margin-bottom:1rem">
-        <span class="box-label">Cuidado · while True</span>
-        <p><code>while True</code> crea un loop infinito porque la condición nunca cambia. Si no hay un <code>break</code> bien ubicado adentro, el programa se "cuelga". En esta materia <strong>evitá usarlo</strong> — usá siempre una condición significativa.</p>
-        <pre style="margin-top:.7rem;font-size:.83rem">while True:        # ← mala práctica
-    print("Hola") # corre para siempre</pre>
-      </div>
-
-      <div class="warn-box">
-        <span class="box-label">Cuidado · Actualizá al final del cuerpo</span>
-        <p>La actualización debe ser la <strong>última línea</strong> del cuerpo. Si la ponés primero, el ciclo procesa un valor ya modificado desde la primera iteración.</p>
-        <pre style="margin-top:.7rem;font-size:.83rem"># MAL — actualiza antes de usar el valor
-numero = 0
-while numero &lt; 3:
-    numero += 1   # se modifica primero
-    print(numero) # imprime 1, 2, 3 (saltea el 0)
-
-# BIEN
-numero = 0
-while numero &lt; 3:
-    print(numero) # imprime 0, 1, 2
-    numero += 1   # actualiza al final</pre>
-      </div>
-
-      <div class="tip-box" style="margin-top:1rem">
-        <span class="box-label">Patrón genérico recomendado</span>
-        <p>Una forma clara de plantear cualquier while:</p>
-        <pre style="margin-top:.7rem;font-size:.83rem">&lt;setear condición&gt;           # estado previo
-
-while &lt;condición&gt;:
-    &lt;hacer algo&gt;             # cuerpo
-    &lt;actualizar condición&gt;   # paso</pre>
-      </div>
-
-      <!-- BREAK / CONTINUE / RETURN -->
-      <h3 class="theory-h3">break · continue · return</h3>
-      <div class="warn-box" style="margin-bottom:1rem">
-        <span class="box-label">Advertencia</span>
-        <p>El comportamiento de un while no debería depender de <code>break</code> ni <code>continue</code>. Usalos solo cuando agreguen funcionalidad real — no para compensar una condición mal planteada.</p>
-      </div>
-
-      <details class="theory-ex">
-        <summary>break — salir del ciclo anticipadamente</summary>
-        <div class="ex-body">
-          <p>Detiene el ciclo inmediatamente, aunque la condición siga siendo True.</p>
-          <pre>for numero in range(10, 31):
-    if numero % 3 == 0:
-        print("Primer múltiplo de 3:", numero)
-        break</pre>
-          <div class="output-block"><span class="output-label">salida</span>Primer múltiplo de 3: 12</div>
-        </div>
-      </details>
-
-      <details class="theory-ex">
-        <summary>continue — saltar el resto de la iteración actual</summary>
-        <div class="ex-body">
-          <p>Pasa a la siguiente iteración sin ejecutar el código que sigue en el cuerpo.</p>
-          <pre>for numero in range(1, 21):
-    if numero % 4 == 0:
-        continue
-    print(numero)</pre>
-          <div class="output-block"><span class="output-label">salida (sin múltiplos de 4)</span>1  2  3  5  6  7  9  10  11  13  14  15  17  18  19</div>
-        </div>
-      </details>
-
-      <details class="theory-ex">
-        <summary>return dentro de un ciclo — salir de la función</summary>
-        <div class="ex-body">
-          <p>Dentro de una función, <code>return</code> sale tanto del ciclo como de la función.</p>
-          <pre>def primer_par_desde(n):
-    for num in range(n, n + 10):
-        if num % 2 == 0:
-            return num
-    return None
-
-print(primer_par_desde(9))</pre>
-          <div class="output-block"><span class="output-label">salida</span>10</div>
-        </div>
-      </details>
-
-    </div><!-- /panel-ciclos -->
-
-  </div><!-- /chamber -->
-</div><!-- /section-bg-prologo -->
-
 <!-- ══ QUIZ ══════════════════════════════════════════════════ -->
-<div class="section-bg-cam1">
+<div class="section-bg-a">
   <div class="chamber" id="camara-1">
     <div class="chamber-head">
       <span class="eyebrow">Autoevaluación</span>
       <h2>Quiz</h2>
-      <p>8 preguntas sobre decisiones y ciclos, una por vez. Si no te acordás algo, dejamos una pista.</p>
+      <p>8 preguntas de repaso, una por vez. Seleccioná tu respuesta y confirmala antes de ver el resultado.</p>
     </div>
     <div id="quiz-root"></div>
   </div>
 </div>
 
 <!-- ══ EJERCICIOS ════════════════════════════════════════════ -->
-<div class="section-bg-cam3">
-  <div class="chamber" id="camara-5">
+<div class="section-bg-b">
+  <div class="chamber" id="camara-ejercicios">
     <div class="chamber-head">
       <span class="eyebrow">Práctica</span>
       <h2>Ejercicios</h2>
-      <p>Los ejercicios de decisiones y ciclos de la clase. Cada uno tiene su ayuda de memoria.</p>
+      <p>Cadenas de caracteres y rangos al ritmo de Spotify. Cada uno tiene su pista y verificación automática.</p>
     </div>
-    <div class="boon-list" id="boon-list-oceanus"></div>
+    <div class="boon-list" id="boon-list-u4"></div>
   </div>
 </div>
 
-<!-- ══ DESAFÍO FINAL ═════════════════════════════════════════ -->
-<div class="section-bg-cam5">
-  <div class="chamber" id="camara-final-2">
+<!-- ══ DESAFÍO FINAL ════════════════════════════════════════ -->
+<div class="section-bg-a">
+  <div class="chamber" id="camara-final">
     <div class="chamber-head">
-      <span class="eyebrow">Desafío final</span>
-      <h2>Estado de la Cursada</h2>
-      <p>El desafío integrador: encadenar las funciones de la tarea pendiente en un programa que consulta el estado de la cursada.</p>
+      <span class="eyebrow">Desafío Final</span>
+      <h2>Ficha de una Canción</h2>
+      <p>Un ejercicio que combina tuplas con todo lo visto. Implementá las dos funciones para procesar la ficha de una canción.</p>
     </div>
     <div id="potion-root"></div>
   </div>
 </div>
 
-<!-- ══ EVALUACIÓN INTEGRADORA ════════════════════════════════ -->
-<div class="section-bg-cam5">
+<!-- ══ EJERCICIOS DE PARCIAL ═════════════════════════════════ -->
+<div class="section-bg-b">
   <div class="chamber" id="examen-final">
     <div class="chamber-head">
-      <span class="eyebrow">Evaluación</span>
-      <h2>Ejercicio Integrador</h2>
-      <p>Un ejercicio estilo parcial que combina decisiones y ciclos. Podés verificarlo las veces que quieras y, cuando estés conforme, entregarlo — queda registrado en la planilla del curso.</p>
+      <span class="eyebrow">Ejercicios de Parcial</span>
+      <h2>Ejercicios Integradores</h2>
+      <p>Dos ejercicios para hacer en clase y uno para entregar la próxima clase. Cada uno combina cadenas, tuplas y estructuras de control.</p>
     </div>
     <div id="exam-root"></div>
   </div>
 </div>
 
-<footer>Unidad 3 · Decisiones, Ciclos y Estructuras de Control · Pensamiento Computacional FIUBA</footer>
+<footer>Unidad 4 (Pt. 1) · Cadenas, Rangos y Tuplas · Pensamiento Computacional FIUBA</footer>
 
 </div><!-- /#main-content -->
 
 <!-- ══ SITE NAVIGATION ═══════════════════════════════════════ -->
-
-
 <div class="snav-overlay" id="snav-overlay" onclick="snavClose()"></div>
-
 <button class="snav-tab" onclick="snavToggle()" aria-label="Abrir menú">nav</button>
-
 <nav class="snav-panel" id="snav-panel" aria-label="Navegación del sitio">
   <div class="snav-header">
     <span class="snav-logo">PC · FIUBA</span>
     <button class="snav-close" onclick="snavClose()" aria-label="Cerrar">✕</button>
   </div>
   <div class="snav-body">
-
     <span class="snav-section-label">Unidades</span>
     <a class="snav-unit active" href="#">
-      <span class="u-num">U3</span>Estructuras de Control
+      <span class="u-num">U4</span>Estructuras de Datos
     </a>
-
     <hr class="snav-divider">
-
-    <span class="snav-section-label">Unidad 3 — Estructuras de Control</span>
-    <a class="snav-anchor" href="#hero" onclick="snavClose()">Inicio</a>
-    <a class="snav-anchor" href="#prologo" onclick="snavClose()">Prólogo · Teoría</a>
-    <a class="snav-anchor" href="#camara-1" onclick="snavClose()">Quiz</a>
-    <a class="snav-anchor" href="#camara-5" onclick="snavClose()">Ejercicios</a>
-    <a class="snav-anchor" href="#camara-final-2" onclick="snavClose()">Desafío Final</a>
-    <a class="snav-anchor" href="#examen-final" onclick="snavClose()">Ejercicio Integrador</a>
-
+    <span class="snav-section-label">Unidad 4 — Pt. 1</span>
+    <a class="snav-anchor" href="#hero"              onclick="snavClose()">Inicio</a>
+    <a class="snav-anchor" href="#camara-1"          onclick="snavClose()">Quiz</a>
+    <a class="snav-anchor" href="#camara-ejercicios" onclick="snavClose()">Ejercicios</a>
+    <a class="snav-anchor" href="#camara-final"      onclick="snavClose()">Desafío Final</a>
+    <a class="snav-anchor" href="#examen-final"      onclick="snavClose()">Ejercicios de Parcial</a>
   </div>
 </nav>
 
@@ -1208,6 +629,78 @@ print(primer_par_desde(9))</pre>
 /* ─── CONFIG ─────────────────────────────────────────────── */
 const SHEET_WEBHOOK = "https://script.google.com/macros/s/AKfycbxixKO-IHvlg3OzajxcbINbx6UwP0Li_tTuhI8MLQiIqPrNnmq7XVW9Cm_15B-8c6Li/exec";
 let studentName = '';
+
+/* ─── NAME AUTOCOMPLETE ──────────────────────────────────── */
+const ALUMNOS = [
+  "Ernesto Barragán","Alfonso Barreña Baroni","Tobias Barrios","Enzo Bruccieri",
+  "Kevin Nahuel Bustamante Flores","Elián Candia Candia",
+  "Angelique Tatiana Chazarreta Reyes","Jhoscen Maykel Jhair Chumacero Reyes",
+  "Lucas Cornejo Abad","Marcel Mihai Cuba Reyes","Tatiana Agustina Fernández",
+  "Noemi Flores","Lisandro Flores Chiachiare","Emilia Gonzalez Frutos",
+  "Tomás Gonzalo Grané","Antonio David Hochbaum","Daniela Ledesma",
+  "Matias Melita","Martina Oses","Milena María Ostojich Checa",
+  "Alison Michel Padilla Balderrama","Ian David Park","Agustín Pascale",
+  "Mauro Ivan Paz","Harold Perez","Francisco Román Pérez León","Gael Quesada",
+  "Dylan Quipildor","Agustín Regis","Bruno Nahuel Rodriguez Alfonzo",
+  "Lucas Gabriel Rodríguez Aray","Tiago Tomas Rodríguez Ormaechea",
+  "Arian Denis Ruibo","Bruno Amin Salinas Casco","Alejandro Sarta",
+  "Lautaro Slavsky","Maximo Yoel Suca","Juan Sulbaran",
+  "Matias Nicolas Tinnirello","Nicolas Wei","Sebastián Yu García",
+  "Bernardo Bautista","Dante Pinto","Enzo Lisicki","Ezequiel Mendoza",
+  "Guillermo Alvarez","Juan Bautista Angelero","Maika Abellido","Sebastián Angulo"
+];
+
+let _nameAcIdx = -1;
+
+function nameAcFilter() {
+  const q = (document.getElementById('name-input').value || '').trim().toLowerCase();
+  const list = document.getElementById('name-ac-list');
+  const matches = q.length === 0
+    ? ALUMNOS
+    : ALUMNOS.filter(n => n.toLowerCase().includes(q));
+  if (matches.length === 0) { list.style.display = 'none'; return; }
+  list.innerHTML = matches.map(n =>
+    `<div class="name-ac-item" data-name="${n.replace(/"/g,'&quot;')}"
+         onmousedown="nameAcSelect(this.dataset.name)">${n}</div>`
+  ).join('');
+  list.style.display = 'block';
+  _nameAcIdx = -1;
+}
+
+function nameAcHide() {
+  const list = document.getElementById('name-ac-list');
+  if (list) list.style.display = 'none';
+  _nameAcIdx = -1;
+}
+
+function nameAcSelect(name) {
+  document.getElementById('name-input').value = name;
+  nameAcHide();
+}
+
+function nameAcKeydown(e) {
+  const list = document.getElementById('name-ac-list');
+  const items = list ? list.querySelectorAll('.name-ac-item') : [];
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    _nameAcIdx = Math.min(_nameAcIdx + 1, items.length - 1);
+    items.forEach((el, i) => el.classList.toggle('ac-active', i === _nameAcIdx));
+    if (items[_nameAcIdx]) items[_nameAcIdx].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    _nameAcIdx = Math.max(_nameAcIdx - 1, 0);
+    items.forEach((el, i) => el.classList.toggle('ac-active', i === _nameAcIdx));
+    if (items[_nameAcIdx]) items[_nameAcIdx].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter') {
+    if (_nameAcIdx >= 0 && items[_nameAcIdx]) {
+      nameAcSelect(items[_nameAcIdx].dataset.name);
+    } else {
+      startSession();
+    }
+  } else if (e.key === 'Escape') {
+    nameAcHide();
+  }
+}
 
 /* ─── NAME GATE ──────────────────────────────────────────── */
 function startSession() {
@@ -1240,278 +733,416 @@ function sendToSheet(sheetName, results, score, total, statusElId) {
     .then(() => { statusEl.textContent = '✓ Enviado a la planilla.'; })
     .catch(() => { statusEl.textContent = '✗ Error al enviar. Avisale al docente.'; });
 }
+
 /* ═══════════════════════════════════════════════════════════
-   UNIDAD 3 — DATA
+   UNIDAD 4 — DATA
    ═══════════════════════════════════════════════════════════ */
 
 /* ─── QUIZ DATA ───────────────────────────────────────────── */
 
-const sections      = ["Expresiones", "Decisiones", "for", "while"];
-const sectionLabels = ["Bool", "if/elif", "for", "while"];
+const sections      = ["Cadenas", "Rangos", "Tuplas", "Control"];
+const sectionLabels = ["Cadenas", "Rangos", "Tuplas", "Control"];
 
 const questions = [
+  /* ── CADENAS ── */
   {
-    section: "Expresiones",
-    q: "¿Cuál de las siguientes expresiones devuelve <code>True</code>?",
-    answers: ["'hola' != 'HOLA'"],
-    options: ["len('hola') % 2 != 0", "(4 * 4) == (3 * 6)", "(5 * 5) > 25", "'hola' != 'HOLA'"],
-    hint: "Evaluá cada una: <code>len('hola')</code> es 4, <code>4 % 2</code> es 0, y <code>0 != 0</code> es False. <code>4*4=16</code> y <code>3*6=18</code>, no son iguales. <code>5*5=25</code>, y 25 no es mayor a 25. Los strings <code>'hola'</code> y <code>'HOLA'</code> son distintos porque Python distingue mayúsculas de minúsculas.",
-    feedback_ok: "Correcto. <code>'hola'</code> y <code>'HOLA'</code> son strings distintos (Python distingue mayúsculas), así que <code>!=</code> devuelve True.",
-    feedback_bad: "La respuesta es <code>'hola' != 'HOLA'</code>. Las otras tres dan False: revisá <code>len('hola') % 2</code>, <code>4*4</code> vs <code>3*6</code>, y <code>5*5 > 25</code>.",
-  },
-  {
-    section: "Expresiones",
-    q: "¿Cuál de las siguientes expresiones es <code>False</code>?",
-    answers: ["(9 * 9 == 99) or (9 < 9)"],
+    section: "Cadenas",
+    q: "¿Qué imprime el siguiente código?<pre>cancion = \"Envolver\"\ncancion[0] = \"e\"\nprint(cancion)</pre>",
+    answers: ["Se produce un TypeError, el código no llega a imprimir nada"],
     options: [
-      "(5 != '5') and (5 * 3 < 20)",
-      "(2 % 2 == 0) or (2 * 4 == 8)",
-      "(9 * 9 == 99) or (9 < 9)",
-      "('a' < 'z') or ('E' < 'A')",
+      "envolver",
+      "Se produce un TypeError, el código no llega a imprimir nada",
+      "Envolver",
+      "Se imprime una cadena vacía",
     ],
-    hint: "Un número y un string nunca son iguales (<code>5 != '5'</code> es True). <code>9*9</code> es 81, no 99, y <code>9 < 9</code> también es False — ahí el <code>or</code> no tiene ningún True del que agarrarse.",
-    feedback_ok: "Correcto. <code>9*9==99</code> es False y <code>9<9</code> es False, entonces <code>False or False</code> es False.",
-    feedback_bad: "La respuesta es <code>(9 * 9 == 99) or (9 < 9)</code>: 81 no es 99, y 9 no es menor que 9. Las otras tres tienen al menos un lado True.",
+    hint: "¿Podés modificar una cadena una vez creada? Pensá en qué tienen en común las cadenas y las tuplas respecto a sus elementos.",
+    feedback_ok: "Correcto. Las cadenas son inmutables: <code>cancion[0] = 'e'</code> lanza un <code>TypeError</code> antes de llegar al <code>print</code>.",
+    feedback_bad: "La respuesta correcta es <b>TypeError</b>. Las cadenas son inmutables y no admiten asignación por índice.",
   },
   {
-    section: "Decisiones",
-    q: "¿Cuál es el resultado del siguiente bloque de código?<pre>edad = 15\nrol = \"administrador\"\nif edad < 18:\n    print(\"Tiene acceso restringido para menores\")\nelif edad > 18:\n    print(\"Tiene acceso general\")\nelif rol == \"administrador\":\n    print(\"Tiene acceso total\")\nelse:\n    print(\"No puede pasar\")</pre>",
-    answers: ["Tiene acceso restringido para menores"],
-    options: ["Tiene acceso restringido para menores", "Tiene acceso general", "Tiene acceso total", "No puede pasar"],
-    hint: "Python evalúa las condiciones en orden y ejecuta el primer bloque cuya condición sea True. <code>edad < 18</code> ya es True con edad=15, así que ni se mira el resto.",
-    feedback_ok: "Correcto. 15 < 18 es True, así que el if-elif-else corta ahí y nunca llega a mirar el rol.",
-    feedback_bad: "La respuesta es \"Tiene acceso restringido para menores\". Con edad=15, la primera condición (<code>edad < 18</code>) ya es True, y el resto del if-elif-else no se evalúa.",
+    section: "Cadenas",
+    q: "¿Qué imprime el siguiente código?<pre>texto = \"dale dale que dale\"\nposicion = texto.find(\"dale\", 5)\nprint(posicion)</pre>",
+    answers: ["5"],
+    options: ["0", "5", "15", "-1"],
+    hint: "¿Qué pasa cuando le pasás un segundo parámetro a <code>find()</code>? ¿Desde dónde empieza a buscar? Contá manualmente las posiciones en el string para verificar tu respuesta.",
+    feedback_ok: "Correcto. La segunda aparición de <code>'dale'</code> arranca en el índice 5, que es exactamente desde donde se empieza a buscar.",
+    feedback_bad: "La respuesta es <b>5</b>. <code>find('dale', 5)</code> busca a partir del índice 5, y la segunda aparición de 'dale' empieza justamente ahí.",
   },
   {
-    section: "Decisiones",
-    q: "¿Cuál es el problema del siguiente código?<pre>def es_par(numero):\n    if numero % 2 == 0:\n        return True\n    return False</pre>",
-    answers: ["Es redundante usar un if para devolver un booleano"],
-    options: ["Falta el else", "Falta castear a int", "Es redundante usar un if para devolver un booleano", "El nombre de la función debe tener un verbo en infinitivo"],
-    hint: "<code>numero % 2 == 0</code> ya es una expresión booleana. No hace falta un <code>if</code> para devolver algo que ya es True o False — se puede hacer <code>return numero % 2 == 0</code>.",
-    feedback_ok: "Correcto. La expresión de la condición ya es un booleano, así que el if es innecesario: alcanza con <code>return numero % 2 == 0</code>.",
-    feedback_bad: "El problema es que sobra el if: <code>numero % 2 == 0</code> ya es True o False, se puede retornar directamente.",
+    section: "Cadenas",
+    q: "¿Qué imprime el siguiente código?<pre>texto = \"Hola Mundo\"\nprint(texto.index(\"Chau\"))</pre>",
+    answers: ["Se produce un ValueError"],
+    options: ["-1", "0", "None", "Se produce un ValueError"],
+    hint: "¿En qué se parecen <code>find()</code> e <code>index()</code>? ¿Qué diferencia hay entre los dos cuando la subcadena buscada no existe en el texto?",
+    feedback_ok: "Correcto. A diferencia de <code>find()</code>, <code>index()</code> lanza un <code>ValueError</code> cuando la subcadena no está presente en el texto.",
+    feedback_bad: "La respuesta correcta es <b>ValueError</b>. <code>index()</code> lanza una excepción si no encuentra la subcadena; <code>find()</code> devolvería <code>-1</code> en ese caso.",
+  },
+  /* ── RANGOS ── */
+  {
+    section: "Rangos",
+    q: "¿Qué imprime el siguiente código?<pre>for minuto in range(10, 30, 15):\n    print(minuto)</pre>",
+    answers: ["10\n25"],
+    options: ["10\n25", "10\n25\n40", "10", "No imprime nada"],
+    hint: "Calculá manualmente los valores que generaría ese <code>range()</code>: empezá en 10, sumá el paso, y preguntate si el resultado todavía es menor al límite.",
+    feedback_ok: "Correcto. Los valores son 10 y 25: el siguiente sería 40, que ya supera el límite 30 y no se incluye.",
+    feedback_bad: "La respuesta correcta es <b>10 y 25</b>. El paso es 15: 10, luego 25 (menor a 30), luego 40 (excluido porque ≥ 30).",
   },
   {
-    section: "for",
-    q: "¿Cuándo se usa <code>for</code> y cuándo <code>while</code>?",
-    answers: ["For es para ciclos definidos y While para ciclos indefinidos"],
+    section: "Rangos",
+    q: "¿Qué imprime el siguiente código?<pre>for volumen in range(100, -20, -20):\n    print(volumen)</pre>",
+    answers: ["100, 80, 60, 40, 20, 0 (seis líneas)"],
     options: [
-      "Ambos se pueden usar indistintamente, funcionan igual",
-      "For es para ciclos definidos y While para ciclos indefinidos",
-      "While es para cuando el usuario ingresa información y For cuando hay parámetros",
-      "For es solo para rangos, while para el resto de ciclos",
+      "100, 80, 60, 40, 20, 0 (seis líneas)",
+      "100, 80, 60, 40, 20 (cinco líneas, sin llegar al 0)",
+      "100, 80, 60, 40, 20, 0, -20 (siete líneas)",
+      "Se produce un error porque el paso es negativo",
     ],
-    hint: "Si de antemano sabés cuántas veces vas a repetir algo, usás <code>for</code> (ciclo definido). Si depende de una condición que no sabés cuándo va a cambiar, usás <code>while</code> (ciclo indefinido).",
-    feedback_ok: "Correcto. El for es un ciclo definido (se sabe cuántas iteraciones habrá) y el while es indefinido (depende de una condición).",
-    feedback_bad: "La respuesta es: For es para ciclos definidos y While para ciclos indefinidos. No tiene que ver con quién ingresa el dato ni con si hay parámetros.",
+    hint: "Con paso negativo, ¿cuál es la condición para que el ciclo continúe? ¿Se incluye el límite inferior o queda excluido? ¿El 0 cumple esa condición con límite -20?",
+    feedback_ok: "Correcto. La secuencia es 100, 80, 60, 40, 20, 0 — seis valores. El siguiente sería -20, que ya no es mayor a -20 (el límite), así que queda excluido.",
+    feedback_bad: "La respuesta correcta es <b>seis líneas: 100, 80, 60, 40, 20, 0</b>. El límite -20 no se incluye, pero el 0 sí porque 0 &gt; -20.",
+  },
+  /* ── TUPLAS ── */
+  {
+    section: "Tuplas",
+    q: "¿Qué imprime el siguiente código?<pre>album = (\"Trilogy\", 2011, \"R&amp;B\")\nalbum[1] = 2012\nprint(album)</pre>",
+    answers: ["Se produce un TypeError, las tuplas no admiten asignación por índice"],
+    options: [
+      "('Trilogy', 2012, 'R&B')",
+      "Se produce un TypeError, las tuplas no admiten asignación por índice",
+      "('Trilogy', 2011, 'R&B', 2012)",
+      "Se imprime una lista en vez de una tupla",
+    ],
+    hint: "¿Qué propiedad fundamental comparten las tuplas con las cadenas? Pensá en qué pasaría si intentaras hacer algo análogo con un string.",
+    feedback_ok: "Correcto. Las tuplas son inmutables, igual que las cadenas. <code>album[1] = 2012</code> lanza un <code>TypeError</code>.",
+    feedback_bad: "La respuesta correcta es <b>TypeError</b>. Las tuplas no permiten modificar elementos por índice — hay que crear una tupla nueva.",
   },
   {
-    section: "for",
-    q: "¿Qué secuencia genera <code>range(2, 10, 2)</code>?",
-    answers: ["2 4 6 8"],
-    options: ["2 4 6 8", "2 4 6 8 10", "3 5 7 9", "2 5 8"],
-    hint: "<code>range(inicio, fin, paso)</code> empieza en 2, suma 2 en cada paso, y se detiene antes de llegar a 10.",
-    feedback_ok: "Correcto. range(2, 10, 2) genera 2, 4, 6, 8 — se detiene antes del 10.",
-    feedback_bad: "La respuesta es 2 4 6 8. El límite superior (10) queda excluido, por eso no aparece.",
+    section: "Tuplas",
+    q: "¿Qué imprime el siguiente código?<pre>cancion = (\"Envolver\", \"Anitta\", 210, \"pop\")\nnombre, artista, duracion = cancion\nprint(nombre)</pre>",
+    answers: ["Se produce un ValueError, porque hay 4 elementos y solo 3 variables"],
+    options: [
+      "Envolver",
+      "('Envolver', 'Anitta', 210)",
+      "Se produce un ValueError, porque hay 4 elementos y solo 3 variables",
+      "Anitta",
+    ],
+    hint: "Contá los elementos de la tupla y las variables del desempaquetado. ¿Tienen que coincidir? ¿Qué pasa en Python cuando no coinciden?",
+    feedback_ok: "Correcto. La tupla tiene 4 elementos pero solo hay 3 variables: Python lanza un <code>ValueError</code> (<em>too many values to unpack</em>).",
+    feedback_bad: "La respuesta correcta es <b>ValueError</b>. La tupla tiene 4 elementos y el desempaquetado espera exactamente 3 variables.",
   },
   {
-    section: "for",
-    q: "¿Qué imprimirá por pantalla el siguiente código?<pre>for letra in \"Pensamiento\":\n    if letra not in \"aeiou\":\n        print(letra.upper())\n    else:\n        print(letra)</pre>",
-    answers: ["PeNSaMieNTo"],
-    options: ["PEnsAmIEntO", "PeNSaMieNTo", "PENSAMIENTO", "PNSMNT"],
-    hint: "Recorré \"Pensamiento\" letra por letra: las consonantes se pasan a mayúscula con <code>.upper()</code>, las vocales quedan tal cual.",
-    feedback_ok: "Correcto. P-e-N-S-a-M-i-e-N-T-o: cada consonante sube a mayúscula, cada vocal se imprime igual.",
-    feedback_bad: "La respuesta es \"PeNSaMieNTo\". Las vocales (e, a, i, e, o) quedan en minúscula y las consonantes (P, N, S, M, N, T) pasan a mayúscula.",
+    section: "Tuplas",
+    q: "¿Qué imprime el siguiente código?<pre>setlist = (\"Envolver\", \"Cairo\", \"Rara Vez\")\nnueva = setlist[:1] + (\"Bzrp\",) + setlist[2:]\nprint(nueva)</pre>",
+    answers: ["('Envolver', 'Bzrp', 'Rara Vez')"],
+    options: [
+      "('Envolver', 'Bzrp', 'Rara Vez')",
+      "('Envolver', 'Cairo', 'Bzrp', 'Rara Vez')",
+      "Se produce un TypeError, no se pueden concatenar tuplas con +",
+      "('Bzrp', 'Envolver', 'Cairo', 'Rara Vez')",
+    ],
+    hint: "Evaluá los slices por separado: ¿qué elementos incluye <code>setlist[:1]</code>? ¿Y <code>setlist[2:]</code>? ¿Por qué <code>(\"Bzrp\",)</code> lleva una coma adentro?",
+    feedback_ok: "Correcto. <code>setlist[:1]</code> es <code>('Envolver',)</code>, se concatena <code>('Bzrp',)</code>, y <code>setlist[2:]</code> es <code>('Rara Vez',)</code>. 'Cairo' queda fuera.",
+    feedback_bad: "La respuesta es <b>('Envolver', 'Bzrp', 'Rara Vez')</b>. <code>setlist[:1]</code> excluye 'Cairo', y <code>setlist[2:]</code> toma desde 'Rara Vez'.",
+  },
+  /* ── CONTROL ── */
+  {
+    section: "Control",
+    q: "¿Qué imprime el siguiente código?<pre>for i in range(5):\n    if i % 2 == 0:\n        continue\n    print(i)</pre>",
+    answers: ["1\n3"],
+    options: ["0\n1\n2\n3\n4", "0\n2\n4", "1\n3", "No imprime nada"],
+    hint: "¿Qué hace exactamente <code>continue</code>? Recorré el código a mano para i=0, i=1, i=2... ¿Llega al <code>print</code> en cada caso?",
+    feedback_ok: "Correcto. <code>continue</code> salta el <code>print</code> cuando <code>i % 2 == 0</code> (los pares). Solo se imprimen los impares: 1 y 3.",
+    feedback_bad: "La respuesta correcta es <b>1 y 3</b>. <code>continue</code> evita el <code>print</code> para los pares (0, 2, 4), por lo que solo se imprimen los impares.",
   },
   {
-    section: "while",
-    q: "¿Cuál es el problema de la siguiente función?<pre>def pagar_cuenta(monto):\n    pagado = 0\n    ingreso = int(input(\"Ingrese monto: \"))\n    while pagado < monto:\n        pagado += int(ingreso)</pre>",
-    answers: ["El input debe ir siempre dentro del while"],
-    options: ["Falta un break", "No es necesario castear a int", "El input debe ir siempre dentro del while", "Falta actualizar la condición"],
-    hint: "El <code>input()</code> se pide una sola vez, antes del while. Así, en cada vuelta se vuelve a sumar el mismo valor en lugar de dejar que la persona ingrese un monto distinto cada vez.",
-    feedback_ok: "Correcto. Al pedir el input una sola vez afuera del while, no se le puede pedir un nuevo monto en cada iteración — el input debería estar dentro del while.",
-    feedback_bad: "El problema es que el <code>input()</code> está afuera del while: debería pedirse en cada iteración para poder ingresar un monto distinto cada vez.",
+    section: "Control",
+    q: "¿Qué pasa al ejecutar el siguiente código?<pre>contador = 0\nwhile contador &lt; 5:\n    print(contador)\n    contador -= 1</pre>",
+    answers: ["Es un ciclo infinito: contador nunca llega a valer 5 o más, porque en cada vuelta decrece"],
+    options: [
+      "Imprime 0, 1, 2, 3, 4 y termina normalmente",
+      "Imprime solamente 0 y termina",
+      "Es un ciclo infinito: contador nunca llega a valer 5 o más, porque en cada vuelta decrece",
+      "Se produce un error de sintaxis",
+    ],
+    hint: "Simulá las primeras vueltas a mano: ¿qué valor tiene <code>contador</code> después de cada iteración? ¿La condición del while alguna vez se vuelve falsa?",
+    feedback_ok: "Correcto. <code>contador</code> empieza en 0 y decrece (-1, -2, ...) en cada vuelta. Como siempre es menor a 5, la condición nunca se hace False.",
+    feedback_bad: "La respuesta correcta es <b>ciclo infinito</b>. <code>contador -= 1</code> lo hace cada vez más negativo, así que la condición <code>contador &lt; 5</code> nunca falla.",
+  },
+  {
+    section: "Control",
+    q: "¿Qué imprime el siguiente código?<pre>nota = 7\nif nota &gt;= 9:\n    print(\"Excelente\")\nelif nota &gt;= 7:\n    print(\"Muy bien\")\nelif nota &gt;= 4:\n    print(\"Aprobado\")\nelse:\n    print(\"Desaprobado\")</pre>",
+    answers: ["Muy bien"],
+    options: ["Excelente", "Muy bien", "Aprobado", "Desaprobado"],
+    hint: "Evaluá cada condición en orden, de arriba hacia abajo. ¿Cuál es la primera que resulta verdadera con nota=7? ¿Python sigue evaluando las demás después de encontrar una?",
+    feedback_ok: "Correcto. <code>nota >= 9</code> es False (7 no llega), pero <code>nota >= 7</code> es True. Ahí se corta y se imprime 'Muy bien'.",
+    feedback_bad: "La respuesta correcta es <b>Muy bien</b>. <code>nota >= 9</code> es False, pero <code>nota >= 7</code> es True — se ejecuta ese bloque y no se evalúan los siguientes.",
+  },
+  {
+    section: "Control",
+    q: "¿Qué imprime el siguiente código?<pre>for numero in range(1, 10):\n    if numero == 5:\n        break\n    print(numero)</pre>",
+    answers: ["1\n2\n3\n4"],
+    options: ["1\n2\n3\n4", "1\n2\n3\n4\n5", "1\n2\n3\n4\n6\n7\n8\n9", "No imprime nada"],
+    hint: "¿Qué hace <code>break</code> exactamente? Cuando <code>numero</code> vale 5, ¿qué línea se ejecuta primero: el <code>break</code> o el <code>print</code>?",
+    feedback_ok: "Correcto. Cuando <code>numero == 5</code>, el <code>break</code> corta el ciclo <b>antes</b> de llegar al <code>print</code>. Se imprimen 1, 2, 3 y 4.",
+    feedback_bad: "La respuesta correcta es <b>1, 2, 3, 4</b>. Al llegar a 5, el <code>break</code> corta el ciclo antes de imprimir ese valor.",
   },
 ];
 
-/* ─── EJERCICIOS: TAREA PENDIENTE (DECISIONES) ──────────────────────── */
+/* ─── EJERCICIOS: CADENAS, RANGOS Y TUPLAS ──────────────────── */
 
-const boonsOceanus = [
+const boonsU4 = [
+  /* ── CADENAS ─────────────────────────────────────────── */
   {
-    title: "Aprobó el parcial",
-    flavor: "Tarea pendiente — antes de tomar el segundo parcial hay que confirmar que se aprobó el primero.",
-    tag: "if · booleano",
-    statement: "Al momento de tomar el segundo parcial, los docentes deben asegurarse de que cada alumno haya aprobado previamente el primer parcial.<br><br>Hacé un programa que, dada una nota, devuelva <code>True</code> si está aprobada o <code>False</code> si no.",
-    hint: "Una nota está aprobada si es mayor o igual a 4. Esa comparación ya es un booleano: no hace falta un <code>if</code> para devolverla.",
-    starter: "def aprobo_parcial(nota):\n    pass",
+    title: "Separador de letras",
+    flavor: "Spotify usa efectos tipográficos para animar los títulos de canciones.",
+    tag: "cadenas · índices · for",
+    statement: "Escribí una función <code>separar_cancion(nombre, separador)</code> que inserte el separador entre cada carácter del nombre (incluyendo espacios).<br><br><b>Ejemplo:</b> <code>separar_cancion(\"Cairo\", \"-\")</code> → <code>\"C-a-i-r-o\"</code>",
+    hint: "¿Cómo recorrés una cadena carácter por carácter usando índices? ¿Qué tiene de diferente el último carácter respecto a los demás?",
+    starter: "def separar_cancion(nombre, separador):\n    pass",
     test: {
-      funcName: "aprobo_parcial",
+      funcName: "separar_cancion",
       cases: [
-        { args: [7], stdin: [], expect: { type: "bool", value: true } },
-        { args: [4], stdin: [], expect: { type: "bool", value: true } },
-        { args: [3], stdin: [], expect: { type: "bool", value: false } },
-        { args: [0], stdin: [], expect: { type: "bool", value: false } },
+        { args: ["Cairo", "-"],    stdin: [], expect: { type: "exact", value: "C-a-i-r-o" } },
+        { args: ["Envolver", "."], stdin: [], expect: { type: "exact", value: "E.n.v.o.l.v.e.r" } },
+        { args: ["Bzrp", "*"],     stdin: [], expect: { type: "exact", value: "B*z*r*p" } },
+        { args: ["X", "!"],        stdin: [], expect: { type: "exact", value: "X" } },
       ],
     },
-    sol: `def aprobo_parcial(nota):
-    return nota >= 4`,
+    sol: `def separar_cancion(nombre, separador):
+    resultado = ""
+    for i in range(len(nombre)):
+        resultado += nombre[i]
+        if i < len(nombre) - 1:
+            resultado += separador
+    return resultado`,
   },
   {
-    title: "¿Puede rendir final?",
-    flavor: "Tarea pendiente — sólo puede rendir final quien aprobó ambos parciales pero no promocionó.",
-    tag: "if · and · not · funciones auxiliares",
-    statement: "Para facilitar el trabajo futuro, se adelanta la lógica de los finales. Sólo pueden rendir final los alumnos que hayan aprobado ambos parciales pero cuyo promedio sea menor a 7.<br><br>Definí <code>aprobo_parciales(nota_primer_parcial, nota_segundo_parcial)</code> (usando <code>aprobo_parcial</code>), <code>promociono(nota_primer_parcial, nota_segundo_parcial)</code> (la suma de las notas es mayor a 13) y por último <code>rinde_final(nota_primer_parcial, nota_segundo_parcial)</code>, que devuelva <code>True</code> si debe/puede rendir final.",
-    hint: "<code>rinde_final</code> es: aprobó ambos parciales <code>and not</code> promocionó. Reutilizá <code>aprobo_parcial</code> del ejercicio anterior en vez de repetir la comparación con 4.",
-    starter: "def aprobo_parcial(nota):\n    return nota >= 4\n\ndef aprobo_parciales(nota_primer_parcial, nota_segundo_parcial):\n    pass\n\ndef promociono(nota_primer_parcial, nota_segundo_parcial):\n    pass\n\ndef rinde_final(nota_primer_parcial, nota_segundo_parcial):\n    pass",
+    title: "URL de playlist",
+    flavor: "Para compartir playlists, Spotify genera URLs reemplazando los espacios por guiones bajos.",
+    tag: "cadenas · for · reemplazo",
+    statement: "Escribí una función <code>playlist_a_url(nombre)</code> que reemplace todos los espacios del nombre por guiones bajos.<br><br><b>Ejemplo:</b> <code>playlist_a_url(\"Viernes de Indie\")</code> → <code>\"Viernes_de_Indie\"</code>",
+    hint: "¿Cómo distinguís si un carácter es un espacio? ¿Qué carácter agregás al resultado en cada caso?",
+    starter: "def playlist_a_url(nombre):\n    pass",
     test: {
-      funcName: "rinde_final",
+      funcName: "playlist_a_url",
       cases: [
-        { args: [3, 5], stdin: [], expect: { type: "bool", value: false } },
-        { args: [5, 5], stdin: [], expect: { type: "bool", value: true } },
-        { args: [8, 8], stdin: [], expect: { type: "bool", value: false } },
-        { args: [4, 4], stdin: [], expect: { type: "bool", value: true } },
+        { args: ["Viernes de Indie"],  stdin: [], expect: { type: "exact", value: "Viernes_de_Indie" } },
+        { args: ["Pop Latino 2024"],   stdin: [], expect: { type: "exact", value: "Pop_Latino_2024" } },
+        { args: ["TrapEnEspañol"],     stdin: [], expect: { type: "exact", value: "TrapEnEspañol" } },
+        { args: ["Hits de los 90"],    stdin: [], expect: { type: "exact", value: "Hits_de_los_90" } },
       ],
     },
-    sol: `def aprobo_parcial(nota):
-    return nota >= 4
-
-def aprobo_parciales(nota_primer_parcial, nota_segundo_parcial):
-    return aprobo_parcial(nota_primer_parcial) and aprobo_parcial(nota_segundo_parcial)
-
-def promociono(nota_primer_parcial, nota_segundo_parcial):
-    return nota_primer_parcial + nota_segundo_parcial > 13
-
-def rinde_final(nota_primer_parcial, nota_segundo_parcial):
-    return aprobo_parciales(nota_primer_parcial, nota_segundo_parcial) and not promociono(nota_primer_parcial, nota_segundo_parcial)`,
+    sol: `def playlist_a_url(nombre):
+    resultado = ""
+    for c in nombre:
+        if c == " ":
+            resultado += "_"
+        else:
+            resultado += c
+    return resultado`,
   },
   {
-    title: "Energía del robot",
-    flavor: "Un equipo de ingeniería prueba un robot autónomo con una batería de 100 unidades de energía.",
-    tag: "if · booleano",
-    statement: "El robot consume 8 unidades de energía por cada tarea que realiza. La energía que no utiliza en un recorrido queda disponible para el siguiente.<br><br>Hacé una función que reciba la cantidad de tareas realizadas por el robot y la cantidad de tareas que debe realizar en el próximo recorrido, y devuelva un booleano indicando si la energía restante alcanza para el próximo recorrido.<br><br><b>Ejemplo:</b> si realizó 4 tareas en el recorrido anterior → gastó 32 unidades de energía, le quedan 8 tareas restantes de energía disponible.",
-    hint: "La energía restante es <code>100 - tareas_realizadas * 8</code>. Alcanza si esa energía restante es mayor o igual a <code>tareas_proximas * 8</code>.",
-    starter: "def alcanza_energia(tareas_realizadas, tareas_proximo_recorrido):\n    pass",
+    title: "Duración en segundos",
+    flavor: "El backend de Spotify almacena las duraciones en segundos, no en minutos:segundos.",
+    tag: "cadenas · find · slicing · int()",
+    statement: "Escribí una función <code>duracion_a_segundos(duracion)</code> que reciba una duración en formato <code>\"minutos:segundos\"</code> y devuelva el total de segundos.<br><br><b>Ejemplo:</b> <code>duracion_a_segundos(\"3:45\")</code> → <code>225</code>",
+    hint: "¿Qué método te da la posición de un carácter dentro de un string? Una vez que encontrás los dos puntos, ¿cómo separás lo que está antes y lo que está después?",
+    starter: "def duracion_a_segundos(duracion):\n    pass",
     test: {
-      funcName: "alcanza_energia",
+      funcName: "duracion_a_segundos",
       cases: [
-        { args: [4, 8], stdin: [], expect: { type: "bool", value: true } },
-        { args: [4, 9], stdin: [], expect: { type: "bool", value: false } },
-        { args: [0, 12], stdin: [], expect: { type: "bool", value: true } },
-        { args: [10, 3], stdin: [], expect: { type: "bool", value: false } },
+        { args: ["3:45"], stdin: [], expect: { type: "numeric", value: 225 } },
+        { args: ["2:55"], stdin: [], expect: { type: "numeric", value: 175 } },
+        { args: ["4:12"], stdin: [], expect: { type: "numeric", value: 252 } },
+        { args: ["0:30"], stdin: [], expect: { type: "numeric", value: 30  } },
       ],
     },
-    sol: `def alcanza_energia(tareas_realizadas, tareas_proximo_recorrido):
-    energia_restante = 100 - tareas_realizadas * 8
-    energia_necesaria = tareas_proximo_recorrido * 8
-    return energia_restante >= energia_necesaria`,
+    sol: `def duracion_a_segundos(duracion):
+    pos = duracion.find(":")
+    minutos = int(duracion[:pos])
+    segundos = int(duracion[pos + 1:])
+    return minutos * 60 + segundos`,
   },
   {
-    title: "Control de calidad de piezas",
-    flavor: "En una fábrica se controla 1 de cada 50 piezas producidas, y la primera pieza controlada fue la número 12.",
-    tag: "if · módulo",
-    statement: "Sabiendo que la numeración de las piezas es acumulativa y que la primera pieza controlada fue la número 12, hacé un programa que permita ingresar el número de una pieza y determine si debe ser controlada.<br><br><i>Bonus: agregar un mensaje que indique cuál será la próxima pieza a controlar.</i>",
-    hint: "Las piezas controladas son 12, 62, 112, 162… Una pieza <code>numero</code> debe controlarse si <code>numero >= 12</code> y <code>(numero - 12) % 50 == 0</code>.",
-    starter: "def debe_controlarse(numero_pieza):\n    pass",
+    title: "Iniciales del álbum",
+    flavor: "Las iniciales aparecen en badges y notificaciones donde el título completo no entra.",
+    tag: "cadenas · split · for · upper()",
+    statement: "Escribí una función <code>iniciales_album(titulo)</code> que devuelva las iniciales de cada palabra en mayúscula.<br><br><b>Ejemplo:</b> <code>iniciales_album(\"The Dark Side of the Moon\")</code> → <code>\"TDSOTM\"</code>",
+    hint: "¿Qué método separa un string en palabras? ¿Cómo tomás solo la primera letra de cada una y la convertís a mayúscula?",
+    starter: "def iniciales_album(titulo):\n    pass",
     test: {
-      funcName: "debe_controlarse",
+      funcName: "iniciales_album",
       cases: [
-        { args: [59], stdin: [], expect: { type: "bool", value: false } },
-        { args: [62], stdin: [], expect: { type: "bool", value: true } },
-        { args: [12], stdin: [], expect: { type: "bool", value: true } },
-        { args: [11], stdin: [], expect: { type: "bool", value: false } },
+        { args: ["The Dark Side of the Moon"], stdin: [], expect: { type: "exact", value: "TDSOTM" } },
+        { args: ["Abbey Road"],                stdin: [], expect: { type: "exact", value: "AR" } },
+        { args: ["Born in the USA"],           stdin: [], expect: { type: "exact", value: "BITUSA" } },
+        { args: ["Un Verano Sin Ti"],          stdin: [], expect: { type: "exact", value: "UVST" } },
       ],
     },
-    sol: `def debe_controlarse(numero_pieza):
-    return numero_pieza >= 12 and (numero_pieza - 12) % 50 == 0
-
-# Bonus: próxima pieza a controlar
-def proxima_pieza_a_controlar(numero_pieza):
-    resto = (numero_pieza - 12) % 50
-    if resto == 0:
-        return numero_pieza + 50
-    return numero_pieza + (50 - resto)
-
-numero = int(input("Ingrese el número de la pieza: "))
-if debe_controlarse(numero):
-    print(f"Pieza seleccionada para el control de calidad")
-else:
-    print(f"La pieza {numero} no debe ser seleccionada para el control de calidad")
-print(f"La siguiente pieza a controlar será la {proxima_pieza_a_controlar(numero)}.")`,
+    sol: `def iniciales_album(titulo):
+    palabras = titulo.split()
+    resultado = ""
+    for palabra in palabras:
+        resultado += palabra[0].upper()
+    return resultado`,
   },
   {
-    title: "Horas de Juan",
-    flavor: "Juan trabaja de forma freelance, únicamente los días impares del mes.",
-    tag: "for · acumulador · input",
-    statement: "La cantidad de horas que Juan trabaja puede variar según las tareas de cada día, y la empresa le paga por hora trabajada.<br><br>Hacé una función que reciba el valor de la hora de trabajo y le solicite a Juan, para cada día impar de un mes de 31 días, la cantidad de horas trabajadas. Al finalizar el mes, mostrá por pantalla la cantidad total de horas trabajadas y el sueldo bruto correspondiente.",
-    hint: "Recorré los días impares con <code>for dia in range(1, 32, 2)</code>. Acumulá las horas en una variable inicializada en 0 antes del for, y multiplicá el total por el valor de la hora al final.",
-    starter: "def calcular_sueldo(valor_hora):\n    pass",
-    test: null,
-    sol: `def calcular_sueldo(valor_hora):
-    horas_totales = 0
-    for dia in range(1, 32, 2):
-        horas = int(input(f"Día {dia} - horas trabajadas: "))
-        horas_totales += horas
-    print(f"Horas totales: {horas_totales} - Sueldo bruto: \${horas_totales * valor_hora}")`,
-  },
-  {
-    title: "Texto expresivo",
-    flavor: "Un estudiante de Literatura sospecha que los textos más expresivos usan más signos de puntuación.",
-    tag: "for · acumulador · strings",
-    statement: "Hacé una función que reciba un texto y devuelva un booleano indicando si más del 10% de sus caracteres corresponden a signos de puntuación. Sólo se consideran los signos <code>¡ ! ¿ ? . ,</code> y, para calcular el porcentaje, se cuentan todos los caracteres del texto, incluidos los espacios.<br><br><b>Ejemplo:</b> <code>\"¡Oh ciudad, ciudad!\"</code> tiene 19 caracteres, de los cuales 3 son signos de puntuación → supera el 10% y devuelve <code>True</code>.",
-    hint: "Recorré el texto con un <code>for</code> y contá cuántos caracteres están en <code>\"¡!¿?.,\"</code> usando el operador <code>in</code>. Al final compará <code>contador / len(texto) > 0.10</code>.",
-    starter: "def es_expresivo(texto):\n    pass",
+    title: "¿Es palíndromo?",
+    flavor: "Un nombre de canción que se lee igual al derecho y al revés merece un lugar especial en la playlist.",
+    tag: "cadenas · lower() · slicing [::-1]",
+    statement: "Escribí una función <code>es_palindromo(cancion)</code> que devuelva <code>True</code> si el nombre es palíndromo, ignorando espacios y diferencias de mayúsculas.<br><br><b>Ejemplo:</b> <code>es_palindromo(\"Anita lava la tina\")</code> → <code>True</code>",
+    hint: "Antes de comparar, ¿qué dos cosas deberías hacer con el string para que 'Ana' y 'ANA' y 'A N A' sean equivalentes? Una vez que tenés el string limpio, ¿cómo obtenés su reverso en Python?",
+    starter: "def es_palindromo(cancion):\n    pass",
     test: {
-      funcName: "es_expresivo",
+      funcName: "es_palindromo",
       cases: [
-        { args: ["¡Oh ciudad, ciudad!"], stdin: [], expect: { type: "bool", value: true } },
-        { args: ["Hola mundo"], stdin: [], expect: { type: "bool", value: false } },
-        { args: ["a.b,c!d"], stdin: [], expect: { type: "bool", value: true } },
+        { args: ["Anita lava la tina"], stdin: [], expect: { type: "bool", value: true  } },
+        { args: ["Envolver"],           stdin: [], expect: { type: "bool", value: false } },
+        { args: ["Ana"],                stdin: [], expect: { type: "bool", value: true  } },
+        { args: ["Cairo"],              stdin: [], expect: { type: "bool", value: false } },
       ],
     },
-    sol: `def es_expresivo(texto):
-    signos = "¡!¿?.,"
-    contador = 0
-    for caracter in texto:
-        if caracter in signos:
-            contador += 1
-    return contador / len(texto) > 0.10`,
+    sol: `def es_palindromo(cancion):
+    limpio = ""
+    for c in cancion.lower():
+        if c != " ":
+            limpio += c
+    return limpio == limpio[::-1]`,
   },
   {
-    title: "Sensor de temperatura",
-    flavor: "Una máquina industrial informa su temperatura periódicamente y debe detenerse si se pasa de rango.",
-    tag: "while · acumulador · promedio",
-    statement: "Hacé un programa que pida temperaturas sucesivas y continúe mientras la temperatura sea menor o igual a 80 °C. Cuando se registre una temperatura superior a 80 °C, la máquina debe detenerse e informar la temperatura que provocó la detención y el promedio de las temperaturas registradas anteriormente.",
-    hint: "Guardá la suma y la cantidad de temperaturas seguras en variables aparte, antes de sumar la que hizo saltar la alerta. El promedio se calcula sólo con las temperaturas que estuvieron dentro del rango.",
-    starter: "def monitorear_temperatura():\n    pass",
-    test: null,
-    sol: `def monitorear_temperatura():
-    suma = 0
-    cantidad = 0
-    temperatura = int(input("Temperatura: "))
-    while temperatura <= 80:
-        suma += temperatura
-        cantidad += 1
-        temperatura = int(input("Temperatura: "))
+    title: "Orden alfabético",
+    flavor: "La biblioteca de Spotify ordena las canciones para que las encuentres rápido.",
+    tag: "cadenas · comparación · if",
+    statement: "Escribí una función <code>orden_alfabetico(cancion1, cancion2)</code> que reciba dos nombres de canciones y devuelva el que va primero en orden alfabético. Si son iguales, devolvé cualquiera.<br><br><b>Ejemplo:</b> <code>orden_alfabetico(\"Envolver\", \"Cairo\")</code> → <code>\"Cairo\"</code>",
+    hint: "¿Sabías que en Python podés comparar strings directamente con <code>&lt;</code> y <code>&gt;</code>? ¿Qué significa que una cadena sea 'menor' que otra?",
+    starter: "def orden_alfabetico(cancion1, cancion2):\n    pass",
+    test: {
+      funcName: "orden_alfabetico",
+      cases: [
+        { args: ["Envolver", "Cairo"],          stdin: [], expect: { type: "exact", value: "Cairo" } },
+        { args: ["Bzrp", "Anitta"],             stdin: [], expect: { type: "exact", value: "Anitta" } },
+        { args: ["Flowers", "Blinding Lights"], stdin: [], expect: { type: "exact", value: "Blinding Lights" } },
+        { args: ["Rara Vez", "Rara Vez"],       stdin: [], expect: { type: "exact", value: "Rara Vez" } },
+      ],
+    },
+    sol: `def orden_alfabetico(cancion1, cancion2):
+    if cancion1 < cancion2:
+        return cancion1
+    return cancion2`,
+  },
+  /* ── RANGOS ──────────────────────────────────────────── */
+  {
+    title: "Avisos del podcast",
+    flavor: "Un podcast de 60 minutos pone publicidad a intervalos regulares.",
+    tag: "rangos · range() · for · print()",
+    statement: "Usando <code>range()</code>, escribí una función <code>avisos_podcast()</code> que imprima los minutos exactos donde sonará un aviso, sabiendo que el primero es en el minuto 10 y se repite cada 15 minutos hasta el 60.<br><br><b>Salida esperada:</b><pre>10\n25\n40\n55</pre>",
+    hint: "¿Cuáles deberían ser el inicio, el fin y el paso del <code>range()</code> para obtener 10, 25, 40, 55? Pensá en cuándo se detiene el rango.",
+    starter: "def avisos_podcast():\n    pass",
+    test: {
+      funcName: "avisos_podcast",
+      cases: [
+        { args: [], stdin: [], expect: { type: "stdout", lines: ["10", "25", "40", "55"] } },
+      ],
+    },
+    sol: `def avisos_podcast():
+    for minuto in range(10, 61, 15):
+        print(minuto)`,
+  },
+  {
+    title: "Crossfade entre canciones",
+    flavor: "El crossfade de Spotify baja el volumen de una canción mientras sube el de la siguiente, al mismo tiempo.",
+    tag: "rangos · range() · zip · for",
+    statement: "Escribí una función <code>crossfade()</code> que simule un crossfade de 5 segundos: el Tema A baja de 100% a 0% de a 20%, mientras el Tema B sube de 0% a 100% de a 20%, simultáneamente. Usá <code>zip()</code>.<br><br><b>Salida esperada:</b><pre>Segundo 0: Tema A al 100% - Tema B al 0%\nSegundo 1: Tema A al 80% - Tema B al 20%\nSegundo 2: Tema A al 60% - Tema B al 40%\nSegundo 3: Tema A al 40% - Tema B al 60%\nSegundo 4: Tema A al 20% - Tema B al 80%\nSegundo 5: Tema A al 0% - Tema B al 100%</pre>",
+    hint: "¿Qué hace <code>zip(seq1, seq2)</code>? ¿Cómo generarías con <code>range()</code> una secuencia que baje de 100 a 0 de a 20, y otra que suba de 0 a 100 de a 20?",
+    starter: "def crossfade():\n    pass",
+    test: {
+      funcName: "crossfade",
+      cases: [
+        { args: [], stdin: [], expect: { type: "stdout", lines: [
+          "Segundo 0: Tema A al 100% - Tema B al 0%",
+          "Segundo 1: Tema A al 80% - Tema B al 20%",
+          "Segundo 2: Tema A al 60% - Tema B al 40%",
+          "Segundo 3: Tema A al 40% - Tema B al 60%",
+          "Segundo 4: Tema A al 20% - Tema B al 80%",
+          "Segundo 5: Tema A al 0% - Tema B al 100%",
+        ]}},
+      ],
+    },
+    sol: `def crossfade():
+    for segundo, (vol_a, vol_b) in enumerate(zip(range(100, -20, -20), range(0, 120, 20))):
+        print(f"Segundo {segundo}: Tema A al {vol_a}% - Tema B al {vol_b}%")`,
+  },
+  /* ── TUPLAS ──────────────────────────────────────────── */
+  {
+    title: "Ficha de canción",
+    flavor: "Cada canción en Spotify es un conjunto de datos: título, artista, duración y género.",
+    tag: "tuplas · unpacking · f-strings · slicing",
+    statement: "Dada la tupla <code>cancion = (nombre, artista, duracion_segundos, genero)</code>:<br><br><b>a)</b> Implementá <code>descripcion_cancion(cancion)</code> que devuelva el string <code>\"Envolver de Anitta dura 210s y es del género pop\"</code>.<br><br><b>b)</b> Implementá <code>nombre_y_artista(cancion)</code> que devuelva una nueva tupla solo con <code>(nombre, artista)</code>.",
+    hint: "¿Cómo accedés a los elementos de una tupla? ¿Hay alguna forma de asignarlos todos a variables con una sola línea? Para el string, ¿qué ventaja tienen los f-strings sobre la concatenación?",
+    starter: "def descripcion_cancion(cancion):\n    pass\n\ndef nombre_y_artista(cancion):\n    pass",
+    tests: [
+      { funcName: "descripcion_cancion", cases: [
+        { args: [["Envolver", "Anitta", 210, "pop"]],             stdin: [], expect: { type: "contains", parts: ["Envolver", "Anitta", "210", "pop"] } },
+        { args: [["Flowers", "Miley Cyrus", 175, "pop"]],         stdin: [], expect: { type: "contains", parts: ["Flowers", "Miley Cyrus", "175", "pop"] } },
+        { args: [["Bzrp Music Sessions", "Bizarrap", 198, "trap"]], stdin: [], expect: { type: "contains", parts: ["Bizarrap", "198", "trap"] } },
+      ]},
+      { funcName: "nombre_y_artista", cases: [
+        { args: [["Envolver", "Anitta", 210, "pop"]],             stdin: [], expect: { type: "list", value: ["Envolver", "Anitta"] } },
+        { args: [["Flowers", "Miley Cyrus", 175, "pop"]],         stdin: [], expect: { type: "list", value: ["Flowers", "Miley Cyrus"] } },
+        { args: [["Cairo", "Bizarrap", 197, "trap"]],             stdin: [], expect: { type: "list", value: ["Cairo", "Bizarrap"] } },
+      ]},
+    ],
+    sol: `def descripcion_cancion(cancion):
+    nombre, artista, duracion, genero = cancion
+    return f"{nombre} de {artista} dura {duracion}s y es del género {genero}"
 
-    print("¡ALERTA! Temperatura máxima superada.")
-    print(f"Temperatura registrada: {temperatura} °C")
-    print(f"Temperatura promedio: {suma / cantidad} °C")`,
+def nombre_y_artista(cancion):
+    return cancion[:2]`,
   },
   {
-    title: "Peso de los paquetes",
-    flavor: "Una empresa de transporte necesita registrar el peso de los paquetes que se cargan en un camión.",
-    tag: "while · acumulador · centinela",
-    statement: "Cada día varía la cantidad de paquetes a enviar y no se sabe de antemano cuántos serán.<br><br>Hacé una función que le solicite al usuario el peso de cada paquete hasta que ingrese <code>\"X\"</code> para indicar que no quedan más. Al finalizar, mostrá por pantalla el peso total de la carga.",
-    hint: "Pedí el primer valor antes del while. La condición es <code>peso != \"X\"</code> (comparando como texto). Sumá castéando a número sólo cuando no sea \"X\", y volvé a pedir el siguiente peso al final del cuerpo.",
-    starter: "def calcular_peso_total():\n    pass",
-    test: null,
-    sol: `def calcular_peso_total():
-    peso_total = 0
-    peso = input("Ingrese el peso del paquete en kg (X para finalizar): ")
-    while peso != "X" and peso != "x":
-        peso_total += int(peso)
-        peso = input("Ingrese el peso del paquete en kg (X para finalizar): ")
-    print(f"Peso total: {peso_total} kg")`,
+    title: "Quitar canción del setlist",
+    flavor: "A veces hay que cambiar el setlist de un show en el último momento.",
+    tag: "tuplas · inmutabilidad · for · construcción",
+    statement: "Escribí una función <code>quitar_cancion(setlist, cancion)</code> que devuelva una nueva tupla sin esa canción. Si la canción no está en el setlist, devolvé el setlist original sin cambios.<br><br><b>Ejemplo:</b> <code>quitar_cancion((\"Envolver\", \"Cairo\", \"Rara Vez\"), \"Cairo\")</code> → <code>('Envolver', 'Rara Vez')</code>",
+    hint: "Las tuplas son inmutables: no podés modificar la original. ¿Cómo armás una nueva tupla solo con los elementos que querés conservar? ¿Qué sintaxis necesitás para crear una tupla de un solo elemento?",
+    starter: "def quitar_cancion(setlist, cancion):\n    pass",
+    test: {
+      funcName: "quitar_cancion",
+      cases: [
+        { args: [["Envolver", "Cairo", "Rara Vez"], "Cairo"],    stdin: [], expect: { type: "list", value: ["Envolver", "Rara Vez"] } },
+        { args: [["Envolver", "Cairo", "Rara Vez"], "Noexiste"], stdin: [], expect: { type: "list", value: ["Envolver", "Cairo", "Rara Vez"] } },
+        { args: [["Bzrp", "Tini", "Lali"], "Bzrp"],             stdin: [], expect: { type: "list", value: ["Tini", "Lali"] } },
+        { args: [["Cairo"], "Cairo"],                            stdin: [], expect: { type: "list", value: [] } },
+      ],
+    },
+    sol: `def quitar_cancion(setlist, cancion):
+    resultado = ()
+    for c in setlist:
+        if c != cancion:
+            resultado += (c,)
+    return resultado`,
+  },
+  {
+    title: "Duración total del álbum",
+    flavor: "Spotify muestra la duración total de cada álbum en su portada.",
+    tag: "tuplas · sum · // y % · f-strings",
+    statement: "Escribí una función <code>duracion_total_album(duraciones)</code> que reciba una tupla con la duración de cada canción en segundos y devuelva el total en formato <code>\"minutos:segundos\"</code>.<br><br><b>Ejemplo:</b> <code>duracion_total_album((210, 195, 165, 200, 220))</code> → <code>\"16:30\"</code>",
+    hint: "¿Cómo sumás todos los elementos de una secuencia? Una vez que tenés el total en segundos, ¿qué operación te da los minutos enteros y cuál te da los segundos restantes? ¿Qué pasa si los segundos son menos de 10 en el formato final?",
+    starter: "def duracion_total_album(duraciones):\n    pass",
+    test: {
+      funcName: "duracion_total_album",
+      cases: [
+        { args: [[210, 195, 165, 200, 220]], stdin: [], expect: { type: "exact", value: "16:30" } },
+        { args: [[60, 60, 60]],              stdin: [], expect: { type: "exact", value: "3:00"  } },
+        { args: [[45, 90, 125]],             stdin: [], expect: { type: "exact", value: "4:20"  } },
+        { args: [[200]],                     stdin: [], expect: { type: "exact", value: "3:20"  } },
+      ],
+    },
+    sol: `def duracion_total_album(duraciones):
+    total = sum(duraciones)
+    minutos = total // 60
+    segundos = total % 60
+    return f"{minutos}:{segundos:02d}"`,
   },
 ];
 
@@ -1578,24 +1209,20 @@ function getPyodide() {
       const PYODIDE_URL = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
       const init = () => {
         window.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/' })
-          .then(py => {
-            py.runPython(PCC_HARNESS_PY);
-            resolve(py);
-          })
+          .then(py => { py.runPython(PCC_HARNESS_PY); resolve(py); })
           .catch(err => reject(err));
       };
       if (window.loadPyodide) { init(); return; }
       const script = document.createElement('script');
       script.src = PYODIDE_URL;
       script.onload = init;
-      script.onerror = () => reject(new Error('No se pudo descargar Pyodide. Verificá tu conexión a internet.'));
+      script.onerror = () => reject(new Error('No se pudo descargar Pyodide.'));
       document.head.appendChild(script);
     });
   }
   return pyodidePromise;
 }
 
-// Pre-carga Pyodide en segundo plano al abrir la página
 getPyodide().catch(() => {});
 
 async function pccRun(code, funcName, args, stdinArr) {
@@ -1617,6 +1244,7 @@ async function pccCheckPractices(code, requiredNames) {
 function fmtVal(v) {
   if (v === null || v === undefined) return '(nada)';
   if (typeof v === 'string') return '"' + v + '"';
+  if (Array.isArray(v)) return '[' + v.map(fmtVal).join(', ') + ']';
   return String(v);
 }
 
@@ -1633,8 +1261,12 @@ function evalCase(actual, expect) {
       return n(String(actual)) === n(String(expect.value));
     }
     case 'contains': {
-      const s = (actual||'').toLowerCase().trim();
-      return expect.parts.every(p => s.includes(p.toLowerCase().trim()));
+      const s = String(actual||'').toLowerCase();
+      return expect.parts.every(p => s.includes(String(p).toLowerCase().trim()));
+    }
+    case 'list': {
+      const a = Array.isArray(actual) ? actual : [];
+      return JSON.stringify(a) === JSON.stringify(expect.value);
     }
     case 'stdout': {
       const lines = (actual || '').trim().split('\n').map(l => l.trim()).filter(Boolean);
@@ -1704,24 +1336,17 @@ function setupVerifyBlock(boonEl, boon) {
   if (!textarea) return;
 
   const editor = CodeMirror.fromTextArea(textarea, {
-    mode: 'python',
-    theme: 'underworld',
-    lineNumbers: true,
-    matchBrackets: true,
-    styleActiveLine: true,
-    indentUnit: 4,
-    tabSize: 4,
-    indentWithTabs: false,
+    mode: 'python', theme: 'underworld', lineNumbers: true,
+    matchBrackets: true, styleActiveLine: true,
+    indentUnit: 4, tabSize: 4, indentWithTabs: false,
     extraKeys: { Tab: cm => cm.execCommand('insertSoftTab') },
   });
   editor.setSize(null, 'auto');
 
   const verifyStatus = boonEl.querySelector('.verify-status');
-
-  // ── Call cell ──
-  const callInput  = boonEl.querySelector('.call-cell-input');
-  const callBtn    = boonEl.querySelector('.call-cell-btn');
-  const callOutput = boonEl.querySelector('.call-cell-output');
+  const callInput    = boonEl.querySelector('.call-cell-input');
+  const callBtn      = boonEl.querySelector('.call-cell-btn');
+  const callOutput   = boonEl.querySelector('.call-cell-output');
 
   async function runCall() {
     const call = callInput.value.trim();
@@ -1730,27 +1355,16 @@ function setupVerifyBlock(boonEl, boon) {
     callOutput.className = 'call-cell-output';
     try {
       const defCode = editor.getValue().trim();
-      // Run defCode + store return value + capture stdout separately
       const r = await pccRun(
-        defCode + '\n_cell_retval = ' + call,
-        null, [], []
-      );
-      if (!r.ok) {
-        callOutput.classList.add('show', 'err');
-        callOutput.textContent = r.error;
-        return;
-      }
-      // Now get the repr of _cell_retval without re-running the function
-      const r2 = await pccRun(
-        defCode + '\n_cell_retval = ' + call + '\nif _cell_retval is not None: print(repr(_cell_retval))',
+        defCode + '\nif ' + call + ' is not None: print(repr(' + call + '))',
         null, [], []
       );
       callOutput.classList.add('show');
-      if (!r2.ok) {
+      if (!r.ok) {
         callOutput.classList.add('err');
-        callOutput.textContent = r2.error;
+        callOutput.textContent = r.error;
       } else {
-        callOutput.textContent = r2.stdout?.trimEnd() || '(sin salida)';
+        callOutput.textContent = r.stdout?.trimEnd() || '(sin salida)';
       }
     } catch(e) {
       callOutput.classList.add('show', 'err');
@@ -1763,42 +1377,42 @@ function setupVerifyBlock(boonEl, boon) {
   callBtn.addEventListener('click', runCall);
   callInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); runCall(); } });
 
-  if (!boon.test) return;
+  if (!boon.test && !boon.tests) return;
 
   const verifyBtn    = boonEl.querySelector('.verify-btn');
   const practiceArea = boonEl.querySelector('.practice-note-area');
   const resultsArea  = boonEl.querySelector('.test-results');
+  const solDetails   = boonEl.querySelector('details.solution');
 
   verifyBtn.addEventListener('click', async () => {
     const code = editor.getValue().trim();
     if (!code) return;
-
     verifyBtn.disabled = true;
     verifyStatus.textContent = 'Cargando intérprete…';
     practiceArea.innerHTML = '';
     resultsArea.innerHTML = '';
-
     try {
-      const requiredNames = boon.test.funcName ? [boon.test.funcName] : [];
+      const testSpecs = boon.tests || (boon.test ? [boon.test] : []);
+      const requiredNames = testSpecs.map(s => s.funcName).filter(Boolean);
       const practice = await pccCheckPractices(code, requiredNames);
       practiceArea.innerHTML = buildPracticeNoteHtml(practice);
-
       verifyStatus.textContent = 'Ejecutando tests…';
-      const rows = await runFunctionTests(code, boon.test);
-      resultsArea.innerHTML = buildTestResultsHtml(rows);
-
+      const allRows = [];
+      for (const spec of testSpecs) allRows.push(...await runFunctionTests(code, spec));
+      resultsArea.innerHTML = buildTestResultsHtml(allRows);
     } catch (err) {
       resultsArea.innerHTML = `<div class="practice-note warn">Error: ${escHtml(err.message || String(err))}</div>`;
     } finally {
       verifyBtn.disabled = false;
       verifyStatus.textContent = '';
+      if (solDetails) solDetails.removeAttribute('hidden');
     }
   });
 }
 
 /* ─── QUIZ ENGINE ────────────────────────────────────────── */
 
-let state = { current: 0, score: 0, results: [], done: false };
+let state = { current: 0, score: 0, results: [], done: false, selected: null, answered: false };
 
 function renderQuiz() {
   const root = document.getElementById('quiz-root');
@@ -1809,6 +1423,29 @@ function renderQuiz() {
   const pct     = (state.current / questions.length) * 100;
   const si      = sections.indexOf(q.section);
   const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+
+  const card = mkEl('div', 'card', `
+    <span class="tag-styx">${q.section}</span>
+    <div class="q-text">${q.q}</div>
+    <div class="options-grid" id="options-grid">
+      ${shuffled.map(opt =>
+        `<button class="option-btn" data-val="${escHtml(opt)}" onclick="selectOption(this)">${opt.replace(/\n/g,'<br>')}</button>`
+      ).join('')}
+    </div>
+    <details class="hint">
+      <summary>Ayuda de memoria</summary>
+      <div class="hint-body">${q.hint}</div>
+    </details>
+    <div class="feedback" id="q-feedback"></div>
+    <div class="quiz-nav">
+      <button class="btn btn-primary" id="confirm-btn" disabled onclick="confirmAnswer()">
+        Confirmar respuesta ✓
+      </button>
+      <button class="btn btn-primary" id="next-btn" style="display:none" onclick="goNext()">
+        Siguiente pregunta →
+      </button>
+    </div>
+  `);
 
   root.append(
     mkEl('div', 'status-row', `
@@ -1822,36 +1459,31 @@ function renderQuiz() {
         ${sectionLabels.map((l, i) => `<span class="${si >= i ? 'done' : ''}">${l}</span>`).join('')}
       </div>
     `),
-    mkEl('div', 'card', `
-      <span class="tag-styx">${q.section}</span>
-      <div class="q-text">${q.q}</div>
-      <div class="options-grid">
-        ${shuffled.map(opt =>
-          `<button class="option-btn" onclick="checkAnswer(this,'${esc(opt)}')">${opt}</button>`
-        ).join('')}
-      </div>
-      <details class="hint">
-        <summary>Ayuda de memoria</summary>
-        <div class="hint-body">${q.hint}</div>
-      </details>
-      <div class="feedback" id="q-feedback"></div>
-      <div class="quiz-nav">
-        <button class="btn btn-primary" id="next-btn" disabled onclick="goNext()">
-          Siguiente pregunta →
-        </button>
-      </div>
-    `)
+    card
   );
 }
 
-function checkAnswer(btn, chosen) {
+function selectOption(btn) {
+  if (state.answered) return;
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.selected = btn.dataset.val;
+  const confirmBtn = document.getElementById('confirm-btn');
+  if (confirmBtn) confirmBtn.disabled = false;
+}
+
+function confirmAnswer() {
+  if (!state.selected || state.answered) return;
+  state.answered = true;
+
   const q    = questions[state.current];
+  const chosen = state.selected;
   const isOk = q.answers.some(a => norm(a) === norm(chosen));
-  const note = document.getElementById('q-notes')?.value?.trim() || '';
 
   document.querySelectorAll('.option-btn').forEach(b => {
     b.disabled = true;
-    const v = b.textContent;
+    b.classList.remove('selected');
+    const v = b.dataset.val || b.textContent.trim();
     if (q.answers.some(a => norm(a) === norm(v))) b.classList.add('correct');
     else if (norm(v) === norm(chosen))            b.classList.add('wrong');
   });
@@ -1864,13 +1496,19 @@ function checkAnswer(btn, chosen) {
 
   state.results.push({
     pregunta: q.q.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
-    respuesta: chosen, correcta: isOk, nota: note,
+    respuesta: chosen, correcta: isOk,
   });
-  document.getElementById('next-btn').disabled = false;
+
+  const confirmBtn = document.getElementById('confirm-btn');
+  const nextBtn    = document.getElementById('next-btn');
+  if (confirmBtn) confirmBtn.style.display = 'none';
+  if (nextBtn)    nextBtn.style.display = 'inline-flex';
 }
 
 function goNext() {
   state.current++;
+  state.selected = null;
+  state.answered = false;
   if (state.current >= questions.length) state.done = true;
   renderQuiz();
 }
@@ -1879,8 +1517,8 @@ function renderSummary(root) {
   const { score, results } = state;
   const total = questions.length;
   const msg = score === total
-    ? 'Perfecto. Estás listo para cruzar.'
-    : 'Podés pasar a los ejercicios cuando quieras.';
+    ? '¡Perfecto! Todo correcto.'
+    : 'Podés seguir con los ejercicios cuando quieras.';
 
   root.append(mkEl('div', '', `
     <div class="river-wrap">
@@ -1890,21 +1528,21 @@ function renderSummary(root) {
       </div>
     </div>
     <div class="summary-card">
-      <span class="eyebrow">Resultado</span>
+      <span class="eyebrow">Resultado del Quiz</span>
       <div class="big-score">${score} / ${total}</div>
       <p>${msg}</p>
       ${buildResultGrid(results)}
       <div class="cta-row">
         <button class="btn btn-primary"
-          onclick="sendToSheet('U3-Quiz',state.results,state.score,${questions.length},'u3q1-send-status')">
+          onclick="sendToSheet('U4-Quiz',state.results,state.score,${questions.length},'u4q1-send-status')">
           Enviar a planilla
         </button>
         <button class="btn"
-          onclick="document.getElementById('camara-5').scrollIntoView({behavior:'smooth'})">
+          onclick="document.getElementById('camara-ejercicios').scrollIntoView({behavior:'smooth'})">
           Pasar a Ejercicios →
         </button>
       </div>
-      <p id="u3q1-send-status" style="font-size:.82rem;color:var(--styx);margin-top:.5rem"></p>
+      <p id="u4q1-send-status" class="send-status"></p>
     </div>
   `));
 }
@@ -1914,18 +1552,19 @@ function renderSummary(root) {
 function renderBoons(boons, containerId) {
   const list = document.getElementById(containerId);
   boons.forEach((b, idx) => {
-    const verifyHtml = `
+    const verifyHtml = (b.test || b.tests) ? `
       <div class="verify-row">
-        ${b.test ? `<button class="btn btn-primary verify-btn">Verificar</button>` : ''}
+        <button class="btn btn-primary verify-btn">Verificar</button>
         <span class="verify-status"></span>
       </div>
-      ${b.test ? `<div class="practice-note-area"></div><div class="test-results"></div>` : ''}
-      <div class="call-cell">
-        <span class="call-cell-prompt">&gt;&gt;&gt;</span>
-        <input class="call-cell-input" type="text" placeholder="${b.test ? b.test.funcName + '(...)' : 'llamar función...'}">
-        <button class="call-cell-btn">▶</button>
-      </div>
-      <div class="call-cell-output"></div>`;
+      <div class="practice-note-area"></div>
+      <div class="test-results"></div>` : '';
+
+    const solHtml = b.sol ? `
+      <details class="solution" hidden>
+        <summary>Mostrar solución sugerida</summary>
+        <div class="sol-body"><pre>${escHtml(b.sol)}</pre></div>
+      </details>` : '';
 
     const boonEl = mkEl('div', 'boon', `
       <span class="tag-styx">${b.tag}</span>
@@ -1940,6 +1579,13 @@ function renderBoons(boons, containerId) {
         <span class="verify-note">Tu solución en Python</span>
         <textarea class="cm-target" id="${containerId}-editor-${idx}">${escHtml(b.starter || '')}</textarea>
         ${verifyHtml}
+        <div class="call-cell">
+          <span class="call-cell-prompt">&gt;&gt;&gt;</span>
+          <input class="call-cell-input" type="text" placeholder="${(b.tests||b.test) ? (b.tests?b.tests[0].funcName:b.test.funcName)+'(...)' : 'llamar función...'}">
+          <button class="call-cell-btn">▶</button>
+        </div>
+        <div class="call-cell-output"></div>
+        ${solHtml}
       </div>
     `);
     list.appendChild(boonEl);
@@ -1950,18 +1596,20 @@ function renderBoons(boons, containerId) {
 /* ─── UTILS ──────────────────────────────────────────────── */
 
 function mkEl(tag, cls, html) {
-  const d = document.createElement(tag);
+  const d = document.createElement(tag || 'div');
   if (cls) d.className = cls;
   d.innerHTML = html;
   return d;
 }
 function norm(s)    { return (s || '').trim().replace(/\s+/g, ' '); }
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function esc(s)     { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
 
 function buildResultGrid(results) {
   return `<div class="result-grid">${results.map((r, i) => {
     const ok = r.correcta !== undefined ? r.correcta : r.correct;
-    const pregunta = (r.pregunta || r.q || '').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
-    const respuesta = r.respuesta || r.chosen || '—';
+    const pregunta = (r.pregunta || '').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+    const respuesta = r.respuesta || '—';
     return `<div class="result-chip ${ok ? 'ok' : 'bad'}">
       <div class="result-chip-top">
         <span class="rc-icon">${ok ? '✓' : '✗'}</span>
@@ -1971,73 +1619,41 @@ function buildResultGrid(results) {
     </div>`;
   }).join('')}</div>`;
 }
-function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function esc(s)     { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
 
-/* ─── THEORY TABS ──────────────────────────────────────────── */
-function theoryTab(name) {
-  document.querySelectorAll('.theory-tab').forEach(btn => {
-    const active = btn.getAttribute('onclick').includes("'" + name + "'");
-    btn.classList.toggle('active', active);
-    btn.setAttribute('aria-selected', String(active));
-  });
-  document.querySelectorAll('.theory-panel').forEach(panel => {
-    panel.classList.toggle('active', panel.id === 'panel-' + name);
-  });
-}
-
-/* ─── INIT ───────────────────────────────────────────────── */
-function initPage() {
-  renderQuiz();
-  renderBoons(boonsOceanus, 'boon-list-oceanus');
-  renderPotion();
-  renderExam();
-  // Después de mostrar el contenido, forzar refresh de todos los editores CodeMirror
-  setTimeout(() => {
-    document.querySelectorAll('.CodeMirror').forEach(cm => cm.CodeMirror && cm.CodeMirror.refresh());
-  }, 50);
-}
-
-/* ─── DATA: DESAFÍO FINAL ────────────────────────────────── */
+/* ─── DATA: DESAFÍO FINAL — TUPLAS ──────────────────────── */
 
 const potion = {
-  title: "Estado de la Cursada",
-  flavor: "El desafío integrador que cierra la tarea pendiente de la clase.",
-  statement: "Ahora que ya está armada toda la lógica de parciales y finales, hacé un programa que le permita al usuario ingresar la nota del primer y segundo parcial y muestre por pantalla el estado de su cursada.",
-  reqs: [
-    "Si no aprobó ambos parciales, el estado de la cursada es <code>\"Desaprobado\"</code>.",
-    "Si aprobó ambos parciales con promedio menor a 7, el estado de la cursada es <code>\"En final\"</code>.",
-    "Si aprobó ambos parciales con promedio mayor o igual a 7, el estado de la cursada es <code>\"Promoción\"</code>.",
-  ],
-  hint: "Reutilizá <code>aprobo_parciales</code> y <code>promociono</code> de los ejercicios anteriores. Definí una función <code>estado_cursada(nota_primer_parcial, nota_segundo_parcial)</code> que devuelva el string, y recién afuera pedí las notas con <code>input()</code> y mostralas con <code>print()</code>.",
-  starter: "def aprobo_parcial(nota):\n    return nota >= 4\n\ndef aprobo_parciales(nota_primer_parcial, nota_segundo_parcial):\n    return aprobo_parcial(nota_primer_parcial) and aprobo_parcial(nota_segundo_parcial)\n\ndef promociono(nota_primer_parcial, nota_segundo_parcial):\n    return nota_primer_parcial + nota_segundo_parcial > 13\n\ndef estado_cursada(nota_primer_parcial, nota_segundo_parcial):\n    pass",
+  title: "La canción del medio",
+  flavor: "El algoritmo de Spotify necesita encontrar la canción central de un setlist para sugerirla como 'canción destacada'.",
+  statement: `Implementá <code>cancion_del_medio(setlist)</code> que reciba una tupla con los nombres de canciones y devuelva la del medio.<br><br>
+    Si el setlist tiene cantidad <b>impar</b> de canciones, devolvé la canción central como string.<br>
+    Si tiene cantidad <b>par</b>, devolvé las dos del medio como tupla.<br><br>
+    <b>Ejemplos:</b><br>
+    <code>cancion_del_medio(("Envolver", "Cairo", "Rara Vez"))</code> → <code>"Cairo"</code><br>
+    <code>cancion_del_medio(("Envolver", "Cairo", "Rara Vez", "Bzrp"))</code> → <code>('Cairo', 'Rara Vez')</code>`,
+  hint: "¿Cómo calculás el índice del elemento del medio de una secuencia? ¿Qué operación entera necesitás? ¿Cómo distinguís si la longitud es par o impar? ¿Qué diferencia hay en el slicing entre los dos casos?",
+  starter: `def cancion_del_medio(setlist):
+    pass`,
   tests: [
-    { funcName: 'estado_cursada', cases: [
-      { args: [3, 8], expect: { type: 'exact', value: 'Desaprobado' } },
-      { args: [5, 5], expect: { type: 'exact', value: 'En final' } },
-      { args: [8, 8], expect: { type: 'exact', value: 'Promoción' } },
-      { args: [4, 10], expect: { type: 'exact', value: 'Promoción' } },
+    { funcName: 'cancion_del_medio', cases: [
+      { args: [["Envolver", "Cairo", "Rara Vez"]],
+        stdin: [], expect: { type: 'exact', value: 'Cairo' } },
+      { args: [["Bzrp", "Tini", "Lali", "Maria Becerra"]],
+        stdin: [], expect: { type: 'list', value: ['Tini', 'Lali'] } },
+      { args: [["Solo"]],
+        stdin: [], expect: { type: 'exact', value: 'Solo' } },
+      { args: [["A", "B", "C", "D", "E"]],
+        stdin: [], expect: { type: 'exact', value: 'C' } },
+      { args: [["A", "B"]],
+        stdin: [], expect: { type: 'list', value: ['A', 'B'] } },
     ]},
   ],
-  solutionHtml: `def aprobo_parcial(nota):
-    return nota &gt;= 4
-
-def aprobo_parciales(nota_primer_parcial, nota_segundo_parcial):
-    return aprobo_parcial(nota_primer_parcial) and aprobo_parcial(nota_segundo_parcial)
-
-def promociono(nota_primer_parcial, nota_segundo_parcial):
-    return nota_primer_parcial + nota_segundo_parcial &gt; 13
-
-def estado_cursada(nota_primer_parcial, nota_segundo_parcial):
-    if not aprobo_parciales(nota_primer_parcial, nota_segundo_parcial):
-        return "Desaprobado"
-    if promociono(nota_primer_parcial, nota_segundo_parcial):
-        return "Promoción"
-    return "En final"
-
-nota_primer_parcial = float(input("Ingrese la nota del primer parcial: "))
-nota_segundo_parcial = float(input("Ingrese la nota del segundo parcial: "))
-print(estado_cursada(nota_primer_parcial, nota_segundo_parcial))`,
+  sol: `def cancion_del_medio(setlist):
+    n = len(setlist)
+    mid = n // 2
+    if n % 2 == 1:
+        return setlist[mid]
+    return setlist[mid - 1 : mid + 1]`,
 };
 
 /* ─── POTION RENDERER ────────────────────────────────────── */
@@ -2048,10 +1664,9 @@ function renderPotion() {
   const el = mkEl('div', 'potion-card', `
     <div class="potion-title">${p.title}</div>
     <div class="potion-flavor">${p.flavor}</div>
-    <p style="color:var(--bone-dim);font-size:.95rem;max-width:70ch;margin:0 0 1rem">${p.statement}</p>
-    <ul class="reqs">${p.reqs.map(r => `<li>${r}</li>`).join('')}</ul>
-    <details class="hint" style="margin-top:1rem">
-      <summary>Pista</summary>
+    <p style="color:var(--text-dim);font-size:.95rem;max-width:72ch;margin:0 0 1rem">${p.statement}</p>
+    <details class="hint" style="margin-top:0">
+      <summary>Ayuda de memoria</summary>
       <div class="hint-body">${p.hint}</div>
     </details>
     <div class="answer-box" style="margin-top:1.2rem">
@@ -2062,6 +1677,10 @@ function renderPotion() {
         <span class="verify-status" id="potion-status"></span>
       </div>
       <div class="test-results" id="potion-results"></div>
+      <details class="solution" id="potion-solution" hidden>
+        <summary>Mostrar solución sugerida</summary>
+        <div class="sol-body"><pre>${escHtml(p.sol)}</pre></div>
+      </details>
     </div>
   `);
   root.appendChild(el);
@@ -2077,6 +1696,8 @@ function renderPotion() {
   const verifyBtn = document.getElementById('potion-verify');
   const status    = document.getElementById('potion-status');
   const results   = document.getElementById('potion-results');
+  const solDetail = document.getElementById('potion-solution');
+
   verifyBtn.addEventListener('click', async () => {
     const code = editor.getValue().trim();
     if (!code) return;
@@ -2092,138 +1713,229 @@ function renderPotion() {
     } finally {
       verifyBtn.disabled = false;
       status.textContent = '';
+      if (solDetail) solDetail.removeAttribute('hidden');
     }
   });
 }
 
-/* ─── DATA: EJERCICIO INTEGRADOR (ENTREGABLE) ───────────────────── */
+/* ─── DATA: EJERCICIOS DE PARCIAL ───────────────────────── */
 
-const exam = {
-  title: "Ventas del Kiosco",
-  flavor: "Ejercicio integrador — combina decisiones (if) y ciclos (while) en un solo programa. Se entrega a la planilla del curso.",
-  statement: "Un kiosco de barrio quiere digitalizar el registro de ventas del día. Todo producto cuyo precio sea menor a $500 se considera <b>en oferta</b>.",
-  reqs: [
-    "<code>es_oferta(precio)</code> — devuelve <code>True</code> si el precio es menor a $500, <code>False</code> en caso contrario.",
-    "<code>registrar_ventas()</code> — usando un <code>while</code>, pide el precio de cada producto vendido hasta que se ingrese <code>-1</code>. Por cada venta acumulá el total vendido y contá cuántas ventas fueron en oferta (reutilizando <code>es_oferta</code>). Al finalizar, mostrá por pantalla el total vendido y la cantidad de productos en oferta vendidos.",
-  ],
-  hint: "Pedí el primer precio antes del while (estado previo) y la condición es <code>precio != -1</code>. Adentro del cuerpo, actualizá el acumulador y, al final del cuerpo, volvé a pedir el precio — si lo actualizás antes te vas a comer una venta de más o de menos.",
-  starter: "def es_oferta(precio):\n    pass\n\ndef registrar_ventas():\n    pass",
-  tests: [
-    { funcName: 'es_oferta', cases: [
-      { args: [300],  expect: { type: 'bool', value: true  } },
-      { args: [499],  expect: { type: 'bool', value: true  } },
-      { args: [500],  expect: { type: 'bool', value: false } },
-      { args: [1000], expect: { type: 'bool', value: false } },
-    ]},
-  ],
-  note: "El <code>Verificar</code> solo puede probar automáticamente <code>es_oferta</code> (es una función pura). <code>registrar_ventas()</code> depende de <code>input()</code>/<code>print()</code>, así que esa parte la revisa el docente al recibir la entrega — igual dejala definida en tu código.",
-  solutionHtml: `def es_oferta(precio):
-    return precio &lt; 500
+const examEjs = [
+  {
+    id: 'ej1',
+    badge: 'En Clase',
+    title: 'Lista de supermercado',
+    statement: `Los profes de Pensamiento Computacional se están quedando seniles y cuando van al supermercado se olvidan qué comprar. Escribí una función <code>lista_supermercado()</code> que pida productos al usuario uno por uno hasta que ingrese <code>'X'</code> (o <code>'x'</code>). La función debe devolver los productos como una cadena en minúscula separados por coma.<br><br>
+      <b>Ejemplo de interacción:</b><br>
+      <code>Ingrese un producto: pescado<br>
+      Agregado! Ingrese un producto: PAN<br>
+      Agregado! Ingrese un producto: yogURt<br>
+      Ingrese un producto: x<br>
+      Su lista ha sido creada con éxito</code><br><br>
+      La función devuelve: <code>"pescado, pan, yogurt"</code><br><br>
+      <b>Extra:</b> ¿Podés devolver la lista también en una tupla?`,
+    hint: `¿Cómo sabés cuándo parar de pedir productos? ¿Qué diferencia hay entre 'X' mayúscula y 'x' minúscula — importa acá? ¿Cómo vas acumulando los productos mientras los recibís? ¿Cómo se construye una cadena de elementos separados por coma a partir de una tupla?`,
+    starter: `def lista_supermercado():
+    pass`,
+    test: {
+      funcName: 'lista_supermercado',
+      cases: [
+        { args: [], stdin: ['pescado', 'PAN', 'yogURt', 'X'], expect: { type: 'exact', value: 'pescado, pan, yogurt' } },
+        { args: [], stdin: ['Envolver', 'Cairo', 'x'],         expect: { type: 'exact', value: 'envolver, cairo' } },
+        { args: [], stdin: ['Manzana', 'X'],                   expect: { type: 'exact', value: 'manzana' } },
+      ]
+    },
+    note: `El Verificar prueba el valor que devuelve la función. Los <code>print()</code> dentro de tu código (el mensaje de bienvenida, "Agregado!", etc.) son parte del ejercicio — el docente los revisa en tu código.`,
+    sol: `def lista_supermercado():
+    print("Hagamos una lista de supermercado.")
+    productos = ()
+    producto = input("Ingrese un producto: ")
+    while producto.upper() != 'X':
+        productos = productos + (producto.lower(),)
+        producto = input("Agregado! Ingrese un producto: ")
+    print("Su lista ha sido creada con exito")
+    return ", ".join(productos)`,
+  },
+  {
+    id: 'ej2',
+    badge: 'En Clase',
+    title: 'Ofuscar información',
+    statement: `Nos contratan en una empresa de seguridad. Nuestro trabajo es ofuscar información sensible de un archivo: en lugar de mostrar una palabra, se reemplaza cada letra por <code>#</code>.<br><br>
+      Escribí una función <code>ofuscar(texto, palabra)</code> que reciba un texto y una palabra a censurar, y devuelva el texto con cada aparición de esa palabra reemplazada por tantos <code>#</code> como letras tiene.<br><br>
+      <b>Ejemplo:</b> <code>ofuscar("Hola Lucia, Hola Melina", "Hola")</code> → <code>"#### Lucia, #### Melina"</code>`,
+    hint: `¿Cómo sabés cuántos <code>#</code> hay que poner? ¿Cómo encontrás dónde empieza la palabra dentro del texto? Pensá en construir el resultado parte por parte: lo que va antes de la primera aparición, el reemplazo, y después seguir buscando desde donde terminó.`,
+    starter: `def ofuscar(texto, palabra):
+    pass`,
+    test: {
+      funcName: 'ofuscar',
+      cases: [
+        { args: ["Hola Lucia, Hola Melina", "Hola"],                      stdin: [], expect: { type: 'exact', value: '#### Lucia, #### Melina' } },
+        { args: ["Envolver es de Anitta y la canto Anitta", "Anitta"],     stdin: [], expect: { type: 'exact', value: 'Envolver es de ###### y la canto ######' } },
+        { args: ["Bzrp ft Quevedo es de Bzrp", "Bzrp"],                   stdin: [], expect: { type: 'exact', value: '#### ft Quevedo es de ####' } },
+      ]
+    },
+    note: ``,
+    sol: `def ofuscar(texto, palabra):
+    reemplazo = '#' * len(palabra)
+    resultado = ''
+    inicio = 0
+    pos = texto.find(palabra)
+    while pos != -1:
+        resultado += texto[inicio:pos] + reemplazo
+        inicio = pos + len(palabra)
+        pos = texto.find(palabra, inicio)
+    resultado += texto[inicio:]
+    return resultado`,
+  },
+  {
+    id: 'ej3',
+    badge: 'Tarea',
+    title: 'ADN Digital',
+    statement: `Trabajamos en un laboratorio que analiza <b>ADN digital</b>: cadenas de <code>0</code>s y <code>1</code>s que pueden tener "mutaciones" (símbolos que no son <code>0</code> ni <code>1</code>). Por ejemplo: <code>"1f101011011W3011010"</code>.<br><br>
+      Escribí una función <code>analizar_adn(cadena, patron)</code> que reciba una cadena y un patrón buscado, y devuelva una <b>tupla</b> con:<br>
+      <ol>
+        <li>Cantidad de <code>1</code>s en la cadena</li>
+        <li>Cantidad de <code>0</code>s en la cadena</li>
+        <li>Cantidad de veces que aparece el patrón</li>
+        <li>Posición de la primera aparición del patrón (siempre aparece al menos una vez)</li>
+        <li>Porcentaje de caracteres que no son <code>0</code> ni <code>1</code>, redondeado a 2 decimales</li>
+      </ol>
+      <b>Ejemplo:</b> <code>analizar_adn("1f101011011W3011010", "1010")</code> → <code>(10, 6, 2, 2, 15.79)</code>`,
+    hint: `Para contar los 1s, 0s y "mutaciones", ¿cómo recorrés cada carácter de la cadena y verificás de qué tipo es? Para contar las apariciones del patrón, ¿podés reutilizar la idea de buscar con <code>find</code> a partir de la posición siguiente? Para el porcentaje, ¿qué fórmula relaciona la cantidad de mutaciones con el largo total?`,
+    starter: `def analizar_adn(cadena, patron):
+    pass`,
+    test: {
+      funcName: 'analizar_adn',
+      cases: [
+        { args: ["1010",     "10"], stdin: [], expect: { type: 'list', value: [2, 2, 2, 0, 0]  } },
+        { args: ["101ABC",   "10"], stdin: [], expect: { type: 'list', value: [2, 1, 1, 0, 50] } },
+        { args: ["11x00y11", "11"], stdin: [], expect: { type: 'list', value: [4, 2, 2, 0, 25] } },
+      ]
+    },
+    note: `La función debe devolver una tupla con los 5 valores en el orden indicado. Para el porcentaje, usá <code>round(valor, 2)</code>.`,
+    sol: `def analizar_adn(cadena, patron):
+    count_1 = 0
+    count_0 = 0
+    count_other = 0
+    for char in cadena:
+        if char == '1':
+            count_1 += 1
+        elif char == '0':
+            count_0 += 1
+        else:
+            count_other += 1
 
-def registrar_ventas():
-    total_vendido = 0
-    cantidad_ofertas = 0
-    precio = float(input("Ingrese el precio del producto vendido (-1 para finalizar): "))
-    while precio != -1:
-        total_vendido += precio
-        if es_oferta(precio):
-            cantidad_ofertas += 1
-        precio = float(input("Ingrese el precio del producto vendido (-1 para finalizar): "))
-    print(f"Total vendido: {total_vendido}")
-    print(f"Productos en oferta vendidos: {cantidad_ofertas}")`,
-};
+    first_pos = cadena.find(patron)
+    count_patron = 0
+    pos = first_pos
+    while pos != -1:
+        count_patron += 1
+        pos = cadena.find(patron, pos + 1)
 
-/* ─── EXAM RENDERER (verificar + entregar a planilla) ───────────── */
+    pct_other = round(count_other / len(cadena) * 100, 2)
+    return (count_1, count_0, count_patron, first_pos, pct_other)`,
+  },
+];
+
+/* ─── EXAM RENDERER ─────────────────────────────────────── */
 
 function renderExam() {
   const root = document.getElementById('exam-root');
-  const p = exam;
-  const el = mkEl('div', 'potion-card', `
-    <div class="potion-title">${p.title}</div>
-    <div class="potion-flavor">${p.flavor}</div>
-    <p style="color:var(--text-dim);font-size:.95rem;max-width:70ch;margin:0 0 1rem">${p.statement}</p>
-    <ul class="reqs">${p.reqs.map(r => `<li>${r}</li>`).join('')}</ul>
-    <details class="hint" style="margin-top:1rem">
-      <summary>Pista</summary>
-      <div class="hint-body">${p.hint}</div>
-    </details>
-    <p style="color:var(--text-faint);font-size:.85rem;max-width:70ch;margin:1rem 0 0">${p.note}</p>
-    <div class="answer-box" style="margin-top:1.2rem">
-      <span class="verify-note">Tu solución en Python</span>
-      <textarea class="cm-target" id="exam-editor">${escHtml(p.starter)}</textarea>
-      <div class="verify-row">
-        <button class="btn btn-primary" id="exam-verify">Verificar</button>
-        <span class="verify-status" id="exam-status"></span>
+
+  examEjs.forEach((p, idx) => {
+    const badgeStyle = p.badge === 'Tarea'
+      ? 'background:rgba(255,165,0,.15);color:#ffb74d;border:1px solid rgba(255,165,0,.3);'
+      : 'background:rgba(29,185,84,.12);color:var(--accent);border:1px solid rgba(29,185,84,.25);';
+    const totalCases = p.test.cases.length;
+    const noteHtml = p.note
+      ? `<p style="color:var(--text-faint);font-size:.84rem;max-width:70ch;margin:.9rem 0 0">${p.note}</p>`
+      : '';
+
+    const el = mkEl('div', 'potion-card', `
+      <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem">
+        <span style="font-size:.75rem;font-family:var(--font-m);padding:.25rem .65rem;border-radius:99px;${badgeStyle}">${p.badge}</span>
+        <div class="potion-title" style="margin:0">${p.title}</div>
       </div>
-      <div class="test-results" id="exam-results"></div>
-      <div class="cta-row" style="justify-content:flex-start; margin-top:1.4rem; padding-top:1.2rem; border-top:1px solid var(--border)">
-        <button class="btn btn-primary" id="exam-submit">Entregar</button>
+      <p style="color:var(--text-dim);font-size:.95rem;max-width:72ch;margin:0 0 .8rem">${p.statement}</p>
+      <details class="hint" style="margin-top:0">
+        <summary>Ayuda de memoria</summary>
+        <div class="hint-body">${p.hint}</div>
+      </details>
+      ${noteHtml}
+      <div class="answer-box" style="margin-top:1.2rem">
+        <span class="verify-note">Tu solución en Python</span>
+        <textarea class="cm-target" id="exam-editor-${idx}">${escHtml(p.starter)}</textarea>
+        <div class="verify-row">
+          <button class="btn btn-primary" id="exam-verify-${idx}">Verificar</button>
+          <span class="verify-status" id="exam-status-${idx}"></span>
+        </div>
+        <div class="test-results" id="exam-results-${idx}"></div>
+        <details class="solution" id="exam-solution-${idx}" hidden>
+          <summary>Mostrar solución sugerida</summary>
+          <div class="sol-body"><pre>${escHtml(p.sol)}</pre></div>
+        </details>
+        <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--border)">
+          <button class="btn btn-primary" id="exam-submit-${idx}">Entregar →</button>
+        </div>
+        <p id="exam-send-status-${idx}" class="send-status"></p>
       </div>
-      <p id="exam-send-status" style="font-size:.82rem;color:var(--accent);margin-top:.5rem"></p>
-    </div>
-  `);
-  root.appendChild(el);
+    `);
+    root.appendChild(el);
 
-  const editor = CodeMirror.fromTextArea(el.querySelector('textarea.cm-target'), {
-    mode: 'python', theme: 'underworld', lineNumbers: true,
-    matchBrackets: true, styleActiveLine: true,
-    indentUnit: 4, tabSize: 4, indentWithTabs: false,
-    extraKeys: { Tab: cm => cm.execCommand('insertSoftTab') },
-  });
-  editor.setSize(null, 'auto');
+    const editor = CodeMirror.fromTextArea(el.querySelector('textarea.cm-target'), {
+      mode: 'python', theme: 'underworld', lineNumbers: true,
+      matchBrackets: true, styleActiveLine: true,
+      indentUnit: 4, tabSize: 4, indentWithTabs: false,
+      extraKeys: { Tab: cm => cm.execCommand('insertSoftTab') },
+    });
+    editor.setSize(null, 'auto');
 
-  let lastRows = [];
-  const totalCases = p.tests.reduce((acc, t) => acc + t.cases.length, 0);
+    let lastRows = [];
+    const verifyBtn = document.getElementById(`exam-verify-${idx}`);
+    const status    = document.getElementById(`exam-status-${idx}`);
+    const results   = document.getElementById(`exam-results-${idx}`);
+    const solDetail = document.getElementById(`exam-solution-${idx}`);
 
-  const verifyBtn = document.getElementById('exam-verify');
-  const status    = document.getElementById('exam-status');
-  const results   = document.getElementById('exam-results');
-  verifyBtn.addEventListener('click', async () => {
-    const code = editor.getValue().trim();
-    if (!code) return;
-    verifyBtn.disabled = true;
-    status.textContent = 'Verificando…';
-    results.innerHTML = '';
-    try {
-      const allRows = [];
-      for (const spec of p.tests) allRows.push(...await runFunctionTests(code, spec));
-      lastRows = allRows;
-      results.innerHTML = buildTestResultsHtml(allRows);
-    } catch (err) {
-      lastRows = [];
-      results.innerHTML = `<div class="practice-note warn">Error: ${escHtml(err.message || String(err))}</div>`;
-    } finally {
-      verifyBtn.disabled = false;
-      status.textContent = '';
-    }
-  });
+    verifyBtn.addEventListener('click', async () => {
+      const code = editor.getValue().trim();
+      if (!code) return;
+      verifyBtn.disabled = true;
+      status.textContent = 'Verificando…';
+      results.innerHTML = '';
+      try {
+        lastRows = await runFunctionTests(code, p.test);
+        results.innerHTML = buildTestResultsHtml(lastRows);
+      } catch (err) {
+        lastRows = [];
+        results.innerHTML = `<div class="practice-note warn">Error: ${escHtml(err.message || String(err))}</div>`;
+      } finally {
+        verifyBtn.disabled = false;
+        status.textContent = '';
+        if (solDetail) solDetail.removeAttribute('hidden');
+      }
+    });
 
-  const submitBtn  = document.getElementById('exam-submit');
-  const sendStatus = document.getElementById('exam-send-status');
-  submitBtn.addEventListener('click', () => {
-    if (!studentName) {
-      sendStatus.textContent = 'Ingresá tu nombre arriba antes de entregar.';
-      return;
-    }
-    const code = editor.getValue().trim();
-    if (!code) {
-      sendStatus.textContent = 'Escribí tu solución antes de entregar.';
-      return;
-    }
-    const passed = lastRows.filter(r => r.pass).length;
-    submitBtn.disabled = true;
-    sendToSheet(
-      'U3-Integrador',
-      [{ pregunta: p.title, respuesta: code, correcta: lastRows.length > 0 && passed === totalCases }],
-      passed, totalCases, 'exam-send-status'
-    );
-    setTimeout(() => { submitBtn.disabled = false; }, 1500);
+    const submitBtn  = document.getElementById(`exam-submit-${idx}`);
+    const sendStatus = document.getElementById(`exam-send-status-${idx}`);
+    submitBtn.addEventListener('click', () => {
+      if (!studentName) { sendStatus.textContent = 'Ingresá tu nombre al inicio para entregar.'; return; }
+      const code = editor.getValue().trim();
+      if (!code) { sendStatus.textContent = 'Escribí tu solución antes de entregar.'; return; }
+      const passed = lastRows.filter(r => r.pass).length;
+      submitBtn.disabled = true;
+      sendToSheet(
+        `U4-Parcial-${idx + 1}`,
+        [{ pregunta: p.title, respuesta: code, correcta: lastRows.length > 0 && passed === totalCases }],
+        passed, totalCases, `exam-send-status-${idx}`
+      );
+      setTimeout(() => { submitBtn.disabled = false; }, 1500);
+    });
   });
 }
 
 /* ─── SITE NAV ───────────────────────────────────────────── */
 function snavToggle() {
-  const panel = document.getElementById('snav-panel');
+  const panel   = document.getElementById('snav-panel');
   const overlay = document.getElementById('snav-overlay');
   const open = panel.classList.toggle('open');
   overlay.classList.toggle('open', open);
@@ -2233,14 +1945,12 @@ function snavClose() {
   document.getElementById('snav-overlay').classList.remove('open');
 }
 
-// Resalta el anchor activo según la sección visible
 (function () {
   const anchors = document.querySelectorAll('.snav-anchor[href^="#"]');
-  const sections = Array.from(anchors).map(a => document.querySelector(a.getAttribute('href')));
-
+  const secs    = Array.from(anchors).map(a => document.querySelector(a.getAttribute('href')));
   function onScroll() {
-    let current = sections[0];
-    sections.forEach(s => { if (s && window.scrollY >= s.offsetTop - 120) current = s; });
+    let current = secs[0];
+    secs.forEach(s => { if (s && window.scrollY >= s.offsetTop - 120) current = s; });
     anchors.forEach(a => {
       a.classList.toggle('current', a.getAttribute('href') === '#' + (current && current.id));
     });
@@ -2248,6 +1958,17 @@ function snavClose() {
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 })();
+
+/* ─── INIT ───────────────────────────────────────────────── */
+function initPage() {
+  renderQuiz();
+  renderBoons(boonsU4, 'boon-list-u4');
+  renderPotion();
+  renderExam();
+  setTimeout(() => {
+    document.querySelectorAll('.CodeMirror').forEach(cm => cm.CodeMirror && cm.CodeMirror.refresh());
+  }, 50);
+}
 </script>
 </body>
 </html>
