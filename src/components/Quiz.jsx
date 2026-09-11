@@ -10,11 +10,9 @@ function shuffled(arr) {
   return a;
 }
 
-const QUIZ_KEY = 'guia-2:quiz';
-
-function loadQuizState(questions) {
+function loadQuizState(questions, quizKey) {
   try {
-    const saved = JSON.parse(localStorage.getItem(QUIZ_KEY));
+    const saved = JSON.parse(localStorage.getItem(quizKey));
     if (saved && typeof saved.current === 'number' && saved.current < questions.length) {
       return saved;
     }
@@ -22,8 +20,8 @@ function loadQuizState(questions) {
   return null;
 }
 
-export default function Quiz({ questions, sections, sectionLabels, studentName, sheetWebhook, onComplete }) {
-  const saved = loadQuizState(questions);
+export default function Quiz({ questions, sections, sectionLabels, studentName, sheetWebhook, onComplete, quizKey = 'guia-2:quiz' }) {
+  const saved = loadQuizState(questions, quizKey);
 
   const [current, setCurrent] = useState(saved?.current ?? 0);
   const [lives, setLives] = useState(saved?.lives ?? 3);
@@ -42,8 +40,8 @@ export default function Quiz({ questions, sections, sectionLabels, studentName, 
   });
 
   useEffect(() => {
-    localStorage.setItem(QUIZ_KEY, JSON.stringify({ current, lives, score, answered, results, done, sent, optionStates }));
-  }, [current, lives, score, answered, results, done, sent, optionStates]);
+    localStorage.setItem(quizKey, JSON.stringify({ current, lives, score, answered, results, done, sent, optionStates }));
+  }, [current, lives, score, answered, results, done, sent, optionStates, quizKey]);
 
   // Move to next question or finish
   function goNext() {
@@ -128,7 +126,7 @@ export default function Quiz({ questions, sections, sectionLabels, studentName, 
       .then(() => {
         setSendStatus('Enviado. Ya debería estar en la planilla.');
         setSent(true);
-        localStorage.removeItem(QUIZ_KEY);
+        localStorage.removeItem(quizKey);
       })
       .catch(() => { setSendStatus('No se pudo enviar — descargá el CSV y mandalo por otro medio.'); });
   }

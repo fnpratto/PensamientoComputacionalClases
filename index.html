@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unidad 4 — Estructuras de Datos</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+  <title>El Archivo — Unidad 4.2</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
@@ -14,32 +14,30 @@
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
   <style>
     :root {
-      /* ── Palette: Spotify Green ── */
-      --bg:           #121212;
-      --bg-soft:      #181818;
-      --bg-muted:     #282828;
-      --surface:      #282828;
-      --border:       #3E3E3E;
-      --border-strong:#535353;
+      --bg:           #080d18;
+      --bg-soft:      #0d1527;
+      --bg-muted:     #0a1020;
+      --surface:      #111c30;
+      --border:       #192343;
+      --border-strong:#2a3d60;
 
-      --text:         #FFFFFF;
-      --text-dim:     #B3B3B3;
-      --text-faint:   #6A6A6A;
+      --text:         #eae3d4;
+      --text-dim:     #9199ad;
+      --text-faint:   #4a5a7a;
 
-      --accent:       #1DB954;
-      --accent-dim:   rgba(29,185,84,.15);
-      --accent-strong:#1ed760;
+      --accent:       #4a82f5;
+      --accent-dim:   rgba(74,130,245,.15);
+      --accent-strong:#6f9fff;
 
-      --good:         #1DB954;
-      --good-bg:      rgba(29,185,84,.13);
+      --good:         #5fcef5;
+      --good-bg:      rgba(95,206,245,.13);
       --bad:          #e22134;
       --bad-bg:       rgba(226,33,52,.13);
       --amber:        #f59b00;
       --amber-bg:     rgba(245,155,0,.12);
-      --violet:       #1ed760;
-      --violet-bg:    rgba(30,215,96,.12);
+      --violet:       #a47cf5;
+      --violet-bg:    rgba(164,124,245,.12);
 
-      /* ── Backwards-compat aliases ── */
       --stone:      var(--surface);
       --stone-line: var(--border);
       --void:       var(--bg-soft);
@@ -74,7 +72,7 @@
       padding-bottom: 4rem;
       -webkit-font-smoothing: antialiased;
     }
-    ::selection { background: rgba(29,185,84,.3); color: var(--accent-strong); }
+    ::selection { background: rgba(74,130,245,.3); color: var(--accent-strong); }
     h1,h2,h3 { font-family: var(--font-d); font-weight: 700; letter-spacing: -0.01em; color: var(--text); margin: 0; }
     code {
       font-family: var(--font-m);
@@ -89,7 +87,6 @@
       margin: 0;
     }
 
-    /* ── LABELS ── */
     .eyebrow {
       font-family: var(--font-m); font-size: .7rem; letter-spacing: .1em;
       text-transform: uppercase; color: var(--text-faint); margin-bottom: .5rem; display: block;
@@ -101,7 +98,6 @@
       margin-bottom: .7rem;
     }
 
-    /* ── HERO ── */
     #hero {
       min-height: 65vh;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -121,7 +117,6 @@
     .scroll-cue { color: var(--text-faint); font-size: .8rem; animation: bob 2.5s ease-in-out infinite; }
     @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
 
-    /* ── SECTIONS ── */
     .section-bg-a, .section-bg-b, .section-bg-c, .section-bg-d {
       background: var(--bg);
       border-top: 1px solid var(--border);
@@ -132,7 +127,6 @@
     .chamber-head h2 { font-size: clamp(1.5rem, 3.6vw, 2rem); }
     .chamber-head p { color: var(--text-dim); max-width: 560px; margin-top: .6rem; font-size: .98rem; }
 
-    /* ── RIVER (progress bar) ── */
     .river-wrap { margin: 1.4rem 0 2.2rem; }
     .river-track {
       position: relative; height: 4px;
@@ -151,7 +145,6 @@
     }
     .river-labels span.done { color: var(--accent); font-weight: 600; }
 
-    /* ── STATUS ── */
     .status-row {
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 1.2rem; flex-wrap: wrap; gap: .8rem;
@@ -159,7 +152,6 @@
     .score-tag { font-family: var(--font-m); font-size: .76rem; color: var(--text-dim); }
     .score-tag b { color: var(--accent); }
 
-    /* ── CARD ── */
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 1.8rem; }
     .q-text { font-size: 1.1rem; font-weight: 500; margin-bottom: 1.2rem; color: var(--text); max-width: 70ch; }
     .q-text pre, .card pre {
@@ -167,7 +159,6 @@
       font-size: .83rem; margin: .6rem 0;
     }
 
-    /* ── OPTIONS ── */
     .options-grid { display: flex; flex-direction: column; gap: .6rem; }
     .option-btn {
       text-align: left; width: 100%;
@@ -181,7 +172,7 @@
     .option-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .option-btn.selected {
       border-color: var(--accent);
-      background: rgba(29,185,84,.12);
+      background: rgba(74,130,245,.12);
       color: var(--accent-strong);
       font-weight: 600;
       box-shadow: 0 0 0 1px var(--accent) inset;
@@ -191,19 +182,16 @@
     .option-btn[disabled] { cursor: not-allowed; }
     .option-btn[disabled]:not(.correct):not(.wrong):not(.selected) { opacity: .5; }
 
-    /* ── CONFIRM + NEXT BUTTONS ── */
     .quiz-nav { display: flex; justify-content: flex-end; gap: .7rem; margin-top: 1.4rem; flex-wrap: wrap; }
 
-    /* ── FEEDBACK ── */
     .feedback { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: .95rem; color: var(--text-dim); display: none; }
     .feedback.show { display: block; }
     .feedback.ok  { color: var(--good); }
     .feedback.bad { color: var(--bad); }
 
-    /* ── HINT ── */
     details.hint {
       margin-top: 1rem; border: 1px solid var(--border);
-      border-radius: var(--r-sm); background: rgba(29,185,84,.03);
+      border-radius: var(--r-sm); background: rgba(74,130,245,.03);
     }
     details.hint summary {
       cursor: pointer; list-style: none; padding: .6rem .9rem;
@@ -212,22 +200,20 @@
       display: flex; align-items: center; gap: .5rem;
     }
     details.hint summary::-webkit-details-marker { display: none; }
-    details.hint summary::before { content: "♪"; font-size: .9rem; }
+    details.hint summary::before { content: "♦"; font-size: .9rem; }
     details.hint[open] summary { border-bottom: 1px solid var(--border); }
     details.hint .hint-body { padding: .8rem .9rem .9rem; font-size: .92rem; color: var(--text-dim); max-width: 70ch; }
     details.hint .hint-body code { color: var(--accent-strong); }
 
-    /* ── SUMMARY ── */
     .summary-card {
       text-align: center; padding: 2.6rem 1.5rem;
       border: 1px solid var(--border); border-radius: var(--r);
-      background: radial-gradient(ellipse at 50% 0%, rgba(29,185,84,.07), transparent 70%);
+      background: radial-gradient(ellipse at 50% 0%, rgba(74,130,245,.07), transparent 70%);
     }
     .summary-card .big-score { font-size: 2.8rem; font-weight: 800; color: var(--accent); margin: .4rem 0; }
     .summary-card p { color: var(--text-dim); max-width: 460px; margin: .6rem auto 0; }
     .cta-row { display: flex; justify-content: center; flex-wrap: wrap; gap: .7rem; margin-top: 1.4rem; }
 
-    /* ── RESULT GRID ── */
     .result-grid { display: flex; flex-direction: column; gap: .5rem; margin-top: 1.4rem; text-align: left; }
     .result-chip {
       border: 1px solid var(--border); border-radius: var(--r-sm);
@@ -242,21 +228,19 @@
     .result-chip-answer { margin-top: .2rem; color: var(--text-faint); font-size: .8rem; }
     .result-chip-answer span { color: var(--text-dim); }
 
-    /* ── BTN ── */
     .btn {
       font-family: var(--font-m); font-size: .82rem; letter-spacing: .06em; text-transform: uppercase;
       background: transparent; color: var(--text); border: 1px solid var(--border-strong);
       padding: .72rem 1.4rem; border-radius: var(--r-sm); cursor: pointer;
       transition: border-color .15s, background .15s;
     }
-    .btn:hover { border-color: var(--accent); background: rgba(29,185,84,.08); }
+    .btn:hover { border-color: var(--accent); background: rgba(74,130,245,.08); }
     .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .btn[disabled] { opacity: .4; cursor: not-allowed; }
     .btn-primary { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 700; }
     .btn-primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
     .btn-primary[disabled] { background: var(--border); border-color: var(--border); color: var(--text-faint); }
 
-    /* ── BOONS ── */
     .boon-list { display: flex; flex-direction: column; gap: 1.2rem; }
     .boon {
       background: var(--surface); border: 1px solid var(--border);
@@ -267,7 +251,6 @@
     .boon-flavor { font-style: italic; color: var(--text-faint); font-size: .88rem; margin-bottom: .9rem; }
     .statement { color: var(--text-dim); font-size: .97rem; max-width: 70ch; margin-bottom: .9rem; }
 
-    /* ── POTION CARD ── */
     .potion-card {
       background: var(--surface); border: 1px solid var(--accent);
       border-radius: var(--r); padding: 2rem;
@@ -278,7 +261,6 @@
     ul.reqs li { margin-bottom: .35rem; font-size: .95rem; }
     ul.reqs code { color: var(--accent-strong); }
 
-    /* ── ANSWER BOX / CODE EDITOR ── */
     .answer-box { margin-top: 1.2rem; }
     .verify-note {
       font-family: var(--font-m); font-size: .72rem; letter-spacing: .06em;
@@ -293,7 +275,6 @@
     }
     .answer-box textarea:focus { border-color: var(--accent); }
 
-    /* ── CODEMIRROR: underworld theme (mapped to spotify colors) ── */
     .answer-box .CodeMirror {
       height: auto; min-height: 130px; border: 1px solid var(--border);
       border-radius: var(--r-sm); font-family: var(--font-m); font-size: .85rem; line-height: 1.55;
@@ -303,8 +284,8 @@
     .cm-s-underworld .CodeMirror-gutters { background: var(--bg-muted); border-right: 1px solid var(--border); }
     .cm-s-underworld .CodeMirror-linenumber { color: var(--text-faint); padding: 0 .6rem 0 .4rem; }
     .cm-s-underworld .CodeMirror-cursor { border-left: 1.5px solid var(--accent); }
-    .cm-s-underworld .CodeMirror-selected { background: rgba(29,185,84,.18); }
-    .cm-s-underworld .CodeMirror-activeline-background { background: rgba(29,185,84,.05); }
+    .cm-s-underworld .CodeMirror-selected { background: rgba(74,130,245,.18); }
+    .cm-s-underworld .CodeMirror-activeline-background { background: rgba(74,130,245,.05); }
     .cm-s-underworld .CodeMirror-matchingbracket { color: var(--amber) !important; text-decoration: underline; }
     .cm-s-underworld .cm-keyword { color: var(--accent); font-weight: 600; }
     .cm-s-underworld .cm-def { color: var(--accent-strong); font-weight: 600; }
@@ -318,11 +299,9 @@
     .cm-s-underworld .cm-punctuation, .cm-s-underworld .cm-bracket { color: var(--text-dim); }
     .CodeMirror-placeholder { color: var(--text-faint) !important; opacity: .7; }
 
-    /* ── VERIFY ROW ── */
     .verify-row { display: flex; align-items: center; gap: .8rem; margin-top: .8rem; flex-wrap: wrap; }
     .verify-status { font-family: var(--font-m); font-size: .75rem; color: var(--text-faint); }
 
-    /* ── PRACTICE NOTE ── */
     .practice-note-area, .test-results { margin-top: .9rem; }
     .practice-note {
       font-family: var(--font-m); font-size: .8rem; padding: .6rem .9rem;
@@ -331,7 +310,6 @@
     .practice-note.ok   { color: var(--good); border-color: var(--good); background: var(--good-bg); }
     .practice-note.warn { color: var(--bad); border-color: var(--bad); background: var(--bad-bg); }
 
-    /* ── TEST ITEMS ── */
     .test-item {
       border: 1px solid var(--border); border-radius: var(--r-sm);
       padding: .55rem .8rem; background: var(--bg-soft); margin-bottom: .4rem;
@@ -346,7 +324,6 @@
     .test-item.fail .t-head { color: var(--bad); }
     .t-detail { margin-top: .3rem; color: var(--text-dim); font-size: .84rem; }
 
-    /* ── CALL CELL ── */
     .call-cell {
       display: flex; align-items: center; gap: .5rem; margin-top: .9rem;
       background: var(--bg-soft); border: 1px solid var(--border);
@@ -363,7 +340,7 @@
       font-size: 1rem; padding: 0 .3rem; border-radius: 3px;
       transition: background .15s;
     }
-    .call-cell-btn:hover { background: rgba(29,185,84,.12); }
+    .call-cell-btn:hover { background: rgba(74,130,245,.12); }
     .call-cell-output {
       font-family: var(--font-m); font-size: .83rem; color: var(--accent-strong);
       padding: .35rem .7rem; border-radius: var(--r-sm); display: none; margin-top: .3rem;
@@ -372,10 +349,9 @@
     .call-cell-output.show { display: block; }
     .call-cell-output.err  { color: var(--bad); border-color: var(--bad); }
 
-    /* ── SOLUTION DETAILS ── */
     details.solution {
       margin-top: 1.1rem; border: 1px solid var(--border);
-      border-radius: var(--r-sm); background: rgba(29,185,84,.03);
+      border-radius: var(--r-sm); background: rgba(74,130,245,.03);
     }
     details.solution summary {
       cursor: pointer; list-style: none; padding: .55rem .9rem;
@@ -390,10 +366,8 @@
     details.solution .sol-body { padding: .9rem; }
     details.solution pre { margin: 0; }
 
-    /* ── SEND STATUS ── */
     .send-status { font-family: var(--font-m); font-size: .8rem; color: var(--accent); margin-top: .5rem; }
 
-    /* ── SITE NAV ── */
     .snav-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(0,0,0,.6); backdrop-filter: blur(3px); z-index: 8999;
@@ -402,7 +376,7 @@
     .snav-tab {
       position: fixed; left: 0; top: 50%; transform: translateY(-50%);
       z-index: 9001; width: 26px; height: 80px;
-      background: rgba(24,24,24,.95); border: 1px solid rgba(29,185,84,.25);
+      background: rgba(8,13,24,.95); border: 1px solid rgba(74,130,245,.25);
       border-left: none; border-radius: 0 6px 6px 0;
       color: var(--accent); cursor: pointer;
       font-family: var(--font-m); font-size: .6rem; letter-spacing: .12em;
@@ -413,8 +387,8 @@
     .snav-tab:hover { border-color: var(--accent); }
     .snav-panel {
       position: fixed; left: 0; top: 0; bottom: 0; width: 248px;
-      background: rgba(18,18,18,.97);
-      border-right: 1px solid rgba(29,185,84,.15);
+      background: rgba(8,13,24,.97);
+      border-right: 1px solid rgba(74,130,245,.15);
       backdrop-filter: blur(12px); z-index: 9000;
       transform: translateX(-100%); transition: transform .24s cubic-bezier(.25,.8,.25,1);
       display: flex; flex-direction: column; overflow-y: auto;
@@ -422,7 +396,7 @@
     .snav-panel.open { transform: translateX(0); }
     .snav-header {
       padding: 1.4rem 1.1rem 1rem;
-      border-bottom: 1px solid rgba(29,185,84,.1);
+      border-bottom: 1px solid rgba(74,130,245,.1);
       display: flex; align-items: center; justify-content: space-between;
     }
     .snav-logo { font-family: var(--font-m); font-size: .8rem; letter-spacing: .12em; color: var(--accent); }
@@ -446,14 +420,12 @@
       background: transparent; margin-bottom: .2rem;
       transition: color .15s, background .15s;
     }
-    .snav-unit:hover, .snav-anchor:hover { color: var(--text); background: rgba(29,185,84,.06); }
-    .snav-unit.active { color: var(--accent); border-left-color: var(--accent); background: rgba(29,185,84,.08); }
+    .snav-unit:hover, .snav-anchor:hover { color: var(--text); background: rgba(74,130,245,.06); }
+    .snav-unit.active { color: var(--accent); border-left-color: var(--accent); background: rgba(74,130,245,.08); }
     .snav-anchor.current { color: var(--accent); }
     .u-num { font-size: .6rem; opacity: .7; min-width: 1.8rem; text-align: right; }
     .snav-divider { border: none; border-top: 1px solid var(--border); margin: .6rem 0; }
-    @media (max-width: 600px) {
-      .snav-tab { height: 60px; }
-    }
+    @media (max-width: 600px) { .snav-tab { height: 60px; } }
 
     footer {
       max-width: var(--content-w); margin: 0 auto;
@@ -461,19 +433,13 @@
       color: var(--text-faint); font-family: var(--font-m); font-size: .74rem; opacity: .7;
     }
 
-    /* ── NAME AUTOCOMPLETE ── */
     .name-ac-item {
-      padding: .6rem .9rem;
-      color: var(--text-dim);
-      font-size: .9rem;
-      font-family: var(--font-m);
-      cursor: pointer;
-      border-bottom: 1px solid var(--border);
+      padding: .6rem .9rem; color: var(--text-dim); font-size: .9rem;
+      font-family: var(--font-m); cursor: pointer; border-bottom: 1px solid var(--border);
     }
     .name-ac-item:last-child { border-bottom: none; }
     .name-ac-item:hover, .name-ac-item.ac-active {
-      background: rgba(29,185,84,.12);
-      color: var(--accent-strong);
+      background: rgba(74,130,245,.12); color: var(--accent-strong);
     }
   </style>
 </head>
@@ -492,9 +458,9 @@
     <div style="font-family:var(--font-m);font-size:.7rem;letter-spacing:.14em;color:var(--text-faint);text-transform:uppercase;margin-bottom:1.4rem">
       Pensamiento Computacional · FIUBA
     </div>
-    <div style="font-size:2rem;margin-bottom:.8rem">🎵</div>
+    <div style="font-size:2rem;margin-bottom:.8rem">📋</div>
     <h1 style="font-weight:800;font-size:1.6rem;color:var(--text);margin:0 0 .4rem">
-      Unidad 4 — <span style="color:var(--accent)">Estructuras de Datos</span>
+      UNIDAD 4.2 — <span style="color:var(--accent)">Listas y Tuplas</span>
     </h1>
     <p style="color:var(--text-dim);font-size:.92rem;margin:0 0 1.8rem;line-height:1.6">
       Antes de empezar, contanos quién sos.
@@ -544,8 +510,8 @@
 <!-- ══ HERO ══════════════════════════════════════════════════ -->
 <section id="hero">
   <div class="hero-badge">Pensamiento Computacional · Curso 11: Retamozo, Pratto</div>
-  <h1 class="hero-title">Estructuras de <span>Datos</span></h1>
-  <p class="hero-sub">Unidad 4 (Pt. 1) — Cadenas, Rangos y Tuplas</p>
+  <h1 class="hero-title">Listas y <span>Tuplas</span></h1>
+  <p class="hero-sub">UNIDAD 4.2 — Colecciones, métodos y funciones de orden superior.</p>
   <div class="scroll-cue">▼</div>
 </section>
 
@@ -555,7 +521,7 @@
     <div class="chamber-head">
       <span class="eyebrow">Autoevaluación</span>
       <h2>Quiz</h2>
-      <p>8 preguntas de repaso, una por vez. Seleccioná tu respuesta y confirmala antes de ver el resultado.</p>
+      <p>9 preguntas de repaso, una por vez. Seleccioná tu respuesta y confirmala antes de ver el resultado.</p>
     </div>
     <div id="quiz-root"></div>
   </div>
@@ -567,7 +533,7 @@
     <div class="chamber-head">
       <span class="eyebrow">Práctica</span>
       <h2>Ejercicios</h2>
-      <p>Cadenas de caracteres y rangos al ritmo de Spotify. Cada uno tiene su pista y verificación automática.</p>
+      <p>Listas y tuplas en acción. Cada ejercicio tiene su pista y verificación automática.</p>
     </div>
     <div class="boon-list" id="boon-list-u4"></div>
   </div>
@@ -578,8 +544,8 @@
   <div class="chamber" id="camara-final">
     <div class="chamber-head">
       <span class="eyebrow">Desafío Final</span>
-      <h2>Ficha de una Canción</h2>
-      <p>Un ejercicio que combina tuplas con todo lo visto. Implementá las dos funciones para procesar la ficha de una canción.</p>
+      <h2>Análisis Salarial</h2>
+      <p>Un ejercicio que combina listas, funciones auxiliares y cálculos estadísticos.</p>
     </div>
     <div id="potion-root"></div>
   </div>
@@ -591,13 +557,13 @@
     <div class="chamber-head">
       <span class="eyebrow">Ejercicios de Parcial</span>
       <h2>Ejercicios Integradores</h2>
-      <p>Dos ejercicios para hacer en clase y uno para entregar la próxima clase. Cada uno combina cadenas, tuplas y estructuras de control.</p>
+      <p>Ejercicios que combinan listas, tuplas y estructuras de control. Podés entregar tu solución directamente.</p>
     </div>
     <div id="exam-root"></div>
   </div>
 </div>
 
-<footer>Unidad 4 (Pt. 1) · Cadenas, Rangos y Tuplas · Pensamiento Computacional FIUBA</footer>
+<footer>El Archivo · UNIDAD 4.2 — Listas y Tuplas · Pensamiento Computacional FIUBA</footer>
 
 </div><!-- /#main-content -->
 
@@ -612,10 +578,10 @@
   <div class="snav-body">
     <span class="snav-section-label">Unidades</span>
     <a class="snav-unit active" href="#">
-      <span class="u-num">U4</span>Estructuras de Datos
+      <span class="u-num">U4.2</span>Listas y Tuplas
     </a>
     <hr class="snav-divider">
-    <span class="snav-section-label">Unidad 4 — Pt. 1</span>
+    <span class="snav-section-label">Unidad 4.2</span>
     <a class="snav-anchor" href="#hero"              onclick="snavClose()">Inicio</a>
     <a class="snav-anchor" href="#camara-1"          onclick="snavClose()">Quiz</a>
     <a class="snav-anchor" href="#camara-ejercicios" onclick="snavClose()">Ejercicios</a>
@@ -735,414 +701,272 @@ function sendToSheet(sheetName, results, score, total, statusElId) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   UNIDAD 4 — DATA
+   UNIDAD 4.2 — DATA
    ═══════════════════════════════════════════════════════════ */
 
 /* ─── QUIZ DATA ───────────────────────────────────────────── */
 
-const sections      = ["Cadenas", "Rangos", "Tuplas", "Control"];
-const sectionLabels = ["Cadenas", "Rangos", "Tuplas", "Control"];
+const sections      = ["Las Aguas del Leteo", "El Laberinto", "La Forja", "El Tribunal"];
+const sectionLabels = ["Leteo", "Laberinto", "Forja", "Tribunal"];
 
 const questions = [
-  /* ── CADENAS ── */
+  /* ── LETEO: mutabilidad ── */
   {
-    section: "Cadenas",
-    q: "¿Qué imprime el siguiente código?<pre>cancion = \"Envolver\"\ncancion[0] = \"e\"\nprint(cancion)</pre>",
-    answers: ["Se produce un TypeError, el código no llega a imprimir nada"],
+    section: "Las Aguas del Leteo",
+    q: "¿Qué estructura de datos <strong>no</strong> es inmutable?",
+    answers: ["Listas"],
+    options: ["Strings", "Tuplas", "Rangos", "Listas"],
+    hint: "¿Qué significa que algo sea inmutable? ¿Qué pasaría si intentaras hacer <code>mi_lista[0] = 99</code> — y después lo mismo con un string o una tupla? ¿Cuál de las cuatro opciones te deja hacer eso?",
+    feedback_ok: "Correcto. Las listas son mutables: podés modificarlas con <code>append()</code>, <code>remove()</code> o asignación por índice. Strings, tuplas y rangos no admiten modificaciones.",
+    feedback_bad: "La respuesta correcta es <b>Listas</b>. Strings, tuplas y rangos son inmutables — no se pueden cambiar una vez creados.",
+  },
+  {
+    section: "Las Aguas del Leteo",
+    q: "¿Cuál es la diferencia fundamental entre una lista y una tupla?",
+    answers: ["Las tuplas no pueden modificarse"],
+    options: ["Las listas pueden indexarse y las tuplas no", "Las listas no se pueden desempaquetar", "Las tuplas no pueden modificarse", "Las tuplas pueden contener valores de distinto tipo y las listas no"],
+    hint: "Pensá qué operaciones podés hacer con una lista que no podés hacer con una tupla. ¿Podés agregar o cambiar elementos en ambas? ¿Cuál de las opciones nombra esa diferencia concretamente?",
+    feedback_ok: "Correcto. Las tuplas son inmutables: una vez creadas no se pueden modificar. Las listas sí.",
+    feedback_bad: "La respuesta correcta es que <b>las tuplas no pueden modificarse</b>. Ambas admiten indexación y desempaquetado, y ambas pueden mezclar tipos.",
+  },
+  /* ── LABERINTO: indexación ── */
+  {
+    section: "El Laberinto",
+    q: "¿Qué devuelve <code>len([\"Hola\", \"Chau\", \"?\"])</code>?",
+    answers: ["3"],
+    options: ["2", "3", "9", "Error. Len es solo para cadenas"],
+    hint: "¿Qué es exactamente lo que <code>len()</code> cuenta sobre una lista — los elementos o los caracteres dentro de ellos? Contá a mano cuántos elementos tiene esa lista.",
+    feedback_ok: "Correcto. La lista tiene 3 elementos y <code>len()</code> los cuenta, no los caracteres de cada string.",
+    feedback_bad: "La respuesta es <b>3</b>. <code>len()</code> cuenta cuántos elementos tiene la colección — la lista tiene 3.",
+  },
+  {
+    section: "El Laberinto",
+    q: "¿Qué muestra el siguiente código?<pre>valores = [[1, 2], [3, 4]]\nprint(valores[0])</pre>",
+    answers: ["[1, 2]"],
+    options: ["1", "3", "1, 3", "[1, 2]"],
+    hint: "¿Qué tipo de dato es el primer elemento de <code>valores</code>? ¿Un número o algo más? Si lo imprimís, ¿qué esperarías ver?",
+    feedback_ok: "Correcto. <code>valores[0]</code> devuelve el primer elemento, que es la sublista <code>[1, 2]</code> completa.",
+    feedback_bad: "La respuesta es <b>[1, 2]</b>. <code>valores[0]</code> devuelve el primer elemento de la lista externa, que es la sublista completa.",
+  },
+  {
+    section: "El Laberinto",
+    q: "¿Qué muestra el siguiente código?<pre>valores = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\nprint(valores[1][2])</pre>",
+    answers: ["6"],
+    options: ["1", "6", "8", "5"],
+    hint: "Cuando aplicás <code>[1]</code> a <code>valores</code>, ¿qué obtenés? ¿Y si a ese resultado le aplicás <code>[2]</code>? Resolvelo paso a paso.",
+    feedback_ok: "Correcto. <code>valores[1]</code> es <code>[4, 5, 6]</code> y <code>[2]</code> toma el tercer elemento: <code>6</code>.",
+    feedback_bad: "La respuesta es <b>6</b>. <code>valores[1]</code> da <code>[4, 5, 6]</code>, y el elemento en índice 2 de esa sublista es <code>6</code>.",
+  },
+  /* ── FORJA: métodos ── */
+  {
+    section: "La Forja",
+    q: "¿Qué diferencia hay entre <code>sort()</code> y <code>sorted()</code>?",
+    answers: ["Sort modifica la lista original"],
+    options: ["Sorted modifica la lista original", "Sort modifica la lista original", "Sort ordena de mayor a menor siempre", "Sorted es solo para números"],
+    hint: "Si hacés <code>resultado = mi_lista.sort()</code>, ¿qué valor tiene <code>resultado</code>? ¿Y la lista original? ¿Qué pasa si en cambio hacés <code>resultado = sorted(mi_lista)</code>?",
+    feedback_ok: "Correcto. <code>sort()</code> modifica la lista en su lugar (devuelve <code>None</code>). <code>sorted()</code> deja la original intacta y crea una nueva.",
+    feedback_bad: "La respuesta correcta es que <b>sort() modifica la lista original</b>. <code>sorted()</code> deja la original intacta y devuelve una nueva lista ordenada.",
+  },
+  {
+    section: "La Forja",
+    q: "¿Qué diferencia hay entre <code>append()</code> e <code>insert()</code>?",
+    answers: ["Append agrega un elemento al final"],
+    options: ["Append agrega un elemento al final", "Insert agrega un elemento al inicio", "Append recibe el índice donde lo querés insertar", "Insert crea una nueva lista con el valor agregado"],
+    hint: "¿Cuántos argumentos recibe <code>append</code> y cuántos <code>insert</code>? ¿Qué representa el argumento extra de uno de ellos? ¿En qué posición termina el elemento nuevo?",
+    feedback_ok: "Correcto. <code>append(x)</code> siempre agrega al final. <code>insert(i, x)</code> inserta en la posición <code>i</code> que vos elegís.",
+    feedback_bad: "La respuesta correcta es que <b>append agrega al final</b>. <code>insert()</code> recibe un índice como primer argumento — no necesariamente inserta al inicio.",
+  },
+  /* ── TRIBUNAL: map/filter ── */
+  {
+    section: "El Tribunal",
+    q: "¿Qué condición debe cumplir la función que se utiliza con <code>filter()</code>?",
+    answers: ["Debe devolver un tipo de dato booleano"],
+    options: ["Debe recibir un tipo de dato booleano", "Debe devolver un tipo de dato booleano", "Debe mostrar por pantalla el resultado del filtro", "Debe tener una sola línea"],
+    hint: "¿Qué decisión tiene que tomar <code>filter</code> sobre cada elemento — incluirlo o no? ¿Qué tipo de valor le permite tomar esa decisión?",
+    feedback_ok: "Correcto. La función que se pasa a <code>filter()</code> debe devolver un booleano (o algo que evalúe como True/False) para decidir qué elementos conservar.",
+    feedback_bad: "La respuesta correcta es que <b>debe devolver un tipo de dato booleano</b>. <code>filter()</code> conserva los elementos para los que la función devuelve <code>True</code>.",
+  },
+  {
+    section: "El Tribunal",
+    q: "¿Para qué se usa <code>map()</code>?",
+    answers: ["Aplica una misma función a todos los elementos y devuelve una nueva secuencia"],
     options: [
-      "envolver",
-      "Se produce un TypeError, el código no llega a imprimir nada",
-      "Envolver",
-      "Se imprime una cadena vacía",
+      "Modificar los valores de una lista",
+      "Filtrar los valores booleanos de una lista",
+      "Aplica una misma función a todos los elementos y devuelve una nueva secuencia",
+      "Aplica una función booleana y devuelve los elementos que devuelven True",
     ],
-    hint: "¿Podés modificar una cadena una vez creada? Pensá en qué tienen en común las cadenas y las tuplas respecto a sus elementos.",
-    feedback_ok: "Correcto. Las cadenas son inmutables: <code>cancion[0] = 'e'</code> lanza un <code>TypeError</code> antes de llegar al <code>print</code>.",
-    feedback_bad: "La respuesta correcta es <b>TypeError</b>. Las cadenas son inmutables y no admiten asignación por índice.",
-  },
-  {
-    section: "Cadenas",
-    q: "¿Qué imprime el siguiente código?<pre>texto = \"dale dale que dale\"\nposicion = texto.find(\"dale\", 5)\nprint(posicion)</pre>",
-    answers: ["5"],
-    options: ["0", "5", "15", "-1"],
-    hint: "¿Qué pasa cuando le pasás un segundo parámetro a <code>find()</code>? ¿Desde dónde empieza a buscar? Contá manualmente las posiciones en el string para verificar tu respuesta.",
-    feedback_ok: "Correcto. La segunda aparición de <code>'dale'</code> arranca en el índice 5, que es exactamente desde donde se empieza a buscar.",
-    feedback_bad: "La respuesta es <b>5</b>. <code>find('dale', 5)</code> busca a partir del índice 5, y la segunda aparición de 'dale' empieza justamente ahí.",
-  },
-  {
-    section: "Cadenas",
-    q: "¿Qué imprime el siguiente código?<pre>texto = \"Hola Mundo\"\nprint(texto.index(\"Chau\"))</pre>",
-    answers: ["Se produce un ValueError"],
-    options: ["-1", "0", "None", "Se produce un ValueError"],
-    hint: "¿En qué se parecen <code>find()</code> e <code>index()</code>? ¿Qué diferencia hay entre los dos cuando la subcadena buscada no existe en el texto?",
-    feedback_ok: "Correcto. A diferencia de <code>find()</code>, <code>index()</code> lanza un <code>ValueError</code> cuando la subcadena no está presente en el texto.",
-    feedback_bad: "La respuesta correcta es <b>ValueError</b>. <code>index()</code> lanza una excepción si no encuentra la subcadena; <code>find()</code> devolvería <code>-1</code> en ese caso.",
-  },
-  /* ── RANGOS ── */
-  {
-    section: "Rangos",
-    q: "¿Qué imprime el siguiente código?<pre>for minuto in range(10, 30, 15):\n    print(minuto)</pre>",
-    answers: ["10\n25"],
-    options: ["10\n25", "10\n25\n40", "10", "No imprime nada"],
-    hint: "Calculá manualmente los valores que generaría ese <code>range()</code>: empezá en 10, sumá el paso, y preguntate si el resultado todavía es menor al límite.",
-    feedback_ok: "Correcto. Los valores son 10 y 25: el siguiente sería 40, que ya supera el límite 30 y no se incluye.",
-    feedback_bad: "La respuesta correcta es <b>10 y 25</b>. El paso es 15: 10, luego 25 (menor a 30), luego 40 (excluido porque ≥ 30).",
-  },
-  {
-    section: "Rangos",
-    q: "¿Qué imprime el siguiente código?<pre>for volumen in range(100, -20, -20):\n    print(volumen)</pre>",
-    answers: ["100, 80, 60, 40, 20, 0 (seis líneas)"],
-    options: [
-      "100, 80, 60, 40, 20, 0 (seis líneas)",
-      "100, 80, 60, 40, 20 (cinco líneas, sin llegar al 0)",
-      "100, 80, 60, 40, 20, 0, -20 (siete líneas)",
-      "Se produce un error porque el paso es negativo",
-    ],
-    hint: "Con paso negativo, ¿cuál es la condición para que el ciclo continúe? ¿Se incluye el límite inferior o queda excluido? ¿El 0 cumple esa condición con límite -20?",
-    feedback_ok: "Correcto. La secuencia es 100, 80, 60, 40, 20, 0 — seis valores. El siguiente sería -20, que ya no es mayor a -20 (el límite), así que queda excluido.",
-    feedback_bad: "La respuesta correcta es <b>seis líneas: 100, 80, 60, 40, 20, 0</b>. El límite -20 no se incluye, pero el 0 sí porque 0 &gt; -20.",
-  },
-  /* ── TUPLAS ── */
-  {
-    section: "Tuplas",
-    q: "¿Qué imprime el siguiente código?<pre>album = (\"Trilogy\", 2011, \"R&amp;B\")\nalbum[1] = 2012\nprint(album)</pre>",
-    answers: ["Se produce un TypeError, las tuplas no admiten asignación por índice"],
-    options: [
-      "('Trilogy', 2012, 'R&B')",
-      "Se produce un TypeError, las tuplas no admiten asignación por índice",
-      "('Trilogy', 2011, 'R&B', 2012)",
-      "Se imprime una lista en vez de una tupla",
-    ],
-    hint: "¿Qué propiedad fundamental comparten las tuplas con las cadenas? Pensá en qué pasaría si intentaras hacer algo análogo con un string.",
-    feedback_ok: "Correcto. Las tuplas son inmutables, igual que las cadenas. <code>album[1] = 2012</code> lanza un <code>TypeError</code>.",
-    feedback_bad: "La respuesta correcta es <b>TypeError</b>. Las tuplas no permiten modificar elementos por índice — hay que crear una tupla nueva.",
-  },
-  {
-    section: "Tuplas",
-    q: "¿Qué imprime el siguiente código?<pre>cancion = (\"Envolver\", \"Anitta\", 210, \"pop\")\nnombre, artista, duracion = cancion\nprint(nombre)</pre>",
-    answers: ["Se produce un ValueError, porque hay 4 elementos y solo 3 variables"],
-    options: [
-      "Envolver",
-      "('Envolver', 'Anitta', 210)",
-      "Se produce un ValueError, porque hay 4 elementos y solo 3 variables",
-      "Anitta",
-    ],
-    hint: "Contá los elementos de la tupla y las variables del desempaquetado. ¿Tienen que coincidir? ¿Qué pasa en Python cuando no coinciden?",
-    feedback_ok: "Correcto. La tupla tiene 4 elementos pero solo hay 3 variables: Python lanza un <code>ValueError</code> (<em>too many values to unpack</em>).",
-    feedback_bad: "La respuesta correcta es <b>ValueError</b>. La tupla tiene 4 elementos y el desempaquetado espera exactamente 3 variables.",
-  },
-  {
-    section: "Tuplas",
-    q: "¿Qué imprime el siguiente código?<pre>setlist = (\"Envolver\", \"Cairo\", \"Rara Vez\")\nnueva = setlist[:1] + (\"Bzrp\",) + setlist[2:]\nprint(nueva)</pre>",
-    answers: ["('Envolver', 'Bzrp', 'Rara Vez')"],
-    options: [
-      "('Envolver', 'Bzrp', 'Rara Vez')",
-      "('Envolver', 'Cairo', 'Bzrp', 'Rara Vez')",
-      "Se produce un TypeError, no se pueden concatenar tuplas con +",
-      "('Bzrp', 'Envolver', 'Cairo', 'Rara Vez')",
-    ],
-    hint: "Evaluá los slices por separado: ¿qué elementos incluye <code>setlist[:1]</code>? ¿Y <code>setlist[2:]</code>? ¿Por qué <code>(\"Bzrp\",)</code> lleva una coma adentro?",
-    feedback_ok: "Correcto. <code>setlist[:1]</code> es <code>('Envolver',)</code>, se concatena <code>('Bzrp',)</code>, y <code>setlist[2:]</code> es <code>('Rara Vez',)</code>. 'Cairo' queda fuera.",
-    feedback_bad: "La respuesta es <b>('Envolver', 'Bzrp', 'Rara Vez')</b>. <code>setlist[:1]</code> excluye 'Cairo', y <code>setlist[2:]</code> toma desde 'Rara Vez'.",
-  },
-  /* ── CONTROL ── */
-  {
-    section: "Control",
-    q: "¿Qué imprime el siguiente código?<pre>for i in range(5):\n    if i % 2 == 0:\n        continue\n    print(i)</pre>",
-    answers: ["1\n3"],
-    options: ["0\n1\n2\n3\n4", "0\n2\n4", "1\n3", "No imprime nada"],
-    hint: "¿Qué hace exactamente <code>continue</code>? Recorré el código a mano para i=0, i=1, i=2... ¿Llega al <code>print</code> en cada caso?",
-    feedback_ok: "Correcto. <code>continue</code> salta el <code>print</code> cuando <code>i % 2 == 0</code> (los pares). Solo se imprimen los impares: 1 y 3.",
-    feedback_bad: "La respuesta correcta es <b>1 y 3</b>. <code>continue</code> evita el <code>print</code> para los pares (0, 2, 4), por lo que solo se imprimen los impares.",
-  },
-  {
-    section: "Control",
-    q: "¿Qué pasa al ejecutar el siguiente código?<pre>contador = 0\nwhile contador &lt; 5:\n    print(contador)\n    contador -= 1</pre>",
-    answers: ["Es un ciclo infinito: contador nunca llega a valer 5 o más, porque en cada vuelta decrece"],
-    options: [
-      "Imprime 0, 1, 2, 3, 4 y termina normalmente",
-      "Imprime solamente 0 y termina",
-      "Es un ciclo infinito: contador nunca llega a valer 5 o más, porque en cada vuelta decrece",
-      "Se produce un error de sintaxis",
-    ],
-    hint: "Simulá las primeras vueltas a mano: ¿qué valor tiene <code>contador</code> después de cada iteración? ¿La condición del while alguna vez se vuelve falsa?",
-    feedback_ok: "Correcto. <code>contador</code> empieza en 0 y decrece (-1, -2, ...) en cada vuelta. Como siempre es menor a 5, la condición nunca se hace False.",
-    feedback_bad: "La respuesta correcta es <b>ciclo infinito</b>. <code>contador -= 1</code> lo hace cada vez más negativo, así que la condición <code>contador &lt; 5</code> nunca falla.",
-  },
-  {
-    section: "Control",
-    q: "¿Qué imprime el siguiente código?<pre>nota = 7\nif nota &gt;= 9:\n    print(\"Excelente\")\nelif nota &gt;= 7:\n    print(\"Muy bien\")\nelif nota &gt;= 4:\n    print(\"Aprobado\")\nelse:\n    print(\"Desaprobado\")</pre>",
-    answers: ["Muy bien"],
-    options: ["Excelente", "Muy bien", "Aprobado", "Desaprobado"],
-    hint: "Evaluá cada condición en orden, de arriba hacia abajo. ¿Cuál es la primera que resulta verdadera con nota=7? ¿Python sigue evaluando las demás después de encontrar una?",
-    feedback_ok: "Correcto. <code>nota >= 9</code> es False (7 no llega), pero <code>nota >= 7</code> es True. Ahí se corta y se imprime 'Muy bien'.",
-    feedback_bad: "La respuesta correcta es <b>Muy bien</b>. <code>nota >= 9</code> es False, pero <code>nota >= 7</code> es True — se ejecuta ese bloque y no se evalúan los siguientes.",
-  },
-  {
-    section: "Control",
-    q: "¿Qué imprime el siguiente código?<pre>for numero in range(1, 10):\n    if numero == 5:\n        break\n    print(numero)</pre>",
-    answers: ["1\n2\n3\n4"],
-    options: ["1\n2\n3\n4", "1\n2\n3\n4\n5", "1\n2\n3\n4\n6\n7\n8\n9", "No imprime nada"],
-    hint: "¿Qué hace <code>break</code> exactamente? Cuando <code>numero</code> vale 5, ¿qué línea se ejecuta primero: el <code>break</code> o el <code>print</code>?",
-    feedback_ok: "Correcto. Cuando <code>numero == 5</code>, el <code>break</code> corta el ciclo <b>antes</b> de llegar al <code>print</code>. Se imprimen 1, 2, 3 y 4.",
-    feedback_bad: "La respuesta correcta es <b>1, 2, 3, 4</b>. Al llegar a 5, el <code>break</code> corta el ciclo antes de imprimir ese valor.",
+    hint: "¿Cuál es la diferencia entre querer <em>transformar</em> cada elemento y querer <em>seleccionar</em> algunos? ¿Cuál de esas dos cosas hace <code>map</code>? ¿Y <code>filter</code>?",
+    feedback_ok: "Correcto. <code>map(f, lista)</code> aplica <code>f</code> a cada elemento y devuelve un nuevo iterable con los resultados. No altera la lista original.",
+    feedback_bad: "La respuesta correcta es que <b>map aplica una función a todos los elementos y devuelve una nueva secuencia</b>. <code>filter()</code> es el que selecciona según True/False.",
   },
 ];
 
-/* ─── EJERCICIOS: CADENAS, RANGOS Y TUPLAS ──────────────────── */
+/* ─── EJERCICIOS: LISTAS Y TUPLAS ───────────────────────────── */
 
 const boonsU4 = [
-  /* ── CADENAS ─────────────────────────────────────────── */
+  /* ── ADN DIGITAL ─────────────────────────────────────── */
   {
-    title: "Separador de letras",
-    flavor: "Spotify usa efectos tipográficos para animar los títulos de canciones.",
-    tag: "cadenas · índices · for",
-    statement: "Escribí una función <code>separar_cancion(nombre, separador)</code> que inserte el separador entre cada carácter del nombre (incluyendo espacios).<br><br><b>Ejemplo:</b> <code>separar_cancion(\"Cairo\", \"-\")</code> → <code>\"C-a-i-r-o\"</code>",
-    hint: "¿Cómo recorrés una cadena carácter por carácter usando índices? ¿Qué tiene de diferente el último carácter respecto a los demás?",
-    starter: "def separar_cancion(nombre, separador):\n    pass",
+    title: "ADN Digital",
+    flavor: "No toda secuencia es lo que parece.",
+    tag: "listas · cadenas · conteo",
+    statement: `En un laboratorio analizamos <strong>ADN digital</strong>: cadenas de ceros y unos donde cada símbolo representa una base artificial. A veces se cuelan mutaciones — símbolos que no son <code>0</code> ni <code>1</code>.<br><br>
+Implementá <code>analizar_adn(secuencia, patron)</code> que reciba una cadena y un patrón, y devuelva una <strong>tupla</strong> con:<ol>
+<li>Cantidad de <code>1</code> en la cadena</li>
+<li>Cantidad de <code>0</code> en la cadena</li>
+<li>Cantidad de veces que aparece el patrón</li>
+<li>Posición de la primera aparición del patrón</li>
+<li>Porcentaje de caracteres que no son <code>0</code> ni <code>1</code></li>
+</ol>
+<b>Ejemplo:</b> <code>analizar_adn("1f101011011W3011010", "1010")</code> → <code>(10, 6, 2, 2, 15.78...)</code>`,
+    hint: "¿Cómo sabrías cuántas veces aparece un carácter en una cadena sin recorrerla a mano? ¿Cómo encontrás dónde aparece por primera vez una subcadena? Los caracteres que no son '0' ni '1': ¿podés calcularlos sin contarlos directamente?",
+    starter: "def analizar_adn(secuencia, patron):\n    pass",
     test: {
-      funcName: "separar_cancion",
+      funcName: "analizar_adn",
       cases: [
-        { args: ["Cairo", "-"],    stdin: [], expect: { type: "exact", value: "C-a-i-r-o" } },
-        { args: ["Envolver", "."], stdin: [], expect: { type: "exact", value: "E.n.v.o.l.v.e.r" } },
-        { args: ["Bzrp", "*"],     stdin: [], expect: { type: "exact", value: "B*z*r*p" } },
-        { args: ["X", "!"],        stdin: [], expect: { type: "exact", value: "X" } },
+        { args: ["1f101011011W3011010", "1010"], stdin: [], expect: { type: "contains", parts: ["10,6", "2,2", "15.78"] } },
+        { args: ["110", "1"],                    stdin: [], expect: { type: "contains", parts: ["2,1,2,0,0"] } },
+        { args: ["11x00y11", "11"],              stdin: [], expect: { type: "contains", parts: ["4,2,2,0,25"] } },
       ],
     },
-    sol: `def separar_cancion(nombre, separador):
-    resultado = ""
-    for i in range(len(nombre)):
-        resultado += nombre[i]
-        if i < len(nombre) - 1:
-            resultado += separador
-    return resultado`,
+    sol: `def analizar_adn(secuencia, patron):
+    cant_unos = secuencia.count("1")
+    cant_ceros = secuencia.count("0")
+    cant_patron = secuencia.count(patron)
+    pos_patron = secuencia.find(patron)
+    cant_diferentes = len(secuencia) - cant_unos - cant_ceros
+    porcentaje = cant_diferentes / len(secuencia) * 100
+    return (cant_unos, cant_ceros, cant_patron, pos_patron, porcentaje)`,
   },
-  {
-    title: "URL de playlist",
-    flavor: "Para compartir playlists, Spotify genera URLs reemplazando los espacios por guiones bajos.",
-    tag: "cadenas · for · reemplazo",
-    statement: "Escribí una función <code>playlist_a_url(nombre)</code> que reemplace todos los espacios del nombre por guiones bajos.<br><br><b>Ejemplo:</b> <code>playlist_a_url(\"Viernes de Indie\")</code> → <code>\"Viernes_de_Indie\"</code>",
-    hint: "¿Cómo distinguís si un carácter es un espacio? ¿Qué carácter agregás al resultado en cada caso?",
-    starter: "def playlist_a_url(nombre):\n    pass",
-    test: {
-      funcName: "playlist_a_url",
-      cases: [
-        { args: ["Viernes de Indie"],  stdin: [], expect: { type: "exact", value: "Viernes_de_Indie" } },
-        { args: ["Pop Latino 2024"],   stdin: [], expect: { type: "exact", value: "Pop_Latino_2024" } },
-        { args: ["TrapEnEspañol"],     stdin: [], expect: { type: "exact", value: "TrapEnEspañol" } },
-        { args: ["Hits de los 90"],    stdin: [], expect: { type: "exact", value: "Hits_de_los_90" } },
-      ],
-    },
-    sol: `def playlist_a_url(nombre):
-    resultado = ""
-    for c in nombre:
-        if c == " ":
-            resultado += "_"
-        else:
-            resultado += c
-    return resultado`,
-  },
-  {
-    title: "Duración en segundos",
-    flavor: "El backend de Spotify almacena las duraciones en segundos, no en minutos:segundos.",
-    tag: "cadenas · find · slicing · int()",
-    statement: "Escribí una función <code>duracion_a_segundos(duracion)</code> que reciba una duración en formato <code>\"minutos:segundos\"</code> y devuelva el total de segundos.<br><br><b>Ejemplo:</b> <code>duracion_a_segundos(\"3:45\")</code> → <code>225</code>",
-    hint: "¿Qué método te da la posición de un carácter dentro de un string? Una vez que encontrás los dos puntos, ¿cómo separás lo que está antes y lo que está después?",
-    starter: "def duracion_a_segundos(duracion):\n    pass",
-    test: {
-      funcName: "duracion_a_segundos",
-      cases: [
-        { args: ["3:45"], stdin: [], expect: { type: "numeric", value: 225 } },
-        { args: ["2:55"], stdin: [], expect: { type: "numeric", value: 175 } },
-        { args: ["4:12"], stdin: [], expect: { type: "numeric", value: 252 } },
-        { args: ["0:30"], stdin: [], expect: { type: "numeric", value: 30  } },
-      ],
-    },
-    sol: `def duracion_a_segundos(duracion):
-    pos = duracion.find(":")
-    minutos = int(duracion[:pos])
-    segundos = int(duracion[pos + 1:])
-    return minutos * 60 + segundos`,
-  },
-  {
-    title: "Iniciales del álbum",
-    flavor: "Las iniciales aparecen en badges y notificaciones donde el título completo no entra.",
-    tag: "cadenas · split · for · upper()",
-    statement: "Escribí una función <code>iniciales_album(titulo)</code> que devuelva las iniciales de cada palabra en mayúscula.<br><br><b>Ejemplo:</b> <code>iniciales_album(\"The Dark Side of the Moon\")</code> → <code>\"TDSOTM\"</code>",
-    hint: "¿Qué método separa un string en palabras? ¿Cómo tomás solo la primera letra de cada una y la convertís a mayúscula?",
-    starter: "def iniciales_album(titulo):\n    pass",
-    test: {
-      funcName: "iniciales_album",
-      cases: [
-        { args: ["The Dark Side of the Moon"], stdin: [], expect: { type: "exact", value: "TDSOTM" } },
-        { args: ["Abbey Road"],                stdin: [], expect: { type: "exact", value: "AR" } },
-        { args: ["Born in the USA"],           stdin: [], expect: { type: "exact", value: "BITUSA" } },
-        { args: ["Un Verano Sin Ti"],          stdin: [], expect: { type: "exact", value: "UVST" } },
-      ],
-    },
-    sol: `def iniciales_album(titulo):
-    palabras = titulo.split()
-    resultado = ""
-    for palabra in palabras:
-        resultado += palabra[0].upper()
-    return resultado`,
-  },
-  {
-    title: "¿Es palíndromo?",
-    flavor: "Un nombre de canción que se lee igual al derecho y al revés merece un lugar especial en la playlist.",
-    tag: "cadenas · lower() · slicing [::-1]",
-    statement: "Escribí una función <code>es_palindromo(cancion)</code> que devuelva <code>True</code> si el nombre es palíndromo, ignorando espacios y diferencias de mayúsculas.<br><br><b>Ejemplo:</b> <code>es_palindromo(\"Anita lava la tina\")</code> → <code>True</code>",
-    hint: "Antes de comparar, ¿qué dos cosas deberías hacer con el string para que 'Ana' y 'ANA' y 'A N A' sean equivalentes? Una vez que tenés el string limpio, ¿cómo obtenés su reverso en Python?",
-    starter: "def es_palindromo(cancion):\n    pass",
-    test: {
-      funcName: "es_palindromo",
-      cases: [
-        { args: ["Anita lava la tina"], stdin: [], expect: { type: "bool", value: true  } },
-        { args: ["Envolver"],           stdin: [], expect: { type: "bool", value: false } },
-        { args: ["Ana"],                stdin: [], expect: { type: "bool", value: true  } },
-        { args: ["Cairo"],              stdin: [], expect: { type: "bool", value: false } },
-      ],
-    },
-    sol: `def es_palindromo(cancion):
-    limpio = ""
-    for c in cancion.lower():
-        if c != " ":
-            limpio += c
-    return limpio == limpio[::-1]`,
-  },
-  {
-    title: "Orden alfabético",
-    flavor: "La biblioteca de Spotify ordena las canciones para que las encuentres rápido.",
-    tag: "cadenas · comparación · if",
-    statement: "Escribí una función <code>orden_alfabetico(cancion1, cancion2)</code> que reciba dos nombres de canciones y devuelva el que va primero en orden alfabético. Si son iguales, devolvé cualquiera.<br><br><b>Ejemplo:</b> <code>orden_alfabetico(\"Envolver\", \"Cairo\")</code> → <code>\"Cairo\"</code>",
-    hint: "¿Sabías que en Python podés comparar strings directamente con <code>&lt;</code> y <code>&gt;</code>? ¿Qué significa que una cadena sea 'menor' que otra?",
-    starter: "def orden_alfabetico(cancion1, cancion2):\n    pass",
-    test: {
-      funcName: "orden_alfabetico",
-      cases: [
-        { args: ["Envolver", "Cairo"],          stdin: [], expect: { type: "exact", value: "Cairo" } },
-        { args: ["Bzrp", "Anitta"],             stdin: [], expect: { type: "exact", value: "Anitta" } },
-        { args: ["Flowers", "Blinding Lights"], stdin: [], expect: { type: "exact", value: "Blinding Lights" } },
-        { args: ["Rara Vez", "Rara Vez"],       stdin: [], expect: { type: "exact", value: "Rara Vez" } },
-      ],
-    },
-    sol: `def orden_alfabetico(cancion1, cancion2):
-    if cancion1 < cancion2:
-        return cancion1
-    return cancion2`,
-  },
-  /* ── RANGOS ──────────────────────────────────────────── */
-  {
-    title: "Avisos del podcast",
-    flavor: "Un podcast de 60 minutos pone publicidad a intervalos regulares.",
-    tag: "rangos · range() · for · print()",
-    statement: "Usando <code>range()</code>, escribí una función <code>avisos_podcast()</code> que imprima los minutos exactos donde sonará un aviso, sabiendo que el primero es en el minuto 10 y se repite cada 15 minutos hasta el 60.<br><br><b>Salida esperada:</b><pre>10\n25\n40\n55</pre>",
-    hint: "¿Cuáles deberían ser el inicio, el fin y el paso del <code>range()</code> para obtener 10, 25, 40, 55? Pensá en cuándo se detiene el rango.",
-    starter: "def avisos_podcast():\n    pass",
-    test: {
-      funcName: "avisos_podcast",
-      cases: [
-        { args: [], stdin: [], expect: { type: "stdout", lines: ["10", "25", "40", "55"] } },
-      ],
-    },
-    sol: `def avisos_podcast():
-    for minuto in range(10, 61, 15):
-        print(minuto)`,
-  },
-  {
-    title: "Crossfade entre canciones",
-    flavor: "El crossfade de Spotify baja el volumen de una canción mientras sube el de la siguiente, al mismo tiempo.",
-    tag: "rangos · range() · zip · for",
-    statement: "Escribí una función <code>crossfade()</code> que simule un crossfade de 5 segundos: el Tema A baja de 100% a 0% de a 20%, mientras el Tema B sube de 0% a 100% de a 20%, simultáneamente. Usá <code>zip()</code>.<br><br><b>Salida esperada:</b><pre>Segundo 0: Tema A al 100% - Tema B al 0%\nSegundo 1: Tema A al 80% - Tema B al 20%\nSegundo 2: Tema A al 60% - Tema B al 40%\nSegundo 3: Tema A al 40% - Tema B al 60%\nSegundo 4: Tema A al 20% - Tema B al 80%\nSegundo 5: Tema A al 0% - Tema B al 100%</pre>",
-    hint: "¿Qué hace <code>zip(seq1, seq2)</code>? ¿Cómo generarías con <code>range()</code> una secuencia que baje de 100 a 0 de a 20, y otra que suba de 0 a 100 de a 20?",
-    starter: "def crossfade():\n    pass",
-    test: {
-      funcName: "crossfade",
-      cases: [
-        { args: [], stdin: [], expect: { type: "stdout", lines: [
-          "Segundo 0: Tema A al 100% - Tema B al 0%",
-          "Segundo 1: Tema A al 80% - Tema B al 20%",
-          "Segundo 2: Tema A al 60% - Tema B al 40%",
-          "Segundo 3: Tema A al 40% - Tema B al 60%",
-          "Segundo 4: Tema A al 20% - Tema B al 80%",
-          "Segundo 5: Tema A al 0% - Tema B al 100%",
-        ]}},
-      ],
-    },
-    sol: `def crossfade():
-    for segundo, (vol_a, vol_b) in enumerate(zip(range(100, -20, -20), range(0, 120, 20))):
-        print(f"Segundo {segundo}: Tema A al {vol_a}% - Tema B al {vol_b}%")`,
-  },
-  /* ── TUPLAS ──────────────────────────────────────────── */
-  {
-    title: "Ficha de canción",
-    flavor: "Cada canción en Spotify es un conjunto de datos: título, artista, duración y género.",
-    tag: "tuplas · unpacking · f-strings · slicing",
-    statement: "Dada la tupla <code>cancion = (nombre, artista, duracion_segundos, genero)</code>:<br><br><b>a)</b> Implementá <code>descripcion_cancion(cancion)</code> que devuelva el string <code>\"Envolver de Anitta dura 210s y es del género pop\"</code>.<br><br><b>b)</b> Implementá <code>nombre_y_artista(cancion)</code> que devuelva una nueva tupla solo con <code>(nombre, artista)</code>.",
-    hint: "¿Cómo accedés a los elementos de una tupla? ¿Hay alguna forma de asignarlos todos a variables con una sola línea? Para el string, ¿qué ventaja tienen los f-strings sobre la concatenación?",
-    starter: "def descripcion_cancion(cancion):\n    pass\n\ndef nombre_y_artista(cancion):\n    pass",
-    tests: [
-      { funcName: "descripcion_cancion", cases: [
-        { args: [["Envolver", "Anitta", 210, "pop"]],             stdin: [], expect: { type: "contains", parts: ["Envolver", "Anitta", "210", "pop"] } },
-        { args: [["Flowers", "Miley Cyrus", 175, "pop"]],         stdin: [], expect: { type: "contains", parts: ["Flowers", "Miley Cyrus", "175", "pop"] } },
-        { args: [["Bzrp Music Sessions", "Bizarrap", 198, "trap"]], stdin: [], expect: { type: "contains", parts: ["Bizarrap", "198", "trap"] } },
-      ]},
-      { funcName: "nombre_y_artista", cases: [
-        { args: [["Envolver", "Anitta", 210, "pop"]],             stdin: [], expect: { type: "list", value: ["Envolver", "Anitta"] } },
-        { args: [["Flowers", "Miley Cyrus", 175, "pop"]],         stdin: [], expect: { type: "list", value: ["Flowers", "Miley Cyrus"] } },
-        { args: [["Cairo", "Bizarrap", 197, "trap"]],             stdin: [], expect: { type: "list", value: ["Cairo", "Bizarrap"] } },
-      ]},
-    ],
-    sol: `def descripcion_cancion(cancion):
-    nombre, artista, duracion, genero = cancion
-    return f"{nombre} de {artista} dura {duracion}s y es del género {genero}"
 
-def nombre_y_artista(cancion):
-    return cancion[:2]`,
-  },
+  /* ── GESTIÓN DE GASTOS ───────────────────────────────── */
   {
-    title: "Quitar canción del setlist",
-    flavor: "A veces hay que cambiar el setlist de un show en el último momento.",
-    tag: "tuplas · inmutabilidad · for · construcción",
-    statement: "Escribí una función <code>quitar_cancion(setlist, cancion)</code> que devuelva una nueva tupla sin esa canción. Si la canción no está en el setlist, devolvé el setlist original sin cambios.<br><br><b>Ejemplo:</b> <code>quitar_cancion((\"Envolver\", \"Cairo\", \"Rara Vez\"), \"Cairo\")</code> → <code>('Envolver', 'Rara Vez')</code>",
-    hint: "Las tuplas son inmutables: no podés modificar la original. ¿Cómo armás una nueva tupla solo con los elementos que querés conservar? ¿Qué sintaxis necesitás para crear una tupla de un solo elemento?",
-    starter: "def quitar_cancion(setlist, cancion):\n    pass",
+    title: "Gestión de Gastos",
+    flavor: "El oro no miente.",
+    tag: "listas · max · índices",
+    statement: `Pedro registra sus gastos diarios en una lista. Al finalizar la semana quiere saber cuál fue el <strong>índice</strong> del día en que más gastó y cuánto gastó en <strong>promedio</strong> (entero).<br><br>
+Implementá <code>gestionar_gastos(gastos)</code> que reciba la lista de gastos y devuelva una tupla <code>(indice_dia_max, gasto_prom)</code>.<br><br>
+<b>Ejemplo:</b> <code>gestionar_gastos([500, 100, 300])</code> → <code>(0, 300)</code>`,
+    hint: "¿Cómo encontrás el valor más alto de una lista sin recorrerla vos mismo? Una vez que tenés ese valor, ¿cómo sabés en qué posición está? ¿Qué operación usás para que el promedio sea entero y no decimal?",
+    starter: "def gestionar_gastos(gastos):\n    pass",
     test: {
-      funcName: "quitar_cancion",
+      funcName: "gestionar_gastos",
       cases: [
-        { args: [["Envolver", "Cairo", "Rara Vez"], "Cairo"],    stdin: [], expect: { type: "list", value: ["Envolver", "Rara Vez"] } },
-        { args: [["Envolver", "Cairo", "Rara Vez"], "Noexiste"], stdin: [], expect: { type: "list", value: ["Envolver", "Cairo", "Rara Vez"] } },
-        { args: [["Bzrp", "Tini", "Lali"], "Bzrp"],             stdin: [], expect: { type: "list", value: ["Tini", "Lali"] } },
-        { args: [["Cairo"], "Cairo"],                            stdin: [], expect: { type: "list", value: [] } },
+        { args: [[500, 100, 300]],           stdin: [], expect: { type: "contains", parts: ["0,300"] } },
+        { args: [[10, 50, 20, 80, 30]],      stdin: [], expect: { type: "contains", parts: ["3,38"] } },
+        { args: [[200, 200, 400, 100, 100]], stdin: [], expect: { type: "contains", parts: ["2,200"] } },
       ],
     },
-    sol: `def quitar_cancion(setlist, cancion):
-    resultado = ()
-    for c in setlist:
-        if c != cancion:
-            resultado += (c,)
+    sol: `def gestionar_gastos(gastos):
+    maximo = max(gastos)
+    dia = gastos.index(maximo)
+    promedio = sum(gastos) // len(gastos)
+    return (dia, promedio)`,
+  },
+
+  /* ── MÚSICA RETRO ────────────────────────────────────── */
+  {
+    title: "Música Retro",
+    flavor: "El nombre importa más que el formato.",
+    tag: "listas · strings · append",
+    statement: `Tenemos canciones guardadas en formato <code>.mp3</code>. Queremos una lista con los nombres limpios para poder mostrarla.<br><br>
+Implementá <code>limpiar_nombre_canciones(canciones)</code> que reciba una lista con nombres como <code>"No_te_imaginas.mp3"</code> y devuelva una lista con los nombres limpios: <code>"No te imaginas"</code> (sin extensión, guiones bajos reemplazados por espacios).<br><br>
+<b>Ejemplo:</b> <code>limpiar_nombre_canciones(["No_te_imaginas.mp3"])</code> → <code>["No te imaginas"]</code>`,
+    hint: "¿Cómo separarías <code>\"cancion.mp3\"</code> en sus dos partes? ¿Qué parte te interesa? Una vez que la tenés, ¿cómo transformás los guiones bajos en espacios?",
+    starter: "def limpiar_nombre_canciones(canciones):\n    pass",
+    test: {
+      funcName: "limpiar_nombre_canciones",
+      cases: [
+        { args: [["No_te_imaginas.mp3", "Hola_mundo.mp3"]], stdin: [], expect: { type: "contains", parts: ["No te imaginas", "Hola mundo"] } },
+        { args: [["Bohemian_Rhapsody.mp3"]],                stdin: [], expect: { type: "contains", parts: ["Bohemian Rhapsody"] } },
+        { args: [["cancion_uno.mp3", "cancion_dos.mp3"]],   stdin: [], expect: { type: "contains", parts: ["cancion uno", "cancion dos"] } },
+      ],
+    },
+    sol: `def limpiar_nombre_canciones(canciones):
+    resultado = []
+    for cancion in canciones:
+        nombre, extension = cancion.split(".")
+        nombre = nombre.replace("_", " ")
+        resultado.append(nombre)
     return resultado`,
   },
+
+  /* ── LISTA DE CUMPLEAÑOS ─────────────────────────────── */
   {
-    title: "Duración total del álbum",
-    flavor: "Spotify muestra la duración total de cada álbum en su portada.",
-    tag: "tuplas · sum · // y % · f-strings",
-    statement: "Escribí una función <code>duracion_total_album(duraciones)</code> que reciba una tupla con la duración de cada canción en segundos y devuelva el total en formato <code>\"minutos:segundos\"</code>.<br><br><b>Ejemplo:</b> <code>duracion_total_album((210, 195, 165, 200, 220))</code> → <code>\"16:30\"</code>",
-    hint: "¿Cómo sumás todos los elementos de una secuencia? Una vez que tenés el total en segundos, ¿qué operación te da los minutos enteros y cuál te da los segundos restantes? ¿Qué pasa si los segundos son menos de 10 en el formato final?",
-    starter: "def duracion_total_album(duraciones):\n    pass",
+    title: "Lista de Cumpleaños",
+    flavor: "Las invitaciones no admiten errores.",
+    tag: "listas · tuplas · desempaquetado · print",
+    statement: `Organizamos un cumpleaños y necesitamos imprimir invitaciones para la familia. Dada una lista de tuplas <code>[(apellido, cant)]</code>, implementá <code>imprimir_invitaciones(invitados)</code> que <strong>imprima</strong> cada invitación con el formato:<br>
+<code>Familia &lt;apellido&gt;, &lt;cant&gt; invitaciones</code><br>
+(y <code>invitación</code> en singular cuando <code>cant == 1</code>).<br><br>
+<b>Ejemplo</b> para <code>[("Prieto", 3), ("Corsi", 1)]</code>:<pre>Familia Prieto, 3 invitaciones\nFamilia Corsi, 1 invitación</pre>`,
+    hint: "Cada elemento de la lista es una tupla con dos valores. ¿Cómo los asignás a variables con nombre directamente en el <code>for</code>? ¿Qué condición diferencia el singular del plural?",
+    starter: "def imprimir_invitaciones(invitados):\n    pass",
     test: {
-      funcName: "duracion_total_album",
+      funcName: "imprimir_invitaciones",
       cases: [
-        { args: [[210, 195, 165, 200, 220]], stdin: [], expect: { type: "exact", value: "16:30" } },
-        { args: [[60, 60, 60]],              stdin: [], expect: { type: "exact", value: "3:00"  } },
-        { args: [[45, 90, 125]],             stdin: [], expect: { type: "exact", value: "4:20"  } },
-        { args: [[200]],                     stdin: [], expect: { type: "exact", value: "3:20"  } },
+        { args: [[["Prieto", 3], ["Capulleto", 4]]], stdin: [], expect: { type: "stdout_contains", parts: ["Familia Prieto", "3 invitaciones", "Familia Capulleto", "4 invitaciones"] } },
+        { args: [[["Corsi", 1]]],                    stdin: [], expect: { type: "stdout_contains", parts: ["Familia Corsi", "1 invitaci"] } },
       ],
     },
-    sol: `def duracion_total_album(duraciones):
-    total = sum(duraciones)
-    minutos = total // 60
-    segundos = total % 60
-    return f"{minutos}:{segundos:02d}"`,
+    sol: `def imprimir_invitaciones(invitados):
+    for apellido, cant in invitados:
+        texto = f"Familia {apellido}, {cant} "
+        if cant == 1:
+            texto += "invitación"
+        else:
+            texto += "invitaciones"
+        print(texto)`,
+  },
+
+  /* ── COMPETENCIA DE DELETREO ─────────────────────────── */
+  {
+    title: "Competencia de Deletreo",
+    flavor: "Solo los mejores representan al colegio.",
+    tag: "listas · filter · tuplas",
+    statement: `Una escuela selecciona alumnos para una competencia. El registro tiene el formato <code>[(nombre, promedio)]</code>.<br><br>
+Implementá <code>seleccionar_estudiantes(listado)</code> que devuelva solo los alumnos cuyo promedio es <strong>mayor o igual a 7</strong>.<br><br>
+<b>Ejemplo:</b> <code>seleccionar_estudiantes([("Lola Torres", 8.33), ("Mateo Murilla", 6.66), ("Luca Jerez", 7)])</code> → <code>[("Lola Torres", 8.33), ("Luca Jerez", 7)]</code>`,
+    hint: "¿En qué posición de la tupla está el promedio de cada alumno? ¿Qué condición tiene que cumplir para que lo incluyas? ¿Existe alguna función de Python que haga exactamente ese tipo de selección?",
+    starter: "def seleccionar_estudiantes(listado):\n    pass",
+    test: {
+      funcName: "seleccionar_estudiantes",
+      cases: [
+        { args: [[["Lola Torres", 8.33], ["Mateo Murilla", 6.66], ["Luca Jerez", 7]]], stdin: [], expect: { type: "contains", parts: ["Lola Torres", "Luca Jerez"] } },
+        { args: [[["Ana", 9], ["Pedro", 5], ["Sol", 7.5]]],                             stdin: [], expect: { type: "contains", parts: ["Ana", "Sol"] } },
+        { args: [[["Mario", 6.9], ["Luis", 5]]],                                        stdin: [], expect: { type: "exact", value: "[]" } },
+      ],
+    },
+    sol: `def promedio_suficiente(alumno):
+    return alumno[1] >= 7
+
+def seleccionar_estudiantes(listado):
+    return list(filter(promedio_suficiente, listado))`,
+  },
+
+  /* ── PREMIAR DESEMPEÑO ───────────────────────────────── */
+  {
+    title: "Premiar Desempeño",
+    flavor: "El factor no perdona.",
+    tag: "listas · sorted · slicing",
+    statement: `Recursos Humanos quiere premiar las <strong>3 sucursales con mejor desempeño</strong>. El desempeño se mide con el factor <strong>ventas / monto_total</strong>: cuanto más alto, mejor.<br><br>
+Implementá <code>premiar_desempeño(sucursales)</code> que reciba una lista de tuplas <code>(sucursal, ventas, monto_total)</code> y devuelva las 3 primeras al ordenar de mayor a menor por ese factor.<br><br>
+<b>Ejemplo:</b> para <code>[("Santa Cruz", 1800, 90), ("Mendoza", 3500, 50), ("Buenos Aires", 9600, 1200), ("Chubut", 990, 9), ("Córdoba", 7000, 70)]</code> → las 3 con mayor factor.`,
+    hint: "¿Cómo le indicás a Python por qué criterio ordenar — si hay que calcular algo por elemento, cómo se lo pasás? ¿Qué parámetro cambia el orden de mayor a menor? Una vez ordenada, ¿cómo tomás solo las primeras tres?",
+    starter: "def premiar_desempeño(sucursales):\n    pass",
+    test: {
+      funcName: "premiar_desempeño",
+      cases: [
+        { args: [[["Santa Cruz", 1800, 90], ["Mendoza", 3500, 50], ["Buenos Aires", 9600, 1200], ["Chubut", 990, 9], ["Cordoba", 7000, 70]]], stdin: [], expect: { type: "contains", parts: ["Chubut", "Cordoba", "Mendoza"] } },
+        { args: [[["Norte", 200, 10], ["Sur", 10, 100], ["Este", 300, 30], ["Oeste", 15, 50]]],                                              stdin: [], expect: { type: "contains", parts: ["Norte", "Este", "Oeste"] } },
+      ],
+    },
+    sol: `def obtener_factor(sucursal):
+    return sucursal[1] / sucursal[2]
+
+def premiar_desempeño(sucursales):
+    ordenadas = sorted(sucursales, key=obtener_factor, reverse=True)
+    return ordenadas[:3]`,
   },
 ];
 
@@ -1176,7 +1000,7 @@ def _pcc_run(code, func_name, args_json, stdin_json):
         try:
             return next(inputs_iter)
         except StopIteration:
-            return "1"
+            return "0"
     _pcc_builtins.input = _mock_input
     sys.stdout = output
     result = {"ok": False, "error": None, "return_value": None, "stdout": ""}
@@ -1273,6 +1097,10 @@ function evalCase(actual, expect) {
       const expected = expect.lines.map(l => String(l).trim());
       return JSON.stringify(lines) === JSON.stringify(expected);
     }
+    case 'stdout_contains': {
+      const s = (actual || '').toLowerCase();
+      return expect.parts.every(p => s.includes(String(p).toLowerCase().trim()));
+    }
     default: return false;
   }
 }
@@ -1280,7 +1108,7 @@ function evalCase(actual, expect) {
 async function runFunctionTests(code, spec) {
   const rows = [];
   for (const c of spec.cases) {
-    const isStdout = c.expect.type === 'stdout';
+    const isStdout = c.expect.type === 'stdout' || c.expect.type === 'stdout_contains';
     const callLabel = spec.funcName + '(' + c.args.map(fmtVal).join(', ') + ')';
     try {
       const r = await pccRun(code, spec.funcName, c.args, c.stdin || []);
@@ -1290,7 +1118,11 @@ async function runFunctionTests(code, spec) {
         const actual = isStdout ? r.stdout : r.return_value;
         const pass = evalCase(actual, c.expect);
         let detail;
-        if (isStdout) {
+        if (c.expect.type === 'stdout_contains') {
+          detail = pass
+            ? 'Imprimió el contenido esperado.'
+            : 'Se esperaba que imprimiera: ' + c.expect.parts.join(', ') + '.\nImprimió: ' + (r.stdout || '(nada)');
+        } else if (c.expect.type === 'stdout') {
           const gotLines = (r.stdout||'').trim().split('\n').map(l=>l.trim()).filter(Boolean);
           detail = pass
             ? 'Salida correcta: ' + c.expect.lines.join(', ')
@@ -1534,7 +1366,7 @@ function renderSummary(root) {
       ${buildResultGrid(results)}
       <div class="cta-row">
         <button class="btn btn-primary"
-          onclick="sendToSheet('U4-Quiz',state.results,state.score,${questions.length},'u4q1-send-status')">
+          onclick="sendToSheet('U4pt2-Quiz',state.results,state.score,${questions.length},'u4q2-send-status')">
           Enviar a planilla
         </button>
         <button class="btn"
@@ -1542,7 +1374,7 @@ function renderSummary(root) {
           Pasar a Ejercicios →
         </button>
       </div>
-      <p id="u4q1-send-status" class="send-status"></p>
+      <p id="u4q2-send-status" class="send-status"></p>
     </div>
   `));
 }
@@ -1603,7 +1435,6 @@ function mkEl(tag, cls, html) {
 }
 function norm(s)    { return (s || '').trim().replace(/\s+/g, ' '); }
 function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function esc(s)     { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
 
 function buildResultGrid(results) {
   return `<div class="result-grid">${results.map((r, i) => {
@@ -1620,40 +1451,46 @@ function buildResultGrid(results) {
   }).join('')}</div>`;
 }
 
-/* ─── DATA: DESAFÍO FINAL — TUPLAS ──────────────────────── */
+/* ─── DATA: DESAFÍO FINAL ────────────────────────────────── */
 
 const potion = {
-  title: "La canción del medio",
-  flavor: "El algoritmo de Spotify necesita encontrar la canción central de un setlist para sugerirla como 'canción destacada'.",
-  statement: `Implementá <code>cancion_del_medio(setlist)</code> que reciba una tupla con los nombres de canciones y devuelva la del medio.<br><br>
-    Si el setlist tiene cantidad <b>impar</b> de canciones, devolvé la canción central como string.<br>
-    Si tiene cantidad <b>par</b>, devolvé las dos del medio como tupla.<br><br>
-    <b>Ejemplos:</b><br>
-    <code>cancion_del_medio(("Envolver", "Cairo", "Rara Vez"))</code> → <code>"Cairo"</code><br>
-    <code>cancion_del_medio(("Envolver", "Cairo", "Rara Vez", "Bzrp"))</code> → <code>('Cairo', 'Rara Vez')</code>`,
-  hint: "¿Cómo calculás el índice del elemento del medio de una secuencia? ¿Qué operación entera necesitás? ¿Cómo distinguís si la longitud es par o impar? ¿Qué diferencia hay en el slicing entre los dos casos?",
-  starter: `def cancion_del_medio(setlist):
+  title: "Análisis Salarial",
+  flavor: '"Los números no mienten. El análisis sí puede fallar."',
+  statement: `Marcos analiza los salarios de su empresa. Dada una lista de salarios mensuales, implementá dos funciones:<br><br>
+<ul style="color:var(--text-dim);font-size:.95rem;padding-left:1.2rem">
+  <li><code>obtener_promedio(salarios)</code> — devuelve el promedio de la lista</li>
+  <li><code>generar_analisis_salarial(salarios)</code> — devuelve una lista con dos elementos:
+    <ul>
+      <li>Una lista con los salarios que <strong>superan</strong> el promedio (sin repetir)</li>
+      <li>El porcentaje (sobre el total) de salarios que superan el promedio</li>
+    </ul>
+  </li>
+</ul>
+<b>Ejemplo:</b> <code>generar_analisis_salarial([100, 200, 300, 50, 250, 300])</code><br>
+Promedio: 200.0 → salarios altos: [300, 250] → porcentaje: 33.33...<br>
+→ devuelve <code>[[300, 250], 33.33...]</code>`,
+  hint: "¿Cómo calculás el promedio de una lista de números? Una vez que lo tenés, ¿cómo identificás cuáles salarios lo superan? ¿Qué pasa si un valor aparece dos veces — cómo evitás agregarlo de nuevo?",
+  starter: `def obtener_promedio(salarios):
+    pass
+
+def generar_analisis_salarial(salarios):
     pass`,
   tests: [
-    { funcName: 'cancion_del_medio', cases: [
-      { args: [["Envolver", "Cairo", "Rara Vez"]],
-        stdin: [], expect: { type: 'exact', value: 'Cairo' } },
-      { args: [["Bzrp", "Tini", "Lali", "Maria Becerra"]],
-        stdin: [], expect: { type: 'list', value: ['Tini', 'Lali'] } },
-      { args: [["Solo"]],
-        stdin: [], expect: { type: 'exact', value: 'Solo' } },
-      { args: [["A", "B", "C", "D", "E"]],
-        stdin: [], expect: { type: 'exact', value: 'C' } },
-      { args: [["A", "B"]],
-        stdin: [], expect: { type: 'list', value: ['A', 'B'] } },
+    { funcName: 'generar_analisis_salarial', cases: [
+      { args: [[100, 200, 300, 50, 250, 300]], stdin: [], expect: { type: 'contains', parts: ["300", "250", "33.3"] } },
+      { args: [[1000, 2000, 500]],             stdin: [], expect: { type: 'contains', parts: ["2000", "33.3"] } },
     ]},
   ],
-  sol: `def cancion_del_medio(setlist):
-    n = len(setlist)
-    mid = n // 2
-    if n % 2 == 1:
-        return setlist[mid]
-    return setlist[mid - 1 : mid + 1]`,
+  sol: `def obtener_promedio(salarios):
+    return sum(salarios) / len(salarios)
+
+def generar_analisis_salarial(salarios):
+    salario_promedio = obtener_promedio(salarios)
+    salarios_altos = []
+    for salario in salarios:
+        if salario > salario_promedio and salario not in salarios_altos:
+            salarios_altos.append(salario)
+    return [salarios_altos, len(salarios_altos) / len(salarios) * 100]`,
 };
 
 /* ─── POTION RENDERER ────────────────────────────────────── */
@@ -1723,117 +1560,118 @@ function renderPotion() {
 const examEjs = [
   {
     id: 'ej1',
-    badge: 'En Clase',
-    title: 'Lista de supermercado',
-    statement: `Los profes de Pensamiento Computacional se están quedando seniles y cuando van al supermercado se olvidan qué comprar. Escribí una función <code>lista_supermercado()</code> que pida productos al usuario uno por uno hasta que ingrese <code>'X'</code> (o <code>'x'</code>). La función debe devolver los productos como una cadena en minúscula separados por coma.<br><br>
-      <b>Ejemplo de interacción:</b><br>
-      <code>Ingrese un producto: pescado<br>
-      Agregado! Ingrese un producto: PAN<br>
-      Agregado! Ingrese un producto: yogURt<br>
-      Ingrese un producto: x<br>
-      Su lista ha sido creada con éxito</code><br><br>
-      La función devuelve: <code>"pescado, pan, yogurt"</code><br><br>
-      <b>Extra:</b> ¿Podés devolver la lista también en una tupla?`,
-    hint: `¿Cómo sabés cuándo parar de pedir productos? ¿Qué diferencia hay entre 'X' mayúscula y 'x' minúscula — importa acá? ¿Cómo vas acumulando los productos mientras los recibís? ¿Cómo se construye una cadena de elementos separados por coma a partir de una tupla?`,
-    starter: `def lista_supermercado():
+    badge: 'Parcial 1',
+    title: 'Análisis de Inscripciones',
+    statement: `Una plataforma educativa registra entregas de trabajos prácticos. Cada entrega es una cadena de texto. Una entrega es <em>válida</em> si contiene al menos una de las palabras clave del tema.<br><br>
+Implementá dos funciones:<br>
+<ul>
+<li><code>estado_frase(frase, palabras_clave)</code> — devuelve <code>"valida"</code> si alguna palabra clave aparece en la frase (ignorando mayúsculas), o <code>"invalida"</code> si no.</li>
+<li><code>analizar_inscripciones(entregas, palabras_clave)</code> — recibe una lista de entregas y las palabras clave, y devuelve una tupla <code>(cantidad_validas, cantidad_invalidas)</code>.</li>
+</ul>
+<b>Ejemplo:</b><br>
+<code>analizar_inscripciones(["lista con append", "hola mundo", "tupla inmutable"], ["lista", "tupla"])</code> → <code>(2, 1)</code>`,
+    hint: `¿Cómo verificás si una palabra aparece dentro de un texto? ¿Importa si está en mayúscula o minúscula — cómo lo normalizás? Resolvé primero el problema para una sola frase, y después pensá cómo usar eso para analizar toda la lista.`,
+    starter: `def estado_frase(frase, palabras_clave):
+    pass
+
+def analizar_inscripciones(entregas, palabras_clave):
     pass`,
     test: {
-      funcName: 'lista_supermercado',
+      funcName: 'analizar_inscripciones',
       cases: [
-        { args: [], stdin: ['pescado', 'PAN', 'yogURt', 'X'], expect: { type: 'exact', value: 'pescado, pan, yogurt' } },
-        { args: [], stdin: ['Envolver', 'Cairo', 'x'],         expect: { type: 'exact', value: 'envolver, cairo' } },
-        { args: [], stdin: ['Manzana', 'X'],                   expect: { type: 'exact', value: 'manzana' } },
+        { args: [["lista con append", "hola mundo", "tupla inmutable"], ["lista", "tupla"]], stdin: [], expect: { type: 'contains', parts: ["2,1"] } },
+        { args: [["python basico", "listas y mas listas"], ["for", "while"]],               stdin: [], expect: { type: 'contains', parts: ["0,2"] } },
+        { args: [["Filter y Map", "indices y slicing"], ["filter", "indic"]],               stdin: [], expect: { type: 'contains', parts: ["2,0"] } },
       ]
     },
-    note: `El Verificar prueba el valor que devuelve la función. Los <code>print()</code> dentro de tu código (el mensaje de bienvenida, "Agregado!", etc.) son parte del ejercicio — el docente los revisa en tu código.`,
-    sol: `def lista_supermercado():
-    print("Hagamos una lista de supermercado.")
-    productos = ()
-    producto = input("Ingrese un producto: ")
-    while producto.upper() != 'X':
-        productos = productos + (producto.lower(),)
-        producto = input("Agregado! Ingrese un producto: ")
-    print("Su lista ha sido creada con exito")
-    return ", ".join(productos)`,
+    note: `Definí ambas funciones. El verificador prueba <code>analizar_inscripciones</code>, que debe usar <code>estado_frase</code> internamente.`,
+    sol: `def estado_frase(frase, palabras_clave):
+    for palabra in palabras_clave:
+        if palabra.lower() in frase.lower():
+            return "valida"
+    return "invalida"
+
+def analizar_inscripciones(entregas, palabras_clave):
+    validas = 0
+    invalidas = 0
+    for entrega in entregas:
+        if estado_frase(entrega, palabras_clave) == "valida":
+            validas += 1
+        else:
+            invalidas += 1
+    return (validas, invalidas)`,
   },
   {
     id: 'ej2',
-    badge: 'En Clase',
-    title: 'Ofuscar información',
-    statement: `Nos contratan en una empresa de seguridad. Nuestro trabajo es ofuscar información sensible de un archivo: en lugar de mostrar una palabra, se reemplaza cada letra por <code>#</code>.<br><br>
-      Escribí una función <code>ofuscar(texto, palabra)</code> que reciba un texto y una palabra a censurar, y devuelva el texto con cada aparición de esa palabra reemplazada por tantos <code>#</code> como letras tiene.<br><br>
-      <b>Ejemplo:</b> <code>ofuscar("Hola Lucia, Hola Melina", "Hola")</code> → <code>"#### Lucia, #### Melina"</code>`,
-    hint: `¿Cómo sabés cuántos <code>#</code> hay que poner? ¿Cómo encontrás dónde empieza la palabra dentro del texto? Pensá en construir el resultado parte por parte: lo que va antes de la primera aparición, el reemplazo, y después seguir buscando desde donde terminó.`,
-    starter: `def ofuscar(texto, palabra):
+    badge: 'Parcial 2',
+    title: 'Análisis Salarial',
+    statement: `Mismo enunciado que el Desafío Final, para practicar entregando desde acá.<br><br>
+Dada una lista de salarios mensuales, implementá:<br>
+<ul>
+<li><code>obtener_promedio(salarios)</code> — promedio de la lista</li>
+<li><code>generar_analisis_salarial(salarios)</code> — devuelve <code>[salarios_que_superan_el_promedio_sin_repetir, porcentaje]</code></li>
+</ul>
+<b>Ejemplo:</b> <code>generar_analisis_salarial([100, 200, 300, 50, 250, 300])</code> → <code>[[300, 250], 33.33...]</code>`,
+    hint: `¿Cómo calculás el promedio de una lista? ¿Qué condición tiene que cumplir un salario para ser "alto"? ¿Qué pasa si el mismo monto aparece más de una vez — cómo lo manejás? ¿Cómo expresás el porcentaje en función del total?`,
+    starter: `def obtener_promedio(salarios):
+    pass
+
+def generar_analisis_salarial(salarios):
     pass`,
     test: {
-      funcName: 'ofuscar',
+      funcName: 'generar_analisis_salarial',
       cases: [
-        { args: ["Hola Lucia, Hola Melina", "Hola"],                      stdin: [], expect: { type: 'exact', value: '#### Lucia, #### Melina' } },
-        { args: ["Envolver es de Anitta y la canto Anitta", "Anitta"],     stdin: [], expect: { type: 'exact', value: 'Envolver es de ###### y la canto ######' } },
-        { args: ["Bzrp ft Quevedo es de Bzrp", "Bzrp"],                   stdin: [], expect: { type: 'exact', value: '#### ft Quevedo es de ####' } },
+        { args: [[100, 200, 300, 50, 250, 300]], stdin: [], expect: { type: 'contains', parts: ["300", "250", "33.3"] } },
+        { args: [[1000, 2000, 500]],             stdin: [], expect: { type: 'contains', parts: ["2000", "33.3"] } },
+        { args: [[50, 50, 100]],                 stdin: [], expect: { type: 'contains', parts: ["100", "33.3"] } },
       ]
     },
-    note: ``,
-    sol: `def ofuscar(texto, palabra):
-    reemplazo = '#' * len(palabra)
-    resultado = ''
-    inicio = 0
-    pos = texto.find(palabra)
-    while pos != -1:
-        resultado += texto[inicio:pos] + reemplazo
-        inicio = pos + len(palabra)
-        pos = texto.find(palabra, inicio)
-    resultado += texto[inicio:]
-    return resultado`,
+    note: `Definí ambas funciones para que el verificador pueda probarlas.`,
+    sol: `def obtener_promedio(salarios):
+    return sum(salarios) / len(salarios)
+
+def generar_analisis_salarial(salarios):
+    salario_promedio = obtener_promedio(salarios)
+    salarios_altos = []
+    for salario in salarios:
+        if salario > salario_promedio and salario not in salarios_altos:
+            salarios_altos.append(salario)
+    return [salarios_altos, len(salarios_altos) / len(salarios) * 100]`,
   },
   {
     id: 'ej3',
-    badge: 'Tarea',
-    title: 'ADN Digital',
-    statement: `Trabajamos en un laboratorio que analiza <b>ADN digital</b>: cadenas de <code>0</code>s y <code>1</code>s que pueden tener "mutaciones" (símbolos que no son <code>0</code> ni <code>1</code>). Por ejemplo: <code>"1f101011011W3011010"</code>.<br><br>
-      Escribí una función <code>analizar_adn(cadena, patron)</code> que reciba una cadena y un patrón buscado, y devuelva una <b>tupla</b> con:<br>
-      <ol>
-        <li>Cantidad de <code>1</code>s en la cadena</li>
-        <li>Cantidad de <code>0</code>s en la cadena</li>
-        <li>Cantidad de veces que aparece el patrón</li>
-        <li>Posición de la primera aparición del patrón (siempre aparece al menos una vez)</li>
-        <li>Porcentaje de caracteres que no son <code>0</code> ni <code>1</code>, redondeado a 2 decimales</li>
-      </ol>
-      <b>Ejemplo:</b> <code>analizar_adn("1f101011011W3011010", "1010")</code> → <code>(10, 6, 2, 2, 15.79)</code>`,
-    hint: `Para contar los 1s, 0s y "mutaciones", ¿cómo recorrés cada carácter de la cadena y verificás de qué tipo es? Para contar las apariciones del patrón, ¿podés reutilizar la idea de buscar con <code>find</code> a partir de la posición siguiente? Para el porcentaje, ¿qué fórmula relaciona la cantidad de mutaciones con el largo total?`,
-    starter: `def analizar_adn(cadena, patron):
+    badge: 'Parcial 3',
+    title: 'Control de Lote',
+    statement: `En una fábrica, cada vez que pasa un lote por control de calidad se ingresan las cantidades de productos. El proceso continúa hasta ingresar <code>0</code>. Si el total supera la cantidad mínima requerida, el lote está aprobado.<br><br>
+Implementá <code>controlar_lote(cantidad_min)</code> que:<ul>
+<li>Pida cantidades al usuario hasta recibir <code>0</code></li>
+<li>Imprima <code>"Lote aprobado"</code> o <code>"Lote rechazado"</code> según corresponda</li>
+<li>Devuelva el total acumulado</li>
+</ul>
+<b>Ejemplo:</b> con entradas <code>30, 50, 30, 0</code> y <code>cantidad_min=100</code> → imprime <code>"Lote aprobado"</code>, devuelve <code>110</code>.`,
+    hint: `¿Qué tipo de ciclo usás cuando no sabés de antemano cuántas veces vas a repetir? ¿Qué condición lo detiene? Lo que ingresa el usuario siempre es texto — ¿cómo lo convertís para poder sumarlo?`,
+    starter: `def controlar_lote(cantidad_min):
     pass`,
     test: {
-      funcName: 'analizar_adn',
+      funcName: 'controlar_lote',
       cases: [
-        { args: ["1010",     "10"], stdin: [], expect: { type: 'list', value: [2, 2, 2, 0, 0]  } },
-        { args: ["101ABC",   "10"], stdin: [], expect: { type: 'list', value: [2, 1, 1, 0, 50] } },
-        { args: ["11x00y11", "11"], stdin: [], expect: { type: 'list', value: [4, 2, 2, 0, 25] } },
+        { args: [100], stdin: ["30", "50", "30", "0"], expect: { type: 'numeric', value: 110 } },
+        { args: [200], stdin: ["50", "50", "0"],       expect: { type: 'numeric', value: 100 } },
+        { args: [10],  stdin: ["5", "5", "5", "0"],    expect: { type: 'numeric', value: 15  } },
       ]
     },
-    note: `La función debe devolver una tupla con los 5 valores en el orden indicado. Para el porcentaje, usá <code>round(valor, 2)</code>.`,
-    sol: `def analizar_adn(cadena, patron):
-    count_1 = 0
-    count_0 = 0
-    count_other = 0
-    for char in cadena:
-        if char == '1':
-            count_1 += 1
-        elif char == '0':
-            count_0 += 1
-        else:
-            count_other += 1
-
-    first_pos = cadena.find(patron)
-    count_patron = 0
-    pos = first_pos
-    while pos != -1:
-        count_patron += 1
-        pos = cadena.find(patron, pos + 1)
-
-    pct_other = round(count_other / len(cadena) * 100, 2)
-    return (count_1, count_0, count_patron, first_pos, pct_other)`,
+    note: `El verificador prueba el valor que devuelve la función. El <code>print()</code> de "Lote aprobado"/"Lote rechazado" es parte del ejercicio — el docente lo revisa en tu código.`,
+    sol: `def controlar_lote(cantidad_min):
+    total = 0
+    cant = int(input("Ingrese cantidad: "))
+    while cant != 0:
+        total += cant
+        cant = int(input("Ingrese cantidad: "))
+    if total >= cantidad_min:
+        print("Lote aprobado")
+    else:
+        print("Lote rechazado")
+    return total`,
   },
 ];
 
@@ -1843,9 +1681,7 @@ function renderExam() {
   const root = document.getElementById('exam-root');
 
   examEjs.forEach((p, idx) => {
-    const badgeStyle = p.badge === 'Tarea'
-      ? 'background:rgba(255,165,0,.15);color:#ffb74d;border:1px solid rgba(255,165,0,.3);'
-      : 'background:rgba(29,185,84,.12);color:var(--accent);border:1px solid rgba(29,185,84,.25);';
+    const badgeStyle = 'background:rgba(74,130,245,.12);color:var(--accent);border:1px solid rgba(74,130,245,.25);';
     const totalCases = p.test.cases.length;
     const noteHtml = p.note
       ? `<p style="color:var(--text-faint);font-size:.84rem;max-width:70ch;margin:.9rem 0 0">${p.note}</p>`
@@ -1924,7 +1760,7 @@ function renderExam() {
       const passed = lastRows.filter(r => r.pass).length;
       submitBtn.disabled = true;
       sendToSheet(
-        `U4-Parcial-${idx + 1}`,
+        `U4pt2-Parcial-${idx + 1}`,
         [{ pregunta: p.title, respuesta: code, correcta: lastRows.length > 0 && passed === totalCases }],
         passed, totalCases, `exam-send-status-${idx}`
       );

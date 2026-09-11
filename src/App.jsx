@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import config from './courses/guia-2.js';
+import config from './courses/cap-4.js';
 import NameGate from './components/NameGate.jsx';
 import Quiz from './components/Quiz.jsx';
 import BoonList from './components/BoonList.jsx';
 import PotionCard from './components/PotionCard.jsx';
 import Nav from './components/Nav.jsx';
 
-const STORAGE_KEY = 'guia-2';
+const STORAGE_KEY = config.meta.storagePrefix || 'guia-2';
 
 export default function App() {
   const [studentName, setStudentName] = useState(
@@ -67,6 +67,7 @@ export default function App() {
             studentName={studentName}
             sheetWebhook={sheetWebhook}
             onComplete={() => {}}
+            quizKey={`${STORAGE_KEY}:quiz`}
           />
         )}
       </section>
@@ -81,7 +82,7 @@ export default function App() {
             la solución sugerida — no hay una única forma correcta.
           </p>
         </div>
-        <BoonList boons={boons} />
+        <BoonList boons={boons} storagePrefix={STORAGE_KEY} />
       </section>
 
       {/* CÁMARA FINAL: BOTICA */}
@@ -91,7 +92,7 @@ export default function App() {
           <h2>La Botica de Hécate</h2>
           <p>Antes de subir a la superficie, hay que pasar por la botica a comprar pociones para el próximo intento.</p>
         </div>
-        <PotionCard potion={potion} />
+        <PotionCard potion={potion} storagePrefix={STORAGE_KEY} />
       </section>
 
       <footer>{meta.footerText}</footer>

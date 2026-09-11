@@ -1,6 +1,6 @@
 import VerifyBlock from './VerifyBlock.jsx';
 
-export default function BoonCard({ boon, index }) {
+export default function BoonCard({ boon, index, storagePrefix }) {
   const idPrefix = `boon-${index}`;
   return (
     <div className="boon">
@@ -17,6 +17,7 @@ export default function BoonCard({ boon, index }) {
         noteText={boon.note}
         solutionHtml={boon.sol}
         testSpecs={[boon.test]}
+        storagePrefix={storagePrefix}
       />
     </div>
   );
