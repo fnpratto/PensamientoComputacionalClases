@@ -46,14 +46,21 @@ export async function runFunctionTests(code, spec) {
       if (!r.ok) {
         rows.push({ pass: false, label: callLabel, detail: 'Error al ejecutar: ' + r.error });
       } else {
-        const pass = evalCase(r.return_value, c.expect);
-        const expectedDesc = c.expect.value !== undefined ? fmtVal(c.expect.value) : c.expect.parts.join(', ');
-        rows.push({
-          pass, label: callLabel,
-          detail: pass
+        let pass, detail;
+        if (c.expect.type === 'stdout_contains') {
+          const s = normalize(r.stdout ?? '');
+          pass = c.expect.parts.every(p => s.includes(normalize(p)));
+          detail = pass
+            ? 'Imprimió el contenido esperado.'
+            : 'Se esperaba que imprimiera: ' + c.expect.parts.join(', ') + '.\nImprimió: ' + (r.stdout || '(nada)');
+        } else {
+          pass = evalCase(r.return_value, c.expect);
+          const expectedDesc = c.expect.value !== undefined ? fmtVal(c.expect.value) : c.expect.parts.join(', ');
+          detail = pass
             ? 'Devolvió ' + fmtVal(r.return_value) + ', como se esperaba.'
-            : 'Devolvió ' + fmtVal(r.return_value) + ' — se esperaba algo equivalente a ' + expectedDesc + '.'
-        });
+            : 'Devolvió ' + fmtVal(r.return_value) + ' — se esperaba algo equivalente a ' + expectedDesc + '.';
+        }
+        rows.push({ pass, label: callLabel, detail });
       }
     } catch (err) {
       rows.push({ pass: false, label: callLabel, detail: 'Error inesperado: ' + (err.message || err) });

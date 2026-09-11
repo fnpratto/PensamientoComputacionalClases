@@ -86,10 +86,10 @@ function buildTestResultsHtml(rows) {
 }
 
 /* ================= VERIFY BLOCK COMPONENT ================= */
-export default function VerifyBlock({ idPrefix, noteText, solutionHtml, testSpecs }) {
+export default function VerifyBlock({ idPrefix, noteText, solutionHtml, testSpecs, storagePrefix = 'guia-2' }) {
   const textareaRef = useRef(null);
   const editorRef = useRef(null);
-  const storageKey = `guia-2:code:${idPrefix}`;
+  const storageKey = `${storagePrefix}:code:${idPrefix}`;
 
   const [canVerify, setCanVerify] = useState(false);
   const [loading, setLoading] = useState(false);

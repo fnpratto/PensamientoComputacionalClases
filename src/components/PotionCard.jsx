@@ -1,6 +1,6 @@
 import VerifyBlock from './VerifyBlock.jsx';
 
-export default function PotionCard({ potion }) {
+export default function PotionCard({ potion, storagePrefix }) {
   return (
     <div className="potion-card">
       <div className="boon-title">{potion.title}</div>
@@ -22,6 +22,7 @@ export default function PotionCard({ potion }) {
         noteText={potion.note}
         solutionHtml={potion.solutionHtml}
         testSpecs={potion.tests}
+        storagePrefix={storagePrefix}
       />
     </div>
   );

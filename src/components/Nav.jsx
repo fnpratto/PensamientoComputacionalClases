@@ -39,8 +39,8 @@ export default function Nav() {
           position: 'fixed', left: 0, top: '50%', transform: 'translateY(-50%)',
           zIndex: 9001,
           width: 26, height: 80,
-          background: 'rgba(21,18,32,.92)',
-          border: '1px solid rgba(139,107,209,.3)', borderLeft: 'none',
+          background: 'rgba(13,21,39,.92)',
+          border: '1px solid rgba(164,124,245,.3)', borderLeft: 'none',
           borderRadius: '0 6px 6px 0',
           color: 'var(--violet)', cursor: 'pointer',
           fontFamily: 'var(--font-mono)', fontSize: '.6rem', letterSpacing: '.12em',
@@ -57,8 +57,8 @@ export default function Nav() {
         aria-label="Navegación del sitio"
         style={{
           position: 'fixed', left: 0, top: 0, bottom: 0, width: 244,
-          background: 'rgba(10,9,16,.97)',
-          borderRight: '1px solid rgba(139,107,209,.18)',
+          background: 'rgba(8,13,24,.97)',
+          borderRight: '1px solid rgba(164,124,245,.18)',
           backdropFilter: 'blur(12px)',
           zIndex: 9000,
           transform: open ? 'translateX(0)' : 'translateX(-100%)',
@@ -70,7 +70,7 @@ export default function Nav() {
         {/* Header */}
         <div style={{
           padding: '1.4rem 1.1rem 1rem',
-          borderBottom: '1px solid rgba(139,107,209,.12)',
+          borderBottom: '1px solid rgba(164,124,245,.12)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           <span style={{ fontFamily: 'var(--font-display)', fontSize: '.82rem', letterSpacing: '.12em', color: 'var(--violet)' }}>
@@ -108,7 +108,7 @@ export default function Nav() {
                 textDecoration: 'none',
                 padding: '.5rem .7rem', borderRadius: 4,
                 borderLeft: `2px solid ${u.active ? 'var(--violet)' : 'transparent'}`,
-                background: u.active ? 'rgba(139,107,209,.06)' : 'transparent',
+                background: u.active ? 'rgba(164,124,245,.06)' : 'transparent',
                 marginBottom: '.2rem',
                 transition: 'color .15s, background .15s',
               }}
