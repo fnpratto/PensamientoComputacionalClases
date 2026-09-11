@@ -8,10 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/matchbrackets.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/matchbrackets.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js" defer></script>
   <style>
     :root {
       --bg:           #080d18;
@@ -280,6 +280,15 @@
       border-radius: var(--r-sm); font-family: var(--font-m); font-size: .85rem; line-height: 1.55;
     }
     .answer-box .CodeMirror-focused { border-color: var(--accent); }
+
+    @media (max-width: 600px) {
+      .answer-box textarea,
+      .answer-box .CodeMirror {
+        min-height: 45vh;
+        font-size: 16px; /* evita el zoom automático de iOS al enfocar */
+      }
+      .answer-box .CodeMirror-scroll { min-height: 45vh; }
+    }
     .cm-s-underworld.CodeMirror { background: var(--bg-soft); color: var(--text); }
     .cm-s-underworld .CodeMirror-gutters { background: var(--bg-muted); border-right: 1px solid var(--border); }
     .cm-s-underworld .CodeMirror-linenumber { color: var(--text-faint); padding: 0 .6rem 0 .4rem; }
@@ -348,23 +357,6 @@
     }
     .call-cell-output.show { display: block; }
     .call-cell-output.err  { color: var(--bad); border-color: var(--bad); }
-
-    details.solution {
-      margin-top: 1.1rem; border: 1px solid var(--border);
-      border-radius: var(--r-sm); background: rgba(74,130,245,.03);
-    }
-    details.solution summary {
-      cursor: pointer; list-style: none; padding: .55rem .9rem;
-      font-family: var(--font-m); font-size: .73rem; letter-spacing: .06em;
-      text-transform: uppercase; color: var(--accent);
-      display: flex; align-items: center; gap: .5rem;
-    }
-    details.solution summary::-webkit-details-marker { display: none; }
-    details.solution summary::before { content: "▸"; transition: transform .2s ease; }
-    details.solution[open] summary::before { transform: rotate(90deg); }
-    details.solution[open] summary { border-bottom: 1px solid var(--border); }
-    details.solution .sol-body { padding: .9rem; }
-    details.solution pre { margin: 0; }
 
     .send-status { font-family: var(--font-m); font-size: .8rem; color: var(--accent); margin-top: .5rem; }
 
@@ -1170,7 +1162,7 @@ function setupVerifyBlock(boonEl, boon) {
   const editor = CodeMirror.fromTextArea(textarea, {
     mode: 'python', theme: 'underworld', lineNumbers: true,
     matchBrackets: true, styleActiveLine: true,
-    indentUnit: 4, tabSize: 4, indentWithTabs: false,
+    indentUnit: 4, tabSize: 4, indentWithTabs: false, lineWrapping: true,
     extraKeys: { Tab: cm => cm.execCommand('insertSoftTab') },
   });
   editor.setSize(null, 'auto');
@@ -1214,7 +1206,6 @@ function setupVerifyBlock(boonEl, boon) {
   const verifyBtn    = boonEl.querySelector('.verify-btn');
   const practiceArea = boonEl.querySelector('.practice-note-area');
   const resultsArea  = boonEl.querySelector('.test-results');
-  const solDetails   = boonEl.querySelector('details.solution');
 
   verifyBtn.addEventListener('click', async () => {
     const code = editor.getValue().trim();
@@ -1237,7 +1228,6 @@ function setupVerifyBlock(boonEl, boon) {
     } finally {
       verifyBtn.disabled = false;
       verifyStatus.textContent = '';
-      if (solDetails) solDetails.removeAttribute('hidden');
     }
   });
 }
@@ -1392,12 +1382,6 @@ function renderBoons(boons, containerId) {
       <div class="practice-note-area"></div>
       <div class="test-results"></div>` : '';
 
-    const solHtml = b.sol ? `
-      <details class="solution" hidden>
-        <summary>Mostrar solución sugerida</summary>
-        <div class="sol-body"><pre>${escHtml(b.sol)}</pre></div>
-      </details>` : '';
-
     const boonEl = mkEl('div', 'boon', `
       <span class="tag-styx">${b.tag}</span>
       <div class="boon-title">${b.title}</div>
@@ -1417,7 +1401,6 @@ function renderBoons(boons, containerId) {
           <button class="call-cell-btn">▶</button>
         </div>
         <div class="call-cell-output"></div>
-        ${solHtml}
       </div>
     `);
     list.appendChild(boonEl);
@@ -1514,10 +1497,6 @@ function renderPotion() {
         <span class="verify-status" id="potion-status"></span>
       </div>
       <div class="test-results" id="potion-results"></div>
-      <details class="solution" id="potion-solution" hidden>
-        <summary>Mostrar solución sugerida</summary>
-        <div class="sol-body"><pre>${escHtml(p.sol)}</pre></div>
-      </details>
     </div>
   `);
   root.appendChild(el);
@@ -1525,7 +1504,7 @@ function renderPotion() {
   const editor = CodeMirror.fromTextArea(el.querySelector('textarea.cm-target'), {
     mode: 'python', theme: 'underworld', lineNumbers: true,
     matchBrackets: true, styleActiveLine: true,
-    indentUnit: 4, tabSize: 4, indentWithTabs: false,
+    indentUnit: 4, tabSize: 4, indentWithTabs: false, lineWrapping: true,
     extraKeys: { Tab: cm => cm.execCommand('insertSoftTab') },
   });
   editor.setSize(null, 'auto');
@@ -1533,7 +1512,6 @@ function renderPotion() {
   const verifyBtn = document.getElementById('potion-verify');
   const status    = document.getElementById('potion-status');
   const results   = document.getElementById('potion-results');
-  const solDetail = document.getElementById('potion-solution');
 
   verifyBtn.addEventListener('click', async () => {
     const code = editor.getValue().trim();
@@ -1550,7 +1528,6 @@ function renderPotion() {
     } finally {
       verifyBtn.disabled = false;
       status.textContent = '';
-      if (solDetail) solDetail.removeAttribute('hidden');
     }
   });
 }
@@ -1706,10 +1683,6 @@ function renderExam() {
           <span class="verify-status" id="exam-status-${idx}"></span>
         </div>
         <div class="test-results" id="exam-results-${idx}"></div>
-        <details class="solution" id="exam-solution-${idx}" hidden>
-          <summary>Mostrar solución sugerida</summary>
-          <div class="sol-body"><pre>${escHtml(p.sol)}</pre></div>
-        </details>
         <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--border)">
           <button class="btn btn-primary" id="exam-submit-${idx}">Entregar →</button>
         </div>
@@ -1721,7 +1694,7 @@ function renderExam() {
     const editor = CodeMirror.fromTextArea(el.querySelector('textarea.cm-target'), {
       mode: 'python', theme: 'underworld', lineNumbers: true,
       matchBrackets: true, styleActiveLine: true,
-      indentUnit: 4, tabSize: 4, indentWithTabs: false,
+      indentUnit: 4, tabSize: 4, indentWithTabs: false, lineWrapping: true,
       extraKeys: { Tab: cm => cm.execCommand('insertSoftTab') },
     });
     editor.setSize(null, 'auto');
@@ -1730,7 +1703,6 @@ function renderExam() {
     const verifyBtn = document.getElementById(`exam-verify-${idx}`);
     const status    = document.getElementById(`exam-status-${idx}`);
     const results   = document.getElementById(`exam-results-${idx}`);
-    const solDetail = document.getElementById(`exam-solution-${idx}`);
 
     verifyBtn.addEventListener('click', async () => {
       const code = editor.getValue().trim();
@@ -1747,7 +1719,6 @@ function renderExam() {
       } finally {
         verifyBtn.disabled = false;
         status.textContent = '';
-        if (solDetail) solDetail.removeAttribute('hidden');
       }
     });
 
