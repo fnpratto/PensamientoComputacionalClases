@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>El Archivo — Unidad 4.2</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+  <title>Clase de Repaso · Primavera 🌸</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
@@ -14,42 +14,29 @@
   <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js" defer></script>
   <style>
     :root {
-      --bg:           #080d18;
-      --bg-soft:      #0d1527;
-      --bg-muted:     #0a1020;
-      --surface:      #111c30;
-      --border:       #192343;
-      --border-strong:#2a3d60;
+      --bg:           #0c0607;
+      --bg-soft:      #130b0e;
+      --bg-muted:     #0f0809;
+      --surface:      #1c0e12;
+      --border:       #321620;
+      --border-strong:#522630;
 
-      --text:         #eae3d4;
-      --text-dim:     #9199ad;
-      --text-faint:   #4a5a7a;
+      --text:         #f5e6ea;
+      --text-dim:     #a07580;
+      --text-faint:   #5c3545;
 
-      --accent:       #4a82f5;
-      --accent-dim:   rgba(74,130,245,.15);
-      --accent-strong:#6f9fff;
+      --accent:       #e53050;
+      --accent-dim:   rgba(229,48,80,.15);
+      --accent-strong:#ff7090;
 
-      --good:         #5fcef5;
-      --good-bg:      rgba(95,206,245,.13);
-      --bad:          #e22134;
-      --bad-bg:       rgba(226,33,52,.13);
-      --amber:        #f59b00;
-      --amber-bg:     rgba(245,155,0,.12);
-      --violet:       #a47cf5;
-      --violet-bg:    rgba(164,124,245,.12);
-
-      --stone:      var(--surface);
-      --stone-line: var(--border);
-      --void:       var(--bg-soft);
-      --void-deep:  var(--bg-muted);
-      --styx:       var(--accent);
-      --styx-dim:   var(--accent-dim);
-      --styx-glow:  var(--accent-dim);
-      --gold:       var(--amber);
-      --gold-lt:    var(--amber);
-      --ember:      var(--bad);
-      --bone:       var(--text);
-      --bone-dim:   var(--text-dim);
+      --good:         #5fce84;
+      --good-bg:      rgba(95,206,132,.13);
+      --bad:          #ff4d4d;
+      --bad-bg:       rgba(255,77,77,.13);
+      --amber:        #fbbf24;
+      --amber-bg:     rgba(251,191,36,.12);
+      --pink:         #f472b6;
+      --pink-bg:      rgba(244,114,182,.12);
 
       --font-d: 'Inter', -apple-system, 'Segoe UI', sans-serif;
       --font-b: 'Inter', -apple-system, 'Segoe UI', sans-serif;
@@ -72,7 +59,7 @@
       padding-bottom: 4rem;
       -webkit-font-smoothing: antialiased;
     }
-    ::selection { background: rgba(74,130,245,.3); color: var(--accent-strong); }
+    ::selection { background: rgba(229,48,80,.3); color: var(--accent-strong); }
     h1,h2,h3 { font-family: var(--font-d); font-weight: 700; letter-spacing: -0.01em; color: var(--text); margin: 0; }
     code {
       font-family: var(--font-m);
@@ -91,19 +78,36 @@
       font-family: var(--font-m); font-size: .7rem; letter-spacing: .1em;
       text-transform: uppercase; color: var(--text-faint); margin-bottom: .5rem; display: block;
     }
-    .tag-styx {
+    .tag-rose {
       font-family: var(--font-m); font-size: .66rem; letter-spacing: .06em;
       text-transform: uppercase; color: var(--accent); display: inline-block;
       background: var(--accent-dim); padding: .18rem .55rem; border-radius: 999px;
       margin-bottom: .7rem;
     }
+    .tag-pink {
+      font-family: var(--font-m); font-size: .66rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--pink); display: inline-block;
+      background: var(--pink-bg); padding: .18rem .55rem; border-radius: 999px;
+      margin-bottom: .7rem;
+    }
 
+    /* ── HERO ───────────────────────────────────── */
     #hero {
       min-height: 65vh;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       text-align: center; padding: 6rem 1.5rem 4rem;
-      background: var(--bg);
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(229,48,80,.14) 0%, transparent 60%),
+        radial-gradient(ellipse at 85% 90%, rgba(244,114,182,.08) 0%, transparent 50%),
+        var(--bg);
       border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    #hero::before {
+      content: "🌸 🌺 🌹 🌼 🌻 🌷";
+      position: absolute; top: 1.2rem; left: 50%; transform: translateX(-50%);
+      font-size: 1.4rem; letter-spacing: .7rem; opacity: .35;
+      white-space: nowrap;
     }
     .hero-badge {
       font-family: var(--font-m); font-size: .72rem; letter-spacing: .08em;
@@ -117,16 +121,15 @@
     .scroll-cue { color: var(--text-faint); font-size: .8rem; animation: bob 2.5s ease-in-out infinite; }
     @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
 
-    .section-bg-a, .section-bg-b, .section-bg-c, .section-bg-d {
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-    }
-    .section-bg-b { background: var(--bg-soft); }
+    /* ── SECTIONS ───────────────────────────────── */
+    .section-bg-a { background: var(--bg); border-top: 1px solid var(--border); }
+    .section-bg-b { background: var(--bg-soft); border-top: 1px solid var(--border); }
     .chamber { max-width: var(--content-w); margin: 0 auto; padding: 4.5rem 1.5rem; }
     .chamber-head { margin-bottom: 2.2rem; }
     .chamber-head h2 { font-size: clamp(1.5rem, 3.6vw, 2rem); }
     .chamber-head p { color: var(--text-dim); max-width: 560px; margin-top: .6rem; font-size: .98rem; }
 
+    /* ── PROGRESS ───────────────────────────────── */
     .river-wrap { margin: 1.4rem 0 2.2rem; }
     .river-track {
       position: relative; height: 4px;
@@ -134,9 +137,7 @@
     }
     .river-fill {
       position: absolute; top: 0; left: 0; height: 100%; width: 0%;
-      background: var(--accent);
-      border-radius: 999px;
-      transition: width .4s ease;
+      background: var(--accent); border-radius: 999px; transition: width .4s ease;
     }
     .river-labels {
       display: flex; justify-content: space-between;
@@ -152,13 +153,14 @@
     .score-tag { font-family: var(--font-m); font-size: .76rem; color: var(--text-dim); }
     .score-tag b { color: var(--accent); }
 
+    /* ── CARDS ──────────────────────────────────── */
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 1.8rem; }
     .q-text { font-size: 1.1rem; font-weight: 500; margin-bottom: 1.2rem; color: var(--text); max-width: 70ch; }
     .q-text pre, .card pre {
-      background: var(--bg-soft); border-color: var(--border);
-      font-size: .83rem; margin: .6rem 0;
+      background: var(--bg-soft); border-color: var(--border); font-size: .83rem; margin: .6rem 0;
     }
 
+    /* ── QUIZ OPTIONS ───────────────────────────── */
     .options-grid { display: flex; flex-direction: column; gap: .6rem; }
     .option-btn {
       text-align: left; width: 100%;
@@ -166,13 +168,12 @@
       font-family: var(--font-b); font-size: 1rem;
       padding: .8rem 1.1rem; border-radius: var(--r-sm); cursor: pointer;
       transition: border-color .15s, background .15s;
-      position: relative;
     }
     .option-btn:hover:not([disabled]):not(.selected) { border-color: var(--border-strong); background: rgba(255,255,255,.04); }
     .option-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .option-btn.selected {
       border-color: var(--accent);
-      background: rgba(74,130,245,.12);
+      background: rgba(229,48,80,.12);
       color: var(--accent-strong);
       font-weight: 600;
       box-shadow: 0 0 0 1px var(--accent) inset;
@@ -189,9 +190,10 @@
     .feedback.ok  { color: var(--good); }
     .feedback.bad { color: var(--bad); }
 
+    /* ── HINTS ──────────────────────────────────── */
     details.hint {
       margin-top: 1rem; border: 1px solid var(--border);
-      border-radius: var(--r-sm); background: rgba(74,130,245,.03);
+      border-radius: var(--r-sm); background: rgba(229,48,80,.03);
     }
     details.hint summary {
       cursor: pointer; list-style: none; padding: .6rem .9rem;
@@ -200,15 +202,16 @@
       display: flex; align-items: center; gap: .5rem;
     }
     details.hint summary::-webkit-details-marker { display: none; }
-    details.hint summary::before { content: "♦"; font-size: .9rem; }
+    details.hint summary::before { content: "🌸"; font-size: .9rem; }
     details.hint[open] summary { border-bottom: 1px solid var(--border); }
     details.hint .hint-body { padding: .8rem .9rem .9rem; font-size: .92rem; color: var(--text-dim); max-width: 70ch; }
     details.hint .hint-body code { color: var(--accent-strong); }
 
+    /* ── SUMMARY ────────────────────────────────── */
     .summary-card {
       text-align: center; padding: 2.6rem 1.5rem;
       border: 1px solid var(--border); border-radius: var(--r);
-      background: radial-gradient(ellipse at 50% 0%, rgba(74,130,245,.07), transparent 70%);
+      background: radial-gradient(ellipse at 50% 0%, rgba(229,48,80,.07), transparent 70%);
     }
     .summary-card .big-score { font-size: 2.8rem; font-weight: 800; color: var(--accent); margin: .4rem 0; }
     .summary-card p { color: var(--text-dim); max-width: 460px; margin: .6rem auto 0; }
@@ -216,8 +219,7 @@
 
     .result-grid { display: flex; flex-direction: column; gap: .5rem; margin-top: 1.4rem; text-align: left; }
     .result-chip {
-      border: 1px solid var(--border); border-radius: var(--r-sm);
-      padding: .6rem .9rem; font-size: .84rem;
+      border: 1px solid var(--border); border-radius: var(--r-sm); padding: .6rem .9rem; font-size: .84rem;
     }
     .result-chip.ok   { border-color: var(--good); background: var(--good-bg); }
     .result-chip.bad  { border-color: var(--bad); background: var(--bad-bg); }
@@ -228,86 +230,68 @@
     .result-chip-answer { margin-top: .2rem; color: var(--text-faint); font-size: .8rem; }
     .result-chip-answer span { color: var(--text-dim); }
 
+    /* ── BUTTONS ────────────────────────────────── */
     .btn {
       font-family: var(--font-m); font-size: .82rem; letter-spacing: .06em; text-transform: uppercase;
       background: transparent; color: var(--text); border: 1px solid var(--border-strong);
       padding: .72rem 1.4rem; border-radius: var(--r-sm); cursor: pointer;
       transition: border-color .15s, background .15s;
     }
-    .btn:hover { border-color: var(--accent); background: rgba(74,130,245,.08); }
+    .btn:hover { border-color: var(--accent); background: rgba(229,48,80,.08); }
     .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .btn[disabled] { opacity: .4; cursor: not-allowed; }
-    .btn-primary { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 700; }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
     .btn-primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
     .btn-primary[disabled] { background: var(--border); border-color: var(--border); color: var(--text-faint); }
 
-    .boon-list { display: flex; flex-direction: column; gap: 1.2rem; }
-    .boon {
+    /* ── EXERCISE CARDS ─────────────────────────── */
+    .potion-card {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); padding: 1.6rem;
+      border-radius: var(--r); padding: 2rem; margin-bottom: 1.2rem;
       border-left: 3px solid var(--accent);
     }
-    .boon-title { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: .2rem; }
-    .boon-flavor { font-style: italic; color: var(--text-faint); font-size: .88rem; margin-bottom: .9rem; }
-    .statement { color: var(--text-dim); font-size: .97rem; max-width: 70ch; margin-bottom: .9rem; }
-
-    .potion-card {
-      background: var(--surface); border: 1px solid var(--accent);
-      border-radius: var(--r); padding: 2rem;
-    }
     .potion-title { font-size: 1.3rem; font-weight: 800; color: var(--accent); margin-bottom: .2rem; }
-    .potion-flavor { font-style: italic; color: var(--text-faint); font-size: .88rem; margin-bottom: 1rem; }
     ul.reqs { padding-left: 1.2rem; color: var(--text-dim); margin: .6rem 0 0; }
     ul.reqs li { margin-bottom: .35rem; font-size: .95rem; }
     ul.reqs code { color: var(--accent-strong); }
 
+    /* ── CODE EDITOR ────────────────────────────── */
     .answer-box { margin-top: 1.2rem; }
     .verify-note {
       font-family: var(--font-m); font-size: .72rem; letter-spacing: .06em;
       color: var(--text-faint); display: block; margin-bottom: .4rem;
     }
-    .answer-box textarea {
-      width: 100%; min-height: 130px; resize: vertical;
-      background: var(--bg-soft); border: 1px solid var(--border);
-      color: var(--text); font-family: var(--font-m); font-size: .85rem;
-      line-height: 1.55; padding: .8rem .9rem;
-      border-radius: var(--r-sm); outline: none; tab-size: 4;
-    }
-    .answer-box textarea:focus { border-color: var(--accent); }
-
     .answer-box .CodeMirror {
       height: auto; min-height: 130px; border: 1px solid var(--border);
       border-radius: var(--r-sm); font-family: var(--font-m); font-size: .85rem; line-height: 1.55;
     }
     .answer-box .CodeMirror-focused { border-color: var(--accent); }
-
     @media (max-width: 600px) {
-      .answer-box textarea,
-      .answer-box .CodeMirror {
-        min-height: 45vh;
-        font-size: 16px; /* evita el zoom automático de iOS al enfocar */
-      }
+      .answer-box .CodeMirror { min-height: 45vh; font-size: 16px; }
       .answer-box .CodeMirror-scroll { min-height: 45vh; }
     }
-    .cm-s-underworld.CodeMirror { background: var(--bg-soft); color: var(--text); }
-    .cm-s-underworld .CodeMirror-gutters { background: var(--bg-muted); border-right: 1px solid var(--border); }
-    .cm-s-underworld .CodeMirror-linenumber { color: var(--text-faint); padding: 0 .6rem 0 .4rem; }
-    .cm-s-underworld .CodeMirror-cursor { border-left: 1.5px solid var(--accent); }
-    .cm-s-underworld .CodeMirror-selected { background: rgba(74,130,245,.18); }
-    .cm-s-underworld .CodeMirror-activeline-background { background: rgba(74,130,245,.05); }
-    .cm-s-underworld .CodeMirror-matchingbracket { color: var(--amber) !important; text-decoration: underline; }
-    .cm-s-underworld .cm-keyword { color: var(--accent); font-weight: 600; }
-    .cm-s-underworld .cm-def { color: var(--accent-strong); font-weight: 600; }
-    .cm-s-underworld .cm-builtin { color: var(--amber); }
-    .cm-s-underworld .cm-string, .cm-s-underworld .cm-string-2 { color: #ce9178; }
-    .cm-s-underworld .cm-number { color: var(--amber); }
-    .cm-s-underworld .cm-atom { color: var(--amber); }
-    .cm-s-underworld .cm-comment { color: var(--text-faint); font-style: italic; }
-    .cm-s-underworld .cm-operator { color: var(--text); }
-    .cm-s-underworld .cm-variable, .cm-s-underworld .cm-property { color: var(--text); }
-    .cm-s-underworld .cm-punctuation, .cm-s-underworld .cm-bracket { color: var(--text-dim); }
+
+    /* ── CODEMIRROR THEME: floracion ────────────── */
+    .cm-s-floracion.CodeMirror { background: var(--bg-soft); color: var(--text); }
+    .cm-s-floracion .CodeMirror-gutters { background: var(--bg-muted); border-right: 1px solid var(--border); }
+    .cm-s-floracion .CodeMirror-linenumber { color: var(--text-faint); padding: 0 .6rem 0 .4rem; }
+    .cm-s-floracion .CodeMirror-cursor { border-left: 1.5px solid var(--accent); }
+    .cm-s-floracion .CodeMirror-selected { background: rgba(229,48,80,.18); }
+    .cm-s-floracion .CodeMirror-activeline-background { background: rgba(229,48,80,.05); }
+    .cm-s-floracion .CodeMirror-matchingbracket { color: var(--amber) !important; text-decoration: underline; }
+    .cm-s-floracion .cm-keyword { color: var(--accent); font-weight: 600; }
+    .cm-s-floracion .cm-def { color: var(--accent-strong); font-weight: 600; }
+    .cm-s-floracion .cm-builtin { color: var(--amber); }
+    .cm-s-floracion .cm-string, .cm-s-floracion .cm-string-2 { color: #f9a8d4; }
+    .cm-s-floracion .cm-number { color: var(--amber); }
+    .cm-s-floracion .cm-atom { color: var(--amber); }
+    .cm-s-floracion .cm-comment { color: var(--text-faint); font-style: italic; }
+    .cm-s-floracion .cm-operator { color: var(--text); }
+    .cm-s-floracion .cm-variable, .cm-s-floracion .cm-property { color: var(--text); }
+    .cm-s-floracion .cm-punctuation, .cm-s-floracion .cm-bracket { color: var(--text-dim); }
     .CodeMirror-placeholder { color: var(--text-faint) !important; opacity: .7; }
 
+    /* ── VERIFY / TEST UI ───────────────────────── */
     .verify-row { display: flex; align-items: center; gap: .8rem; margin-top: .8rem; flex-wrap: wrap; }
     .verify-status { font-family: var(--font-m); font-size: .75rem; color: var(--text-faint); }
 
@@ -333,33 +317,30 @@
     .test-item.fail .t-head { color: var(--bad); }
     .t-detail { margin-top: .3rem; color: var(--text-dim); font-size: .84rem; }
 
-    .call-cell {
-      display: flex; align-items: center; gap: .5rem; margin-top: .9rem;
-      background: var(--bg-soft); border: 1px solid var(--border);
-      border-radius: var(--r-sm); padding: .4rem .7rem;
-    }
-    .call-cell-prompt { font-family: var(--font-m); font-size: .85rem; color: var(--accent); user-select: none; }
-    .call-cell-input {
-      flex: 1; background: none; border: none; outline: none;
-      font-family: var(--font-m); font-size: .85rem; color: var(--text);
-    }
-    .call-cell-input::placeholder { color: var(--text-faint); }
-    .call-cell-btn {
-      background: none; border: none; cursor: pointer; color: var(--accent);
-      font-size: 1rem; padding: 0 .3rem; border-radius: 3px;
-      transition: background .15s;
-    }
-    .call-cell-btn:hover { background: rgba(74,130,245,.12); }
-    .call-cell-output {
-      font-family: var(--font-m); font-size: .83rem; color: var(--accent-strong);
-      padding: .35rem .7rem; border-radius: var(--r-sm); display: none; margin-top: .3rem;
-      background: var(--bg-soft); border: 1px solid var(--border);
-    }
-    .call-cell-output.show { display: block; }
-    .call-cell-output.err  { color: var(--bad); border-color: var(--bad); }
-
     .send-status { font-family: var(--font-m); font-size: .8rem; color: var(--accent); margin-top: .5rem; }
 
+    /* ── GALERÍA DE SOLUCIONES ──────────────────── */
+    .gal-item {
+      border: 1px solid var(--border); border-radius: var(--r-sm);
+      background: var(--bg-soft); margin-bottom: .7rem; overflow: hidden;
+    }
+    .gal-item.pass { border-color: var(--good); }
+    .gal-item.fail { border-color: var(--bad); }
+    .gal-head {
+      display: flex; justify-content: space-between; align-items: center; gap: .6rem;
+      flex-wrap: wrap; padding: .5rem .8rem; border-bottom: 1px solid var(--border);
+      font-family: var(--font-m); font-size: .68rem; letter-spacing: .04em; text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .gal-item.pass .gal-badge { color: var(--good); }
+    .gal-item.fail .gal-badge { color: var(--bad); }
+    .gal-code {
+      margin: 0; padding: .7rem .9rem; max-height: 22rem;
+      overflow: auto; font-family: var(--font-m); font-size: .82rem;
+      line-height: 1.55; color: var(--text); white-space: pre; tab-size: 4;
+    }
+
+    /* ── SIDE NAV ───────────────────────────────── */
     .snav-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(0,0,0,.6); backdrop-filter: blur(3px); z-index: 8999;
@@ -368,7 +349,7 @@
     .snav-tab {
       position: fixed; left: 0; top: 50%; transform: translateY(-50%);
       z-index: 9001; width: 26px; height: 80px;
-      background: rgba(8,13,24,.95); border: 1px solid rgba(74,130,245,.25);
+      background: rgba(12,6,7,.95); border: 1px solid rgba(229,48,80,.25);
       border-left: none; border-radius: 0 6px 6px 0;
       color: var(--accent); cursor: pointer;
       font-family: var(--font-m); font-size: .6rem; letter-spacing: .12em;
@@ -379,8 +360,8 @@
     .snav-tab:hover { border-color: var(--accent); }
     .snav-panel {
       position: fixed; left: 0; top: 0; bottom: 0; width: 248px;
-      background: rgba(8,13,24,.97);
-      border-right: 1px solid rgba(74,130,245,.15);
+      background: rgba(12,6,7,.97);
+      border-right: 1px solid rgba(229,48,80,.15);
       backdrop-filter: blur(12px); z-index: 9000;
       transform: translateX(-100%); transition: transform .24s cubic-bezier(.25,.8,.25,1);
       display: flex; flex-direction: column; overflow-y: auto;
@@ -388,7 +369,7 @@
     .snav-panel.open { transform: translateX(0); }
     .snav-header {
       padding: 1.4rem 1.1rem 1rem;
-      border-bottom: 1px solid rgba(74,130,245,.1);
+      border-bottom: 1px solid rgba(229,48,80,.1);
       display: flex; align-items: center; justify-content: space-between;
     }
     .snav-logo { font-family: var(--font-m); font-size: .8rem; letter-spacing: .12em; color: var(--accent); }
@@ -412,8 +393,8 @@
       background: transparent; margin-bottom: .2rem;
       transition: color .15s, background .15s;
     }
-    .snav-unit:hover, .snav-anchor:hover { color: var(--text); background: rgba(74,130,245,.06); }
-    .snav-unit.active { color: var(--accent); border-left-color: var(--accent); background: rgba(74,130,245,.08); }
+    .snav-unit:hover, .snav-anchor:hover { color: var(--text); background: rgba(229,48,80,.06); }
+    .snav-unit.active { color: var(--accent); border-left-color: var(--accent); background: rgba(229,48,80,.08); }
     .snav-anchor.current { color: var(--accent); }
     .u-num { font-size: .6rem; opacity: .7; min-width: 1.8rem; text-align: right; }
     .snav-divider { border: none; border-top: 1px solid var(--border); margin: .6rem 0; }
@@ -431,7 +412,7 @@
     }
     .name-ac-item:last-child { border-bottom: none; }
     .name-ac-item:hover, .name-ac-item.ac-active {
-      background: rgba(74,130,245,.12); color: var(--accent-strong);
+      background: rgba(229,48,80,.12); color: var(--accent-strong);
     }
   </style>
 </head>
@@ -440,7 +421,10 @@
 <!-- ══ NAME GATE ══════════════════════════════════════════════ -->
 <div id="name-gate" style="
   min-height:100vh; display:flex; align-items:center; justify-content:center;
-  background:var(--bg); padding:2rem;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(229,48,80,.1) 0%, transparent 55%),
+    var(--bg);
+  padding:2rem;
 ">
   <div style="
     max-width:420px; width:100%;
@@ -450,13 +434,41 @@
     <div style="font-family:var(--font-m);font-size:.7rem;letter-spacing:.14em;color:var(--text-faint);text-transform:uppercase;margin-bottom:1.4rem">
       Pensamiento Computacional · FIUBA
     </div>
-    <div style="font-size:2rem;margin-bottom:.8rem">📋</div>
+    <div style="font-size:2rem;margin-bottom:.8rem">🌸</div>
     <h1 style="font-weight:800;font-size:1.6rem;color:var(--text);margin:0 0 .4rem">
-      UNIDAD 4.2 — <span style="color:var(--accent)">Listas y Tuplas</span>
+      Clase de <span style="color:var(--accent)">Repaso</span>
     </h1>
     <p style="color:var(--text-dim);font-size:.92rem;margin:0 0 1.8rem;line-height:1.6">
-      Antes de empezar, contanos quién sos.
+      Quiz + 7 ejercicios de parcial · ¡Feliz Primavera!
     </p>
+    <!-- Paso 1: clave de la semana -->
+    <div id="gate-step-pass">
+      <label for="pass-input" style="display:block;text-align:left;font-family:var(--font-m);font-size:.78rem;color:var(--text-faint);margin-bottom:.35rem">
+        Clave de la clase
+      </label>
+      <input id="pass-input" type="password" placeholder="La que dijimos en clase"
+        autocomplete="off"
+        style="
+          width:100%;box-sizing:border-box;margin-bottom:1rem;
+          background:var(--bg);border:1px solid var(--border);
+          border-radius:6px;padding:.65rem .9rem;
+          color:var(--text);font-family:var(--font-m);font-size:.95rem;
+          outline:none;
+        "
+        onkeydown="if(event.key==='Enter')checkPass()"
+      />
+      <button id="pass-btn" onclick="checkPass()" style="
+        width:100%;padding:.75rem;border:none;border-radius:6px;
+        background:var(--accent);color:#fff;cursor:pointer;
+        font-family:var(--font-b);font-weight:700;font-size:.95rem;
+      ">
+        Entrar
+      </button>
+      <p id="pass-err" style="color:var(--bad);font-size:.8rem;margin:.6rem 0 0;display:none"></p>
+    </div>
+
+    <!-- Paso 2: nombre. Oculto hasta que la clave sea correcta. -->
+    <div id="gate-step-name" style="display:none">
     <label style="display:block;text-align:left;font-family:var(--font-m);font-size:.78rem;color:var(--text-faint);margin-bottom:.35rem">
       Nombre completo
     </label>
@@ -485,14 +497,15 @@
     </div>
     <button onclick="startSession()" style="
       width:100%;padding:.75rem;border:none;border-radius:6px;
-      background:var(--accent);color:#000;cursor:pointer;
+      background:var(--accent);color:#fff;cursor:pointer;
       font-family:var(--font-b);font-weight:700;font-size:.95rem;
     ">
-      Empezar →
+      Empezar 🌸
     </button>
     <p id="name-gate-err" style="color:var(--bad);font-size:.8rem;margin:.6rem 0 0;display:none">
       Ingresá tu nombre para continuar.
     </p>
+    </div>
   </div>
 </div>
 
@@ -501,61 +514,37 @@
 
 <!-- ══ HERO ══════════════════════════════════════════════════ -->
 <section id="hero">
-  <div class="hero-badge">Pensamiento Computacional · Curso 11: Retamozo, Pratto</div>
-  <h1 class="hero-title">Listas y <span>Tuplas</span></h1>
-  <p class="hero-sub">UNIDAD 4.2 — Colecciones, métodos y funciones de orden superior.</p>
+  <div class="hero-badge">🌺 Pensamiento Computacional · Curso 11: Retamozo, Pratto · Primavera 2026</div>
+  <h1 class="hero-title">Clase de <span>Repaso</span></h1>
+  <p class="hero-sub">Unidades 1–4 · Quiz de lectura de código + 7 ejercicios de parcial</p>
   <div class="scroll-cue">▼</div>
 </section>
 
 <!-- ══ QUIZ ══════════════════════════════════════════════════ -->
 <div class="section-bg-a">
-  <div class="chamber" id="camara-1">
+  <div class="chamber" id="camara-quiz">
     <div class="chamber-head">
       <span class="eyebrow">Autoevaluación</span>
-      <h2>Quiz</h2>
-      <p>9 preguntas de repaso, una por vez. Seleccioná tu respuesta y confirmala antes de ver el resultado.</p>
+      <h2>Quiz de Repaso</h2>
+      <p>8 preguntas de lectura de código. Seleccioná tu respuesta y confirmala antes de ver el resultado.</p>
     </div>
     <div id="quiz-root"></div>
   </div>
 </div>
 
-<!-- ══ EJERCICIOS ════════════════════════════════════════════ -->
-<div class="section-bg-b">
-  <div class="chamber" id="camara-ejercicios">
-    <div class="chamber-head">
-      <span class="eyebrow">Práctica</span>
-      <h2>Ejercicios</h2>
-      <p>Listas y tuplas en acción. Cada ejercicio tiene su pista y verificación automática.</p>
-    </div>
-    <div class="boon-list" id="boon-list-u4"></div>
-  </div>
-</div>
-
-<!-- ══ DESAFÍO FINAL ════════════════════════════════════════ -->
-<div class="section-bg-a">
-  <div class="chamber" id="camara-final">
-    <div class="chamber-head">
-      <span class="eyebrow">Desafío Final</span>
-      <h2>Análisis Salarial</h2>
-      <p>Un ejercicio que combina listas, funciones auxiliares y cálculos estadísticos.</p>
-    </div>
-    <div id="potion-root"></div>
-  </div>
-</div>
-
 <!-- ══ EJERCICIOS DE PARCIAL ═════════════════════════════════ -->
 <div class="section-bg-b">
-  <div class="chamber" id="examen-final">
+  <div class="chamber" id="camara-parcial">
     <div class="chamber-head">
       <span class="eyebrow">Ejercicios de Parcial</span>
-      <h2>Ejercicios Integradores</h2>
-      <p>Ejercicios que combinan listas, tuplas y estructuras de control. Podés entregar tu solución directamente.</p>
+      <h2>Los 7 Desafíos 🌹</h2>
+      <p>Ejercicios integradores que combinan todo lo visto. Cada uno tiene tests automáticos y podés entregar tu solución directamente.</p>
     </div>
     <div id="exam-root"></div>
   </div>
 </div>
 
-<footer>El Archivo · UNIDAD 4.2 — Listas y Tuplas · Pensamiento Computacional FIUBA</footer>
+<footer>Clase de Repaso · Primavera 2026 · Pensamiento Computacional FIUBA 🌸</footer>
 
 </div><!-- /#main-content -->
 
@@ -564,21 +553,17 @@
 <button class="snav-tab" onclick="snavToggle()" aria-label="Abrir menú">nav</button>
 <nav class="snav-panel" id="snav-panel" aria-label="Navegación del sitio">
   <div class="snav-header">
-    <span class="snav-logo">PC · FIUBA</span>
+    <span class="snav-logo">PC · FIUBA 🌸</span>
     <button class="snav-close" onclick="snavClose()" aria-label="Cerrar">✕</button>
   </div>
   <div class="snav-body">
-    <span class="snav-section-label">Unidades</span>
-    <a class="snav-unit active" href="#">
-      <span class="u-num">U4.2</span>Listas y Tuplas
-    </a>
+    <span class="snav-section-label">Clase</span>
+    <a class="snav-unit active" href="#">Repaso · Primavera</a>
     <hr class="snav-divider">
-    <span class="snav-section-label">Unidad 4.2</span>
-    <a class="snav-anchor" href="#hero"              onclick="snavClose()">Inicio</a>
-    <a class="snav-anchor" href="#camara-1"          onclick="snavClose()">Quiz</a>
-    <a class="snav-anchor" href="#camara-ejercicios" onclick="snavClose()">Ejercicios</a>
-    <a class="snav-anchor" href="#camara-final"      onclick="snavClose()">Desafío Final</a>
-    <a class="snav-anchor" href="#examen-final"      onclick="snavClose()">Ejercicios de Parcial</a>
+    <span class="snav-section-label">Secciones</span>
+    <a class="snav-anchor" href="#hero"          onclick="snavClose()">Inicio</a>
+    <a class="snav-anchor" href="#camara-quiz"   onclick="snavClose()">Quiz</a>
+    <a class="snav-anchor" href="#camara-parcial" onclick="snavClose()">7 Ejercicios</a>
   </div>
 </nav>
 
@@ -588,34 +573,17 @@
 const SHEET_WEBHOOK = "https://script.google.com/macros/s/AKfycbxixKO-IHvlg3OzajxcbINbx6UwP0Li_tTuhI8MLQiIqPrNnmq7XVW9Cm_15B-8c6Li/exec";
 let studentName = '';
 
-/* ─── NAME AUTOCOMPLETE ──────────────────────────────────── */
-const ALUMNOS = [
-  "Ernesto Barragán","Alfonso Barreña Baroni","Tobias Barrios","Enzo Bruccieri",
-  "Kevin Nahuel Bustamante Flores","Elián Candia Candia",
-  "Angelique Tatiana Chazarreta Reyes","Jhoscen Maykel Jhair Chumacero Reyes",
-  "Lucas Cornejo Abad","Marcel Mihai Cuba Reyes","Tatiana Agustina Fernández",
-  "Noemi Flores","Lisandro Flores Chiachiare","Emilia Gonzalez Frutos",
-  "Tomás Gonzalo Grané","Antonio David Hochbaum","Daniela Ledesma",
-  "Matias Melita","Martina Oses","Milena María Ostojich Checa",
-  "Alison Michel Padilla Balderrama","Ian David Park","Agustín Pascale",
-  "Mauro Ivan Paz","Harold Perez","Francisco Román Pérez León","Gael Quesada",
-  "Dylan Quipildor","Agustín Regis","Bruno Nahuel Rodriguez Alfonzo",
-  "Lucas Gabriel Rodríguez Aray","Tiago Tomas Rodríguez Ormaechea",
-  "Arian Denis Ruibo","Bruno Amin Salinas Casco","Alejandro Sarta",
-  "Lautaro Slavsky","Maximo Yoel Suca","Juan Sulbaran",
-  "Matias Nicolas Tinnirello","Nicolas Wei","Sebastián Yu García",
-  "Bernardo Bautista","Dante Pinto","Enzo Lisicki","Ezequiel Mendoza",
-  "Guillermo Alvarez","Juan Bautista Angelero","Maika Abellido","Sebastián Angulo"
-];
+/* ─── ALUMNOS ────────────────────────────────────────────── */
+/* El roster NO vive acá: son datos personales y esta página es pública.
+   Lo trae el Apps Script (hoja `Alumnos`) recién cuando la clave es correcta. */
+let ALUMNOS = [];
 
 let _nameAcIdx = -1;
 
 function nameAcFilter() {
   const q = (document.getElementById('name-input').value || '').trim().toLowerCase();
   const list = document.getElementById('name-ac-list');
-  const matches = q.length === 0
-    ? ALUMNOS
-    : ALUMNOS.filter(n => n.toLowerCase().includes(q));
+  const matches = q.length === 0 ? ALUMNOS : ALUMNOS.filter(n => n.toLowerCase().includes(q));
   if (matches.length === 0) { list.style.display = 'none'; return; }
   list.innerHTML = matches.map(n =>
     `<div class="name-ac-item" data-name="${n.replace(/"/g,'&quot;')}"
@@ -624,18 +592,15 @@ function nameAcFilter() {
   list.style.display = 'block';
   _nameAcIdx = -1;
 }
-
 function nameAcHide() {
   const list = document.getElementById('name-ac-list');
   if (list) list.style.display = 'none';
   _nameAcIdx = -1;
 }
-
 function nameAcSelect(name) {
   document.getElementById('name-input').value = name;
   nameAcHide();
 }
-
 function nameAcKeydown(e) {
   const list = document.getElementById('name-ac-list');
   const items = list ? list.querySelectorAll('.name-ac-item') : [];
@@ -652,21 +617,52 @@ function nameAcKeydown(e) {
   } else if (e.key === 'Enter') {
     if (_nameAcIdx >= 0 && items[_nameAcIdx]) {
       nameAcSelect(items[_nameAcIdx].dataset.name);
-    } else {
-      startSession();
-    }
-  } else if (e.key === 'Escape') {
-    nameAcHide();
-  }
+    } else { startSession(); }
+  } else if (e.key === 'Escape') { nameAcHide(); }
 }
 
 /* ─── NAME GATE ──────────────────────────────────────────── */
+/* Paso 1 del gate. La clave se valida en el Apps Script, nunca acá: si
+   estuviera en esta página cualquiera la leería con "ver código fuente".
+   El roster llega en la misma respuesta, solo si la clave es correcta. */
+async function checkPass() {
+  const input = document.getElementById('pass-input');
+  const btn   = document.getElementById('pass-btn');
+  const err   = document.getElementById('pass-err');
+  const pass  = input.value.trim();
+
+  err.style.display = 'none';
+  if (!pass) { err.textContent = 'Escribí la clave de la clase.'; err.style.display = 'block'; return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Verificando…';
+  try {
+    const data = await fetchAuth(pass);
+    if (data && data.ok) {
+      ALUMNOS = Array.isArray(data.roster) ? data.roster : [];
+      document.getElementById('gate-step-pass').style.display = 'none';
+      document.getElementById('gate-step-name').style.display = 'block';
+      document.getElementById('name-input').focus();
+      return;
+    }
+    err.textContent = (data && data.error === 'no_password_configured')
+      ? 'Todavía no hay clave configurada. Avisale al docente.'
+      : 'Clave incorrecta.';
+    err.style.display = 'block';
+    input.select();
+  } catch (e) {
+    // Distinto de "clave incorrecta" a propósito: que no crea que se equivocó.
+    err.textContent = 'No se pudo verificar. Revisá tu conexión y probá de nuevo.';
+    err.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Entrar';
+  }
+}
+
 function startSession() {
   const val = document.getElementById('name-input').value.trim();
-  if (!val) {
-    document.getElementById('name-gate-err').style.display = 'block';
-    return;
-  }
+  if (!val) { document.getElementById('name-gate-err').style.display = 'block'; return; }
   studentName = val;
   document.getElementById('name-gate').style.display = 'none';
   document.getElementById('main-content').style.display = 'block';
@@ -692,278 +688,51 @@ function sendToSheet(sheetName, results, score, total, statusElId) {
     .catch(() => { statusEl.textContent = '✗ Error al enviar. Avisale al docente.'; });
 }
 
-/* ═══════════════════════════════════════════════════════════
-   UNIDAD 4.2 — DATA
-   ═══════════════════════════════════════════════════════════ */
+/* ─── LECTURA DE ENTREGAS (JSONP) ────────────────────────── */
+/* Apps Script redirige a googleusercontent.com y sus headers CORS no son
+   confiables; un <script> tag esquiva el problema entero. */
+function jsonp(params) {
+  return new Promise((resolve, reject) => {
+    const cb = 'pccCb' + Date.now() + Math.floor(Math.random() * 1e6);
+    const s  = document.createElement('script');
+    const t  = setTimeout(() => { cleanup(); reject(new Error('timeout')); }, 12000);
+    function cleanup() { clearTimeout(t); delete window[cb]; s.remove(); }
+    window[cb] = data => { cleanup(); resolve(data); };
+    s.onerror  = () => { cleanup(); reject(new Error('network')); };
+    const qs = Object.keys(params)
+      .map(k => `${k}=${encodeURIComponent(params[k])}`)
+      .concat(`callback=${cb}`)
+      .join('&');
+    s.src = `${SHEET_WEBHOOK}?${qs}`;
+    document.body.appendChild(s);
+  });
+}
 
-/* ─── QUIZ DATA ───────────────────────────────────────────── */
+function fetchSubmissions(sheetName) {
+  return jsonp({ action: 'submissions', sheet: sheetName });
+}
 
-const sections      = ["Las Aguas del Leteo", "El Laberinto", "La Forja", "El Tribunal"];
-const sectionLabels = ["Leteo", "Laberinto", "Forja", "Tribunal"];
+/* Valida la clave de la semana; si es correcta viene el roster con la respuesta. */
+function fetchAuth(pass) {
+  return jsonp({ action: 'auth', pass: pass });
+}
 
-const questions = [
-  /* ── LETEO: mutabilidad ── */
-  {
-    section: "Las Aguas del Leteo",
-    q: "¿Qué estructura de datos <strong>no</strong> es inmutable?",
-    answers: ["Listas"],
-    options: ["Strings", "Tuplas", "Rangos", "Listas"],
-    hint: "¿Qué significa que algo sea inmutable? ¿Qué pasaría si intentaras hacer <code>mi_lista[0] = 99</code> — y después lo mismo con un string o una tupla? ¿Cuál de las cuatro opciones te deja hacer eso?",
-    feedback_ok: "Correcto. Las listas son mutables: podés modificarlas con <code>append()</code>, <code>remove()</code> o asignación por índice. Strings, tuplas y rangos no admiten modificaciones.",
-    feedback_bad: "La respuesta correcta es <b>Listas</b>. Strings, tuplas y rangos son inmutables — no se pueden cambiar una vez creados.",
-  },
-  {
-    section: "Las Aguas del Leteo",
-    q: "¿Cuál es la diferencia fundamental entre una lista y una tupla?",
-    answers: ["Las tuplas no pueden modificarse"],
-    options: ["Las listas pueden indexarse y las tuplas no", "Las listas no se pueden desempaquetar", "Las tuplas no pueden modificarse", "Las tuplas pueden contener valores de distinto tipo y las listas no"],
-    hint: "Pensá qué operaciones podés hacer con una lista que no podés hacer con una tupla. ¿Podés agregar o cambiar elementos en ambas? ¿Cuál de las opciones nombra esa diferencia concretamente?",
-    feedback_ok: "Correcto. Las tuplas son inmutables: una vez creadas no se pueden modificar. Las listas sí.",
-    feedback_bad: "La respuesta correcta es que <b>las tuplas no pueden modificarse</b>. Ambas admiten indexación y desempaquetado, y ambas pueden mezclar tipos.",
-  },
-  /* ── LABERINTO: indexación ── */
-  {
-    section: "El Laberinto",
-    q: "¿Qué devuelve <code>len([\"Hola\", \"Chau\", \"?\"])</code>?",
-    answers: ["3"],
-    options: ["2", "3", "9", "Error. Len es solo para cadenas"],
-    hint: "¿Qué es exactamente lo que <code>len()</code> cuenta sobre una lista — los elementos o los caracteres dentro de ellos? Contá a mano cuántos elementos tiene esa lista.",
-    feedback_ok: "Correcto. La lista tiene 3 elementos y <code>len()</code> los cuenta, no los caracteres de cada string.",
-    feedback_bad: "La respuesta es <b>3</b>. <code>len()</code> cuenta cuántos elementos tiene la colección — la lista tiene 3.",
-  },
-  {
-    section: "El Laberinto",
-    q: "¿Qué muestra el siguiente código?<pre>valores = [[1, 2], [3, 4]]\nprint(valores[0])</pre>",
-    answers: ["[1, 2]"],
-    options: ["1", "3", "1, 3", "[1, 2]"],
-    hint: "¿Qué tipo de dato es el primer elemento de <code>valores</code>? ¿Un número o algo más? Si lo imprimís, ¿qué esperarías ver?",
-    feedback_ok: "Correcto. <code>valores[0]</code> devuelve el primer elemento, que es la sublista <code>[1, 2]</code> completa.",
-    feedback_bad: "La respuesta es <b>[1, 2]</b>. <code>valores[0]</code> devuelve el primer elemento de la lista externa, que es la sublista completa.",
-  },
-  {
-    section: "El Laberinto",
-    q: "¿Qué muestra el siguiente código?<pre>valores = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\nprint(valores[1][2])</pre>",
-    answers: ["6"],
-    options: ["1", "6", "8", "5"],
-    hint: "Cuando aplicás <code>[1]</code> a <code>valores</code>, ¿qué obtenés? ¿Y si a ese resultado le aplicás <code>[2]</code>? Resolvelo paso a paso.",
-    feedback_ok: "Correcto. <code>valores[1]</code> es <code>[4, 5, 6]</code> y <code>[2]</code> toma el tercer elemento: <code>6</code>.",
-    feedback_bad: "La respuesta es <b>6</b>. <code>valores[1]</code> da <code>[4, 5, 6]</code>, y el elemento en índice 2 de esa sublista es <code>6</code>.",
-  },
-  /* ── FORJA: métodos ── */
-  {
-    section: "La Forja",
-    q: "¿Qué diferencia hay entre <code>sort()</code> y <code>sorted()</code>?",
-    answers: ["Sort modifica la lista original"],
-    options: ["Sorted modifica la lista original", "Sort modifica la lista original", "Sort ordena de mayor a menor siempre", "Sorted es solo para números"],
-    hint: "Si hacés <code>resultado = mi_lista.sort()</code>, ¿qué valor tiene <code>resultado</code>? ¿Y la lista original? ¿Qué pasa si en cambio hacés <code>resultado = sorted(mi_lista)</code>?",
-    feedback_ok: "Correcto. <code>sort()</code> modifica la lista en su lugar (devuelve <code>None</code>). <code>sorted()</code> deja la original intacta y crea una nueva.",
-    feedback_bad: "La respuesta correcta es que <b>sort() modifica la lista original</b>. <code>sorted()</code> deja la original intacta y devuelve una nueva lista ordenada.",
-  },
-  {
-    section: "La Forja",
-    q: "¿Qué diferencia hay entre <code>append()</code> e <code>insert()</code>?",
-    answers: ["Append agrega un elemento al final"],
-    options: ["Append agrega un elemento al final", "Insert agrega un elemento al inicio", "Append recibe el índice donde lo querés insertar", "Insert crea una nueva lista con el valor agregado"],
-    hint: "¿Cuántos argumentos recibe <code>append</code> y cuántos <code>insert</code>? ¿Qué representa el argumento extra de uno de ellos? ¿En qué posición termina el elemento nuevo?",
-    feedback_ok: "Correcto. <code>append(x)</code> siempre agrega al final. <code>insert(i, x)</code> inserta en la posición <code>i</code> que vos elegís.",
-    feedback_bad: "La respuesta correcta es que <b>append agrega al final</b>. <code>insert()</code> recibe un índice como primer argumento — no necesariamente inserta al inicio.",
-  },
-  /* ── TRIBUNAL: map/filter ── */
-  {
-    section: "El Tribunal",
-    q: "¿Qué condición debe cumplir la función que se utiliza con <code>filter()</code>?",
-    answers: ["Debe devolver un tipo de dato booleano"],
-    options: ["Debe recibir un tipo de dato booleano", "Debe devolver un tipo de dato booleano", "Debe mostrar por pantalla el resultado del filtro", "Debe tener una sola línea"],
-    hint: "¿Qué decisión tiene que tomar <code>filter</code> sobre cada elemento — incluirlo o no? ¿Qué tipo de valor le permite tomar esa decisión?",
-    feedback_ok: "Correcto. La función que se pasa a <code>filter()</code> debe devolver un booleano (o algo que evalúe como True/False) para decidir qué elementos conservar.",
-    feedback_bad: "La respuesta correcta es que <b>debe devolver un tipo de dato booleano</b>. <code>filter()</code> conserva los elementos para los que la función devuelve <code>True</code>.",
-  },
-  {
-    section: "El Tribunal",
-    q: "¿Para qué se usa <code>map()</code>?",
-    answers: ["Aplica una misma función a todos los elementos y devuelve una nueva secuencia"],
-    options: [
-      "Modificar los valores de una lista",
-      "Filtrar los valores booleanos de una lista",
-      "Aplica una misma función a todos los elementos y devuelve una nueva secuencia",
-      "Aplica una función booleana y devuelve los elementos que devuelven True",
-    ],
-    hint: "¿Cuál es la diferencia entre querer <em>transformar</em> cada elemento y querer <em>seleccionar</em> algunos? ¿Cuál de esas dos cosas hace <code>map</code>? ¿Y <code>filter</code>?",
-    feedback_ok: "Correcto. <code>map(f, lista)</code> aplica <code>f</code> a cada elemento y devuelve un nuevo iterable con los resultados. No altera la lista original.",
-    feedback_bad: "La respuesta correcta es que <b>map aplica una función a todos los elementos y devuelve una nueva secuencia</b>. <code>filter()</code> es el que selecciona según True/False.",
-  },
-];
-
-/* ─── EJERCICIOS: LISTAS Y TUPLAS ───────────────────────────── */
-
-const boonsU4 = [
-  /* ── ADN DIGITAL ─────────────────────────────────────── */
-  {
-    title: "ADN Digital",
-    flavor: "No toda secuencia es lo que parece.",
-    tag: "listas · cadenas · conteo",
-    statement: `En un laboratorio analizamos <strong>ADN digital</strong>: cadenas de ceros y unos donde cada símbolo representa una base artificial. A veces se cuelan mutaciones — símbolos que no son <code>0</code> ni <code>1</code>.<br><br>
-Implementá <code>analizar_adn(secuencia, patron)</code> que reciba una cadena y un patrón, y devuelva una <strong>tupla</strong> con:<ol>
-<li>Cantidad de <code>1</code> en la cadena</li>
-<li>Cantidad de <code>0</code> en la cadena</li>
-<li>Cantidad de veces que aparece el patrón</li>
-<li>Posición de la primera aparición del patrón</li>
-<li>Porcentaje de caracteres que no son <code>0</code> ni <code>1</code></li>
-</ol>
-<b>Ejemplo:</b> <code>analizar_adn("1f101011011W3011010", "1010")</code> → <code>(10, 6, 2, 2, 15.78...)</code>`,
-    hint: "¿Cómo sabrías cuántas veces aparece un carácter en una cadena sin recorrerla a mano? ¿Cómo encontrás dónde aparece por primera vez una subcadena? Los caracteres que no son '0' ni '1': ¿podés calcularlos sin contarlos directamente?",
-    starter: "def analizar_adn(secuencia, patron):\n    pass",
-    test: {
-      funcName: "analizar_adn",
-      cases: [
-        { args: ["1f101011011W3011010", "1010"], stdin: [], expect: { type: "contains", parts: ["10,6", "2,2", "15.78"] } },
-        { args: ["110", "1"],                    stdin: [], expect: { type: "contains", parts: ["2,1,2,0,0"] } },
-        { args: ["11x00y11", "11"],              stdin: [], expect: { type: "contains", parts: ["4,2,2,0,25"] } },
-      ],
-    },
-    sol: `def analizar_adn(secuencia, patron):
-    cant_unos = secuencia.count("1")
-    cant_ceros = secuencia.count("0")
-    cant_patron = secuencia.count(patron)
-    pos_patron = secuencia.find(patron)
-    cant_diferentes = len(secuencia) - cant_unos - cant_ceros
-    porcentaje = cant_diferentes / len(secuencia) * 100
-    return (cant_unos, cant_ceros, cant_patron, pos_patron, porcentaje)`,
-  },
-
-  /* ── GESTIÓN DE GASTOS ───────────────────────────────── */
-  {
-    title: "Gestión de Gastos",
-    flavor: "El oro no miente.",
-    tag: "listas · max · índices",
-    statement: `Pedro registra sus gastos diarios en una lista. Al finalizar la semana quiere saber cuál fue el <strong>índice</strong> del día en que más gastó y cuánto gastó en <strong>promedio</strong> (entero).<br><br>
-Implementá <code>gestionar_gastos(gastos)</code> que reciba la lista de gastos y devuelva una tupla <code>(indice_dia_max, gasto_prom)</code>.<br><br>
-<b>Ejemplo:</b> <code>gestionar_gastos([500, 100, 300])</code> → <code>(0, 300)</code>`,
-    hint: "¿Cómo encontrás el valor más alto de una lista sin recorrerla vos mismo? Una vez que tenés ese valor, ¿cómo sabés en qué posición está? ¿Qué operación usás para que el promedio sea entero y no decimal?",
-    starter: "def gestionar_gastos(gastos):\n    pass",
-    test: {
-      funcName: "gestionar_gastos",
-      cases: [
-        { args: [[500, 100, 300]],           stdin: [], expect: { type: "contains", parts: ["0,300"] } },
-        { args: [[10, 50, 20, 80, 30]],      stdin: [], expect: { type: "contains", parts: ["3,38"] } },
-        { args: [[200, 200, 400, 100, 100]], stdin: [], expect: { type: "contains", parts: ["2,200"] } },
-      ],
-    },
-    sol: `def gestionar_gastos(gastos):
-    maximo = max(gastos)
-    dia = gastos.index(maximo)
-    promedio = sum(gastos) // len(gastos)
-    return (dia, promedio)`,
-  },
-
-  /* ── MÚSICA RETRO ────────────────────────────────────── */
-  {
-    title: "Música Retro",
-    flavor: "El nombre importa más que el formato.",
-    tag: "listas · strings · append",
-    statement: `Tenemos canciones guardadas en formato <code>.mp3</code>. Queremos una lista con los nombres limpios para poder mostrarla.<br><br>
-Implementá <code>limpiar_nombre_canciones(canciones)</code> que reciba una lista con nombres como <code>"No_te_imaginas.mp3"</code> y devuelva una lista con los nombres limpios: <code>"No te imaginas"</code> (sin extensión, guiones bajos reemplazados por espacios).<br><br>
-<b>Ejemplo:</b> <code>limpiar_nombre_canciones(["No_te_imaginas.mp3"])</code> → <code>["No te imaginas"]</code>`,
-    hint: "¿Cómo separarías <code>\"cancion.mp3\"</code> en sus dos partes? ¿Qué parte te interesa? Una vez que la tenés, ¿cómo transformás los guiones bajos en espacios?",
-    starter: "def limpiar_nombre_canciones(canciones):\n    pass",
-    test: {
-      funcName: "limpiar_nombre_canciones",
-      cases: [
-        { args: [["No_te_imaginas.mp3", "Hola_mundo.mp3"]], stdin: [], expect: { type: "contains", parts: ["No te imaginas", "Hola mundo"] } },
-        { args: [["Bohemian_Rhapsody.mp3"]],                stdin: [], expect: { type: "contains", parts: ["Bohemian Rhapsody"] } },
-        { args: [["cancion_uno.mp3", "cancion_dos.mp3"]],   stdin: [], expect: { type: "contains", parts: ["cancion uno", "cancion dos"] } },
-      ],
-    },
-    sol: `def limpiar_nombre_canciones(canciones):
-    resultado = []
-    for cancion in canciones:
-        nombre, extension = cancion.split(".")
-        nombre = nombre.replace("_", " ")
-        resultado.append(nombre)
-    return resultado`,
-  },
-
-  /* ── LISTA DE CUMPLEAÑOS ─────────────────────────────── */
-  {
-    title: "Lista de Cumpleaños",
-    flavor: "Las invitaciones no admiten errores.",
-    tag: "listas · tuplas · desempaquetado · print",
-    statement: `Organizamos un cumpleaños y necesitamos imprimir invitaciones para la familia. Dada una lista de tuplas <code>[(apellido, cant)]</code>, implementá <code>imprimir_invitaciones(invitados)</code> que <strong>imprima</strong> cada invitación con el formato:<br>
-<code>Familia &lt;apellido&gt;, &lt;cant&gt; invitaciones</code><br>
-(y <code>invitación</code> en singular cuando <code>cant == 1</code>).<br><br>
-<b>Ejemplo</b> para <code>[("Prieto", 3), ("Corsi", 1)]</code>:<pre>Familia Prieto, 3 invitaciones\nFamilia Corsi, 1 invitación</pre>`,
-    hint: "Cada elemento de la lista es una tupla con dos valores. ¿Cómo los asignás a variables con nombre directamente en el <code>for</code>? ¿Qué condición diferencia el singular del plural?",
-    starter: "def imprimir_invitaciones(invitados):\n    pass",
-    test: {
-      funcName: "imprimir_invitaciones",
-      cases: [
-        { args: [[["Prieto", 3], ["Capulleto", 4]]], stdin: [], expect: { type: "stdout_contains", parts: ["Familia Prieto", "3 invitaciones", "Familia Capulleto", "4 invitaciones"] } },
-        { args: [[["Corsi", 1]]],                    stdin: [], expect: { type: "stdout_contains", parts: ["Familia Corsi", "1 invitaci"] } },
-      ],
-    },
-    sol: `def imprimir_invitaciones(invitados):
-    for apellido, cant in invitados:
-        texto = f"Familia {apellido}, {cant} "
-        if cant == 1:
-            texto += "invitación"
-        else:
-            texto += "invitaciones"
-        print(texto)`,
-  },
-
-  /* ── COMPETENCIA DE DELETREO ─────────────────────────── */
-  {
-    title: "Competencia de Deletreo",
-    flavor: "Solo los mejores representan al colegio.",
-    tag: "listas · filter · tuplas",
-    statement: `Una escuela selecciona alumnos para una competencia. El registro tiene el formato <code>[(nombre, promedio)]</code>.<br><br>
-Implementá <code>seleccionar_estudiantes(listado)</code> que devuelva solo los alumnos cuyo promedio es <strong>mayor o igual a 7</strong>.<br><br>
-<b>Ejemplo:</b> <code>seleccionar_estudiantes([("Lola Torres", 8.33), ("Mateo Murilla", 6.66), ("Luca Jerez", 7)])</code> → <code>[("Lola Torres", 8.33), ("Luca Jerez", 7)]</code>`,
-    hint: "¿En qué posición de la tupla está el promedio de cada alumno? ¿Qué condición tiene que cumplir para que lo incluyas? ¿Existe alguna función de Python que haga exactamente ese tipo de selección?",
-    starter: "def seleccionar_estudiantes(listado):\n    pass",
-    test: {
-      funcName: "seleccionar_estudiantes",
-      cases: [
-        { args: [[["Lola Torres", 8.33], ["Mateo Murilla", 6.66], ["Luca Jerez", 7]]], stdin: [], expect: { type: "contains", parts: ["Lola Torres", "Luca Jerez"] } },
-        { args: [[["Ana", 9], ["Pedro", 5], ["Sol", 7.5]]],                             stdin: [], expect: { type: "contains", parts: ["Ana", "Sol"] } },
-        { args: [[["Mario", 6.9], ["Luis", 5]]],                                        stdin: [], expect: { type: "exact", value: "[]" } },
-      ],
-    },
-    sol: `def promedio_suficiente(alumno):
-    return alumno[1] >= 7
-
-def seleccionar_estudiantes(listado):
-    return list(filter(promedio_suficiente, listado))`,
-  },
-
-  /* ── PREMIAR DESEMPEÑO ───────────────────────────────── */
-  {
-    title: "Premiar Desempeño",
-    flavor: "El factor no perdona.",
-    tag: "listas · sorted · slicing",
-    statement: `Recursos Humanos quiere premiar las <strong>3 sucursales con mejor desempeño</strong>. El desempeño se mide con el factor <strong>ventas / monto_total</strong>: cuanto más alto, mejor.<br><br>
-Implementá <code>premiar_desempeño(sucursales)</code> que reciba una lista de tuplas <code>(sucursal, ventas, monto_total)</code> y devuelva las 3 primeras al ordenar de mayor a menor por ese factor.<br><br>
-<b>Ejemplo:</b> para <code>[("Santa Cruz", 1800, 90), ("Mendoza", 3500, 50), ("Buenos Aires", 9600, 1200), ("Chubut", 990, 9), ("Córdoba", 7000, 70)]</code> → las 3 con mayor factor.`,
-    hint: "¿Cómo le indicás a Python por qué criterio ordenar — si hay que calcular algo por elemento, cómo se lo pasás? ¿Qué parámetro cambia el orden de mayor a menor? Una vez ordenada, ¿cómo tomás solo las primeras tres?",
-    starter: "def premiar_desempeño(sucursales):\n    pass",
-    test: {
-      funcName: "premiar_desempeño",
-      cases: [
-        { args: [[["Santa Cruz", 1800, 90], ["Mendoza", 3500, 50], ["Buenos Aires", 9600, 1200], ["Chubut", 990, 9], ["Cordoba", 7000, 70]]], stdin: [], expect: { type: "contains", parts: ["Chubut", "Cordoba", "Mendoza"] } },
-        { args: [[["Norte", 200, 10], ["Sur", 10, 100], ["Este", 300, 30], ["Oeste", 15, 50]]],                                              stdin: [], expect: { type: "contains", parts: ["Norte", "Este", "Oeste"] } },
-      ],
-    },
-    sol: `def obtener_factor(sucursal):
-    return sucursal[1] / sucursal[2]
-
-def premiar_desempeño(sucursales):
-    ordenadas = sorted(sucursales, key=obtener_factor, reverse=True)
-    return ordenadas[:3]`,
-  },
-];
+/* Las entregas llegan de la planilla: son código ajeno, siempre escapado. */
+function buildGalleryHtml(items) {
+  return items.map((it, i) => {
+    const ok = it.correcta === true;
+    return `
+      <div class="gal-item ${ok ? 'pass' : 'fail'}">
+        <div class="gal-head">
+          <span>Solución ${i + 1}</span>
+          <span class="gal-badge">${ok ? '✓ Pasa los tests' : '✗ No pasa los tests'}</span>
+        </div>
+        <pre class="gal-code">${escHtml(it.codigo)}</pre>
+      </div>`;
+  }).join('');
+}
 
 /* ─── PYODIDE ENGINE ─────────────────────────────────────── */
-
 const PCC_HARNESS_PY = `
 import sys, io, json, ast, builtins as _pcc_builtins
 
@@ -1018,7 +787,6 @@ def _pcc_run(code, func_name, args_json, stdin_json):
 `;
 
 let pyodidePromise = null;
-
 function getPyodide() {
   if (!pyodidePromise) {
     pyodidePromise = new Promise((resolve, reject) => {
@@ -1038,7 +806,6 @@ function getPyodide() {
   }
   return pyodidePromise;
 }
-
 getPyodide().catch(() => {});
 
 async function pccRun(code, funcName, args, stdinArr) {
@@ -1047,7 +814,6 @@ async function pccRun(code, funcName, args, stdinArr) {
   const json = runFn(code, funcName || null, JSON.stringify(args || []), JSON.stringify(stdinArr || []));
   return JSON.parse(json);
 }
-
 async function pccCheckPractices(code, requiredNames) {
   const py = await getPyodide();
   const checkFn = py.globals.get('_pcc_check_practices');
@@ -1056,7 +822,6 @@ async function pccCheckPractices(code, requiredNames) {
 }
 
 /* ─── TEST RUNNER ─────────────────────────────────────────── */
-
 function fmtVal(v) {
   if (v === null || v === undefined) return '(nada)';
   if (typeof v === 'string') return '"' + v + '"';
@@ -1068,7 +833,7 @@ function evalCase(actual, expect) {
   switch (expect.type) {
     case 'numeric': {
       const num = typeof actual === 'number' ? actual : parseFloat(actual);
-      return !Number.isNaN(num) && Math.abs(num - expect.value) < (expect.tolerance ?? 0.001);
+      return !Number.isNaN(num) && Math.abs(num - expect.value) < (expect.tolerance ?? 0.01);
     }
     case 'bool':
       return Boolean(actual) === Boolean(expect.value);
@@ -1079,15 +844,6 @@ function evalCase(actual, expect) {
     case 'contains': {
       const s = String(actual||'').toLowerCase();
       return expect.parts.every(p => s.includes(String(p).toLowerCase().trim()));
-    }
-    case 'list': {
-      const a = Array.isArray(actual) ? actual : [];
-      return JSON.stringify(a) === JSON.stringify(expect.value);
-    }
-    case 'stdout': {
-      const lines = (actual || '').trim().split('\n').map(l => l.trim()).filter(Boolean);
-      const expected = expect.lines.map(l => String(l).trim());
-      return JSON.stringify(lines) === JSON.stringify(expected);
     }
     case 'stdout_contains': {
       const s = (actual || '').toLowerCase();
@@ -1114,11 +870,6 @@ async function runFunctionTests(code, spec) {
           detail = pass
             ? 'Imprimió el contenido esperado.'
             : 'Se esperaba que imprimiera: ' + c.expect.parts.join(', ') + '.\nImprimió: ' + (r.stdout || '(nada)');
-        } else if (c.expect.type === 'stdout') {
-          const gotLines = (r.stdout||'').trim().split('\n').map(l=>l.trim()).filter(Boolean);
-          detail = pass
-            ? 'Salida correcta: ' + c.expect.lines.join(', ')
-            : 'Salida obtenida: [' + gotLines.join(', ') + '] — esperada: [' + c.expect.lines.join(', ') + ']';
         } else {
           const expDesc = c.expect.value !== undefined ? fmtVal(c.expect.value) : c.expect.parts.join(', ');
           detail = pass
@@ -1135,12 +886,9 @@ async function runFunctionTests(code, spec) {
 }
 
 function buildPracticeNoteHtml(practice) {
-  if (!practice.parse_ok) {
-    return `<div class="practice-note warn">✗ Error de sintaxis: ${escHtml(practice.error)}</div>`;
-  }
-  if (practice.missing_required.length > 0) {
+  if (!practice.parse_ok) return `<div class="practice-note warn">✗ Error de sintaxis: ${escHtml(practice.error)}</div>`;
+  if (practice.missing_required.length > 0)
     return `<div class="practice-note warn">✗ No se encontró la función <code>${practice.missing_required[0]}</code>. Asegurate de definirla.</div>`;
-  }
   return `<div class="practice-note ok">✓ Código válido. Funciones definidas: ${practice.defined_functions.join(', ')}</div>`;
 }
 
@@ -1155,86 +903,116 @@ function buildTestResultsHtml(rows) {
     </div>`).join('');
 }
 
-function setupVerifyBlock(boonEl, boon) {
-  const textarea = boonEl.querySelector('textarea.cm-target');
-  if (!textarea) return;
-
-  const editor = CodeMirror.fromTextArea(textarea, {
-    mode: 'python', theme: 'underworld', lineNumbers: true,
-    matchBrackets: true, styleActiveLine: true,
-    indentUnit: 4, tabSize: 4, indentWithTabs: false, lineWrapping: true,
-    extraKeys: { Tab: cm => cm.execCommand('insertSoftTab') },
-  });
-  editor.setSize(null, 'auto');
-
-  const verifyStatus = boonEl.querySelector('.verify-status');
-  const callInput    = boonEl.querySelector('.call-cell-input');
-  const callBtn      = boonEl.querySelector('.call-cell-btn');
-  const callOutput   = boonEl.querySelector('.call-cell-output');
-
-  async function runCall() {
-    const call = callInput.value.trim();
-    if (!call) return;
-    callBtn.disabled = true;
-    callOutput.className = 'call-cell-output';
-    try {
-      const defCode = editor.getValue().trim();
-      const r = await pccRun(
-        defCode + '\nif ' + call + ' is not None: print(repr(' + call + '))',
-        null, [], []
-      );
-      callOutput.classList.add('show');
-      if (!r.ok) {
-        callOutput.classList.add('err');
-        callOutput.textContent = r.error;
-      } else {
-        callOutput.textContent = r.stdout?.trimEnd() || '(sin salida)';
-      }
-    } catch(e) {
-      callOutput.classList.add('show', 'err');
-      callOutput.textContent = e.message || String(e);
-    } finally {
-      callBtn.disabled = false;
-    }
-  }
-
-  callBtn.addEventListener('click', runCall);
-  callInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); runCall(); } });
-
-  if (!boon.test && !boon.tests) return;
-
-  const verifyBtn    = boonEl.querySelector('.verify-btn');
-  const practiceArea = boonEl.querySelector('.practice-note-area');
-  const resultsArea  = boonEl.querySelector('.test-results');
-
-  verifyBtn.addEventListener('click', async () => {
-    const code = editor.getValue().trim();
-    if (!code) return;
-    verifyBtn.disabled = true;
-    verifyStatus.textContent = 'Cargando intérprete…';
-    practiceArea.innerHTML = '';
-    resultsArea.innerHTML = '';
-    try {
-      const testSpecs = boon.tests || (boon.test ? [boon.test] : []);
-      const requiredNames = testSpecs.map(s => s.funcName).filter(Boolean);
-      const practice = await pccCheckPractices(code, requiredNames);
-      practiceArea.innerHTML = buildPracticeNoteHtml(practice);
-      verifyStatus.textContent = 'Ejecutando tests…';
-      const allRows = [];
-      for (const spec of testSpecs) allRows.push(...await runFunctionTests(code, spec));
-      resultsArea.innerHTML = buildTestResultsHtml(allRows);
-    } catch (err) {
-      resultsArea.innerHTML = `<div class="practice-note warn">Error: ${escHtml(err.message || String(err))}</div>`;
-    } finally {
-      verifyBtn.disabled = false;
-      verifyStatus.textContent = '';
-    }
-  });
+/* ─── UTILS ──────────────────────────────────────────────── */
+function mkEl(tag, cls, html) {
+  const d = document.createElement(tag || 'div');
+  if (cls) d.className = cls;
+  d.innerHTML = html;
+  return d;
+}
+function norm(s)    { return (s || '').trim().replace(/\s+/g, ' '); }
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function buildResultGrid(results) {
+  return `<div class="result-grid">${results.map((r, i) => {
+    const ok = r.correcta !== undefined ? r.correcta : r.correct;
+    const pregunta = (r.pregunta || '').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+    return `<div class="result-chip ${ok ? 'ok' : 'bad'}">
+      <div class="result-chip-top">
+        <span class="rc-icon">${ok ? '✓' : '✗'}</span>
+        <span>${i+1}. ${escHtml(pregunta.length > 80 ? pregunta.slice(0,80)+'…' : pregunta)}</span>
+      </div>
+      <div class="result-chip-answer">Tu respuesta: <span>${escHtml(String(r.respuesta || '—'))}</span></div>
+    </div>`;
+  }).join('')}</div>`;
 }
 
-/* ─── QUIZ ENGINE ────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   QUIZ DATA
+   ═══════════════════════════════════════════════════════════ */
 
-let state = { current: 0, score: 0, results: [], done: false, selected: null, answered: false };
+const sections      = ["Fundamentos", "Control de Flujo", "Colecciones"];
+const sectionLabels = ["U1–U2", "U3", "U4"];
+
+const questions = [
+  /* ── FUNDAMENTOS ── */
+  {
+    section: "Fundamentos",
+    q: `¿Qué imprime el siguiente código?<pre>def doblar(n):\n    print(n * 2)\n\nresultado = doblar(5)\nprint(resultado)</pre>`,
+    answers: ["10\nNone"],
+    options: ["10\n10", "10\nNone", "None\n10", "Error de sintaxis"],
+    hint: "¿Qué devuelve una función que solo tiene <code>print</code> y no tiene <code>return</code>? Si asignás ese resultado a una variable, ¿qué valor tendrá?",
+    feedback_ok: "Correcto. <code>doblar(5)</code> imprime <code>10</code> como efecto secundario, pero no devuelve nada — devuelve <code>None</code>. Al imprimir <code>resultado</code>, se ve <code>None</code>.",
+    feedback_bad: "La respuesta es <b>10 / None</b>. <code>doblar</code> hace un <code>print</code> (imprime 10) pero no tiene <code>return</code>, así que devuelve <code>None</code>. Eso es lo que se asigna a <code>resultado</code>.",
+  },
+  {
+    section: "Fundamentos",
+    q: `¿Qué imprime el siguiente código?<pre>def unir(a, b):\n    return a + b\n\nprint(unir("3", "4"))</pre>`,
+    answers: ["34"],
+    options: ["7", "34", '"34"', "TypeError"],
+    hint: '¿Qué tipo de dato es <code>"3"</code> — es el número 3 o algo diferente? ¿Qué hace el operador <code>+</code> cuando ambos operandos son strings?',
+    feedback_ok: 'Correcto. <code>"3"</code> y <code>"4"</code> son strings. El <code>+</code> entre strings los concatena, dando <code>"34"</code>. No son números, así que no suma 7.',
+    feedback_bad: 'La respuesta es <b>34</b>. <code>"3"</code> y <code>"4"</code> son cadenas de texto. Sumar strings los concatena: <code>"3" + "4" = "34"</code>.',
+  },
+  {
+    section: "Fundamentos",
+    q: `¿Qué imprime el siguiente código?<pre>def es_positivo(n):\n    if n > 0:\n        return True\n    return False\n\nprint(es_positivo(-3))\nprint(es_positivo(0))</pre>`,
+    answers: ["False\nFalse"],
+    options: ["True\nFalse", "False\nFalse", "True\nTrue", "False\nTrue"],
+    hint: "Evaluá cada llamada por separado: ¿<code>-3 > 0</code> es True o False? ¿Y <code>0 > 0</code>? Fijate qué devuelve la función en cada caso.",
+    feedback_ok: "Correcto. <code>-3 > 0</code> es False → devuelve False. <code>0 > 0</code> también es False → devuelve False. La condición es estricta (>, no >=).",
+    feedback_bad: "La respuesta es <b>False / False</b>. <code>-3 > 0</code> es False. <code>0 > 0</code> también es False (el cero no es positivo con esta definición).",
+  },
+  /* ── CONTROL DE FLUJO ── */
+  {
+    section: "Control de Flujo",
+    q: `¿Qué imprime el siguiente código?<pre>i = 1\ntotal = 0\nwhile i <= 4:\n    total += i\n    i += 2\nprint(total)</pre>`,
+    answers: ["4"],
+    options: ["4", "6", "10", "3"],
+    hint: "Seguí los valores de <code>i</code> y <code>total</code> paso a paso. Arrancás con <code>i=1</code>; ¿cuánto suma y cuánto salta en cada vuelta? ¿Cuántas veces entra al ciclo?",
+    feedback_ok: "Correcto. El ciclo corre con i=1 (total=1, i→3) y con i=3 (total=4, i→5). Con i=5 ya no entra. Resultado: 4.",
+    feedback_bad: "La respuesta es <b>4</b>. El ciclo entra con i=1 (total+=1→1, i+=2→3) y con i=3 (total+=3→4, i+=2→5). Con i=5 la condición i≤4 es falsa.",
+  },
+  {
+    section: "Control de Flujo",
+    q: `¿Qué imprime el siguiente código?<pre>def clasificar(n):\n    if n > 100:\n        return "alto"\n    elif n > 50:\n        return "medio"\n    elif n > 0:\n        return "bajo"\n    return "cero o negativo"\n\nprint(clasificar(75))</pre>`,
+    answers: ["medio"],
+    options: ["alto", "medio", "bajo", "cero o negativo"],
+    hint: "Las condiciones se evalúan en orden. En cuanto una es verdadera, se ejecuta ese bloque y se sale. ¿Cuál es la primera condición que cumple 75?",
+    feedback_ok: "Correcto. <code>75 > 100</code> es False. <code>75 > 50</code> es True → devuelve <code>\"medio\"</code>.",
+    feedback_bad: "La respuesta es <b>medio</b>. <code>75 > 100</code> es False. La siguiente, <code>75 > 50</code>, es True → se retorna <code>\"medio\"</code> y no se evalúan las demás.",
+  },
+  /* ── COLECCIONES ── */
+  {
+    section: "Colecciones",
+    q: `¿Qué imprime el siguiente código?<pre>for i in range(2, 10, 3):\n    print(i, end=" ")</pre>`,
+    answers: ["2 5 8"],
+    options: ["2 5 8", "2 5 8 11", "0 3 6 9", "2 3 4 5 6 7 8 9"],
+    hint: "¿Qué es el tercer argumento de <code>range</code>? Arrancando en 2 y saltando de a 3, ¿cuáles valores caen antes de llegar a 10?",
+    feedback_ok: "Correcto. <code>range(2, 10, 3)</code> genera 2, 5, 8. El siguiente sería 11 pero ya supera 10.",
+    feedback_bad: "La respuesta es <b>2 5 8</b>. <code>range(inicio, fin, paso)</code>: arranca en 2, salta de a 3, para antes de llegar a 10 → 2, 5, 8.",
+  },
+  {
+    section: "Colecciones",
+    q: `¿Qué imprime el siguiente código? <em>(la cadena es "primavera")</em><pre>s = "primavera"\nprint(s[-5:])\nprint(s[::2])</pre>`,
+    answers: ["avera\npiaea"],
+    options: ["avera\npiaea", "avera\nprmvr", "rimav\nprima", "vera\nprima"],
+    hint: "Para <code>s[-5:]</code>: ¿qué posición es <code>-5</code> en un string de 9 letras? Para <code>s[::2]</code>: tomás posiciones 0, 2, 4, 6, 8 — ¿qué letras son esas?",
+    feedback_ok: `Correcto. "primavera" tiene 9 letras. <code>s[-5:]</code> = posición 4 en adelante = "avera". <code>s[::2]</code> = letras en posiciones 0,2,4,6,8 = p,i,a,e,a = "piaea".`,
+    feedback_bad: `La respuesta es <b>avera / piaea</b>. <code>s[-5:]</code>: posición -5 en "primavera" = índice 4 → "avera". <code>s[::2]</code>: posiciones 0,2,4,6,8 = p,i,a,e,a = "piaea".`,
+  },
+  {
+    section: "Colecciones",
+    q: `¿Qué imprime el siguiente código?<pre>datos = [("Ana", 8), ("Luis", 5), ("Sol", 9)]\nfor nombre, nota in datos:\n    if nota >= 7:\n        print(nombre)</pre>`,
+    answers: ["Ana\nSol"],
+    options: ["Ana\nSol", "Luis", "Ana\nLuis\nSol", "8\n9"],
+    hint: "En el <code>for nombre, nota in datos</code>, ¿qué hace el desempaquetado? Evaluá la condición <code>nota >= 7</code> para cada tupla y anotá qué nombres se imprimen.",
+    feedback_ok: "Correcto. Ana tiene nota 8 (≥7 → imprime), Luis 5 (no imprime), Sol 9 (≥7 → imprime). Resultado: Ana, Sol.",
+    feedback_bad: "La respuesta es <b>Ana / Sol</b>. El desempaquetado asigna nombre y nota de cada tupla. Nota de Ana=8 ✓, Luis=5 ✗, Sol=9 ✓.",
+  },
+];
+
+/* ─── QUIZ ENGINE ─────────────────────────────────────────── */
+let state = { current: 0, score: 0, results: [], done: false, selected: null, answered: false, sent: false };
 
 function renderQuiz() {
   const root = document.getElementById('quiz-root');
@@ -1247,7 +1025,7 @@ function renderQuiz() {
   const shuffled = [...q.options].sort(() => Math.random() - 0.5);
 
   const card = mkEl('div', 'card', `
-    <span class="tag-styx">${q.section}</span>
+    <span class="tag-rose">${q.section}</span>
     <div class="q-text">${q.q}</div>
     <div class="options-grid" id="options-grid">
       ${shuffled.map(opt =>
@@ -1297,11 +1075,9 @@ function selectOption(btn) {
 function confirmAnswer() {
   if (!state.selected || state.answered) return;
   state.answered = true;
-
-  const q    = questions[state.current];
+  const q = questions[state.current];
   const chosen = state.selected;
   const isOk = q.answers.some(a => norm(a) === norm(chosen));
-
   document.querySelectorAll('.option-btn').forEach(b => {
     b.disabled = true;
     b.classList.remove('selected');
@@ -1309,18 +1085,11 @@ function confirmAnswer() {
     if (q.answers.some(a => norm(a) === norm(v))) b.classList.add('correct');
     else if (norm(v) === norm(chosen))            b.classList.add('wrong');
   });
-
   const fb = document.getElementById('q-feedback');
   fb.className = 'feedback show ' + (isOk ? 'ok' : 'bad');
   fb.innerHTML = isOk ? q.feedback_ok : q.feedback_bad;
-
   if (isOk) state.score++;
-
-  state.results.push({
-    pregunta: q.q.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
-    respuesta: chosen, correcta: isOk,
-  });
-
+  state.results.push({ pregunta: q.q.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(), respuesta: chosen, correcta: isOk });
   const confirmBtn = document.getElementById('confirm-btn');
   const nextBtn    = document.getElementById('next-btn');
   if (confirmBtn) confirmBtn.style.display = 'none';
@@ -1338,16 +1107,13 @@ function goNext() {
 function renderSummary(root) {
   const { score, results } = state;
   const total = questions.length;
-  const msg = score === total
-    ? '¡Perfecto! Todo correcto.'
-    : 'Podés seguir con los ejercicios cuando quieras.';
-
+  const msg = score >= total * 0.8 ? '¡Excelente repaso! Estás listo/a para el parcial 🌸' :
+              score >= total * 0.5 ? '¡Buen trabajo! Repasá las que fallaste antes del parcial.' :
+              'Aprovechá los ejercicios para reforzar lo que no quedó claro.';
   root.append(mkEl('div', '', `
     <div class="river-wrap">
       <div class="river-track"><div class="river-fill" style="width:100%"></div></div>
-      <div class="river-labels">
-        ${sectionLabels.map(l => `<span class="done">${l}</span>`).join('')}
-      </div>
+      <div class="river-labels">${sectionLabels.map(l => `<span class="done">${l}</span>`).join('')}</div>
     </div>
     <div class="summary-card">
       <span class="eyebrow">Resultado del Quiz</span>
@@ -1356,322 +1122,223 @@ function renderSummary(root) {
       ${buildResultGrid(results)}
       <div class="cta-row">
         <button class="btn btn-primary"
-          onclick="sendToSheet('U4pt2-Quiz',state.results,state.score,${questions.length},'u4q2-send-status')">
-          Enviar a planilla
-        </button>
-        <button class="btn"
-          onclick="document.getElementById('camara-ejercicios').scrollIntoView({behavior:'smooth'})">
+          onclick="document.getElementById('camara-parcial').scrollIntoView({behavior:'smooth'})">
           Pasar a Ejercicios →
         </button>
       </div>
-      <p id="u4q2-send-status" class="send-status"></p>
+      <p id="quiz-send-status" class="send-status"></p>
     </div>
   `));
+
+  // Se envía solo al terminar el quiz; `sent` evita reenviar si se re-renderiza.
+  if (!state.sent) {
+    state.sent = true;
+    sendToSheet('Repaso-Quiz', results, score, total, 'quiz-send-status');
+  }
 }
 
-/* ─── RENDER BOONS ───────────────────────────────────────── */
-
-function renderBoons(boons, containerId) {
-  const list = document.getElementById(containerId);
-  boons.forEach((b, idx) => {
-    const verifyHtml = (b.test || b.tests) ? `
-      <div class="verify-row">
-        <button class="btn btn-primary verify-btn">Verificar</button>
-        <span class="verify-status"></span>
-      </div>
-      <div class="practice-note-area"></div>
-      <div class="test-results"></div>` : '';
-
-    const boonEl = mkEl('div', 'boon', `
-      <span class="tag-styx">${b.tag}</span>
-      <div class="boon-title">${b.title}</div>
-      <div class="boon-flavor">${b.flavor}</div>
-      <div class="statement">${b.statement}</div>
-      <details class="hint">
-        <summary>Ayuda de memoria</summary>
-        <div class="hint-body">${b.hint}</div>
-      </details>
-      <div class="answer-box">
-        <span class="verify-note">Tu solución en Python</span>
-        <textarea class="cm-target" id="${containerId}-editor-${idx}">${escHtml(b.starter || '')}</textarea>
-        ${verifyHtml}
-        <div class="call-cell">
-          <span class="call-cell-prompt">&gt;&gt;&gt;</span>
-          <input class="call-cell-input" type="text" placeholder="${(b.tests||b.test) ? (b.tests?b.tests[0].funcName:b.test.funcName)+'(...)' : 'llamar función...'}">
-          <button class="call-cell-btn">▶</button>
-        </div>
-        <div class="call-cell-output"></div>
-      </div>
-    `);
-    list.appendChild(boonEl);
-    setupVerifyBlock(boonEl, b);
-  });
-}
-
-/* ─── UTILS ──────────────────────────────────────────────── */
-
-function mkEl(tag, cls, html) {
-  const d = document.createElement(tag || 'div');
-  if (cls) d.className = cls;
-  d.innerHTML = html;
-  return d;
-}
-function norm(s)    { return (s || '').trim().replace(/\s+/g, ' '); }
-function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-function buildResultGrid(results) {
-  return `<div class="result-grid">${results.map((r, i) => {
-    const ok = r.correcta !== undefined ? r.correcta : r.correct;
-    const pregunta = (r.pregunta || '').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
-    const respuesta = r.respuesta || '—';
-    return `<div class="result-chip ${ok ? 'ok' : 'bad'}">
-      <div class="result-chip-top">
-        <span class="rc-icon">${ok ? '✓' : '✗'}</span>
-        <span>${i+1}. ${escHtml(pregunta.length > 80 ? pregunta.slice(0,80)+'…' : pregunta)}</span>
-      </div>
-      <div class="result-chip-answer">Tu respuesta: <span>${escHtml(String(respuesta))}</span></div>
-    </div>`;
-  }).join('')}</div>`;
-}
-
-/* ─── DATA: DESAFÍO FINAL ────────────────────────────────── */
-
-const potion = {
-  title: "Análisis Salarial",
-  flavor: '"Los números no mienten. El análisis sí puede fallar."',
-  statement: `Marcos analiza los salarios de su empresa. Dada una lista de salarios mensuales, implementá dos funciones:<br><br>
-<ul style="color:var(--text-dim);font-size:.95rem;padding-left:1.2rem">
-  <li><code>obtener_promedio(salarios)</code> — devuelve el promedio de la lista</li>
-  <li><code>generar_analisis_salarial(salarios)</code> — devuelve una lista con dos elementos:
-    <ul>
-      <li>Una lista con los salarios que <strong>superan</strong> el promedio (sin repetir)</li>
-      <li>El porcentaje (sobre el total) de salarios que superan el promedio</li>
-    </ul>
-  </li>
-</ul>
-<b>Ejemplo:</b> <code>generar_analisis_salarial([100, 200, 300, 50, 250, 300])</code><br>
-Promedio: 200.0 → salarios altos: [300, 250] → porcentaje: 33.33...<br>
-→ devuelve <code>[[300, 250], 33.33...]</code>`,
-  hint: "¿Cómo calculás el promedio de una lista de números? Una vez que lo tenés, ¿cómo identificás cuáles salarios lo superan? ¿Qué pasa si un valor aparece dos veces — cómo evitás agregarlo de nuevo?",
-  starter: `def obtener_promedio(salarios):
-    pass
-
-def generar_analisis_salarial(salarios):
-    pass`,
-  tests: [
-    { funcName: 'generar_analisis_salarial', cases: [
-      { args: [[100, 200, 300, 50, 250, 300]], stdin: [], expect: { type: 'contains', parts: ["300", "250", "33.3"] } },
-      { args: [[1000, 2000, 500]],             stdin: [], expect: { type: 'contains', parts: ["2000", "33.3"] } },
-    ]},
-  ],
-  sol: `def obtener_promedio(salarios):
-    return sum(salarios) / len(salarios)
-
-def generar_analisis_salarial(salarios):
-    salario_promedio = obtener_promedio(salarios)
-    salarios_altos = []
-    for salario in salarios:
-        if salario > salario_promedio and salario not in salarios_altos:
-            salarios_altos.append(salario)
-    return [salarios_altos, len(salarios_altos) / len(salarios) * 100]`,
-};
-
-/* ─── POTION RENDERER ────────────────────────────────────── */
-
-function renderPotion() {
-  const root = document.getElementById('potion-root');
-  const p = potion;
-  const el = mkEl('div', 'potion-card', `
-    <div class="potion-title">${p.title}</div>
-    <div class="potion-flavor">${p.flavor}</div>
-    <p style="color:var(--text-dim);font-size:.95rem;max-width:72ch;margin:0 0 1rem">${p.statement}</p>
-    <details class="hint" style="margin-top:0">
-      <summary>Ayuda de memoria</summary>
-      <div class="hint-body">${p.hint}</div>
-    </details>
-    <div class="answer-box" style="margin-top:1.2rem">
-      <span class="verify-note">Tu solución en Python</span>
-      <textarea class="cm-target" id="potion-editor">${escHtml(p.starter)}</textarea>
-      <div class="verify-row">
-        <button class="btn btn-primary" id="potion-verify">Verificar</button>
-        <span class="verify-status" id="potion-status"></span>
-      </div>
-      <div class="test-results" id="potion-results"></div>
-    </div>
-  `);
-  root.appendChild(el);
-
-  const editor = CodeMirror.fromTextArea(el.querySelector('textarea.cm-target'), {
-    mode: 'python', theme: 'underworld', lineNumbers: true,
-    matchBrackets: true, styleActiveLine: true,
-    indentUnit: 4, tabSize: 4, indentWithTabs: false, lineWrapping: true,
-    extraKeys: { Tab: cm => cm.execCommand('insertSoftTab') },
-  });
-  editor.setSize(null, 'auto');
-
-  const verifyBtn = document.getElementById('potion-verify');
-  const status    = document.getElementById('potion-status');
-  const results   = document.getElementById('potion-results');
-
-  verifyBtn.addEventListener('click', async () => {
-    const code = editor.getValue().trim();
-    if (!code) return;
-    verifyBtn.disabled = true;
-    status.textContent = 'Verificando…';
-    results.innerHTML = '';
-    try {
-      const allRows = [];
-      for (const spec of p.tests) allRows.push(...await runFunctionTests(code, spec));
-      results.innerHTML = buildTestResultsHtml(allRows);
-    } catch (err) {
-      results.innerHTML = `<div class="practice-note warn">Error: ${escHtml(err.message || String(err))}</div>`;
-    } finally {
-      verifyBtn.disabled = false;
-      status.textContent = '';
-    }
-  });
-}
-
-/* ─── DATA: EJERCICIOS DE PARCIAL ───────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   EJERCICIOS DE PARCIAL
+   ═══════════════════════════════════════════════════════════ */
 
 const examEjs = [
+  /* ── EJ 1: COSTOS DE ENVÍO ──────────────────────────────── */
   {
     id: 'ej1',
-    badge: 'Parcial 1',
-    title: 'Análisis de Inscripciones',
-    statement: `Una plataforma educativa registra entregas de trabajos prácticos. Cada entrega es una cadena de texto. Una entrega es <em>válida</em> si contiene al menos una de las palabras clave del tema.<br><br>
-Implementá dos funciones:<br>
-<ul>
-<li><code>estado_frase(frase, palabras_clave)</code> — devuelve <code>"valida"</code> si alguna palabra clave aparece en la frase (ignorando mayúsculas), o <code>"invalida"</code> si no.</li>
-<li><code>analizar_inscripciones(entregas, palabras_clave)</code> — recibe una lista de entregas y las palabras clave, y devuelve una tupla <code>(cantidad_validas, cantidad_invalidas)</code>.</li>
-</ul>
-<b>Ejemplo:</b><br>
-<code>analizar_inscripciones(["lista con append", "hola mundo", "tupla inmutable"], ["lista", "tupla"])</code> → <code>(2, 1)</code>`,
-    hint: `¿Cómo verificás si una palabra aparece dentro de un texto? ¿Importa si está en mayúscula o minúscula — cómo lo normalizás? Resolvé primero el problema para una sola frase, y después pensá cómo usar eso para analizar toda la lista.`,
-    starter: `def estado_frase(frase, palabras_clave):
-    pass
-
-def analizar_inscripciones(entregas, palabras_clave):
-    pass`,
+    badge: 'Ejercicio 1',
+    tag: 'while · acumuladores · input',
+    title: 'Registro de Costos de Envío',
+    statement: `Una empresa de envíos planifica sus transportes en base a la capacidad máxima de cada camión. Para cada pedido, el costo se calcula como: <code>precio_base + (precio_por_kilo × peso)</code>.<br><br>
+Implementá <code>planificar_envios(cap_max, precio_base, precio_x_kg)</code> que pida al usuario el peso de cada pedido hasta que el siguiente supere la capacidad máxima. En ese caso debe imprimir un mensaje indicando que no será incluido y terminar. Debe devolver el <strong>monto total a cobrar</strong>.<br><br>
+<b>Ejemplo</b> con <code>planificar_envios(20, 2000, 1000)</code> e inputs <code>4, 11, 0.5, 5</code>:<br>
+Los primeros tres pedidos (4+11+0.5=15.5 kg) entran. El cuarto (5 kg) excedería la capacidad → no se incluye.<br>
+Retorna: <code>21500</code>`,
+    hint: `¿Cuándo sabés si un nuevo pedido "cabe" — antes de agregarlo o después? Necesitás llevar la cuenta del peso total acumulado. ¿En qué parte del ciclo lo actualizás? ¿Dónde pedís el primer input — adentro o afuera del while?`,
+    starter: `def planificar_envios(cap_max, precio_base, precio_x_kg):\n    pass`,
     test: {
-      funcName: 'analizar_inscripciones',
+      funcName: 'planificar_envios',
       cases: [
-        { args: [["lista con append", "hola mundo", "tupla inmutable"], ["lista", "tupla"]], stdin: [], expect: { type: 'contains', parts: ["2,1"] } },
-        { args: [["python basico", "listas y mas listas"], ["for", "while"]],               stdin: [], expect: { type: 'contains', parts: ["0,2"] } },
-        { args: [["Filter y Map", "indices y slicing"], ["filter", "indic"]],               stdin: [], expect: { type: 'contains', parts: ["2,0"] } },
+        { args: [20, 2000, 1000], stdin: ["4", "11", "0.5", "5"], expect: { type: 'numeric', value: 21500 } },
+        { args: [5, 500, 100],    stdin: ["2", "1", "5"],          expect: { type: 'numeric', value: 1300 } },
       ]
     },
-    note: `Definí ambas funciones. El verificador prueba <code>analizar_inscripciones</code>, que debe usar <code>estado_frase</code> internamente.`,
-    sol: `def estado_frase(frase, palabras_clave):
-    for palabra in palabras_clave:
-        if palabra.lower() in frase.lower():
-            return "valida"
-    return "invalida"
-
-def analizar_inscripciones(entregas, palabras_clave):
-    validas = 0
-    invalidas = 0
-    for entrega in entregas:
-        if estado_frase(entrega, palabras_clave) == "valida":
-            validas += 1
-        else:
-            invalidas += 1
-    return (validas, invalidas)`,
+    note: `El verificador prueba el valor de retorno (el monto total). Recordá actualizar el peso acumulado en cada iteración.`,
   },
+
+  /* ── EJ 2: PREMIAR ALUMNOS ───────────────────────────────── */
   {
     id: 'ej2',
-    badge: 'Parcial 2',
-    title: 'Análisis Salarial',
-    statement: `Mismo enunciado que el Desafío Final, para practicar entregando desde acá.<br><br>
-Dada una lista de salarios mensuales, implementá:<br>
-<ul>
-<li><code>obtener_promedio(salarios)</code> — promedio de la lista</li>
-<li><code>generar_analisis_salarial(salarios)</code> — devuelve <code>[salarios_que_superan_el_promedio_sin_repetir, porcentaje]</code></li>
-</ul>
-<b>Ejemplo:</b> <code>generar_analisis_salarial([100, 200, 300, 50, 250, 300])</code> → <code>[[300, 250], 33.33...]</code>`,
-    hint: `¿Cómo calculás el promedio de una lista? ¿Qué condición tiene que cumplir un salario para ser "alto"? ¿Qué pasa si el mismo monto aparece más de una vez — cómo lo manejás? ¿Cómo expresás el porcentaje en función del total?`,
-    starter: `def obtener_promedio(salarios):
-    pass
-
-def generar_analisis_salarial(salarios):
-    pass`,
+    badge: 'Ejercicio 2',
+    tag: 'for · booleanos · funciones',
+    title: 'Merecen el Premio',
+    statement: `Antes de un examen difícil, los docentes prometen un día libre si la <strong>mayoría</strong> de los exámenes supera una nota mínima.<br><br>
+Implementá <code>merecen_premio(notas, minimo)</code> que reciba una lista de notas y una nota mínima, y devuelva <code>True</code> si más de la mitad de las notas superan el mínimo, o <code>False</code> si no.<br><br>
+<b>Ejemplos</b> con nota mínima <code>6</code>:<br>
+<code>[4, 8, 2, 9, 6, 7]</code> → <code>True</code> (4 de 6 superan el mínimo)<br>
+<code>[4, 3, 10, 10, 5, 2]</code> → <code>False</code> (solo 2 de 6 superan el mínimo)`,
+    hint: `¿Cómo contás cuántas notas superan el mínimo? Una vez que tenés ese conteo, ¿cómo comparás con "la mitad"? Pensá en qué devuelve la función — debería ser directamente un booleano, no un <code>if/else</code> que imprime.`,
+    starter: `def merecen_premio(notas, minimo):\n    pass`,
     test: {
-      funcName: 'generar_analisis_salarial',
+      funcName: 'merecen_premio',
       cases: [
-        { args: [[100, 200, 300, 50, 250, 300]], stdin: [], expect: { type: 'contains', parts: ["300", "250", "33.3"] } },
-        { args: [[1000, 2000, 500]],             stdin: [], expect: { type: 'contains', parts: ["2000", "33.3"] } },
-        { args: [[50, 50, 100]],                 stdin: [], expect: { type: 'contains', parts: ["100", "33.3"] } },
+        { args: [[4, 8, 2, 9, 6, 7], 6], stdin: [], expect: { type: 'bool', value: true } },
+        { args: [[4, 3, 10, 10, 5, 2], 6], stdin: [], expect: { type: 'bool', value: false } },
+        { args: [[5, 5, 6], 7], stdin: [], expect: { type: 'bool', value: false } },
       ]
     },
-    note: `Definí ambas funciones para que el verificador pueda probarlas.`,
-    sol: `def obtener_promedio(salarios):
-    return sum(salarios) / len(salarios)
-
-def generar_analisis_salarial(salarios):
-    salario_promedio = obtener_promedio(salarios)
-    salarios_altos = []
-    for salario in salarios:
-        if salario > salario_promedio and salario not in salarios_altos:
-            salarios_altos.append(salario)
-    return [salarios_altos, len(salarios_altos) / len(salarios) * 100]`,
   },
+
+  /* ── EJ 3: STOCK DEL ALMACÉN ─────────────────────────────── */
   {
     id: 'ej3',
-    badge: 'Parcial 3',
-    title: 'Control de Lote',
-    statement: `En una fábrica, cada vez que pasa un lote por control de calidad se ingresan las cantidades de productos. El proceso continúa hasta ingresar <code>0</code>. Si el total supera la cantidad mínima requerida, el lote está aprobado.<br><br>
-Implementá <code>controlar_lote(cantidad_min)</code> que:<ul>
-<li>Pida cantidades al usuario hasta recibir <code>0</code></li>
-<li>Imprima <code>"Lote aprobado"</code> o <code>"Lote rechazado"</code> según corresponda</li>
-<li>Devuelva el total acumulado</li>
-</ul>
-<b>Ejemplo:</b> con entradas <code>30, 50, 30, 0</code> y <code>cantidad_min=100</code> → imprime <code>"Lote aprobado"</code>, devuelve <code>110</code>.`,
-    hint: `¿Qué tipo de ciclo usás cuando no sabés de antemano cuántas veces vas a repetir? ¿Qué condición lo detiene? Lo que ingresa el usuario siempre es texto — ¿cómo lo convertís para poder sumarlo?`,
-    starter: `def controlar_lote(cantidad_min):
-    pass`,
+    badge: 'Ejercicio 3',
+    tag: 'for · tuplas · split · format',
+    title: 'Stock del Almacén',
+    statement: `Carlos maneja un almacén y quiere digitalizar el cierre del día. Para cada producto le interesa saber cuánto vendió y actualizar el stock.<br><br>
+Implementá <code>gestionar_stock(productos)</code> que reciba una lista de tuplas <code>(nombre, stock)</code>. Para cada producto, debe pedir al usuario la cantidad vendida y el precio, usando el formato: <code>&lt;unidades&gt; - &lt;precio&gt;</code><br><br>
+Al finalizar debe imprimir la <strong>ganancia bruta total</strong> y devolver la lista de tuplas con el <strong>stock actualizado</strong>.<br><br>
+<b>Ejemplo</b> con <code>[("Leche", 5), ("Fideos", 12)]</code> e inputs <code>"3 - 1200"</code>, <code>"10 - 1500"</code>:<br>
+Imprime <code>Ganancias brutas: $18600</code>. Devuelve <code>[("Leche", 2), ("Fideos", 2)]</code>`,
+    hint: `El input tiene dos partes separadas por <code>" - "</code> — ¿cómo las separás? Recordá castear los valores. Para "actualizar" una tupla en Python tenés que crear una nueva. ¿Cómo la agregás a la lista de resultados?`,
+    starter: `def gestionar_stock(productos):\n    pass`,
     test: {
-      funcName: 'controlar_lote',
+      funcName: 'gestionar_stock',
       cases: [
-        { args: [100], stdin: ["30", "50", "30", "0"], expect: { type: 'numeric', value: 110 } },
-        { args: [200], stdin: ["50", "50", "0"],       expect: { type: 'numeric', value: 100 } },
-        { args: [10],  stdin: ["5", "5", "5", "0"],    expect: { type: 'numeric', value: 15  } },
+        { args: [[["Leche", 5], ["Fideos", 12]]], stdin: ["3 - 1200", "10 - 1500"], expect: { type: 'contains', parts: ["leche,2", "fideos,2"] } },
+        { args: [[["Chocolatada", 10]]],          stdin: ["0 - 4500"],               expect: { type: 'contains', parts: ["chocolatada,10"] } },
       ]
     },
-    note: `El verificador prueba el valor que devuelve la función. El <code>print()</code> de "Lote aprobado"/"Lote rechazado" es parte del ejercicio — el docente lo revisa en tu código.`,
-    sol: `def controlar_lote(cantidad_min):
-    total = 0
-    cant = int(input("Ingrese cantidad: "))
-    while cant != 0:
-        total += cant
-        cant = int(input("Ingrese cantidad: "))
-    if total >= cantidad_min:
-        print("Lote aprobado")
-    else:
-        print("Lote rechazado")
-    return total`,
+    note: `El verificador simula los inputs prefijados y comprueba el stock devuelto. Imprimí también la ganancia bruta total.`,
+  },
+
+  /* ── EJ 4: CODIFICAR NÚMEROS ─────────────────────────────── */
+  {
+    id: 'ej4',
+    badge: 'Ejercicio 4',
+    tag: 'strings · replace · range',
+    title: 'Codificar Números',
+    statement: `Formamos parte de La Resistencia 🕵️. Para compartir mensajes numéricos de forma segura usamos un sistema de sustitución: un código de 10 caracteres donde cada posición representa un dígito (posición 0 → representa al dígito '0', posición 1 → representa al '1', etc.).<br><br>
+Implementá <code>encriptar_numero(numero, codigo)</code> que reciba un número (entero o decimal) y un código secreto, y devuelva el número encriptado.<br>
+Si el código tiene menos de 10 caracteres, devolver <code>None</code>.<br><br>
+<b>Ejemplo:</b> <code>encriptar_numero(1234567890, "abcdefghij")</code> → <code>"bcdefghija"</code>`,
+    hint: `¿Cómo convertís el número en un string para poder recorrerlo caracter por caracter? Para cada dígito, ¿cómo obtenés el carácter de reemplazo del código? El punto decimal no es un dígito — ¿qué hacés con él?`,
+    starter: `def encriptar_numero(numero, codigo):\n    pass`,
+    test: {
+      funcName: 'encriptar_numero',
+      cases: [
+        { args: [1234567890, "abcdefghij"], stdin: [], expect: { type: 'exact', value: 'bcdefghija' } },
+        { args: [42, "abc"],               stdin: [], expect: { type: 'exact', value: 'null' } },
+        { args: [100, "0123456789"],        stdin: [], expect: { type: 'exact', value: '100' } },
+      ]
+    },
+  },
+
+  /* ── EJ 5: VALIDAR SITIO WEB ─────────────────────────────── */
+  {
+    id: 'ej5',
+    badge: 'Ejercicio 5',
+    tag: 'strings · slicing · tuplas · listas',
+    title: 'Validar Sitio Web',
+    statement: `Trabajamos en una empresa de hosting y necesitamos validar que los sitios web pedidos sean válidos antes de crearlos.<br><br>
+Implementá <code>validar_sitio_web_valido(sitio, pais, sitios_usados)</code> que reciba el nombre del sitio, el código de país (ej: <code>"ar"</code>) y una colección de sitios ya en uso.<br><br>
+La función debe validar que:
+<ul>
+<li>El sitio <strong>no esté en uso</strong></li>
+<li>Comience con <code>www.</code></li>
+<li>Termine con <code>.com.&lt;pais&gt;</code></li>
+<li>No sea vacío y no supere los 63 caracteres</li>
+</ul>
+Devolver una tupla <code>(sitio, lista_de_errores)</code>. Si no hay errores, la lista estará vacía.<br><br>
+<b>Ejemplo:</b> <code>validar_sitio_web_valido("test", "br", [])</code> → <code>('test', ['El sitio no comienza con www.', 'El sitio no finaliza con .com.br'])</code>`,
+    hint: `Chequeá cada condición por separado y usá <code>append</code> para ir acumulando errores. Para verificar el prefijo, ¿qué slicing necesitás? Para el sufijo, considerá que el código de país tiene largo variable.`,
+    starter: `def validar_sitio_web_valido(sitio, pais, sitios_usados):\n    pass`,
+    test: {
+      funcName: 'validar_sitio_web_valido',
+      cases: [
+        { args: ["www.test.com.ar", "ar", ["www.otro.com.ar"]], stdin: [], expect: { type: 'contains', parts: ["www.test.com.ar"] } },
+        { args: ["test", "br", []], stdin: [], expect: { type: 'contains', parts: ["comienza", "finaliza"] } },
+        { args: ["www.google.com.ar", "ar", ["www.google.com.ar"]], stdin: [], expect: { type: 'contains', parts: ["utilizado"] } },
+      ]
+    },
+    note: `El verificador verifica que los mensajes de error contienen las palabras clave esperadas.`,
+  },
+
+  /* ── EJ 6: PROMOCIÓN DEL BAZAR ───────────────────────────── */
+  {
+    id: 'ej6',
+    badge: 'Ejercicio 6',
+    tag: 'while · listas · remove · input',
+    title: 'Promoción del Bazar',
+    statement: `Un bazar hace una promo mensual: el cliente elige N artículos de un cajón de opciones.<br><br>
+Implementá <code>elegir_regalos(lista_opciones, cantidad)</code> que muestre las opciones disponibles y deje elegir al usuario mientras no haya completado la cantidad y queden opciones en el cajón.<br>
+Si elige una opción no disponible, mostrar un mensaje y volver a preguntar.<br>
+La función debe devolver la lista con los artículos elegidos.<br><br>
+<b>Ejemplo</b> con <code>["palangana","termo 1L","plato vidrio"]</code> y <code>cantidad=2</code>, eligiendo <code>"palangana"</code> y <code>"plato vidrio"</code>:<br>
+→ Devuelve <code>["palangana", "plato vidrio"]</code>`,
+    hint: `La condición del while tiene dos partes: ¿cuándo se cumplió la cantidad? ¿cuándo no quedan más opciones? Antes del while pedís el primer input — dentro del while lo pedís al final. ¿Cómo eliminás la opción elegida del cajón para que no se pueda elegir dos veces?`,
+    starter: `def elegir_regalos(lista_opciones, cantidad):\n    pass`,
+    test: {
+      funcName: 'elegir_regalos',
+      cases: [
+        { args: [["palangana", "termo 1L", "plato vidrio"], 2], stdin: ["palangana", "plato vidrio"], expect: { type: 'contains', parts: ["palangana", "plato vidrio"] } },
+        { args: [["silla", "mesa", "lampara"], 1],              stdin: ["mesa"],                      expect: { type: 'contains', parts: ["mesa"] } },
+      ]
+    },
+    note: `El verificador simula las elecciones del usuario con los inputs prefijados.`,
+  },
+
+  /* ── EJ 7: VALIDAR CONTRASEÑA ────────────────────────────── */
+  {
+    id: 'ej7',
+    badge: 'Ejercicio 7',
+    tag: 'strings · booleanos · for',
+    title: 'Validar Contraseña',
+    statement: `Implementá <code>es_contrasena_valida(contrasena)</code> que devuelva <code>True</code> si la contraseña cumple <em>todas</em> estas condiciones, o <code>False</code> si falla alguna:
+<ul>
+<li>Tiene al menos <strong>8 caracteres</strong></li>
+<li>Contiene al menos <strong>un dígito</strong></li>
+<li>Contiene al menos <strong>una letra mayúscula</strong></li>
+</ul>
+<b>Ejemplos:</b><br>
+<code>es_contrasena_valida("Abc12345")</code> → <code>True</code><br>
+<code>es_contrasena_valida("abc1234")</code> → <code>False</code> (muy corta)<br>
+<code>es_contrasena_valida("abcdefgh")</code> → <code>False</code> (sin dígitos)<br>
+<code>es_contrasena_valida("ABCDEFG1")</code> → <code>True</code>`,
+    hint: `Chequeá cada condición por separado antes de combinarlas. Para recorrer la contraseña caracter por caracter, ¿qué tipos de métodos de string te sirven? Una vez que tenés las tres condiciones individuales, ¿cómo las combinás con un operador lógico para devolver un solo booleano?`,
+    starter: `def es_contrasena_valida(contrasena):\n    pass`,
+    test: {
+      funcName: 'es_contrasena_valida',
+      cases: [
+        { args: ["Abc12345"], stdin: [], expect: { type: 'bool', value: true } },
+        { args: ["abc1234"],  stdin: [], expect: { type: 'bool', value: false } },
+        { args: ["abcdefgh"], stdin: [], expect: { type: 'bool', value: false } },
+        { args: ["ABCDEFG1"], stdin: [], expect: { type: 'bool', value: true } },
+      ]
+    },
   },
 ];
 
 /* ─── EXAM RENDERER ─────────────────────────────────────── */
-
 function renderExam() {
   const root = document.getElementById('exam-root');
 
   examEjs.forEach((p, idx) => {
-    const badgeStyle = 'background:rgba(74,130,245,.12);color:var(--accent);border:1px solid rgba(74,130,245,.25);';
+    const badgeStyle = 'background:rgba(229,48,80,.12);color:var(--accent);border:1px solid rgba(229,48,80,.25);';
+    const tagStyle = 'background:rgba(244,114,182,.10);color:var(--pink);border:1px solid rgba(244,114,182,.2);';
     const totalCases = p.test.cases.length;
     const noteHtml = p.note
-      ? `<p style="color:var(--text-faint);font-size:.84rem;max-width:70ch;margin:.9rem 0 0">${p.note}</p>`
+      ? `<p style="color:var(--text-faint);font-size:.84rem;max-width:70ch;margin:.9rem 0 0;font-family:var(--font-m)">${p.note}</p>`
       : '';
 
     const el = mkEl('div', 'potion-card', `
-      <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem">
+      <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem;flex-wrap:wrap">
         <span style="font-size:.75rem;font-family:var(--font-m);padding:.25rem .65rem;border-radius:99px;${badgeStyle}">${p.badge}</span>
-        <div class="potion-title" style="margin:0">${p.title}</div>
+        <span style="font-size:.7rem;font-family:var(--font-m);padding:.2rem .55rem;border-radius:99px;${tagStyle}">${p.tag}</span>
       </div>
-      <p style="color:var(--text-dim);font-size:.95rem;max-width:72ch;margin:0 0 .8rem">${p.statement}</p>
+      <div class="potion-title">${p.title}</div>
+      <p style="color:var(--text-dim);font-size:.95rem;max-width:72ch;margin:.6rem 0 .8rem">${p.statement}</p>
       <details class="hint" style="margin-top:0">
-        <summary>Ayuda de memoria</summary>
+        <summary>Pista</summary>
         <div class="hint-body">${p.hint}</div>
       </details>
       ${noteHtml}
@@ -1682,17 +1349,25 @@ function renderExam() {
           <button class="btn btn-primary" id="exam-verify-${idx}">Verificar</button>
           <span class="verify-status" id="exam-status-${idx}"></span>
         </div>
+        <div class="practice-note-area" id="exam-practice-${idx}"></div>
         <div class="test-results" id="exam-results-${idx}"></div>
         <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--border)">
-          <button class="btn btn-primary" id="exam-submit-${idx}">Entregar →</button>
+          <button class="btn btn-primary" id="exam-submit-${idx}">Entregar 🌸</button>
         </div>
         <p id="exam-send-status-${idx}" class="send-status"></p>
+        <div id="exam-gallery-wrap-${idx}" style="display:none;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--border)">
+          <div class="verify-row" style="margin-top:0">
+            <button class="btn" id="exam-gallery-btn-${idx}">Ver otras soluciones</button>
+            <span class="verify-status" id="exam-gallery-status-${idx}"></span>
+          </div>
+          <div id="exam-gallery-${idx}" style="margin-top:1rem"></div>
+        </div>
       </div>
     `);
     root.appendChild(el);
 
     const editor = CodeMirror.fromTextArea(el.querySelector('textarea.cm-target'), {
-      mode: 'python', theme: 'underworld', lineNumbers: true,
+      mode: 'python', theme: 'floracion', lineNumbers: true,
       matchBrackets: true, styleActiveLine: true,
       indentUnit: 4, tabSize: 4, indentWithTabs: false, lineWrapping: true,
       extraKeys: { Tab: cm => cm.execCommand('insertSoftTab') },
@@ -1700,17 +1375,22 @@ function renderExam() {
     editor.setSize(null, 'auto');
 
     let lastRows = [];
-    const verifyBtn = document.getElementById(`exam-verify-${idx}`);
-    const status    = document.getElementById(`exam-status-${idx}`);
-    const results   = document.getElementById(`exam-results-${idx}`);
+    const verifyBtn  = document.getElementById(`exam-verify-${idx}`);
+    const status     = document.getElementById(`exam-status-${idx}`);
+    const practiceEl = document.getElementById(`exam-practice-${idx}`);
+    const results    = document.getElementById(`exam-results-${idx}`);
 
     verifyBtn.addEventListener('click', async () => {
       const code = editor.getValue().trim();
       if (!code) return;
       verifyBtn.disabled = true;
-      status.textContent = 'Verificando…';
+      status.textContent = 'Cargando intérprete…';
+      practiceEl.innerHTML = '';
       results.innerHTML = '';
       try {
+        const practice = await pccCheckPractices(code, [p.test.funcName]);
+        practiceEl.innerHTML = buildPracticeNoteHtml(practice);
+        status.textContent = 'Ejecutando tests…';
         lastRows = await runFunctionTests(code, p.test);
         results.innerHTML = buildTestResultsHtml(lastRows);
       } catch (err) {
@@ -1722,6 +1402,12 @@ function renderExam() {
       }
     });
 
+    const galleryWrap   = document.getElementById(`exam-gallery-wrap-${idx}`);
+    const galleryBtn    = document.getElementById(`exam-gallery-btn-${idx}`);
+    const galleryStatus = document.getElementById(`exam-gallery-status-${idx}`);
+    const galleryEl     = document.getElementById(`exam-gallery-${idx}`);
+    let galleryLoaded = false;
+
     const submitBtn  = document.getElementById(`exam-submit-${idx}`);
     const sendStatus = document.getElementById(`exam-send-status-${idx}`);
     submitBtn.addEventListener('click', () => {
@@ -1731,11 +1417,39 @@ function renderExam() {
       const passed = lastRows.filter(r => r.pass).length;
       submitBtn.disabled = true;
       sendToSheet(
-        `U4pt2-Parcial-${idx + 1}`,
+        `Repaso-Parcial-${idx + 1}`,
         [{ pregunta: p.title, respuesta: code, correcta: lastRows.length > 0 && passed === totalCases }],
         passed, totalCases, `exam-send-status-${idx}`
       );
+      // El POST va con mode:'no-cors', así que la respuesta es opaca:
+      // el desbloqueo es optimista, igual que el "✓ Enviado".
+      galleryWrap.style.display = '';
       setTimeout(() => { submitBtn.disabled = false; }, 1500);
+    });
+
+    galleryBtn.addEventListener('click', async () => {
+      galleryBtn.disabled = true;
+      galleryStatus.textContent = 'Cargando…';
+      try {
+        const data = await fetchSubmissions(`Repaso-Parcial-${idx + 1}`);
+        if (!data || !data.ok) throw new Error(data && data.error || 'respuesta inválida');
+        const items = data.items || [];
+        galleryEl.innerHTML = items.length
+          ? buildGalleryHtml(items)
+          : '<div class="practice-note">Todavía no hay otras entregas.</div>';
+        galleryStatus.textContent = items.length
+          ? `${items.length} ${items.length === 1 ? 'solución' : 'soluciones'}`
+          : '';
+        galleryLoaded = true;
+        galleryBtn.textContent = 'Actualizar';
+      } catch (err) {
+        galleryStatus.textContent = '';
+        if (!galleryLoaded) {
+          galleryEl.innerHTML = '<div class="practice-note warn">No se pudieron cargar. Probá de nuevo.</div>';
+        }
+      } finally {
+        galleryBtn.disabled = false;
+      }
     });
   });
 }
@@ -1751,7 +1465,6 @@ function snavClose() {
   document.getElementById('snav-panel').classList.remove('open');
   document.getElementById('snav-overlay').classList.remove('open');
 }
-
 (function () {
   const anchors = document.querySelectorAll('.snav-anchor[href^="#"]');
   const secs    = Array.from(anchors).map(a => document.querySelector(a.getAttribute('href')));
@@ -1769,8 +1482,6 @@ function snavClose() {
 /* ─── INIT ───────────────────────────────────────────────── */
 function initPage() {
   renderQuiz();
-  renderBoons(boonsU4, 'boon-list-u4');
-  renderPotion();
   renderExam();
   setTimeout(() => {
     document.querySelectorAll('.CodeMirror').forEach(cm => cm.CodeMirror && cm.CodeMirror.refresh());
