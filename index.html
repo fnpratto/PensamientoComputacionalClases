@@ -911,7 +911,14 @@ function mkEl(tag, cls, html) {
   return d;
 }
 function norm(s)    { return (s || '').trim().replace(/\s+/g, ' '); }
-function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+/* Escapa también las comillas: sin eso, una opción como '"34"' rompía el
+   atributo data-val y dejaba el botón muerto. En contexto de texto las
+   entidades se decodifican igual, así que sirve para los dos usos. */
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
 function buildResultGrid(results) {
   return `<div class="result-grid">${results.map((r, i) => {
     const ok = r.correcta !== undefined ? r.correcta : r.correct;
@@ -984,12 +991,12 @@ const questions = [
   /* ── COLECCIONES ── */
   {
     section: "Colecciones",
-    q: `¿Qué imprime el siguiente código?<pre>for i in range(2, 10, 3):\n    print(i, end=" ")</pre>`,
-    answers: ["2 5 8"],
-    options: ["2 5 8", "2 5 8 11", "0 3 6 9", "2 3 4 5 6 7 8 9"],
-    hint: "¿Qué es el tercer argumento de <code>range</code>? Arrancando en 2 y saltando de a 3, ¿cuáles valores caen antes de llegar a 10?",
-    feedback_ok: "Correcto. <code>range(2, 10, 3)</code> genera 2, 5, 8. El siguiente sería 11 pero ya supera 10.",
-    feedback_bad: "La respuesta es <b>2 5 8</b>. <code>range(inicio, fin, paso)</code>: arranca en 2, salta de a 3, para antes de llegar a 10 → 2, 5, 8.",
+    q: `¿Qué imprime el siguiente código?<pre>valores = list(range(2, 10, 3))\nprint(valores)</pre>`,
+    answers: ["[2, 5, 8]"],
+    options: ["[2, 5, 8]", "[2, 5, 8, 11]", "[0, 3, 6, 9]", "[2, 3, 4, 5, 6, 7, 8, 9]"],
+    hint: "¿Qué significa el tercer argumento de <code>range</code>? Arrancando en 2 y saltando de a 3, ¿cuáles valores caen <em>antes</em> de llegar a 10?",
+    feedback_ok: "Correcto. <code>range(2, 10, 3)</code> genera 2, 5, 8. El siguiente sería 11, que ya se pasa de 10, así que no entra.",
+    feedback_bad: "La respuesta es <b>[2, 5, 8]</b>. <code>range(inicio, fin, paso)</code> arranca en 2 y salta de a 3: 2, 5, 8. El 11 quedaría fuera porque <code>range</code> nunca llega al <code>fin</code>.",
   },
   {
     section: "Colecciones",
@@ -1067,7 +1074,7 @@ function selectOption(btn) {
   if (state.answered) return;
   document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
-  state.selected = btn.dataset.val;
+  state.selected = btn.dataset.val || btn.textContent.trim();
   const confirmBtn = document.getElementById('confirm-btn');
   if (confirmBtn) confirmBtn.disabled = false;
 }
