@@ -319,6 +319,27 @@
 
     .send-status { font-family: var(--font-m); font-size: .8rem; color: var(--accent); margin-top: .5rem; }
 
+    /* ── GALERÍA DE SOLUCIONES ──────────────────── */
+    .gal-item {
+      border: 1px solid var(--border); border-radius: var(--r-sm);
+      background: var(--bg-soft); margin-bottom: .7rem; overflow: hidden;
+    }
+    .gal-item.pass { border-color: var(--good); }
+    .gal-item.fail { border-color: var(--bad); }
+    .gal-head {
+      display: flex; justify-content: space-between; align-items: center; gap: .6rem;
+      flex-wrap: wrap; padding: .5rem .8rem; border-bottom: 1px solid var(--border);
+      font-family: var(--font-m); font-size: .68rem; letter-spacing: .04em; text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .gal-item.pass .gal-badge { color: var(--good); }
+    .gal-item.fail .gal-badge { color: var(--bad); }
+    .gal-code {
+      margin: 0; padding: .7rem .9rem; max-height: 22rem;
+      overflow: auto; font-family: var(--font-m); font-size: .82rem;
+      line-height: 1.55; color: var(--text); white-space: pre; tab-size: 4;
+    }
+
     /* ── SIDE NAV ───────────────────────────────── */
     .snav-overlay {
       display: none; position: fixed; inset: 0;
@@ -615,6 +636,37 @@ function sendToSheet(sheetName, results, score, total, statusElId) {
     .catch(() => { statusEl.textContent = '✗ Error al enviar. Avisale al docente.'; });
 }
 
+/* ─── LECTURA DE ENTREGAS (JSONP) ────────────────────────── */
+/* Apps Script redirige a googleusercontent.com y sus headers CORS no son
+   confiables; un <script> tag esquiva el problema entero. */
+function fetchSubmissions(sheetName) {
+  return new Promise((resolve, reject) => {
+    const cb = 'pccCb' + Date.now() + Math.floor(Math.random() * 1e6);
+    const s  = document.createElement('script');
+    const t  = setTimeout(() => { cleanup(); reject(new Error('timeout')); }, 12000);
+    function cleanup() { clearTimeout(t); delete window[cb]; s.remove(); }
+    window[cb] = data => { cleanup(); resolve(data); };
+    s.onerror  = () => { cleanup(); reject(new Error('network')); };
+    s.src = `${SHEET_WEBHOOK}?sheet=${encodeURIComponent(sheetName)}&callback=${cb}`;
+    document.body.appendChild(s);
+  });
+}
+
+/* Las entregas llegan de la planilla: son código ajeno, siempre escapado. */
+function buildGalleryHtml(items) {
+  return items.map((it, i) => {
+    const ok = it.correcta === true;
+    return `
+      <div class="gal-item ${ok ? 'pass' : 'fail'}">
+        <div class="gal-head">
+          <span>Solución ${i + 1}</span>
+          <span class="gal-badge">${ok ? '✓ Pasa los tests' : '✗ No pasa los tests'}</span>
+        </div>
+        <pre class="gal-code">${escHtml(it.codigo)}</pre>
+      </div>`;
+  }).join('');
+}
+
 /* ─── PYODIDE ENGINE ─────────────────────────────────────── */
 const PCC_HARNESS_PY = `
 import sys, io, json, ast, builtins as _pcc_builtins
@@ -895,7 +947,7 @@ const questions = [
 ];
 
 /* ─── QUIZ ENGINE ─────────────────────────────────────────── */
-let state = { current: 0, score: 0, results: [], done: false, selected: null, answered: false };
+let state = { current: 0, score: 0, results: [], done: false, selected: null, answered: false, sent: false };
 
 function renderQuiz() {
   const root = document.getElementById('quiz-root');
@@ -1005,10 +1057,6 @@ function renderSummary(root) {
       ${buildResultGrid(results)}
       <div class="cta-row">
         <button class="btn btn-primary"
-          onclick="sendToSheet('Repaso-Quiz',state.results,state.score,${questions.length},'quiz-send-status')">
-          Enviar a planilla
-        </button>
-        <button class="btn"
           onclick="document.getElementById('camara-parcial').scrollIntoView({behavior:'smooth'})">
           Pasar a Ejercicios →
         </button>
@@ -1016,6 +1064,12 @@ function renderSummary(root) {
       <p id="quiz-send-status" class="send-status"></p>
     </div>
   `));
+
+  // Se envía solo al terminar el quiz; `sent` evita reenviar si se re-renderiza.
+  if (!state.sent) {
+    state.sent = true;
+    sendToSheet('Repaso-Quiz', results, score, total, 'quiz-send-status');
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1236,6 +1290,13 @@ function renderExam() {
           <button class="btn btn-primary" id="exam-submit-${idx}">Entregar 🌸</button>
         </div>
         <p id="exam-send-status-${idx}" class="send-status"></p>
+        <div id="exam-gallery-wrap-${idx}" style="display:none;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--border)">
+          <div class="verify-row" style="margin-top:0">
+            <button class="btn" id="exam-gallery-btn-${idx}">Ver otras soluciones</button>
+            <span class="verify-status" id="exam-gallery-status-${idx}"></span>
+          </div>
+          <div id="exam-gallery-${idx}" style="margin-top:1rem"></div>
+        </div>
       </div>
     `);
     root.appendChild(el);
@@ -1276,6 +1337,12 @@ function renderExam() {
       }
     });
 
+    const galleryWrap   = document.getElementById(`exam-gallery-wrap-${idx}`);
+    const galleryBtn    = document.getElementById(`exam-gallery-btn-${idx}`);
+    const galleryStatus = document.getElementById(`exam-gallery-status-${idx}`);
+    const galleryEl     = document.getElementById(`exam-gallery-${idx}`);
+    let galleryLoaded = false;
+
     const submitBtn  = document.getElementById(`exam-submit-${idx}`);
     const sendStatus = document.getElementById(`exam-send-status-${idx}`);
     submitBtn.addEventListener('click', () => {
@@ -1289,7 +1356,35 @@ function renderExam() {
         [{ pregunta: p.title, respuesta: code, correcta: lastRows.length > 0 && passed === totalCases }],
         passed, totalCases, `exam-send-status-${idx}`
       );
+      // El POST va con mode:'no-cors', así que la respuesta es opaca:
+      // el desbloqueo es optimista, igual que el "✓ Enviado".
+      galleryWrap.style.display = '';
       setTimeout(() => { submitBtn.disabled = false; }, 1500);
+    });
+
+    galleryBtn.addEventListener('click', async () => {
+      galleryBtn.disabled = true;
+      galleryStatus.textContent = 'Cargando…';
+      try {
+        const data = await fetchSubmissions(`Repaso-Parcial-${idx + 1}`);
+        if (!data || !data.ok) throw new Error(data && data.error || 'respuesta inválida');
+        const items = data.items || [];
+        galleryEl.innerHTML = items.length
+          ? buildGalleryHtml(items)
+          : '<div class="practice-note">Todavía no hay otras entregas.</div>';
+        galleryStatus.textContent = items.length
+          ? `${items.length} ${items.length === 1 ? 'solución' : 'soluciones'}`
+          : '';
+        galleryLoaded = true;
+        galleryBtn.textContent = 'Actualizar';
+      } catch (err) {
+        galleryStatus.textContent = '';
+        if (!galleryLoaded) {
+          galleryEl.innerHTML = '<div class="practice-note warn">No se pudieron cargar. Probá de nuevo.</div>';
+        }
+      } finally {
+        galleryBtn.disabled = false;
+      }
     });
   });
 }
