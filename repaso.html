@@ -441,6 +441,34 @@
     <p style="color:var(--text-dim);font-size:.92rem;margin:0 0 1.8rem;line-height:1.6">
       Quiz + 7 ejercicios de parcial · ¡Feliz Primavera!
     </p>
+    <!-- Paso 1: clave de la semana -->
+    <div id="gate-step-pass">
+      <label for="pass-input" style="display:block;text-align:left;font-family:var(--font-m);font-size:.78rem;color:var(--text-faint);margin-bottom:.35rem">
+        Clave de la clase
+      </label>
+      <input id="pass-input" type="password" placeholder="La que dijimos en clase"
+        autocomplete="off"
+        style="
+          width:100%;box-sizing:border-box;margin-bottom:1rem;
+          background:var(--bg);border:1px solid var(--border);
+          border-radius:6px;padding:.65rem .9rem;
+          color:var(--text);font-family:var(--font-m);font-size:.95rem;
+          outline:none;
+        "
+        onkeydown="if(event.key==='Enter')checkPass()"
+      />
+      <button id="pass-btn" onclick="checkPass()" style="
+        width:100%;padding:.75rem;border:none;border-radius:6px;
+        background:var(--accent);color:#fff;cursor:pointer;
+        font-family:var(--font-b);font-weight:700;font-size:.95rem;
+      ">
+        Entrar
+      </button>
+      <p id="pass-err" style="color:var(--bad);font-size:.8rem;margin:.6rem 0 0;display:none"></p>
+    </div>
+
+    <!-- Paso 2: nombre. Oculto hasta que la clave sea correcta. -->
+    <div id="gate-step-name" style="display:none">
     <label style="display:block;text-align:left;font-family:var(--font-m);font-size:.78rem;color:var(--text-faint);margin-bottom:.35rem">
       Nombre completo
     </label>
@@ -477,6 +505,7 @@
     <p id="name-gate-err" style="color:var(--bad);font-size:.8rem;margin:.6rem 0 0;display:none">
       Ingresá tu nombre para continuar.
     </p>
+    </div>
   </div>
 </div>
 
@@ -545,24 +574,9 @@ const SHEET_WEBHOOK = "https://script.google.com/macros/s/AKfycbxixKO-IHvlg3Ozaj
 let studentName = '';
 
 /* ─── ALUMNOS ────────────────────────────────────────────── */
-const ALUMNOS = [
-  "Ernesto Barragán","Alfonso Barreña Baroni","Tobias Barrios","Enzo Bruccieri",
-  "Kevin Nahuel Bustamante Flores","Elián Candia Candia",
-  "Angelique Tatiana Chazarreta Reyes","Jhoscen Maykel Jhair Chumacero Reyes",
-  "Lucas Cornejo Abad","Marcel Mihai Cuba Reyes","Tatiana Agustina Fernández",
-  "Noemi Flores","Lisandro Flores Chiachiare","Emilia Gonzalez Frutos",
-  "Tomás Gonzalo Grané","Antonio David Hochbaum","Daniela Ledesma",
-  "Matias Melita","Martina Oses","Milena María Ostojich Checa",
-  "Alison Michel Padilla Balderrama","Ian David Park","Agustín Pascale",
-  "Mauro Ivan Paz","Harold Perez","Francisco Román Pérez León","Gael Quesada",
-  "Dylan Quipildor","Agustín Regis","Bruno Nahuel Rodriguez Alfonzo",
-  "Lucas Gabriel Rodríguez Aray","Tiago Tomas Rodríguez Ormaechea",
-  "Arian Denis Ruibo","Bruno Amin Salinas Casco","Alejandro Sarta",
-  "Lautaro Slavsky","Maximo Yoel Suca","Juan Sulbaran",
-  "Matias Nicolas Tinnirello","Nicolas Wei","Sebastián Yu García",
-  "Bernardo Bautista","Dante Pinto","Enzo Lisicki","Ezequiel Mendoza",
-  "Guillermo Alvarez","Juan Bautista Angelero","Maika Abellido","Sebastián Angulo"
-];
+/* El roster NO vive acá: son datos personales y esta página es pública.
+   Lo trae el Apps Script (hoja `Alumnos`) recién cuando la clave es correcta. */
+let ALUMNOS = [];
 
 let _nameAcIdx = -1;
 
@@ -608,6 +622,44 @@ function nameAcKeydown(e) {
 }
 
 /* ─── NAME GATE ──────────────────────────────────────────── */
+/* Paso 1 del gate. La clave se valida en el Apps Script, nunca acá: si
+   estuviera en esta página cualquiera la leería con "ver código fuente".
+   El roster llega en la misma respuesta, solo si la clave es correcta. */
+async function checkPass() {
+  const input = document.getElementById('pass-input');
+  const btn   = document.getElementById('pass-btn');
+  const err   = document.getElementById('pass-err');
+  const pass  = input.value.trim();
+
+  err.style.display = 'none';
+  if (!pass) { err.textContent = 'Escribí la clave de la clase.'; err.style.display = 'block'; return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Verificando…';
+  try {
+    const data = await fetchAuth(pass);
+    if (data && data.ok) {
+      ALUMNOS = Array.isArray(data.roster) ? data.roster : [];
+      document.getElementById('gate-step-pass').style.display = 'none';
+      document.getElementById('gate-step-name').style.display = 'block';
+      document.getElementById('name-input').focus();
+      return;
+    }
+    err.textContent = (data && data.error === 'no_password_configured')
+      ? 'Todavía no hay clave configurada. Avisale al docente.'
+      : 'Clave incorrecta.';
+    err.style.display = 'block';
+    input.select();
+  } catch (e) {
+    // Distinto de "clave incorrecta" a propósito: que no crea que se equivocó.
+    err.textContent = 'No se pudo verificar. Revisá tu conexión y probá de nuevo.';
+    err.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Entrar';
+  }
+}
+
 function startSession() {
   const val = document.getElementById('name-input').value.trim();
   if (!val) { document.getElementById('name-gate-err').style.display = 'block'; return; }
@@ -639,7 +691,7 @@ function sendToSheet(sheetName, results, score, total, statusElId) {
 /* ─── LECTURA DE ENTREGAS (JSONP) ────────────────────────── */
 /* Apps Script redirige a googleusercontent.com y sus headers CORS no son
    confiables; un <script> tag esquiva el problema entero. */
-function fetchSubmissions(sheetName) {
+function jsonp(params) {
   return new Promise((resolve, reject) => {
     const cb = 'pccCb' + Date.now() + Math.floor(Math.random() * 1e6);
     const s  = document.createElement('script');
@@ -647,9 +699,22 @@ function fetchSubmissions(sheetName) {
     function cleanup() { clearTimeout(t); delete window[cb]; s.remove(); }
     window[cb] = data => { cleanup(); resolve(data); };
     s.onerror  = () => { cleanup(); reject(new Error('network')); };
-    s.src = `${SHEET_WEBHOOK}?sheet=${encodeURIComponent(sheetName)}&callback=${cb}`;
+    const qs = Object.keys(params)
+      .map(k => `${k}=${encodeURIComponent(params[k])}`)
+      .concat(`callback=${cb}`)
+      .join('&');
+    s.src = `${SHEET_WEBHOOK}?${qs}`;
     document.body.appendChild(s);
   });
+}
+
+function fetchSubmissions(sheetName) {
+  return jsonp({ action: 'submissions', sheet: sheetName });
+}
+
+/* Valida la clave de la semana; si es correcta viene el roster con la respuesta. */
+function fetchAuth(pass) {
+  return jsonp({ action: 'auth', pass: pass });
 }
 
 /* Las entregas llegan de la planilla: son código ajeno, siempre escapado. */
