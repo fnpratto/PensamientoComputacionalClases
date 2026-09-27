@@ -429,7 +429,7 @@
 </head>
 <body>
 <details style="position:fixed;top:14px;left:14px;z-index:9999;font-family:var(--font-m),'JetBrains Mono',monospace;font-size:.72rem;">
-  <summary title="Navegar a otra clase" style="list-style:none;cursor:pointer;background:var(--surface);border:1px solid var(--border-strong);color:var(--text);padding:.4rem .8rem;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.4);display:inline-flex;align-items:center;gap:.35rem;">📚 Todas las clases <span style="opacity:.55;font-weight:400">· 6/6</span></summary>
+  <summary title="Navegar a otra clase" style="list-style:none;cursor:pointer;background:var(--surface);border:1px solid var(--border-strong);color:var(--text);padding:.4rem .8rem;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.4);display:inline-flex;align-items:center;gap:.35rem;">📚 Todas las clases</summary>
   <div style="margin-top:.4rem;background:var(--surface);border:1px solid var(--border-strong);border-radius:10px;padding:.5rem;display:flex;flex-direction:column;gap:.15rem;min-width:230px;box-shadow:0 4px 16px rgba(0,0,0,.5);">
     <a href="/" style="color:var(--text);opacity:.6;text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🏠 Menú principal</a>
     <a href="/archive/unidad-2/index.html" style="color:var(--text);text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🏔️ Tipos de Datos y Funciones · U2</a>
@@ -1263,10 +1263,13 @@ function renderExam() {
         <div id="exam-gallery-wrap-${idx}" style="display:none;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--border)">
           <div class="verify-row" style="margin-top:0">
             <button class="btn" id="exam-gallery-btn-${idx}">Ver otras soluciones</button>
+            <button class="btn" id="exam-gallery-close-${idx}" style="display:none">✕ Cerrar</button>
             <span class="verify-status" id="exam-gallery-status-${idx}"></span>
           </div>
-          <div class="gal-filters" id="exam-gallery-filters-${idx}"></div>
-          <div id="exam-gallery-${idx}" style="margin-top:1rem"></div>
+          <div id="exam-gallery-content-${idx}" style="display:none">
+            <div class="gal-filters" id="exam-gallery-filters-${idx}"></div>
+            <div id="exam-gallery-${idx}" style="margin-top:1rem"></div>
+          </div>
         </div>
       </div>
     `);
@@ -1310,10 +1313,13 @@ function renderExam() {
 
     const galleryWrap    = document.getElementById(`exam-gallery-wrap-${idx}`);
     const galleryBtn     = document.getElementById(`exam-gallery-btn-${idx}`);
+    const galleryCloseBtn= document.getElementById(`exam-gallery-close-${idx}`);
     const galleryStatus  = document.getElementById(`exam-gallery-status-${idx}`);
+    const galleryContent = document.getElementById(`exam-gallery-content-${idx}`);
     const galleryFilters = document.getElementById(`exam-gallery-filters-${idx}`);
     const galleryEl      = document.getElementById(`exam-gallery-${idx}`);
     let galleryLoaded = false;
+    let galleryOpen   = false;
     let galleryItems  = [];
     let galleryFilter = 'pass'; // 'pass' | 'all' | 'fail' — por default solo se ven las que pasan los tests
 
@@ -1369,9 +1375,16 @@ function renderExam() {
       setTimeout(() => { submitBtn.disabled = false; }, 1500);
     });
 
+    function setGalleryOpen(open) {
+      galleryOpen = open;
+      galleryContent.style.display = open ? '' : 'none';
+      galleryCloseBtn.style.display = open && galleryLoaded ? '' : 'none';
+    }
+
     galleryBtn.addEventListener('click', async () => {
       galleryBtn.disabled = true;
       galleryStatus.textContent = 'Cargando…';
+      setGalleryOpen(true);
       try {
         const data = await fetchSubmissions(`Repaso-Parcial-${idx + 1}`);
         if (!data || !data.ok) throw new Error(data && data.error || 'respuesta inválida');
@@ -1382,6 +1395,7 @@ function renderExam() {
           : '';
         galleryLoaded = true;
         galleryBtn.textContent = 'Actualizar';
+        galleryCloseBtn.style.display = '';
       } catch (err) {
         galleryStatus.textContent = '';
         if (!galleryLoaded) {
@@ -1391,6 +1405,8 @@ function renderExam() {
         galleryBtn.disabled = false;
       }
     });
+
+    galleryCloseBtn.addEventListener('click', () => setGalleryOpen(false));
   });
 }
 
