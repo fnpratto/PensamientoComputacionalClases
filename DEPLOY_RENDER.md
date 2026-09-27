@@ -38,14 +38,9 @@ Render se conecta directo al repo, así que el repo tiene que estar en GitHub/Gi
 
 ## 3. Configurar rutas (SPA)
 
-Si la app usa client-side routing (React Router u otro), agregar una regla de rewrite para que todas las rutas caigan en `index.html`:
+**No agregar ninguna regla de rewrite `/* → /index.html`.** Esta app NO es una SPA: es un sitio multi-página (`index.html` en la raíz + una página estática por clase en `/archive/<clase>/`). Si se agrega esa regla, Render intercepta TODAS las rutas — incluidas `/archive/unidad-2/`, `/archive/clase-3/`, etc. — y siempre sirve el `index.html` de la raíz, rompiendo los links a las clases archivadas (síntoma típico: cualquier link del menú "redirecciona" siempre a la misma página).
 
-- En el dashboard del sitio → **Redirects/Rewrites** → agregar:
-  - **Source**: `/*`
-  - **Destination**: `/index.html`
-  - **Action**: `Rewrite`
-
-Si la app no usa routing (solo `index.html`), este paso se puede saltear.
+Si ya la agregaste, andá al dashboard del sitio → **Redirects/Rewrites** y borrala.
 
 ## 4. Variables de entorno (si aplica)
 

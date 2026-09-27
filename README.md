@@ -1,6 +1,6 @@
 # Pensamiento Computacional · Clases
 
-Material de las clases de Pensamiento Computacional (FIUBA). Cada clase es una página HTML standalone; `index.html` en la raíz es siempre la clase más reciente.
+Material de las clases de Pensamiento Computacional (FIUBA). Cada clase es una página HTML standalone. `index.html` en la raíz es el landing "Recap Clases", con acceso a todas.
 
 ## Correr local
 
@@ -22,9 +22,8 @@ npm run preview   # sirve el build de dist/ localmente, para probar antes de dep
 
 ## Estructura
 
-- `index.html` — la clase actual (la que se ve al entrar a la raíz del sitio).
-- `public/clases.html` — menú con links a todas las clases anteriores.
-- `public/archive/<clase>/` — snapshot estático de cada clase pasada (se copian tal cual al build; ver [DEPLOY_RENDER.md](DEPLOY_RENDER.md) para más contexto sobre cómo se generan).
+- `index.html` — landing "Recap Clases": lista todas las clases, de la más reciente a la primera.
+- `public/archive/<clase>/` — snapshot estático de cada clase (incluida la más reciente; se copian tal cual al build; ver [DEPLOY_RENDER.md](DEPLOY_RENDER.md) para más contexto sobre cómo se generan). Cada una tiene un link "← Todas las clases" para volver al landing.
 - `src/` — app React (`El Descenso`), usada solo para archivar `unidad-2`; las clases posteriores son HTML standalone y no dependen de esto.
 - `apps-script-doGet.js` — backend de Google Apps Script (autenticación por clave de clase + logging de ejercicios a un Google Sheet). Se despliega aparte, desde el editor de Apps Script — no corre localmente.
 
