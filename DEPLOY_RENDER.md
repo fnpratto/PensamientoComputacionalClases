@@ -41,8 +41,8 @@ Por default Render hace **auto-deploy** en cada push a la branch configurada. Se
 Una vez terminado el build (se ve el log en el dashboard), abrir la URL `https://<name>.onrender.com` y confirmar que:
 - Carga el `index.html`.
 - Los assets (JS/CSS) cargan bien (revisar la consola del navegador por 404s, síntoma típico de un `base` mal configurado).
-- Si la app se comunica con el backend de Apps Script (`apps-script-doGet.js`), confirmar que los requests no estén bloqueados por CORS al cambiar de dominio.
+- Si la app se comunica con el backend de Apps Script, confirmar que los requests no estén bloqueados por CORS al cambiar de dominio.
 
 ## Nota sobre el backend (Google Apps Script)
 
-Este repo incluye `apps-script-doGet.js`, que parece ser un backend separado corriendo en Google Apps Script (no en Render). Render solo va a servir el frontend estático — el Apps Script sigue desplegándose por su cuenta desde el editor de Apps Script, sin cambios.
+Hay un backend separado corriendo en Google Apps Script (fuera del repo, fuera de Render). Render solo va a servir el frontend estático — el Apps Script sigue desplegándose por su cuenta desde el editor de Apps Script, sin cambios.
