@@ -1,0 +1,67 @@
+# Deploy en Render
+
+Esta app es un proyecto **Vite + React** que compila a archivos estáticos (`dist/`). En Render se despliega como **Static Site**.
+
+## 0. Ajuste previo necesario
+
+`vite.config.js` tiene configurado:
+
+```js
+base: '/PensamientoComputacionalClases/',
+```
+
+Eso es para GitHub Pages (donde la app vive en un subpath). En Render la app va a vivir en la raíz del dominio (`https://tu-app.onrender.com/`), así que hay que cambiarlo a:
+
+```js
+base: '/',
+```
+
+o directamente eliminar esa línea (Vite usa `/` por default). Si no se hace este cambio, todos los assets (JS, CSS, imágenes) van a romper con 404 en producción.
+
+> Si querés mantener el deploy de GitHub Pages funcionando en paralelo, podés condicionar el `base` según una env var (`process.env.RENDER ? '/' : '/PensamientoComputacionalClases/'`), o simplemente mantener dos configs.
+
+## 1. Subir los cambios a GitHub
+
+Render se conecta directo al repo, así que el repo tiene que estar en GitHub/GitLab con los últimos cambios pusheados (incluido el ajuste del paso 0).
+
+## 2. Crear el Static Site en Render
+
+1. Entrá a [render.com](https://render.com) y logueate (podés usar tu cuenta de GitHub).
+2. Click en **New +** → **Static Site**.
+3. Conectá el repositorio `PensamientoComputacionalClases`.
+4. Completá la configuración:
+   - **Name**: el nombre que quieras (define la URL `<name>.onrender.com`).
+   - **Branch**: `main` (o la branch que quieras deployar).
+   - **Build Command**: `npm install && npm run build`
+   - **Publish Directory**: `dist`
+5. Click en **Create Static Site**.
+
+## 3. Configurar rutas (SPA)
+
+Si la app usa client-side routing (React Router u otro), agregar una regla de rewrite para que todas las rutas caigan en `index.html`:
+
+- En el dashboard del sitio → **Redirects/Rewrites** → agregar:
+  - **Source**: `/*`
+  - **Destination**: `/index.html`
+  - **Action**: `Rewrite`
+
+Si la app no usa routing (solo `index.html`), este paso se puede saltear.
+
+## 4. Variables de entorno (si aplica)
+
+Si el proyecto usa variables de entorno (`import.meta.env.VITE_*`), configurarlas en **Environment** dentro del dashboard del Static Site antes del build.
+
+## 5. Deploy automático
+
+Por default Render hace **auto-deploy** en cada push a la branch configurada. Se puede desactivar desde **Settings** → **Auto-Deploy** si se prefiere deployar manualmente con **Manual Deploy**.
+
+## 6. Verificar
+
+Una vez terminado el build (se ve el log en el dashboard), abrir la URL `https://<name>.onrender.com` y confirmar que:
+- Carga el `index.html`.
+- Los assets (JS/CSS) cargan bien (revisar la consola del navegador por 404s, síntoma típico de un `base` mal configurado).
+- Si la app se comunica con el backend de Apps Script (`apps-script-doGet.js`), confirmar que los requests no estén bloqueados por CORS al cambiar de dominio.
+
+## Nota sobre el backend (Google Apps Script)
+
+Este repo incluye `apps-script-doGet.js`, que parece ser un backend separado corriendo en Google Apps Script (no en Render). Render solo va a servir el frontend estático — el Apps Script sigue desplegándose por su cuenta desde el editor de Apps Script, sin cambios.
