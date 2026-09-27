@@ -4,7 +4,7 @@ Esta app es un proyecto **Vite + React** que compila a archivos estáticos (`dis
 
 ## 0. Base path (ya resuelto)
 
-`vite.config.js` usa `base: '/'` por default, que es lo que necesita tanto Render (la app vive en la raíz del dominio) como correr local con `npm run dev`/`npm run preview`. El subpath de GitHub Pages (`/PensamientoComputacionalClases/`) solo se activa pasando `GH_PAGES=true` al build — el workflow de `.github/workflows/deploy.yml` ya lo hace automáticamente. No hace falta tocar nada para deployar en Render.
+`vite.config.js` usa `base: '/'`, que es lo que necesita Render (la app vive en la raíz del dominio) y también correr local con `npm run dev`/`npm run preview`. No hace falta tocar nada para deployar.
 
 ## 1. Subir los cambios a GitHub
 
@@ -22,11 +22,11 @@ Render se conecta directo al repo, así que el repo tiene que estar en GitHub/Gi
    - **Publish Directory**: `dist`
 5. Click en **Create Static Site**.
 
-## 3. Configurar rutas (SPA)
+## 3. Rutas
 
-**No agregar ninguna regla de rewrite `/* → /index.html`.** Esta app NO es una SPA: es un sitio multi-página (`index.html` en la raíz + una página estática por clase en `/archive/<clase>/`). Si se agrega esa regla, Render intercepta TODAS las rutas — incluidas `/archive/unidad-2/`, `/archive/clase-3/`, etc. — y siempre sirve el `index.html` de la raíz, rompiendo los links a las clases archivadas (síntoma típico: cualquier link del menú "redirecciona" siempre a la misma página).
+**No agregar ninguna regla de rewrite `/* → /index.html`.** Esta app NO es una SPA: es un sitio multi-página (`index.html` en la raíz + una página estática por clase en `/archive/<clase>/index.html`). Esa regla haría que Render sirva siempre el `index.html` de la raíz para cualquier ruta, rompiendo los links a las clases archivadas.
 
-Si ya la agregaste, andá al dashboard del sitio → **Redirects/Rewrites** y borrala.
+Si ya la agregaste, andá al dashboard del sitio → **Redirects/Rewrites** y borrala. No hace falta ninguna regla — los links del menú apuntan directo a cada `index.html`.
 
 ## 4. Variables de entorno (si aplica)
 
