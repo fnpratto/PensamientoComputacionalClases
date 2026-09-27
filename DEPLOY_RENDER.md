@@ -2,23 +2,9 @@
 
 Esta app es un proyecto **Vite + React** que compila a archivos estáticos (`dist/`). En Render se despliega como **Static Site**.
 
-## 0. Ajuste previo necesario
+## 0. Base path (ya resuelto)
 
-`vite.config.js` tiene configurado:
-
-```js
-base: '/PensamientoComputacionalClases/',
-```
-
-Eso es para GitHub Pages (donde la app vive en un subpath). En Render la app va a vivir en la raíz del dominio (`https://tu-app.onrender.com/`), así que hay que cambiarlo a:
-
-```js
-base: '/',
-```
-
-o directamente eliminar esa línea (Vite usa `/` por default). Si no se hace este cambio, todos los assets (JS, CSS, imágenes) van a romper con 404 en producción.
-
-> Si querés mantener el deploy de GitHub Pages funcionando en paralelo, podés condicionar el `base` según una env var (`process.env.RENDER ? '/' : '/PensamientoComputacionalClases/'`), o simplemente mantener dos configs.
+`vite.config.js` usa `base: '/'` por default, que es lo que necesita tanto Render (la app vive en la raíz del dominio) como correr local con `npm run dev`/`npm run preview`. El subpath de GitHub Pages (`/PensamientoComputacionalClases/`) solo se activa pasando `GH_PAGES=true` al build — el workflow de `.github/workflows/deploy.yml` ya lo hace automáticamente. No hace falta tocar nada para deployar en Render.
 
 ## 1. Subir los cambios a GitHub
 
