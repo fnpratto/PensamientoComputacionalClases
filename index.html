@@ -98,6 +98,7 @@
   }
 
   .timeline li { position: relative; }
+  .timeline li.featured-li { margin-bottom: .6rem; }
 
   .timeline a {
     position: relative;
@@ -119,7 +120,13 @@
   }
   .timeline a.featured {
     border-color: var(--accent);
+    border-width: 2px;
+    padding: 1.3rem 1.45rem;
     background: linear-gradient(135deg, var(--accent-dim), var(--surface));
+    box-shadow: 0 0 0 1px var(--accent-dim), 0 10px 30px -8px rgba(229,48,80,.45);
+  }
+  .timeline a.featured:hover {
+    box-shadow: 0 0 0 1px var(--accent-dim), 0 14px 36px -8px rgba(229,48,80,.55);
   }
 
   .thumb {
@@ -148,6 +155,10 @@
     color: var(--text-faint);
     margin-bottom: .2rem;
   }
+  .label .index {
+    opacity: .65;
+    margin-left: .4em;
+  }
   .title {
     font-weight: 700;
     font-size: 1.04rem;
@@ -167,13 +178,15 @@
     flex: none;
     align-self: center;
     font-family: var(--font-m);
-    font-size: .68rem;
+    font-size: .72rem;
+    font-weight: 700;
     color: var(--good);
     border: 1px solid var(--good);
     background: var(--good-bg);
     border-radius: 999px;
-    padding: .25rem .7rem;
+    padding: .35rem .85rem;
     white-space: nowrap;
+    box-shadow: 0 0 0 3px var(--good-bg);
   }
   .arrow {
     flex: none;
@@ -200,26 +213,26 @@
     <header>
       <div class="eyebrow">🌺 Pensamiento Computacional · Curso 11</div>
       <h1>Recap <span>Clases</span></h1>
-      <p>Todo el recorrido del curso, clase por clase. Elegí una para entrar.</p>
+      <p>Todo el recorrido del curso — 6 clases en total, de la primera a la más reciente. Elegí una para entrar.</p>
     </header>
 
     <ul class="timeline">
-      <li>
+      <li class="featured-li">
         <a class="featured" href="/archive/clase-repaso/index.html">
           <span class="thumb">🌸</span>
           <span class="info">
-            <span class="label">Unidades 1–4</span>
+            <span class="label">Unidades 1–4 <span class="index">· 6/6</span></span>
             <span class="title">Clase de Repaso · Primavera</span>
             <span class="topics">Temas vistos: repaso integrador de todo el curso — quiz de lectura de código y 7 ejercicios de parcial.</span>
           </span>
-          <span class="badge">más reciente</span>
+          <span class="badge">⭐ más reciente</span>
         </a>
       </li>
       <li>
         <a href="/archive/cap-4-listas-tuplas/index.html">
           <span class="thumb">📋</span>
           <span class="info">
-            <span class="label">Unidad 4.2</span>
+            <span class="label">Unidad 4.2 <span class="index">· 5/6</span></span>
             <span class="title">El Archivo</span>
             <span class="topics">Temas vistos: listas, tuplas, métodos y funciones de orden superior.</span>
           </span>
@@ -230,7 +243,7 @@
         <a href="/archive/unidad-4-pt1/index.html">
           <span class="thumb">🗂️</span>
           <span class="info">
-            <span class="label">Unidad 4</span>
+            <span class="label">Unidad 4 <span class="index">· 4/6</span></span>
             <span class="title">Estructuras de Datos</span>
             <span class="topics">Temas vistos: cadenas, rangos y tuplas.</span>
           </span>
@@ -241,7 +254,7 @@
         <a href="/archive/clase-3/index.html">
           <span class="thumb">🔀</span>
           <span class="info">
-            <span class="label">Unidad 3</span>
+            <span class="label">Unidad 3 <span class="index">· 3/6</span></span>
             <span class="title">Estructuras de Control</span>
             <span class="topics">Temas vistos: condicionales (if/elif/else), operadores lógicos, bucles for/while, break/continue/return.</span>
           </span>
@@ -252,7 +265,7 @@
         <a href="/archive/unidad-3/index.html">
           <span class="thumb">🚦</span>
           <span class="info">
-            <span class="label">Unidad 3.1</span>
+            <span class="label">Unidad 3.1 <span class="index">· 2/6</span></span>
             <span class="title">Condicionales y Bucles</span>
             <span class="topics">Temas vistos: expresiones booleanas, introducción a if/elif/else y a los bucles for/while.</span>
           </span>
@@ -263,7 +276,7 @@
         <a href="/archive/unidad-2/index.html">
           <span class="thumb">🏔️</span>
           <span class="info">
-            <span class="label">Unidad 2</span>
+            <span class="label">Unidad 2 <span class="index">· 1/6</span></span>
             <span class="title">Tipos de Datos y Funciones</span>
             <span class="topics">Temas vistos: tipos de datos, expresiones y funciones en Python.</span>
           </span>

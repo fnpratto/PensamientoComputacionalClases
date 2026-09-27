@@ -478,16 +478,16 @@
   </style>
 </head>
 <body>
-<details style="position:fixed;top:14px;left:14px;z-index:9999;font-family:'JetBrains Mono',monospace;font-size:.72rem;">
-  <summary style="list-style:none;cursor:pointer;background:#1c0e12;border:1px solid #522630;color:#f5e6ea;padding:.4rem .8rem;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.4);display:inline-flex;align-items:center;gap:.35rem;">📚 Todas las clases</summary>
-  <div style="margin-top:.4rem;background:#1c0e12;border:1px solid #522630;border-radius:10px;padding:.5rem;display:flex;flex-direction:column;gap:.15rem;min-width:220px;box-shadow:0 4px 16px rgba(0,0,0,.5);">
-    <a href="/" style="color:#a07580;text-decoration:none;padding:.4rem .6rem;border-radius:6px;">🏠 Menú principal</a>
-    <a href="/archive/unidad-2/index.html" style="color:#f5e6ea;text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🏔️ El Descenso · U2</a>
-    <a href="/archive/unidad-3/index.html" style="color:#f5e6ea;text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🚦 Antes de Cruzar · U3.1</a>
-    <a href="/archive/clase-3/index.html" style="color:#f5e6ea;text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🔀 Estructuras de Control · U3</a>
-    <span style="color:#f5e6ea;opacity:.45;padding:.4rem .6rem;display:block;">🗂️ Estructuras de Datos · U4 · estás acá</span>
-    <a href="/archive/cap-4-listas-tuplas/index.html" style="color:#f5e6ea;text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">📋 El Archivo · U4.2</a>
-    <a href="/archive/clase-repaso/index.html" style="color:#f5e6ea;text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🌸 Repaso · Primavera</a>
+<details style="position:fixed;top:14px;left:14px;z-index:9999;font-family:var(--font-m),'JetBrains Mono',monospace;font-size:.72rem;">
+  <summary title="Navegar a otra clase" style="list-style:none;cursor:pointer;background:var(--surface);border:1px solid var(--border-strong);color:var(--text);padding:.4rem .8rem;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.4);display:inline-flex;align-items:center;gap:.35rem;">📚 Todas las clases <span style="opacity:.55;font-weight:400">· 4/6</span></summary>
+  <div style="margin-top:.4rem;background:var(--surface);border:1px solid var(--border-strong);border-radius:10px;padding:.5rem;display:flex;flex-direction:column;gap:.15rem;min-width:230px;box-shadow:0 4px 16px rgba(0,0,0,.5);">
+    <a href="/" style="color:var(--text);opacity:.6;text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🏠 Menú principal</a>
+    <a href="/archive/unidad-2/index.html" style="color:var(--text);text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🏔️ Tipos de Datos y Funciones · U2</a>
+    <a href="/archive/unidad-3/index.html" style="color:var(--text);text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🚦 Condicionales y Bucles · U3.1</a>
+    <a href="/archive/clase-3/index.html" style="color:var(--text);text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🔀 Estructuras de Control · U3</a>
+    <span style="color:var(--text);opacity:.45;padding:.4rem .6rem;display:block;">🗂️ Estructuras de Datos · U4 · estás acá</span>
+    <a href="/archive/cap-4-listas-tuplas/index.html" style="color:var(--text);text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">📋 El Archivo · U4.2</a>
+    <a href="/archive/clase-repaso/index.html" style="color:var(--text);text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🌸 Repaso · Primavera</a>
   </div>
 </details>
 
@@ -616,7 +616,7 @@
 
 <!-- ══ SITE NAVIGATION ═══════════════════════════════════════ -->
 <div class="snav-overlay" id="snav-overlay" onclick="snavClose()"></div>
-<button class="snav-tab" onclick="snavToggle()" aria-label="Abrir menú">nav</button>
+<button class="snav-tab" onclick="snavToggle()" aria-label="Abrir menú" title="Índice de esta clase">nav</button>
 <nav class="snav-panel" id="snav-panel" aria-label="Navegación del sitio">
   <div class="snav-header">
     <span class="snav-logo">PC · FIUBA</span>
@@ -634,16 +634,7 @@
     <a class="snav-anchor" href="#camara-ejercicios" onclick="snavClose()">Ejercicios</a>
     <a class="snav-anchor" href="#camara-final"      onclick="snavClose()">Desafío Final</a>
     <a class="snav-anchor" href="#examen-final"      onclick="snavClose()">Ejercicios de Parcial</a>
-      <hr class="snav-divider">
-    <span class="snav-section-label">Todas las clases</span>
-    <a class="snav-anchor" href="/" onclick="snavClose()">🏠 Menú principal</a>
-    <a class="snav-anchor" href="/archive/unidad-2/index.html" onclick="snavClose()">🏔️ El Descenso · U2</a>
-    <a class="snav-anchor" href="/archive/unidad-3/index.html" onclick="snavClose()">🚦 Antes de Cruzar · U3.1</a>
-    <a class="snav-anchor" href="/archive/clase-3/index.html" onclick="snavClose()">🔀 Estructuras de Control · U3</a>
-    <span class="snav-anchor" style="opacity:.45;cursor:default">🗂️ Estructuras de Datos · U4 · estás acá</span>
-    <a class="snav-anchor" href="/archive/cap-4-listas-tuplas/index.html" onclick="snavClose()">📋 El Archivo · U4.2</a>
-    <a class="snav-anchor" href="/archive/clase-repaso/index.html" onclick="snavClose()">🌸 Repaso · Primavera</a>
-</div>
+      </div>
 </nav>
 
 <!-- ══ SCRIPT ════════════════════════════════════════════════ -->
