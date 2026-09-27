@@ -104,6 +104,24 @@ function readRoster_() {
   return nombres;
 }
 
+/**
+ * doPost (en el mismo proyecto de Apps Script, no versionado acá) no escribe
+ * columnas fijas "respuestas"/"correctas": arma los headers dinámicamente
+ * como "P1: <texto del ejercicio>" y "P1 ¿Correcta?" en la fila que sigue al
+ * podio (HEADER_ROW = 6 en doPost, filas 1–5 son el 🏆 TOP 3). Para las hojas
+ * de Repaso-Parcial-N cada entrega tiene una sola pregunta, así que buscamos
+ * la primera columna que empiece con "p1:" / "p1 ¿correcta" en vez de un
+ * nombre fijo, y ubicamos la fila de headers buscando "timestamp" en vez de
+ * asumir que está en la fila 1.
+ */
+function findHeaderRowIndex_(rows) {
+  var limit = Math.min(rows.length, 20);
+  for (var i = 0; i < limit; i++) {
+    if (String(rows[i][0]).trim().toLowerCase() === 'timestamp') return i;
+  }
+  return 0;
+}
+
 function readSubmissions_(sheetName) {
   if (!sheetName) return [];
 
@@ -115,19 +133,21 @@ function readSubmissions_(sheetName) {
   var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
   if (!sh || sh.getLastRow() < 2) return [];
 
-  var rows    = sh.getDataRange().getValues();
-  var headers = rows[0].map(function (h) { return String(h).trim().toLowerCase(); });
+  var rows       = sh.getDataRange().getValues();
+  var headerIdx  = findHeaderRowIndex_(rows);
+  var headers    = rows[headerIdx].map(function (h) { return String(h).trim().toLowerCase(); });
 
-  // Por nombre de encabezado, no por índice fijo: así no depende del orden
-  // en que doPost escriba las columnas.
-  var iResp = headers.indexOf('respuestas');
-  var iCorr = headers.indexOf('correctas');
-  if (iResp === -1) throw new Error('Falta la columna "respuestas" en ' + sheetName);
+  var iResp = -1, iCorr = -1;
+  for (var h = 0; h < headers.length; h++) {
+    if (iResp === -1 && /^p1:/.test(headers[h])) iResp = h;
+    if (iCorr === -1 && /^p1\s*¿correcta/.test(headers[h])) iCorr = h;
+  }
+  if (iResp === -1) throw new Error('No se encontró la columna de respuestas ("P1: ...") en ' + sheetName);
 
   var items = [];
   var seen  = {};
 
-  for (var r = 1; r < rows.length; r++) {
+  for (var r = headerIdx + 1; r < rows.length; r++) {
     var codigo = firstOf_(rows[r][iResp], '');
     if (typeof codigo !== 'string' || !codigo.trim()) continue;
 
