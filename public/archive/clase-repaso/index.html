@@ -339,6 +339,17 @@
       overflow: auto; font-family: var(--font-m); font-size: .82rem;
       line-height: 1.55; color: var(--text); white-space: pre; tab-size: 4;
     }
+    .gal-filters { display: none; gap: .4rem; flex-wrap: wrap; margin-top: .8rem; }
+    .gal-filter-btn {
+      font-family: var(--font-m); font-size: .72rem; letter-spacing: .04em; text-transform: uppercase;
+      background: transparent; color: var(--text-dim); border: 1px solid var(--border-strong);
+      padding: .35rem .75rem; border-radius: 999px; cursor: pointer;
+      transition: border-color .15s, background .15s, color .15s;
+    }
+    .gal-filter-btn:hover { border-color: var(--text-dim); color: var(--text); }
+    .gal-filter-btn[data-filter="pass"].active { background: var(--good-bg); border-color: var(--good); color: var(--good); }
+    .gal-filter-btn[data-filter="fail"].active { background: var(--bad-bg); border-color: var(--bad); color: var(--bad); }
+    .gal-filter-btn[data-filter="all"].active  { background: var(--accent-dim); border-color: var(--accent); color: var(--accent-strong); }
 
     /* ── SIDE NAV ───────────────────────────────── */
     .snav-overlay {
@@ -1263,6 +1274,7 @@ function renderExam() {
             <button class="btn" id="exam-gallery-btn-${idx}">Ver otras soluciones</button>
             <span class="verify-status" id="exam-gallery-status-${idx}"></span>
           </div>
+          <div class="gal-filters" id="exam-gallery-filters-${idx}"></div>
           <div id="exam-gallery-${idx}" style="margin-top:1rem"></div>
         </div>
       </div>
@@ -1305,11 +1317,47 @@ function renderExam() {
       }
     });
 
-    const galleryWrap   = document.getElementById(`exam-gallery-wrap-${idx}`);
-    const galleryBtn    = document.getElementById(`exam-gallery-btn-${idx}`);
-    const galleryStatus = document.getElementById(`exam-gallery-status-${idx}`);
-    const galleryEl     = document.getElementById(`exam-gallery-${idx}`);
+    const galleryWrap    = document.getElementById(`exam-gallery-wrap-${idx}`);
+    const galleryBtn     = document.getElementById(`exam-gallery-btn-${idx}`);
+    const galleryStatus  = document.getElementById(`exam-gallery-status-${idx}`);
+    const galleryFilters = document.getElementById(`exam-gallery-filters-${idx}`);
+    const galleryEl      = document.getElementById(`exam-gallery-${idx}`);
     let galleryLoaded = false;
+    let galleryItems  = [];
+    let galleryFilter = 'pass'; // 'pass' | 'all' | 'fail' — por default solo se ven las que pasan los tests
+
+    const GAL_EMPTY_MSG = {
+      pass: 'Todavía nadie pasó los tests. Probá con "Todas" para ver el resto de las entregas.',
+      fail: 'Nadie falló los tests (o todavía no hay entregas).',
+      all:  'Todavía no hay otras entregas.',
+    };
+
+    function renderGallery() {
+      const nPass = galleryItems.filter(it => it.correcta === true).length;
+      const nFail = galleryItems.length - nPass;
+
+      galleryFilters.innerHTML = [
+        ['pass', `✓ Pasan (${nPass})`],
+        ['fail', `✗ No pasan (${nFail})`],
+        ['all',  `Todas (${galleryItems.length})`],
+      ].map(([f, label]) => `
+        <button type="button" class="gal-filter-btn${f === galleryFilter ? ' active' : ''}" data-filter="${f}">${label}</button>
+      `).join('');
+      galleryFilters.style.display = galleryItems.length ? 'flex' : 'none';
+      galleryFilters.querySelectorAll('.gal-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          galleryFilter = btn.dataset.filter;
+          renderGallery();
+        });
+      });
+
+      const filtered = galleryFilter === 'all'
+        ? galleryItems
+        : galleryItems.filter(it => (it.correcta === true) === (galleryFilter === 'pass'));
+      galleryEl.innerHTML = filtered.length
+        ? buildGalleryHtml(filtered)
+        : `<div class="practice-note">${GAL_EMPTY_MSG[galleryFilter]}</div>`;
+    }
 
     const submitBtn  = document.getElementById(`exam-submit-${idx}`);
     const sendStatus = document.getElementById(`exam-send-status-${idx}`);
@@ -1336,12 +1384,10 @@ function renderExam() {
       try {
         const data = await fetchSubmissions(`Repaso-Parcial-${idx + 1}`);
         if (!data || !data.ok) throw new Error(data && data.error || 'respuesta inválida');
-        const items = data.items || [];
-        galleryEl.innerHTML = items.length
-          ? buildGalleryHtml(items)
-          : '<div class="practice-note">Todavía no hay otras entregas.</div>';
-        galleryStatus.textContent = items.length
-          ? `${items.length} ${items.length === 1 ? 'solución' : 'soluciones'}`
+        galleryItems = data.items || [];
+        renderGallery();
+        galleryStatus.textContent = galleryItems.length
+          ? `${galleryItems.length} ${galleryItems.length === 1 ? 'solución en total' : 'soluciones en total'}`
           : '';
         galleryLoaded = true;
         galleryBtn.textContent = 'Actualizar';
