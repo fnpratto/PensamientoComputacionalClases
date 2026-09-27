@@ -102,7 +102,7 @@
   .timeline a {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 1.1rem;
     padding: 1.15rem 1.3rem;
     background: var(--surface);
@@ -124,6 +124,7 @@
 
   .thumb {
     flex: none;
+    align-self: center;
     width: 3rem;
     height: 3rem;
     display: grid;
@@ -154,17 +155,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .sub {
+  .topics {
+    display: block;
     color: var(--text-dim);
-    font-size: .86rem;
-    margin-top: .15rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: .82rem;
+    margin-top: .3rem;
+    line-height: 1.45;
   }
 
   .badge {
     flex: none;
+    align-self: center;
     font-family: var(--font-m);
     font-size: .68rem;
     color: var(--good);
@@ -176,6 +177,7 @@
   }
   .arrow {
     flex: none;
+    align-self: center;
     color: var(--text-faint);
     font-size: 1.1rem;
     transition: transform .18s ease, color .18s ease;
@@ -191,9 +193,6 @@
     font-family: var(--font-m);
   }
 
-  @media (max-width: 520px) {
-    .sub { display: none; }
-  }
 </style>
 </head>
 <body>
@@ -209,9 +208,9 @@
         <a class="featured" href="/archive/clase-repaso/index.html">
           <span class="thumb">🌸</span>
           <span class="info">
-            <span class="label">Unidades 1–4 · Repaso</span>
+            <span class="label">Unidades 1–4</span>
             <span class="title">Clase de Repaso · Primavera</span>
-            <span class="sub">Quiz + 7 ejercicios de parcial</span>
+            <span class="topics">Temas vistos: repaso integrador de todo el curso — quiz de lectura de código y 7 ejercicios de parcial.</span>
           </span>
           <span class="badge">más reciente</span>
         </a>
@@ -222,7 +221,7 @@
           <span class="info">
             <span class="label">Unidad 4.2</span>
             <span class="title">El Archivo</span>
-            <span class="sub">Listas y tuplas</span>
+            <span class="topics">Temas vistos: listas, tuplas, métodos y funciones de orden superior.</span>
           </span>
           <span class="arrow">→</span>
         </a>
@@ -233,6 +232,7 @@
           <span class="info">
             <span class="label">Unidad 4</span>
             <span class="title">Estructuras de Datos</span>
+            <span class="topics">Temas vistos: cadenas, rangos y tuplas.</span>
           </span>
           <span class="arrow">→</span>
         </a>
@@ -243,6 +243,7 @@
           <span class="info">
             <span class="label">Unidad 3</span>
             <span class="title">Estructuras de Control</span>
+            <span class="topics">Temas vistos: condicionales (if/elif/else), operadores lógicos, bucles for/while, break/continue/return.</span>
           </span>
           <span class="arrow">→</span>
         </a>
@@ -252,7 +253,8 @@
           <span class="thumb">🚦</span>
           <span class="info">
             <span class="label">Unidad 3.1</span>
-            <span class="title">Antes de Cruzar</span>
+            <span class="title">Condicionales y Bucles</span>
+            <span class="topics">Temas vistos: expresiones booleanas, introducción a if/elif/else y a los bucles for/while.</span>
           </span>
           <span class="arrow">→</span>
         </a>
@@ -262,7 +264,8 @@
           <span class="thumb">🏔️</span>
           <span class="info">
             <span class="label">Unidad 2</span>
-            <span class="title">El Descenso</span>
+            <span class="title">Tipos de Datos y Funciones</span>
+            <span class="topics">Temas vistos: tipos de datos, expresiones y funciones en Python.</span>
           </span>
           <span class="arrow">→</span>
         </a>
