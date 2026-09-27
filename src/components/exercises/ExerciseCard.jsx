@@ -78,7 +78,7 @@ export default function ExerciseCard({ exercise, sheet, submitLabel, studentName
     <article className="exercise-card">
       <div className="exercise-badges">
         <span className="badge-primary">{exercise.badge}</span>
-        <span className="badge-secondary">{exercise.tag}</span>
+        {exercise.tag && <span className="badge-secondary">{exercise.tag}</span>}
       </div>
       <h3 className="exercise-title">{exercise.title}</h3>
       <Html className="exercise-statement" html={exercise.statement} />

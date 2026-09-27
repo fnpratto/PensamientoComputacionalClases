@@ -164,7 +164,6 @@ export default {
       /* ── TEMA 1 · EJERCICIO 1 ── */
       {
         badge: 'Tema 1',
-        tag: 'Base del ejercicio: Ciclo While, secuencias (cadenas, listas, tuplas), variables, funciones.',
         title: 'Ejercicio 1',
         statement: `Una biblioteca cuenta con varias estanterías para almacenar sus libros. Para evitar que una estantería supere su capacidad máxima de peso, el encargado quiere utilizar un programa que le permita registrar los libros que va guardando en cada estante.<br><br>
 Se sabe que cada hoja de un libro pesa aproximadamente 2 gramos. Por lo tanto, a partir de la cantidad de hojas de un libro se puede calcular su peso.<br><br>
@@ -208,7 +207,6 @@ La función deberá devolver: <code>("a.est1", ["Física para ciencias e ingenie
       /* ── TEMA 1 · EJERCICIO 2 ── */
       {
         badge: 'Tema 1',
-        tag: 'Base del ejercicio: Ciclo For, secuencias (cadenas, listas, tuplas), variables, funciones.',
         title: 'Ejercicio 2',
         statement: `La biblioteca de FIUBA quiere armar un juego a modo de homenaje al <em>Martín Fierro</em>, donde el jugador se enfrenta a la máquina en una especie de "payada" para ver quién sabe más de lunfardo. El programa cuenta con una lista de tuplas ya creada, donde cada tupla tiene una palabra en lunfardo y su significado correcto en castellano. Por ejemplo:
 <pre>diccionario = [("vichar", "mirar"), ("pucho", "cigarrillo"), ("chamuyar", "hablar"),
@@ -245,7 +243,6 @@ La función debería devolver:
       /* ── TEMA 1 · EJERCICIO 3 ── */
       {
         badge: 'Tema 1',
-        tag: 'Secuencias, variables, funciones.',
         title: 'Ejercicio 3',
         statement: `El catálogo de una biblioteca se encuentra desordenado y los títulos de los libros presentan diferentes formatos, lo que dificulta encontrar rápidamente los libros que se necesitan. Para solucionar este problema, se desea desarrollar una función que permita normalizar y ordenar los títulos del catálogo.<br><br>
 Por ejemplo si se recibe el catálogo: <code>["Física_Para_Ingeniería", "Introducción a los algoritmos", "Álgebra lineal, 1"]</code> se debe devolver <code>["álgebralineal1", "físicaparaingeniería", "introducciónalosalgoritmos"]</code> .<br><br>
@@ -275,7 +272,6 @@ Los únicos caracteres especiales que deberán eliminarse son: <code>“ “</co
       /* ── TEMA 2 · EJERCICIO 1 ── */
       {
         badge: 'Tema 2',
-        tag: 'Base del ejercicio: Ciclo While, secuencias (cadenas, listas, tuplas), variables, funciones.',
         title: 'Ejercicio 1',
         statement: `Una profesora de Geografía está preparando una evaluación oral sobre los distintos puntos turísticos de Argentina. Como debe evaluar a muchos estudiantes, decidió asignarle a cada uno un tiempo máximo de exposición, que puede variar según el estudiante. Para organizar las evaluaciones, necesita un programa que le permita registrar los temas desarrollados por cada alumno y controlar el tiempo utilizado.<br><br>
 Implementar una función que dado el apellido del estudiante y el tiempo máximo disponible para su exposición, le solicite al estudiante el nombre de un tema y la cantidad de minutos que le tomará desarrollarlo. Los ingresos continuarán mientras quede tiempo suficiente para incorporar un nuevo tema. Cuando el tiempo disponible no sea suficiente para incorporar otro tema, deberá finalizar la carga.<br><br>
@@ -320,7 +316,6 @@ La función deberá devolver: <code>("Roca", ["Cataratas del Iguazú", "Glaciar 
       /* ── TEMA 2 · EJERCICIO 2 ── */
       {
         badge: 'Tema 2',
-        tag: 'Base del ejercicio: Ciclo For, secuencias (cadenas, listas, tuplas), variables, funciones.',
         title: 'Ejercicio 2',
         statement: `En FIUBA quieren armar un torneo de geografía para poner a prueba cuánto saben los estudiantes sobre capitales de provincias argentinas. Para esto se cuenta con una lista de tuplas donde cada elemento contiene el nombre de la provincia y su capital, por ejemplo:
 <pre>provincias = [("Mendoza", "Mendoza"), ("Salta", "Salta"), ("Chubut", "Rawson"),
@@ -357,7 +352,6 @@ La función debería devolver:
       /* ── TEMA 2 · EJERCICIO 3 ── */
       {
         badge: 'Tema 2',
-        tag: 'Secuencias, variables, funciones.',
         title: 'Ejercicio 3',
         statement: `Para una exposición del Museo de Ciencia y Técnica de la FIUBA, se está recopilando información sobre las distintas exposiciones disponibles para organizar una próxima visita guiada. Sin embargo, la información se encuentra almacenada utilizando distintos formatos para los títulos, lo que dificulta su organización y gestión. Para facilitar esta tarea, se necesita un programa que permita normalizar los nombres de las exposiciones y devolverlos ordenados alfabéticamente.<br><br>
 Implementar una función que, dada una lista con los nombres de todas las exposiciones disponibles, devuelva una nueva lista en la que cada nombre esté normalizado según los siguientes criterios:

@@ -34,7 +34,7 @@
 /**
  * @typedef {Object} Exercise
  * @property {string} badge
- * @property {string} tag
+ * @property {string} [tag]
  * @property {string} title
  * @property {string} statement    HTML.
  * @property {string} hint         HTML.
