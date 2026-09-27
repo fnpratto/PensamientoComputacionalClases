@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Archivo — Unidad 4.2</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/matchbrackets.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js" defer></script>
+  <style>
+    :root {
+      --bg:           #080d18;
+      --bg-soft:      #0d1527;
+      --bg-muted:     #0a1020;
+      --surface:      #111c30;
+      --border:       #192343;
+      --border-strong:#2a3d60;
+
+      --text:         #eae3d4;
+      --text-dim:     #9199ad;
+      --text-faint:   #4a5a7a;
+
+      --accent:       #4a82f5;
+      --accent-dim:   rgba(74,130,245,.15);
+      --accent-strong:#6f9fff;
+
+      --good:         #5fcef5;
+      --good-bg:      rgba(95,206,245,.13);
+      --bad:          #e22134;
+      --bad-bg:       rgba(226,33,52,.13);
+      --amber:        #f59b00;
+      --amber-bg:     rgba(245,155,0,.12);
+      --violet:       #a47cf5;
+      --violet-bg:    rgba(164,124,245,.12);
+
+      --stone:      var(--surface);
+      --stone-line: var(--border);
+      --void:       var(--bg-soft);
+      --void-deep:  var(--bg-muted);
+      --styx:       var(--accent);
+      --styx-dim:   var(--accent-dim);
+      --styx-glow:  var(--accent-dim);
+      --gold:       var(--amber);
+      --gold-lt:    var(--amber);
+      --ember:      var(--bad);
+      --bone:       var(--text);
+      --bone-dim:   var(--text-dim);
+
+      --font-d: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+      --font-b: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+      --font-m: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+      --content-w: 720px;
+      --r: 10px;
+      --r-sm: 6px;
+    }
+    @media (min-width:860px)  { :root { --content-w:760px; } }
+    @media (min-width:1100px) { :root { --content-w:840px; } }
+    @media (min-width:1440px) { :root { --content-w:900px; } }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body {
+      margin: 0; overflow-x: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-b); font-size: 16px; line-height: 1.6;
+      padding-bottom: 4rem;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: rgba(74,130,245,.3); color: var(--accent-strong); }
+    h1,h2,h3 { font-family: var(--font-d); font-weight: 700; letter-spacing: -0.01em; color: var(--text); margin: 0; }
+    code {
+      font-family: var(--font-m);
+      background: var(--bg-muted); color: var(--accent-strong);
+      padding: .12rem .38rem; border-radius: 4px; font-size: .88em;
+    }
+    pre {
+      font-family: var(--font-m);
+      background: var(--bg-soft); border: 1px solid var(--border);
+      border-radius: var(--r-sm); padding: 1rem 1.1rem;
+      overflow-x: auto; font-size: .84rem; color: var(--text); line-height: 1.6;
+      margin: 0;
+    }
+
+    .eyebrow {
+      font-family: var(--font-m); font-size: .7rem; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--text-faint); margin-bottom: .5rem; display: block;
+    }
+    .tag-styx {
+      font-family: var(--font-m); font-size: .66rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--accent); display: inline-block;
+      background: var(--accent-dim); padding: .18rem .55rem; border-radius: 999px;
+      margin-bottom: .7rem;
+    }
+
+    #hero {
+      min-height: 65vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 1.5rem 4rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-badge {
+      font-family: var(--font-m); font-size: .72rem; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--accent);
+      background: var(--accent-dim);
+      padding: .35rem 1rem; border-radius: 999px; margin-bottom: 1.8rem;
+    }
+    .hero-title { font-size: clamp(2.1rem, 5.5vw, 3.4rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
+    .hero-title span { color: var(--accent); }
+    .hero-sub { color: var(--text-dim); max-width: 520px; margin: 0 auto 1.8rem; font-size: 1.05rem; }
+    .scroll-cue { color: var(--text-faint); font-size: .8rem; animation: bob 2.5s ease-in-out infinite; }
+    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+    .section-bg-a, .section-bg-b, .section-bg-c, .section-bg-d {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+    .section-bg-b { background: var(--bg-soft); }
+    .chamber { max-width: var(--content-w); margin: 0 auto; padding: 4.5rem 1.5rem; }
+    .chamber-head { margin-bottom: 2.2rem; }
+    .chamber-head h2 { font-size: clamp(1.5rem, 3.6vw, 2rem); }
+    .chamber-head p { color: var(--text-dim); max-width: 560px; margin-top: .6rem; font-size: .98rem; }
+
+    .river-wrap { margin: 1.4rem 0 2.2rem; }
+    .river-track {
+      position: relative; height: 4px;
+      background: var(--border); border-radius: 999px; overflow: hidden; margin-bottom: .8rem;
+    }
+    .river-fill {
+      position: absolute; top: 0; left: 0; height: 100%; width: 0%;
+      background: var(--accent);
+      border-radius: 999px;
+      transition: width .4s ease;
+    }
+    .river-labels {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-m); font-size: .63rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--text-faint);
+    }
+    .river-labels span.done { color: var(--accent); font-weight: 600; }
+
+    .status-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.2rem; flex-wrap: wrap; gap: .8rem;
+    }
+    .score-tag { font-family: var(--font-m); font-size: .76rem; color: var(--text-dim); }
+    .score-tag b { color: var(--accent); }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 1.8rem; }
+    .q-text { font-size: 1.1rem; font-weight: 500; margin-bottom: 1.2rem; color: var(--text); max-width: 70ch; }
+    .q-text pre, .card pre {
+      background: var(--bg-soft); border-color: var(--border);
+      font-size: .83rem; margin: .6rem 0;
+    }
+
+    .options-grid { display: flex; flex-direction: column; gap: .6rem; }
+    .option-btn {
+      text-align: left; width: 100%;
+      background: var(--bg); border: 1px solid var(--border); color: var(--text);
+      font-family: var(--font-b); font-size: 1rem;
+      padding: .8rem 1.1rem; border-radius: var(--r-sm); cursor: pointer;
+      transition: border-color .15s, background .15s;
+      position: relative;
+    }
+    .option-btn:hover:not([disabled]):not(.selected) { border-color: var(--border-strong); background: rgba(255,255,255,.04); }
+    .option-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .option-btn.selected {
+      border-color: var(--accent);
+      background: rgba(74,130,245,.12);
+      color: var(--accent-strong);
+      font-weight: 600;
+      box-shadow: 0 0 0 1px var(--accent) inset;
+    }
+    .option-btn.correct { border-color: var(--good); background: var(--good-bg); color: var(--good); }
+    .option-btn.wrong   { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+    .option-btn[disabled] { cursor: not-allowed; }
+    .option-btn[disabled]:not(.correct):not(.wrong):not(.selected) { opacity: .5; }
+
+    .quiz-nav { display: flex; justify-content: flex-end; gap: .7rem; margin-top: 1.4rem; flex-wrap: wrap; }
+
+    .feedback { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: .95rem; color: var(--text-dim); display: none; }
+    .feedback.show { display: block; }
+    .feedback.ok  { color: var(--good); }
+    .feedback.bad { color: var(--bad); }
+
+    details.hint {
+      margin-top: 1rem; border: 1px solid var(--border);
+      border-radius: var(--r-sm); background: rgba(74,130,245,.03);
+    }
+    details.hint summary {
+      cursor: pointer; list-style: none; padding: .6rem .9rem;
+      font-family: var(--font-m); font-size: .73rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--accent);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    details.hint summary::-webkit-details-marker { display: none; }
+    details.hint summary::before { content: "♦"; font-size: .9rem; }
+    details.hint[open] summary { border-bottom: 1px solid var(--border); }
+    details.hint .hint-body { padding: .8rem .9rem .9rem; font-size: .92rem; color: var(--text-dim); max-width: 70ch; }
+    details.hint .hint-body code { color: var(--accent-strong); }
+
+    .summary-card {
+      text-align: center; padding: 2.6rem 1.5rem;
+      border: 1px solid var(--border); border-radius: var(--r);
+      background: radial-gradient(ellipse at 50% 0%, rgba(74,130,245,.07), transparent 70%);
+    }
+    .summary-card .big-score { font-size: 2.8rem; font-weight: 800; color: var(--accent); margin: .4rem 0; }
+    .summary-card p { color: var(--text-dim); max-width: 460px; margin: .6rem auto 0; }
+    .cta-row { display: flex; justify-content: center; flex-wrap: wrap; gap: .7rem; margin-top: 1.4rem; }
+
+    .result-grid { display: flex; flex-direction: column; gap: .5rem; margin-top: 1.4rem; text-align: left; }
+    .result-chip {
+      border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: .6rem .9rem; font-size: .84rem;
+    }
+    .result-chip.ok   { border-color: var(--good); background: var(--good-bg); }
+    .result-chip.bad  { border-color: var(--bad); background: var(--bad-bg); }
+    .result-chip-top  { display: flex; gap: .5rem; align-items: flex-start; }
+    .rc-icon          { font-weight: 700; flex-shrink: 0; }
+    .result-chip.ok .rc-icon  { color: var(--good); }
+    .result-chip.bad .rc-icon { color: var(--bad); }
+    .result-chip-answer { margin-top: .2rem; color: var(--text-faint); font-size: .8rem; }
+    .result-chip-answer span { color: var(--text-dim); }
+
+    .btn {
+      font-family: var(--font-m); font-size: .82rem; letter-spacing: .06em; text-transform: uppercase;
+      background: transparent; color: var(--text); border: 1px solid var(--border-strong);
+      padding: .72rem 1.4rem; border-radius: var(--r-sm); cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .btn:hover { border-color: var(--accent); background: rgba(74,130,245,.08); }
+    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .btn[disabled] { opacity: .4; cursor: not-allowed; }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 700; }
+    .btn-primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
+    .btn-primary[disabled] { background: var(--border); border-color: var(--border); color: var(--text-faint); }
+
+    .boon-list { display: flex; flex-direction: column; gap: 1.2rem; }
+    .boon {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 1.6rem;
+      border-left: 3px solid var(--accent);
+    }
+    .boon-title { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: .2rem; }
+    .boon-flavor { font-style: italic; color: var(--text-faint); font-size: .88rem; margin-bottom: .9rem; }
+    .statement { color: var(--text-dim); font-size: .97rem; max-width: 70ch; margin-bottom: .9rem; }
+
+    .potion-card {
+      background: var(--surface); border: 1px solid var(--accent);
+      border-radius: var(--r); padding: 2rem;
+    }
+    .potion-title { font-size: 1.3rem; font-weight: 800; color: var(--accent); margin-bottom: .2rem; }
+    .potion-flavor { font-style: italic; color: var(--text-faint); font-size: .88rem; margin-bottom: 1rem; }
+    ul.reqs { padding-left: 1.2rem; color: var(--text-dim); margin: .6rem 0 0; }
+    ul.reqs li { margin-bottom: .35rem; font-size: .95rem; }
+    ul.reqs code { color: var(--accent-strong); }
+
+    .answer-box { margin-top: 1.2rem; }
+    .verify-note {
+      font-family: var(--font-m); font-size: .72rem; letter-spacing: .06em;
+      color: var(--text-faint); display: block; margin-bottom: .4rem;
+    }
+    .answer-box textarea {
+      width: 100%; min-height: 130px; resize: vertical;
+      background: var(--bg-soft); border: 1px solid var(--border);
+      color: var(--text); font-family: var(--font-m); font-size: .85rem;
+      line-height: 1.55; padding: .8rem .9rem;
+      border-radius: var(--r-sm); outline: none; tab-size: 4;
+    }
+    .answer-box textarea:focus { border-color: var(--accent); }
+
+    .answer-box .CodeMirror {
+      height: auto; min-height: 130px; border: 1px solid var(--border);
+      border-radius: var(--r-sm); font-family: var(--font-m); font-size: .85rem; line-height: 1.55;
+    }
+    .answer-box .CodeMirror-focused { border-color: var(--accent); }
+
+    @media (max-width: 600px) {
+      .answer-box textarea,
+      .answer-box .CodeMirror {
+        min-height: 45vh;
+        font-size: 16px; /* evita el zoom automático de iOS al enfocar */
+      }
+      .answer-box .CodeMirror-scroll { min-height: 45vh; }
+    }
+    .cm-s-underworld.CodeMirror { background: var(--bg-soft); color: var(--text); }
+    .cm-s-underworld .CodeMirror-gutters { background: var(--bg-muted); border-right: 1px solid var(--border); }
+    .cm-s-underworld .CodeMirror-linenumber { color: var(--text-faint); padding: 0 .6rem 0 .4rem; }
+    .cm-s-underworld .CodeMirror-cursor { border-left: 1.5px solid var(--accent); }
+    .cm-s-underworld .CodeMirror-selected { background: rgba(74,130,245,.18); }
+    .cm-s-underworld .CodeMirror-activeline-background { background: rgba(74,130,245,.05); }
+    .cm-s-underworld .CodeMirror-matchingbracket { color: var(--amber) !important; text-decoration: underline; }
+    .cm-s-underworld .cm-keyword { color: var(--accent); font-weight: 600; }
+    .cm-s-underworld .cm-def { color: var(--accent-strong); font-weight: 600; }
+    .cm-s-underworld .cm-builtin { color: var(--amber); }
+    .cm-s-underworld .cm-string, .cm-s-underworld .cm-string-2 { color: #ce9178; }
+    .cm-s-underworld .cm-number { color: var(--amber); }
+    .cm-s-underworld .cm-atom { color: var(--amber); }
+    .cm-s-underworld .cm-comment { color: var(--text-faint); font-style: italic; }
+    .cm-s-underworld .cm-operator { color: var(--text); }
+    .cm-s-underworld .cm-variable, .cm-s-underworld .cm-property { color: var(--text); }
+    .cm-s-underworld .cm-punctuation, .cm-s-underworld .cm-bracket { color: var(--text-dim); }
+    .CodeMirror-placeholder { color: var(--text-faint) !important; opacity: .7; }
+
+    .verify-row { display: flex; align-items: center; gap: .8rem; margin-top: .8rem; flex-wrap: wrap; }
+    .verify-status { font-family: var(--font-m); font-size: .75rem; color: var(--text-faint); }
+
+    .practice-note-area, .test-results { margin-top: .9rem; }
+    .practice-note {
+      font-family: var(--font-m); font-size: .8rem; padding: .6rem .9rem;
+      border-radius: var(--r-sm); border: 1px solid var(--border); line-height: 1.5;
+    }
+    .practice-note.ok   { color: var(--good); border-color: var(--good); background: var(--good-bg); }
+    .practice-note.warn { color: var(--bad); border-color: var(--bad); background: var(--bad-bg); }
+
+    .test-item {
+      border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: .55rem .8rem; background: var(--bg-soft); margin-bottom: .4rem;
+    }
+    .test-item.pass { border-color: var(--good); }
+    .test-item.fail { border-color: var(--bad); }
+    .t-head {
+      display: flex; justify-content: space-between; gap: .6rem;
+      font-family: var(--font-m); font-size: .68rem; letter-spacing: .04em; text-transform: uppercase;
+    }
+    .test-item.pass .t-head { color: var(--good); }
+    .test-item.fail .t-head { color: var(--bad); }
+    .t-detail { margin-top: .3rem; color: var(--text-dim); font-size: .84rem; }
+
+    .call-cell {
+      display: flex; align-items: center; gap: .5rem; margin-top: .9rem;
+      background: var(--bg-soft); border: 1px solid var(--border);
+      border-radius: var(--r-sm); padding: .4rem .7rem;
+    }
+    .call-cell-prompt { font-family: var(--font-m); font-size: .85rem; color: var(--accent); user-select: none; }
+    .call-cell-input {
+      flex: 1; background: none; border: none; outline: none;
+      font-family: var(--font-m); font-size: .85rem; color: var(--text);
+    }
+    .call-cell-input::placeholder { color: var(--text-faint); }
+    .call-cell-btn {
+      background: none; border: none; cursor: pointer; color: var(--accent);
+      font-size: 1rem; padding: 0 .3rem; border-radius: 3px;
+      transition: background .15s;
+    }
+    .call-cell-btn:hover { background: rgba(74,130,245,.12); }
+    .call-cell-output {
+      font-family: var(--font-m); font-size: .83rem; color: var(--accent-strong);
+      padding: .35rem .7rem; border-radius: var(--r-sm); display: none; margin-top: .3rem;
+      background: var(--bg-soft); border: 1px solid var(--border);
+    }
+    .call-cell-output.show { display: block; }
+    .call-cell-output.err  { color: var(--bad); border-color: var(--bad); }
+
+    .send-status { font-family: var(--font-m); font-size: .8rem; color: var(--accent); margin-top: .5rem; }
+
+    .snav-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.6); backdrop-filter: blur(3px); z-index: 8999;
+    }
+    .snav-overlay.open { display: block; }
+    .snav-tab {
+      position: fixed; left: 0; top: 50%; transform: translateY(-50%);
+      z-index: 9001; width: 26px; height: 80px;
+      background: rgba(8,13,24,.95); border: 1px solid rgba(74,130,245,.25);
+      border-left: none; border-radius: 0 6px 6px 0;
+      color: var(--accent); cursor: pointer;
+      font-family: var(--font-m); font-size: .6rem; letter-spacing: .12em;
+      writing-mode: vertical-rl;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color .2s;
+    }
+    .snav-tab:hover { border-color: var(--accent); }
+    .snav-panel {
+      position: fixed; left: 0; top: 0; bottom: 0; width: 248px;
+      background: rgba(8,13,24,.97);
+      border-right: 1px solid rgba(74,130,245,.15);
+      backdrop-filter: blur(12px); z-index: 9000;
+      transform: translateX(-100%); transition: transform .24s cubic-bezier(.25,.8,.25,1);
+      display: flex; flex-direction: column; overflow-y: auto;
+    }
+    .snav-panel.open { transform: translateX(0); }
+    .snav-header {
+      padding: 1.4rem 1.1rem 1rem;
+      border-bottom: 1px solid rgba(74,130,245,.1);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .snav-logo { font-family: var(--font-m); font-size: .8rem; letter-spacing: .12em; color: var(--accent); }
+    .snav-close {
+      background: none; border: none; color: var(--text-dim);
+      cursor: pointer; font-size: 1.1rem; line-height: 1;
+      padding: .2rem .4rem; border-radius: 3px;
+    }
+    .snav-body { padding: 1rem .8rem 2rem; flex: 1; }
+    .snav-section-label {
+      font-family: var(--font-m); font-size: .6rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--text-faint);
+      margin: 0 0 .5rem .3rem; display: block;
+    }
+    .snav-unit, .snav-anchor {
+      display: flex; align-items: center; gap: .6rem;
+      font-family: var(--font-m); font-size: .74rem;
+      color: var(--text-dim); text-decoration: none;
+      padding: .5rem .7rem; border-radius: 4px;
+      border-left: 2px solid transparent;
+      background: transparent; margin-bottom: .2rem;
+      transition: color .15s, background .15s;
+    }
+    .snav-unit:hover, .snav-anchor:hover { color: var(--text); background: rgba(74,130,245,.06); }
+    .snav-unit.active { color: var(--accent); border-left-color: var(--accent); background: rgba(74,130,245,.08); }
+    .snav-anchor.current { color: var(--accent); }
+    .u-num { font-size: .6rem; opacity: .7; min-width: 1.8rem; text-align: right; }
+    .snav-divider { border: none; border-top: 1px solid var(--border); margin: .6rem 0; }
+    @media (max-width: 600px) { .snav-tab { height: 60px; } }
+
+    footer {
+      max-width: var(--content-w); margin: 0 auto;
+      padding: 3rem 1.5rem 0; text-align: center;
+      color: var(--text-faint); font-family: var(--font-m); font-size: .74rem; opacity: .7;
+    }
+
+    .name-ac-item {
+      padding: .6rem .9rem; color: var(--text-dim); font-size: .9rem;
+      font-family: var(--font-m); cursor: pointer; border-bottom: 1px solid var(--border);
+    }
+    .name-ac-item:last-child { border-bottom: none; }
+    .name-ac-item:hover, .name-ac-item.ac-active {
+      background: rgba(74,130,245,.12); color: var(--accent-strong);
+    }
+  </style>
+</head>
+<body>
+<details style="position:fixed;top:14px;left:14px;z-index:9999;font-family:'JetBrains Mono',monospace;font-size:.72rem;">
+  <summary style="list-style:none;cursor:pointer;background:#1c0e12;border:1px solid #522630;color:#f5e6ea;padding:.4rem .8rem;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.4);display:inline-flex;align-items:center;gap:.35rem;">📚 Todas las clases</summary>
+  <div style="margin-top:.4rem;background:#1c0e12;border:1px solid #522630;border-radius:10px;padding:.5rem;display:flex;flex-direction:column;gap:.15rem;min-width:220px;box-shadow:0 4px 16px rgba(0,0,0,.5);">
+    <a href="/" style="color:#a07580;text-decoration:none;padding:.4rem .6rem;border-radius:6px;">🏠 Menú principal</a>
+    <a href="/archive/unidad-2/index.html" style="color:#f5e6ea;text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🏔️ El Descenso · U2</a>
+    <a href="/archive/unidad-3/index.html" style="color:#f5e6ea;text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🚦 Antes de Cruzar · U3.1</a>
+    <a href="/archive/clase-3/index.html" style="color:#f5e6ea;text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🔀 Estructuras de Control · U3</a>
+    <a href="/archive/unidad-4-pt1/index.html" style="color:#f5e6ea;text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🗂️ Estructuras de Datos · U4</a>
+    <span style="color:#f5e6ea;opacity:.45;padding:.4rem .6rem;display:block;">📋 El Archivo · U4.2 · estás acá</span>
+    <a href="/archive/clase-repaso/index.html" style="color:#f5e6ea;text-decoration:none;padding:.4rem .6rem;border-radius:6px;display:block;">🌸 Repaso · Primavera</a>
+  </div>
+</details>
+
+
+<!-- ══ NAME GATE ══════════════════════════════════════════════ -->
+<div id="name-gate" style="
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background:var(--bg); padding:2rem;
+">
+  <div style="
+    max-width:420px; width:100%;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:14px; padding:2.4rem 2rem; text-align:center;
+  ">
+    <div style="font-family:var(--font-m);font-size:.7rem;letter-spacing:.14em;color:var(--text-faint);text-transform:uppercase;margin-bottom:1.4rem">
+      Pensamiento Computacional · FIUBA
+    </div>
+    <div style="font-size:2rem;margin-bottom:.8rem">📋</div>
+    <h1 style="font-weight:800;font-size:1.6rem;color:var(--text);margin:0 0 .4rem">
+      UNIDAD 4.2 — <span style="color:var(--accent)">Listas y Tuplas</span>
+    </h1>
+    <p style="color:var(--text-dim);font-size:.92rem;margin:0 0 1.8rem;line-height:1.6">
+      Antes de empezar, contanos quién sos.
+    </p>
+    <label style="display:block;text-align:left;font-family:var(--font-m);font-size:.78rem;color:var(--text-faint);margin-bottom:.35rem">
+      Nombre completo
+    </label>
+    <div style="position:relative;margin-bottom:1rem;">
+      <input id="name-input" type="text" placeholder="Buscá tu nombre o escribilo..."
+        autocomplete="off"
+        style="
+          width:100%;box-sizing:border-box;
+          background:var(--bg);border:1px solid var(--border);
+          border-radius:6px;padding:.65rem .9rem;
+          color:var(--text);font-family:var(--font-m);font-size:.95rem;
+          outline:none;
+        "
+        oninput="nameAcFilter()"
+        onfocus="nameAcFilter()"
+        onblur="setTimeout(nameAcHide,180)"
+        onkeydown="nameAcKeydown(event)"
+      />
+      <div id="name-ac-list" style="
+        display:none;position:absolute;left:0;right:0;top:100%;
+        background:var(--surface);border:1px solid var(--border);
+        border-top:none;border-radius:0 0 6px 6px;
+        max-height:220px;overflow-y:auto;z-index:100;
+        text-align:left;
+      "></div>
+    </div>
+    <button onclick="startSession()" style="
+      width:100%;padding:.75rem;border:none;border-radius:6px;
+      background:var(--accent);color:#000;cursor:pointer;
+      font-family:var(--font-b);font-weight:700;font-size:.95rem;
+    ">
+      Empezar →
+    </button>
+    <p id="name-gate-err" style="color:var(--bad);font-size:.8rem;margin:.6rem 0 0;display:none">
+      Ingresá tu nombre para continuar.
+    </p>
+  </div>
+</div>
+
+<!-- ══ CONTENIDO PRINCIPAL ════════════════════════════════════ -->
+<div id="main-content" style="display:none">
+
+<!-- ══ HERO ══════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-badge">Pensamiento Computacional · Curso 11: Retamozo, Pratto</div>
+  <h1 class="hero-title">Listas y <span>Tuplas</span></h1>
+  <p class="hero-sub">UNIDAD 4.2 — Colecciones, métodos y funciones de orden superior.</p>
+  <div class="scroll-cue">▼</div>
+</section>
+
+<!-- ══ QUIZ ══════════════════════════════════════════════════ -->
+<div class="section-bg-a">
+  <div class="chamber" id="camara-1">
+    <div class="chamber-head">
+      <span class="eyebrow">Autoevaluación</span>
+      <h2>Quiz</h2>
+      <p>9 preguntas de repaso, una por vez. Seleccioná tu respuesta y confirmala antes de ver el resultado.</p>
+    </div>
+    <div id="quiz-root"></div>
+  </div>
+</div>
+
+<!-- ══ EJERCICIOS ════════════════════════════════════════════ -->
+<div class="section-bg-b">
+  <div class="chamber" id="camara-ejercicios">
+    <div class="chamber-head">
+      <span class="eyebrow">Práctica</span>
+      <h2>Ejercicios</h2>
+      <p>Listas y tuplas en acción. Cada ejercicio tiene su pista y verificación automática.</p>
+    </div>
+    <div class="boon-list" id="boon-list-u4"></div>
+  </div>
+</div>
+
+<!-- ══ DESAFÍO FINAL ════════════════════════════════════════ -->
+<div class="section-bg-a">
+  <div class="chamber" id="camara-final">
+    <div class="chamber-head">
+      <span class="eyebrow">Desafío Final</span>
+      <h2>Análisis Salarial</h2>
+      <p>Un ejercicio que combina listas, funciones auxiliares y cálculos estadísticos.</p>
+    </div>
+    <div id="potion-root"></div>
+  </div>
+</div>
+
+<!-- ══ EJERCICIOS DE PARCIAL ═════════════════════════════════ -->
+<div class="section-bg-b">
+  <div class="chamber" id="examen-final">
+    <div class="chamber-head">
+      <span class="eyebrow">Ejercicios de Parcial</span>
+      <h2>Ejercicios Integradores</h2>
+      <p>Ejercicios que combinan listas, tuplas y estructuras de control. Podés entregar tu solución directamente.</p>
+    </div>
+    <div id="exam-root"></div>
+  </div>
+</div>
+
+<footer>El Archivo · UNIDAD 4.2 — Listas y Tuplas · Pensamiento Computacional FIUBA</footer>
+
+</div><!-- /#main-content -->
+
+<!-- ══ SITE NAVIGATION ═══════════════════════════════════════ -->
+<div class="snav-overlay" id="snav-overlay" onclick="snavClose()"></div>
+<button class="snav-tab" onclick="snavToggle()" aria-label="Abrir menú">nav</button>
+<nav class="snav-panel" id="snav-panel" aria-label="Navegación del sitio">
+  <div class="snav-header">
+    <span class="snav-logo">PC · FIUBA</span>
+    <button class="snav-close" onclick="snavClose()" aria-label="Cerrar">✕</button>
+  </div>
+  <div class="snav-body">
+    <span class="snav-section-label">Unidades</span>
+    <a class="snav-unit active" href="#">
+      <span class="u-num">U4.2</span>Listas y Tuplas
+    </a>
+    <hr class="snav-divider">
+    <span class="snav-section-label">Unidad 4.2</span>
+    <a class="snav-anchor" href="#hero"              onclick="snavClose()">Inicio</a>
+    <a class="snav-anchor" href="#camara-1"          onclick="snavClose()">Quiz</a>
+    <a class="snav-anchor" href="#camara-ejercicios" onclick="snavClose()">Ejercicios</a>
+    <a class="snav-anchor" href="#camara-final"      onclick="snavClose()">Desafío Final</a>
+    <a class="snav-anchor" href="#examen-final"      onclick="snavClose()">Ejercicios de Parcial</a>
+      <hr class="snav-divider">
+    <span class="snav-section-label">Todas las clases</span>
+    <a class="snav-anchor" href="/" onclick="snavClose()">🏠 Menú principal</a>
+    <a class="snav-anchor" href="/archive/unidad-2/index.html" onclick="snavClose()">🏔️ El Descenso · U2</a>
+    <a class="snav-anchor" href="/archive/unidad-3/index.html" onclick="snavClose()">🚦 Antes de Cruzar · U3.1</a>
+    <a class="snav-anchor" href="/archive/clase-3/index.html" onclick="snavClose()">🔀 Estructuras de Control · U3</a>
+    <a class="snav-anchor" href="/archive/unidad-4-pt1/index.html" onclick="snavClose()">🗂️ Estructuras de Datos · U4</a>
+    <span class="snav-anchor" style="opacity:.45;cursor:default">📋 El Archivo · U4.2 · estás acá</span>
+    <a class="snav-anchor" href="/archive/clase-repaso/index.html" onclick="snavClose()">🌸 Repaso · Primavera</a>
+</div>
+</nav>
+
+<!-- ══ SCRIPT ════════════════════════════════════════════════ -->
+<script>
+/* ─── CONFIG ─────────────────────────────────────────────── */
+const SHEET_WEBHOOK = "https://script.google.com/macros/s/AKfycbxixKO-IHvlg3OzajxcbINbx6UwP0Li_tTuhI8MLQiIqPrNnmq7XVW9Cm_15B-8c6Li/exec";
+let studentName = '';
+
+/* ─── NAME AUTOCOMPLETE ──────────────────────────────────── */
+const ALUMNOS = [
+  "Ernesto Barragán","Alfonso Barreña Baroni","Tobias Barrios","Enzo Bruccieri",
+  "Kevin Nahuel Bustamante Flores","Elián Candia Candia",
+  "Angelique Tatiana Chazarreta Reyes","Jhoscen Maykel Jhair Chumacero Reyes",
+  "Lucas Cornejo Abad","Marcel Mihai Cuba Reyes","Tatiana Agustina Fernández",
+  "Noemi Flores","Lisandro Flores Chiachiare","Emilia Gonzalez Frutos",
+  "Tomás Gonzalo Grané","Antonio David Hochbaum","Daniela Ledesma",
+  "Matias Melita","Martina Oses","Milena María Ostojich Checa",
+  "Alison Michel Padilla Balderrama","Ian David Park","Agustín Pascale",
+  "Mauro Ivan Paz","Harold Perez","Francisco Román Pérez León","Gael Quesada",
+  "Dylan Quipildor","Agustín Regis","Bruno Nahuel Rodriguez Alfonzo",
+  "Lucas Gabriel Rodríguez Aray","Tiago Tomas Rodríguez Ormaechea",
+  "Arian Denis Ruibo","Bruno Amin Salinas Casco","Alejandro Sarta",
+  "Lautaro Slavsky","Maximo Yoel Suca","Juan Sulbaran",
+  "Matias Nicolas Tinnirello","Nicolas Wei","Sebastián Yu García",
+  "Bernardo Bautista","Dante Pinto","Enzo Lisicki","Ezequiel Mendoza",
+  "Guillermo Alvarez","Juan Bautista Angelero","Maika Abellido","Sebastián Angulo"
+];
+
+let _nameAcIdx = -1;
+
+function nameAcFilter() {
+  const q = (document.getElementById('name-input').value || '').trim().toLowerCase();
+  const list = document.getElementById('name-ac-list');
+  const matches = q.length === 0
+    ? ALUMNOS
+    : ALUMNOS.filter(n => n.toLowerCase().includes(q));
+  if (matches.length === 0) { list.style.display = 'none'; return; }
+  list.innerHTML = matches.map(n =>
+    `<div class="name-ac-item" data-name="${n.replace(/"/g,'&quot;')}"
+         onmousedown="nameAcSelect(this.dataset.name)">${n}</div>`
+  ).join('');
+  list.style.display = 'block';
+  _nameAcIdx = -1;
+}
+
+function nameAcHide() {
+  const list = document.getElementById('name-ac-list');
+  if (list) list.style.display = 'none';
+  _nameAcIdx = -1;
+}
+
+function nameAcSelect(name) {
+  document.getElementById('name-input').value = name;
+  nameAcHide();
+}
+
+function nameAcKeydown(e) {
+  const list = document.getElementById('name-ac-list');
+  const items = list ? list.querySelectorAll('.name-ac-item') : [];
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    _nameAcIdx = Math.min(_nameAcIdx + 1, items.length - 1);
+    items.forEach((el, i) => el.classList.toggle('ac-active', i === _nameAcIdx));
+    if (items[_nameAcIdx]) items[_nameAcIdx].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    _nameAcIdx = Math.max(_nameAcIdx - 1, 0);
+    items.forEach((el, i) => el.classList.toggle('ac-active', i === _nameAcIdx));
+    if (items[_nameAcIdx]) items[_nameAcIdx].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter') {
+    if (_nameAcIdx >= 0 && items[_nameAcIdx]) {
+      nameAcSelect(items[_nameAcIdx].dataset.name);
+    } else {
+      startSession();
+    }
+  } else if (e.key === 'Escape') {
+    nameAcHide();
+  }
+}
+
+/* ─── NAME GATE ──────────────────────────────────────────── */
+function startSession() {
+  const val = document.getElementById('name-input').value.trim();
+  if (!val) {
+    document.getElementById('name-gate-err').style.display = 'block';
+    return;
+  }
+  studentName = val;
+  document.getElementById('name-gate').style.display = 'none';
+  document.getElementById('main-content').style.display = 'block';
+  initPage();
+}
+
+/* ─── SHEET SUBMIT ───────────────────────────────────────── */
+function sendToSheet(sheetName, results, score, total, statusElId) {
+  const statusEl = document.getElementById(statusElId);
+  if (!SHEET_WEBHOOK) { statusEl.textContent = 'Webhook no configurado.'; return; }
+  statusEl.textContent = 'Enviando…';
+  const body = new URLSearchParams({
+    sheet:     sheetName,
+    nombre:    studentName,
+    puntaje:   score + '/' + total,
+    preguntas: JSON.stringify(results.map(r => r.pregunta || r.q || '')),
+    respuestas:JSON.stringify(results.map(r => r.respuesta || r.chosen || '')),
+    correctas: JSON.stringify(results.map(r => r.correcta !== undefined ? r.correcta : r.correct)),
+    notas:     JSON.stringify(results.map(() => '')),
+  });
+  fetch(SHEET_WEBHOOK, { method:'POST', mode:'no-cors', body })
+    .then(() => { statusEl.textContent = '✓ Enviado a la planilla.'; })
+    .catch(() => { statusEl.textContent = '✗ Error al enviar. Avisale al docente.'; });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UNIDAD 4.2 — DATA
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── QUIZ DATA ───────────────────────────────────────────── */
+
+const sections      = ["Las Aguas del Leteo", "El Laberinto", "La Forja", "El Tribunal"];
+const sectionLabels = ["Leteo", "Laberinto", "Forja", "Tribunal"];
+
+const questions = [
+  /* ── LETEO: mutabilidad ── */
+  {
+    section: "Las Aguas del Leteo",
+    q: "¿Qué estructura de datos <strong>no</strong> es inmutable?",
+    answers: ["Listas"],
+    options: ["Strings", "Tuplas", "Rangos", "Listas"],
+    hint: "¿Qué significa que algo sea inmutable? ¿Qué pasaría si intentaras hacer <code>mi_lista[0] = 99</code> — y después lo mismo con un string o una tupla? ¿Cuál de las cuatro opciones te deja hacer eso?",
+    feedback_ok: "Correcto. Las listas son mutables: podés modificarlas con <code>append()</code>, <code>remove()</code> o asignación por índice. Strings, tuplas y rangos no admiten modificaciones.",
+    feedback_bad: "La respuesta correcta es <b>Listas</b>. Strings, tuplas y rangos son inmutables — no se pueden cambiar una vez creados.",
+  },
+  {
+    section: "Las Aguas del Leteo",
+    q: "¿Cuál es la diferencia fundamental entre una lista y una tupla?",
+    answers: ["Las tuplas no pueden modificarse"],
+    options: ["Las listas pueden indexarse y las tuplas no", "Las listas no se pueden desempaquetar", "Las tuplas no pueden modificarse", "Las tuplas pueden contener valores de distinto tipo y las listas no"],
+    hint: "Pensá qué operaciones podés hacer con una lista que no podés hacer con una tupla. ¿Podés agregar o cambiar elementos en ambas? ¿Cuál de las opciones nombra esa diferencia concretamente?",
+    feedback_ok: "Correcto. Las tuplas son inmutables: una vez creadas no se pueden modificar. Las listas sí.",
+    feedback_bad: "La respuesta correcta es que <b>las tuplas no pueden modificarse</b>. Ambas admiten indexación y desempaquetado, y ambas pueden mezclar tipos.",
+  },
+  /* ── LABERINTO: indexación ── */
+  {
+    section: "El Laberinto",
+    q: "¿Qué devuelve <code>len([\"Hola\", \"Chau\", \"?\"])</code>?",
+    answers: ["3"],
+    options: ["2", "3", "9", "Error. Len es solo para cadenas"],
+    hint: "¿Qué es exactamente lo que <code>len()</code> cuenta sobre una lista — los elementos o los caracteres dentro de ellos? Contá a mano cuántos elementos tiene esa lista.",
+    feedback_ok: "Correcto. La lista tiene 3 elementos y <code>len()</code> los cuenta, no los caracteres de cada string.",
+    feedback_bad: "La respuesta es <b>3</b>. <code>len()</code> cuenta cuántos elementos tiene la colección — la lista tiene 3.",
+  },
+  {
+    section: "El Laberinto",
+    q: "¿Qué muestra el siguiente código?<pre>valores = [[1, 2], [3, 4]]\nprint(valores[0])</pre>",
+    answers: ["[1, 2]"],
+    options: ["1", "3", "1, 3", "[1, 2]"],
+    hint: "¿Qué tipo de dato es el primer elemento de <code>valores</code>? ¿Un número o algo más? Si lo imprimís, ¿qué esperarías ver?",
+    feedback_ok: "Correcto. <code>valores[0]</code> devuelve el primer elemento, que es la sublista <code>[1, 2]</code> completa.",
+    feedback_bad: "La respuesta es <b>[1, 2]</b>. <code>valores[0]</code> devuelve el primer elemento de la lista externa, que es la sublista completa.",
+  },
+  {
+    section: "El Laberinto",
+    q: "¿Qué muestra el siguiente código?<pre>valores = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\nprint(valores[1][2])</pre>",
+    answers: ["6"],
+    options: ["1", "6", "8", "5"],
+    hint: "Cuando aplicás <code>[1]</code> a <code>valores</code>, ¿qué obtenés? ¿Y si a ese resultado le aplicás <code>[2]</code>? Resolvelo paso a paso.",
+    feedback_ok: "Correcto. <code>valores[1]</code> es <code>[4, 5, 6]</code> y <code>[2]</code> toma el tercer elemento: <code>6</code>.",
+    feedback_bad: "La respuesta es <b>6</b>. <code>valores[1]</code> da <code>[4, 5, 6]</code>, y el elemento en índice 2 de esa sublista es <code>6</code>.",
+  },
+  /* ── FORJA: métodos ── */
+  {
+    section: "La Forja",
+    q: "¿Qué diferencia hay entre <code>sort()</code> y <code>sorted()</code>?",
+    answers: ["Sort modifica la lista original"],
+    options: ["Sorted modifica la lista original", "Sort modifica la lista original", "Sort ordena de mayor a menor siempre", "Sorted es solo para números"],
+    hint: "Si hacés <code>resultado = mi_lista.sort()</code>, ¿qué valor tiene <code>resultado</code>? ¿Y la lista original? ¿Qué pasa si en cambio hacés <code>resultado = sorted(mi_lista)</code>?",
+    feedback_ok: "Correcto. <code>sort()</code> modifica la lista en su lugar (devuelve <code>None</code>). <code>sorted()</code> deja la original intacta y crea una nueva.",
+    feedback_bad: "La respuesta correcta es que <b>sort() modifica la lista original</b>. <code>sorted()</code> deja la original intacta y devuelve una nueva lista ordenada.",
+  },
+  {
+    section: "La Forja",
+    q: "¿Qué diferencia hay entre <code>append()</code> e <code>insert()</code>?",
+    answers: ["Append agrega un elemento al final"],
+    options: ["Append agrega un elemento al final", "Insert agrega un elemento al inicio", "Append recibe el índice donde lo querés insertar", "Insert crea una nueva lista con el valor agregado"],
+    hint: "¿Cuántos argumentos recibe <code>append</code> y cuántos <code>insert</code>? ¿Qué representa el argumento extra de uno de ellos? ¿En qué posición termina el elemento nuevo?",
+    feedback_ok: "Correcto. <code>append(x)</code> siempre agrega al final. <code>insert(i, x)</code> inserta en la posición <code>i</code> que vos elegís.",
+    feedback_bad: "La respuesta correcta es que <b>append agrega al final</b>. <code>insert()</code> recibe un índice como primer argumento — no necesariamente inserta al inicio.",
+  },
+  /* ── TRIBUNAL: map/filter ── */
+  {
+    section: "El Tribunal",
+    q: "¿Qué condición debe cumplir la función que se utiliza con <code>filter()</code>?",
+    answers: ["Debe devolver un tipo de dato booleano"],
+    options: ["Debe recibir un tipo de dato booleano", "Debe devolver un tipo de dato booleano", "Debe mostrar por pantalla el resultado del filtro", "Debe tener una sola línea"],
+    hint: "¿Qué decisión tiene que tomar <code>filter</code> sobre cada elemento — incluirlo o no? ¿Qué tipo de valor le permite tomar esa decisión?",
+    feedback_ok: "Correcto. La función que se pasa a <code>filter()</code> debe devolver un booleano (o algo que evalúe como True/False) para decidir qué elementos conservar.",
+    feedback_bad: "La respuesta correcta es que <b>debe devolver un tipo de dato booleano</b>. <code>filter()</code> conserva los elementos para los que la función devuelve <code>True</code>.",
+  },
+  {
+    section: "El Tribunal",
+    q: "¿Para qué se usa <code>map()</code>?",
+    answers: ["Aplica una misma función a todos los elementos y devuelve una nueva secuencia"],
+    options: [
+      "Modificar los valores de una lista",
+      "Filtrar los valores booleanos de una lista",
+      "Aplica una misma función a todos los elementos y devuelve una nueva secuencia",
+      "Aplica una función booleana y devuelve los elementos que devuelven True",
+    ],
+    hint: "¿Cuál es la diferencia entre querer <em>transformar</em> cada elemento y querer <em>seleccionar</em> algunos? ¿Cuál de esas dos cosas hace <code>map</code>? ¿Y <code>filter</code>?",
+    feedback_ok: "Correcto. <code>map(f, lista)</code> aplica <code>f</code> a cada elemento y devuelve un nuevo iterable con los resultados. No altera la lista original.",
+    feedback_bad: "La respuesta correcta es que <b>map aplica una función a todos los elementos y devuelve una nueva secuencia</b>. <code>filter()</code> es el que selecciona según True/False.",
+  },
+];
+
+/* ─── EJERCICIOS: LISTAS Y TUPLAS ───────────────────────────── */
+
+const boonsU4 = [
+  /* ── ADN DIGITAL ─────────────────────────────────────── */
+  {
+    title: "ADN Digital",
+    flavor: "No toda secuencia es lo que parece.",
+    tag: "listas · cadenas · conteo",
+    statement: `En un laboratorio analizamos <strong>ADN digital</strong>: cadenas de ceros y unos donde cada símbolo representa una base artificial. A veces se cuelan mutaciones — símbolos que no son <code>0</code> ni <code>1</code>.<br><br>
+Implementá <code>analizar_adn(secuencia, patron)</code> que reciba una cadena y un patrón, y devuelva una <strong>tupla</strong> con:<ol>
+<li>Cantidad de <code>1</code> en la cadena</li>
+<li>Cantidad de <code>0</code> en la cadena</li>
+<li>Cantidad de veces que aparece el patrón</li>
+<li>Posición de la primera aparición del patrón</li>
+<li>Porcentaje de caracteres que no son <code>0</code> ni <code>1</code></li>
+</ol>
+<b>Ejemplo:</b> <code>analizar_adn("1f101011011W3011010", "1010")</code> → <code>(10, 6, 2, 2, 15.78...)</code>`,
+    hint: "¿Cómo sabrías cuántas veces aparece un carácter en una cadena sin recorrerla a mano? ¿Cómo encontrás dónde aparece por primera vez una subcadena? Los caracteres que no son '0' ni '1': ¿podés calcularlos sin contarlos directamente?",
+    starter: "def analizar_adn(secuencia, patron):\n    pass",
+    test: {
+      funcName: "analizar_adn",
+      cases: [
+        { args: ["1f101011011W3011010", "1010"], stdin: [], expect: { type: "contains", parts: ["10,6", "2,2", "15.78"] } },
+        { args: ["110", "1"],                    stdin: [], expect: { type: "contains", parts: ["2,1,2,0,0"] } },
+        { args: ["11x00y11", "11"],              stdin: [], expect: { type: "contains", parts: ["4,2,2,0,25"] } },
+      ],
+    },
+    sol: `def analizar_adn(secuencia, patron):
+    cant_unos = secuencia.count("1")
+    cant_ceros = secuencia.count("0")
+    cant_patron = secuencia.count(patron)
+    pos_patron = secuencia.find(patron)
+    cant_diferentes = len(secuencia) - cant_unos - cant_ceros
+    porcentaje = cant_diferentes / len(secuencia) * 100
+    return (cant_unos, cant_ceros, cant_patron, pos_patron, porcentaje)`,
+  },
+
+  /* ── GESTIÓN DE GASTOS ───────────────────────────────── */
+  {
+    title: "Gestión de Gastos",
+    flavor: "El oro no miente.",
+    tag: "listas · max · índices",
+    statement: `Pedro registra sus gastos diarios en una lista. Al finalizar la semana quiere saber cuál fue el <strong>índice</strong> del día en que más gastó y cuánto gastó en <strong>promedio</strong> (entero).<br><br>
+Implementá <code>gestionar_gastos(gastos)</code> que reciba la lista de gastos y devuelva una tupla <code>(indice_dia_max, gasto_prom)</code>.<br><br>
+<b>Ejemplo:</b> <code>gestionar_gastos([500, 100, 300])</code> → <code>(0, 300)</code>`,
+    hint: "¿Cómo encontrás el valor más alto de una lista sin recorrerla vos mismo? Una vez que tenés ese valor, ¿cómo sabés en qué posición está? ¿Qué operación usás para que el promedio sea entero y no decimal?",
+    starter: "def gestionar_gastos(gastos):\n    pass",
+    test: {
+      funcName: "gestionar_gastos",
+      cases: [
+        { args: [[500, 100, 300]],           stdin: [], expect: { type: "contains", parts: ["0,300"] } },
+        { args: [[10, 50, 20, 80, 30]],      stdin: [], expect: { type: "contains", parts: ["3,38"] } },
+        { args: [[200, 200, 400, 100, 100]], stdin: [], expect: { type: "contains", parts: ["2,200"] } },
+      ],
+    },
+    sol: `def gestionar_gastos(gastos):
+    maximo = max(gastos)
+    dia = gastos.index(maximo)
+    promedio = sum(gastos) // len(gastos)
+    return (dia, promedio)`,
+  },
+
+  /* ── MÚSICA RETRO ────────────────────────────────────── */
+  {
+    title: "Música Retro",
+    flavor: "El nombre importa más que el formato.",
+    tag: "listas · strings · append",
+    statement: `Tenemos canciones guardadas en formato <code>.mp3</code>. Queremos una lista con los nombres limpios para poder mostrarla.<br><br>
+Implementá <code>limpiar_nombre_canciones(canciones)</code> que reciba una lista con nombres como <code>"No_te_imaginas.mp3"</code> y devuelva una lista con los nombres limpios: <code>"No te imaginas"</code> (sin extensión, guiones bajos reemplazados por espacios).<br><br>
+<b>Ejemplo:</b> <code>limpiar_nombre_canciones(["No_te_imaginas.mp3"])</code> → <code>["No te imaginas"]</code>`,
+    hint: "¿Cómo separarías <code>\"cancion.mp3\"</code> en sus dos partes? ¿Qué parte te interesa? Una vez que la tenés, ¿cómo transformás los guiones bajos en espacios?",
+    starter: "def limpiar_nombre_canciones(canciones):\n    pass",
+    test: {
+      funcName: "limpiar_nombre_canciones",
+      cases: [
+        { args: [["No_te_imaginas.mp3", "Hola_mundo.mp3"]], stdin: [], expect: { type: "contains", parts: ["No te imaginas", "Hola mundo"] } },
+        { args: [["Bohemian_Rhapsody.mp3"]],                stdin: [], expect: { type: "contains", parts: ["Bohemian Rhapsody"] } },
+        { args: [["cancion_uno.mp3", "cancion_dos.mp3"]],   stdin: [], expect: { type: "contains", parts: ["cancion uno", "cancion dos"] } },
+      ],
+    },
+    sol: `def limpiar_nombre_canciones(canciones):
+    resultado = []
+    for cancion in canciones:
+        nombre, extension = cancion.split(".")
+        nombre = nombre.replace("_", " ")
+        resultado.append(nombre)
+    return resultado`,
+  },
+
+  /* ── LISTA DE CUMPLEAÑOS ─────────────────────────────── */
+  {
+    title: "Lista de Cumpleaños",
+    flavor: "Las invitaciones no admiten errores.",
+    tag: "listas · tuplas · desempaquetado · print",
+    statement: `Organizamos un cumpleaños y necesitamos imprimir invitaciones para la familia. Dada una lista de tuplas <code>[(apellido, cant)]</code>, implementá <code>imprimir_invitaciones(invitados)</code> que <strong>imprima</strong> cada invitación con el formato:<br>
+<code>Familia &lt;apellido&gt;, &lt;cant&gt; invitaciones</code><br>
+(y <code>invitación</code> en singular cuando <code>cant == 1</code>).<br><br>
+<b>Ejemplo</b> para <code>[("Prieto", 3), ("Corsi", 1)]</code>:<pre>Familia Prieto, 3 invitaciones\nFamilia Corsi, 1 invitación</pre>`,
+    hint: "Cada elemento de la lista es una tupla con dos valores. ¿Cómo los asignás a variables con nombre directamente en el <code>for</code>? ¿Qué condición diferencia el singular del plural?",
+    starter: "def imprimir_invitaciones(invitados):\n    pass",
+    test: {
+      funcName: "imprimir_invitaciones",
+      cases: [
+        { args: [[["Prieto", 3], ["Capulleto", 4]]], stdin: [], expect: { type: "stdout_contains", parts: ["Familia Prieto", "3 invitaciones", "Familia Capulleto", "4 invitaciones"] } },
+        { args: [[["Corsi", 1]]],                    stdin: [], expect: { type: "stdout_contains", parts: ["Familia Corsi", "1 invitaci"] } },
+      ],
+    },
+    sol: `def imprimir_invitaciones(invitados):
+    for apellido, cant in invitados:
+        texto = f"Familia {apellido}, {cant} "
+        if cant == 1:
+            texto += "invitación"
+        else:
+            texto += "invitaciones"
+        print(texto)`,
+  },
+
+  /* ── COMPETENCIA DE DELETREO ─────────────────────────── */
+  {
+    title: "Competencia de Deletreo",
+    flavor: "Solo los mejores representan al colegio.",
+    tag: "listas · filter · tuplas",
+    statement: `Una escuela selecciona alumnos para una competencia. El registro tiene el formato <code>[(nombre, promedio)]</code>.<br><br>
+Implementá <code>seleccionar_estudiantes(listado)</code> que devuelva solo los alumnos cuyo promedio es <strong>mayor o igual a 7</strong>.<br><br>
+<b>Ejemplo:</b> <code>seleccionar_estudiantes([("Lola Torres", 8.33), ("Mateo Murilla", 6.66), ("Luca Jerez", 7)])</code> → <code>[("Lola Torres", 8.33), ("Luca Jerez", 7)]</code>`,
+    hint: "¿En qué posición de la tupla está el promedio de cada alumno? ¿Qué condición tiene que cumplir para que lo incluyas? ¿Existe alguna función de Python que haga exactamente ese tipo de selección?",
+    starter: "def seleccionar_estudiantes(listado):\n    pass",
+    test: {
+      funcName: "seleccionar_estudiantes",
+      cases: [
+        { args: [[["Lola Torres", 8.33], ["Mateo Murilla", 6.66], ["Luca Jerez", 7]]], stdin: [], expect: { type: "contains", parts: ["Lola Torres", "Luca Jerez"] } },
+        { args: [[["Ana", 9], ["Pedro", 5], ["Sol", 7.5]]],                             stdin: [], expect: { type: "contains", parts: ["Ana", "Sol"] } },
+        { args: [[["Mario", 6.9], ["Luis", 5]]],                                        stdin: [], expect: { type: "exact", value: "[]" } },
+      ],
+    },
+    sol: `def promedio_suficiente(alumno):
+    return alumno[1] >= 7
+
+def seleccionar_estudiantes(listado):
+    return list(filter(promedio_suficiente, listado))`,
+  },
+
+  /* ── PREMIAR DESEMPEÑO ───────────────────────────────── */
+  {
+    title: "Premiar Desempeño",
+    flavor: "El factor no perdona.",
+    tag: "listas · sorted · slicing",
+    statement: `Recursos Humanos quiere premiar las <strong>3 sucursales con mejor desempeño</strong>. El desempeño se mide con el factor <strong>ventas / monto_total</strong>: cuanto más alto, mejor.<br><br>
+Implementá <code>premiar_desempeño(sucursales)</code> que reciba una lista de tuplas <code>(sucursal, ventas, monto_total)</code> y devuelva las 3 primeras al ordenar de mayor a menor por ese factor.<br><br>
+<b>Ejemplo:</b> para <code>[("Santa Cruz", 1800, 90), ("Mendoza", 3500, 50), ("Buenos Aires", 9600, 1200), ("Chubut", 990, 9), ("Córdoba", 7000, 70)]</code> → las 3 con mayor factor.`,
+    hint: "¿Cómo le indicás a Python por qué criterio ordenar — si hay que calcular algo por elemento, cómo se lo pasás? ¿Qué parámetro cambia el orden de mayor a menor? Una vez ordenada, ¿cómo tomás solo las primeras tres?",
+    starter: "def premiar_desempeño(sucursales):\n    pass",
+    test: {
+      funcName: "premiar_desempeño",
+      cases: [
+        { args: [[["Santa Cruz", 1800, 90], ["Mendoza", 3500, 50], ["Buenos Aires", 9600, 1200], ["Chubut", 990, 9], ["Cordoba", 7000, 70]]], stdin: [], expect: { type: "contains", parts: ["Chubut", "Cordoba", "Mendoza"] } },
+        { args: [[["Norte", 200, 10], ["Sur", 10, 100], ["Este", 300, 30], ["Oeste", 15, 50]]],                                              stdin: [], expect: { type: "contains", parts: ["Norte", "Este", "Oeste"] } },
+      ],
+    },
+    sol: `def obtener_factor(sucursal):
+    return sucursal[1] / sucursal[2]
+
+def premiar_desempeño(sucursales):
+    ordenadas = sorted(sucursales, key=obtener_factor, reverse=True)
+    return ordenadas[:3]`,
+  },
+];
+
+/* ─── PYODIDE ENGINE ─────────────────────────────────────── */
+
+const PCC_HARNESS_PY = `
+import sys, io, json, ast, builtins as _pcc_builtins
+
+def _pcc_check_practices(code, required_names_json):
+    required_names = json.loads(required_names_json) if required_names_json else []
+    result = {"parse_ok": True, "error": None, "defined_functions": [], "missing_required": []}
+    try:
+        tree = ast.parse(code)
+        names = [n.name for n in ast.walk(tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]
+        result["defined_functions"] = names
+        result["missing_required"] = [n for n in required_names if n not in names]
+    except SyntaxError as e:
+        result["parse_ok"] = False
+        result["error"] = str(e)
+    return json.dumps(result)
+
+def _pcc_run(code, func_name, args_json, stdin_json):
+    args_list = json.loads(args_json) if args_json else []
+    stdin_list = json.loads(stdin_json) if stdin_json else []
+    namespace = {}
+    output = io.StringIO()
+    old_stdout = sys.stdout
+    old_input = _pcc_builtins.input
+    inputs_iter = iter(stdin_list)
+    def _mock_input(prompt=""):
+        try:
+            return next(inputs_iter)
+        except StopIteration:
+            return "0"
+    _pcc_builtins.input = _mock_input
+    sys.stdout = output
+    result = {"ok": False, "error": None, "return_value": None, "stdout": ""}
+    try:
+        exec(code, namespace)
+        if func_name:
+            fn = namespace.get(func_name)
+            if not callable(fn):
+                raise NameError("No se encontro una funcion llamada '" + func_name + "'")
+            result["return_value"] = fn(*args_list)
+        result["ok"] = True
+    except Exception as e:
+        result["error"] = type(e).__name__ + ": " + str(e)
+    finally:
+        sys.stdout = old_stdout
+        _pcc_builtins.input = old_input
+        result["stdout"] = output.getvalue()
+    try:
+        return json.dumps(result)
+    except TypeError:
+        result["return_value"] = str(result["return_value"])
+        return json.dumps(result)
+`;
+
+let pyodidePromise = null;
+
+function getPyodide() {
+  if (!pyodidePromise) {
+    pyodidePromise = new Promise((resolve, reject) => {
+      const PYODIDE_URL = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+      const init = () => {
+        window.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/' })
+          .then(py => { py.runPython(PCC_HARNESS_PY); resolve(py); })
+          .catch(err => reject(err));
+      };
+      if (window.loadPyodide) { init(); return; }
+      const script = document.createElement('script');
+      script.src = PYODIDE_URL;
+      script.onload = init;
+      script.onerror = () => reject(new Error('No se pudo descargar Pyodide.'));
+      document.head.appendChild(script);
+    });
+  }
+  return pyodidePromise;
+}
+
+getPyodide().catch(() => {});
+
+async function pccRun(code, funcName, args, stdinArr) {
+  const py = await getPyodide();
+  const runFn = py.globals.get('_pcc_run');
+  const json = runFn(code, funcName || null, JSON.stringify(args || []), JSON.stringify(stdinArr || []));
+  return JSON.parse(json);
+}
+
+async function pccCheckPractices(code, requiredNames) {
+  const py = await getPyodide();
+  const checkFn = py.globals.get('_pcc_check_practices');
+  const json = checkFn(code, JSON.stringify(requiredNames || []));
+  return JSON.parse(json);
+}
+
+/* ─── TEST RUNNER ─────────────────────────────────────────── */
+
+function fmtVal(v) {
+  if (v === null || v === undefined) return '(nada)';
+  if (typeof v === 'string') return '"' + v + '"';
+  if (Array.isArray(v)) return '[' + v.map(fmtVal).join(', ') + ']';
+  return String(v);
+}
+
+function evalCase(actual, expect) {
+  switch (expect.type) {
+    case 'numeric': {
+      const num = typeof actual === 'number' ? actual : parseFloat(actual);
+      return !Number.isNaN(num) && Math.abs(num - expect.value) < (expect.tolerance ?? 0.001);
+    }
+    case 'bool':
+      return Boolean(actual) === Boolean(expect.value);
+    case 'exact': {
+      const n = s => (s||'').toLowerCase().trim().replace(/\s+/g,' ');
+      return n(String(actual)) === n(String(expect.value));
+    }
+    case 'contains': {
+      const s = String(actual||'').toLowerCase();
+      return expect.parts.every(p => s.includes(String(p).toLowerCase().trim()));
+    }
+    case 'list': {
+      const a = Array.isArray(actual) ? actual : [];
+      return JSON.stringify(a) === JSON.stringify(expect.value);
+    }
+    case 'stdout': {
+      const lines = (actual || '').trim().split('\n').map(l => l.trim()).filter(Boolean);
+      const expected = expect.lines.map(l => String(l).trim());
+      return JSON.stringify(lines) === JSON.stringify(expected);
+    }
+    case 'stdout_contains': {
+      const s = (actual || '').toLowerCase();
+      return expect.parts.every(p => s.includes(String(p).toLowerCase().trim()));
+    }
+    default: return false;
+  }
+}
+
+async function runFunctionTests(code, spec) {
+  const rows = [];
+  for (const c of spec.cases) {
+    const isStdout = c.expect.type === 'stdout' || c.expect.type === 'stdout_contains';
+    const callLabel = spec.funcName + '(' + c.args.map(fmtVal).join(', ') + ')';
+    try {
+      const r = await pccRun(code, spec.funcName, c.args, c.stdin || []);
+      if (!r.ok) {
+        rows.push({ pass: false, label: callLabel, detail: 'Error al ejecutar: ' + r.error });
+      } else {
+        const actual = isStdout ? r.stdout : r.return_value;
+        const pass = evalCase(actual, c.expect);
+        let detail;
+        if (c.expect.type === 'stdout_contains') {
+          detail = pass
+            ? 'Imprimió el contenido esperado.'
+            : 'Se esperaba que imprimiera: ' + c.expect.parts.join(', ') + '.\nImprimió: ' + (r.stdout || '(nada)');
+        } else if (c.expect.type === 'stdout') {
+          const gotLines = (r.stdout||'').trim().split('\n').map(l=>l.trim()).filter(Boolean);
+          detail = pass
+            ? 'Salida correcta: ' + c.expect.lines.join(', ')
+            : 'Salida obtenida: [' + gotLines.join(', ') + '] — esperada: [' + c.expect.lines.join(', ') + ']';
+        } else {
+          const expDesc = c.expect.value !== undefined ? fmtVal(c.expect.value) : c.expect.parts.join(', ');
+          detail = pass
+            ? 'Devolvió ' + fmtVal(r.return_value) + ', como se esperaba.'
+            : 'Devolvió ' + fmtVal(r.return_value) + ' — se esperaba ' + expDesc + '.';
+        }
+        rows.push({ pass, label: callLabel, detail });
+      }
+    } catch (err) {
+      rows.push({ pass: false, label: callLabel, detail: 'Error inesperado: ' + (err.message || err) });
+    }
+  }
+  return rows;
+}
+
+function buildPracticeNoteHtml(practice) {
+  if (!practice.parse_ok) {
+    return `<div class="practice-note warn">✗ Error de sintaxis: ${escHtml(practice.error)}</div>`;
+  }
+  if (practice.missing_required.length > 0) {
+    return `<div class="practice-note warn">✗ No se encontró la función <code>${practice.missing_required[0]}</code>. Asegurate de definirla.</div>`;
+  }
+  return `<div class="practice-note ok">✓ Código válido. Funciones definidas: ${practice.defined_functions.join(', ')}</div>`;
+}
+
+function buildTestResultsHtml(rows) {
+  return rows.map(r => `
+    <div class="test-item ${r.pass ? 'pass' : 'fail'}">
+      <div class="t-head">
+        <span>${escHtml(r.label)}</span>
+        <span>${r.pass ? '✓ PASÓ' : '✗ FALLÓ'}</span>
+      </div>
+      <div class="t-detail">${escHtml(r.detail)}</div>
+    </div>`).join('');
+}
+
+function setupVerifyBlock(boonEl, boon) {
+  const textarea = boonEl.querySelector('textarea.cm-target');
+  if (!textarea) return;
+
+  const editor = CodeMirror.fromTextArea(textarea, {
+    mode: 'python', theme: 'underworld', lineNumbers: true,
+    matchBrackets: true, styleActiveLine: true,
+    indentUnit: 4, tabSize: 4, indentWithTabs: false, lineWrapping: true,
+    extraKeys: { Tab: cm => cm.execCommand('insertSoftTab') },
+  });
+  editor.setSize(null, 'auto');
+
+  const verifyStatus = boonEl.querySelector('.verify-status');
+  const callInput    = boonEl.querySelector('.call-cell-input');
+  const callBtn      = boonEl.querySelector('.call-cell-btn');
+  const callOutput   = boonEl.querySelector('.call-cell-output');
+
+  async function runCall() {
+    const call = callInput.value.trim();
+    if (!call) return;
+    callBtn.disabled = true;
+    callOutput.className = 'call-cell-output';
+    try {
+      const defCode = editor.getValue().trim();
+      const r = await pccRun(
+        defCode + '\nif ' + call + ' is not None: print(repr(' + call + '))',
+        null, [], []
+      );
+      callOutput.classList.add('show');
+      if (!r.ok) {
+        callOutput.classList.add('err');
+        callOutput.textContent = r.error;
+      } else {
+        callOutput.textContent = r.stdout?.trimEnd() || '(sin salida)';
+      }
+    } catch(e) {
+      callOutput.classList.add('show', 'err');
+      callOutput.textContent = e.message || String(e);
+    } finally {
+      callBtn.disabled = false;
+    }
+  }
+
+  callBtn.addEventListener('click', runCall);
+  callInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); runCall(); } });
+
+  if (!boon.test && !boon.tests) return;
+
+  const verifyBtn    = boonEl.querySelector('.verify-btn');
+  const practiceArea = boonEl.querySelector('.practice-note-area');
+  const resultsArea  = boonEl.querySelector('.test-results');
+
+  verifyBtn.addEventListener('click', async () => {
+    const code = editor.getValue().trim();
+    if (!code) return;
+    verifyBtn.disabled = true;
+    verifyStatus.textContent = 'Cargando intérprete…';
+    practiceArea.innerHTML = '';
+    resultsArea.innerHTML = '';
+    try {
+      const testSpecs = boon.tests || (boon.test ? [boon.test] : []);
+      const requiredNames = testSpecs.map(s => s.funcName).filter(Boolean);
+      const practice = await pccCheckPractices(code, requiredNames);
+      practiceArea.innerHTML = buildPracticeNoteHtml(practice);
+      verifyStatus.textContent = 'Ejecutando tests…';
+      const allRows = [];
+      for (const spec of testSpecs) allRows.push(...await runFunctionTests(code, spec));
+      resultsArea.innerHTML = buildTestResultsHtml(allRows);
+    } catch (err) {
+      resultsArea.innerHTML = `<div class="practice-note warn">Error: ${escHtml(err.message || String(err))}</div>`;
+    } finally {
+      verifyBtn.disabled = false;
+      verifyStatus.textContent = '';
+    }
+  });
+}
+
+/* ─── QUIZ ENGINE ────────────────────────────────────────── */
+
+let state = { current: 0, score: 0, results: [], done: false, selected: null, answered: false };
+
+function renderQuiz() {
+  const root = document.getElementById('quiz-root');
+  root.innerHTML = '';
+  if (state.done) { renderSummary(root); return; }
+
+  const q       = questions[state.current];
+  const pct     = (state.current / questions.length) * 100;
+  const si      = sections.indexOf(q.section);
+  const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+
+  const card = mkEl('div', 'card', `
+    <span class="tag-styx">${q.section}</span>
+    <div class="q-text">${q.q}</div>
+    <div class="options-grid" id="options-grid">
+      ${shuffled.map(opt =>
+        `<button class="option-btn" data-val="${escHtml(opt)}" onclick="selectOption(this)">${opt.replace(/\n/g,'<br>')}</button>`
+      ).join('')}
+    </div>
+    <details class="hint">
+      <summary>Ayuda de memoria</summary>
+      <div class="hint-body">${q.hint}</div>
+    </details>
+    <div class="feedback" id="q-feedback"></div>
+    <div class="quiz-nav">
+      <button class="btn btn-primary" id="confirm-btn" disabled onclick="confirmAnswer()">
+        Confirmar respuesta ✓
+      </button>
+      <button class="btn btn-primary" id="next-btn" style="display:none" onclick="goNext()">
+        Siguiente pregunta →
+      </button>
+    </div>
+  `);
+
+  root.append(
+    mkEl('div', 'status-row', `
+      <div class="score-tag">
+        Pregunta <b>${state.current + 1}</b>/${questions.length} &nbsp;·&nbsp; Aciertos: <b>${state.score}</b>
+      </div>
+    `),
+    mkEl('div', 'river-wrap', `
+      <div class="river-track"><div class="river-fill" style="width:${pct}%"></div></div>
+      <div class="river-labels">
+        ${sectionLabels.map((l, i) => `<span class="${si >= i ? 'done' : ''}">${l}</span>`).join('')}
+      </div>
+    `),
+    card
+  );
+}
+
+function selectOption(btn) {
+  if (state.answered) return;
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.selected = btn.dataset.val;
+  const confirmBtn = document.getElementById('confirm-btn');
+  if (confirmBtn) confirmBtn.disabled = false;
+}
+
+function confirmAnswer() {
+  if (!state.selected || state.answered) return;
+  state.answered = true;
+
+  const q    = questions[state.current];
+  const chosen = state.selected;
+  const isOk = q.answers.some(a => norm(a) === norm(chosen));
+
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = true;
+    b.classList.remove('selected');
+    const v = b.dataset.val || b.textContent.trim();
+    if (q.answers.some(a => norm(a) === norm(v))) b.classList.add('correct');
+    else if (norm(v) === norm(chosen))            b.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('q-feedback');
+  fb.className = 'feedback show ' + (isOk ? 'ok' : 'bad');
+  fb.innerHTML = isOk ? q.feedback_ok : q.feedback_bad;
+
+  if (isOk) state.score++;
+
+  state.results.push({
+    pregunta: q.q.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
+    respuesta: chosen, correcta: isOk,
+  });
+
+  const confirmBtn = document.getElementById('confirm-btn');
+  const nextBtn    = document.getElementById('next-btn');
+  if (confirmBtn) confirmBtn.style.display = 'none';
+  if (nextBtn)    nextBtn.style.display = 'inline-flex';
+}
+
+function goNext() {
+  state.current++;
+  state.selected = null;
+  state.answered = false;
+  if (state.current >= questions.length) state.done = true;
+  renderQuiz();
+}
+
+function renderSummary(root) {
+  const { score, results } = state;
+  const total = questions.length;
+  const msg = score === total
+    ? '¡Perfecto! Todo correcto.'
+    : 'Podés seguir con los ejercicios cuando quieras.';
+
+  root.append(mkEl('div', '', `
+    <div class="river-wrap">
+      <div class="river-track"><div class="river-fill" style="width:100%"></div></div>
+      <div class="river-labels">
+        ${sectionLabels.map(l => `<span class="done">${l}</span>`).join('')}
+      </div>
+    </div>
+    <div class="summary-card">
+      <span class="eyebrow">Resultado del Quiz</span>
+      <div class="big-score">${score} / ${total}</div>
+      <p>${msg}</p>
+      ${buildResultGrid(results)}
+      <div class="cta-row">
+        <button class="btn btn-primary"
+          onclick="sendToSheet('U4pt2-Quiz',state.results,state.score,${questions.length},'u4q2-send-status')">
+          Enviar a planilla
+        </button>
+        <button class="btn"
+          onclick="document.getElementById('camara-ejercicios').scrollIntoView({behavior:'smooth'})">
+          Pasar a Ejercicios →
+        </button>
+      </div>
+      <p id="u4q2-send-status" class="send-status"></p>
+    </div>
+  `));
+}
+
+/* ─── RENDER BOONS ───────────────────────────────────────── */
+
+function renderBoons(boons, containerId) {
+  const list = document.getElementById(containerId);
+  boons.forEach((b, idx) => {
+    const verifyHtml = (b.test || b.tests) ? `
+      <div class="verify-row">
+        <button class="btn btn-primary verify-btn">Verificar</button>
+        <span class="verify-status"></span>
+      </div>
+      <div class="practice-note-area"></div>
+      <div class="test-results"></div>` : '';
+
+    const boonEl = mkEl('div', 'boon', `
+      <span class="tag-styx">${b.tag}</span>
+      <div class="boon-title">${b.title}</div>
+      <div class="boon-flavor">${b.flavor}</div>
+      <div class="statement">${b.statement}</div>
+      <details class="hint">
+        <summary>Ayuda de memoria</summary>
+        <div class="hint-body">${b.hint}</div>
+      </details>
+      <div class="answer-box">
+        <span class="verify-note">Tu solución en Python</span>
+        <textarea class="cm-target" id="${containerId}-editor-${idx}">${escHtml(b.starter || '')}</textarea>
+        ${verifyHtml}
+        <div class="call-cell">
+          <span class="call-cell-prompt">&gt;&gt;&gt;</span>
+          <input class="call-cell-input" type="text" placeholder="${(b.tests||b.test) ? (b.tests?b.tests[0].funcName:b.test.funcName)+'(...)' : 'llamar función...'}">
+          <button class="call-cell-btn">▶</button>
+        </div>
+        <div class="call-cell-output"></div>
+      </div>
+    `);
+    list.appendChild(boonEl);
+    setupVerifyBlock(boonEl, b);
+  });
+}
+
+/* ─── UTILS ──────────────────────────────────────────────── */
+
+function mkEl(tag, cls, html) {
+  const d = document.createElement(tag || 'div');
+  if (cls) d.className = cls;
+  d.innerHTML = html;
+  return d;
+}
+function norm(s)    { return (s || '').trim().replace(/\s+/g, ' '); }
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function buildResultGrid(results) {
+  return `<div class="result-grid">${results.map((r, i) => {
+    const ok = r.correcta !== undefined ? r.correcta : r.correct;
+    const pregunta = (r.pregunta || '').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+    const respuesta = r.respuesta || '—';
+    return `<div class="result-chip ${ok ? 'ok' : 'bad'}">
+      <div class="result-chip-top">
+        <span class="rc-icon">${ok ? '✓' : '✗'}</span>
+        <span>${i+1}. ${escHtml(pregunta.length > 80 ? pregunta.slice(0,80)+'…' : pregunta)}</span>
+      </div>
+      <div class="result-chip-answer">Tu respuesta: <span>${escHtml(String(respuesta))}</span></div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+/* ─── DATA: DESAFÍO FINAL ────────────────────────────────── */
+
+const potion = {
+  title: "Análisis Salarial",
+  flavor: '"Los números no mienten. El análisis sí puede fallar."',
+  statement: `Marcos analiza los salarios de su empresa. Dada una lista de salarios mensuales, implementá dos funciones:<br><br>
+<ul style="color:var(--text-dim);font-size:.95rem;padding-left:1.2rem">
+  <li><code>obtener_promedio(salarios)</code> — devuelve el promedio de la lista</li>
+  <li><code>generar_analisis_salarial(salarios)</code> — devuelve una lista con dos elementos:
+    <ul>
+      <li>Una lista con los salarios que <strong>superan</strong> el promedio (sin repetir)</li>
+      <li>El porcentaje (sobre el total) de salarios que superan el promedio</li>
+    </ul>
+  </li>
+</ul>
+<b>Ejemplo:</b> <code>generar_analisis_salarial([100, 200, 300, 50, 250, 300])</code><br>
+Promedio: 200.0 → salarios altos: [300, 250] → porcentaje: 33.33...<br>
+→ devuelve <code>[[300, 250], 33.33...]</code>`,
+  hint: "¿Cómo calculás el promedio de una lista de números? Una vez que lo tenés, ¿cómo identificás cuáles salarios lo superan? ¿Qué pasa si un valor aparece dos veces — cómo evitás agregarlo de nuevo?",
+  starter: `def obtener_promedio(salarios):
+    pass
+
+def generar_analisis_salarial(salarios):
+    pass`,
+  tests: [
+    { funcName: 'generar_analisis_salarial', cases: [
+      { args: [[100, 200, 300, 50, 250, 300]], stdin: [], expect: { type: 'contains', parts: ["300", "250", "33.3"] } },
+      { args: [[1000, 2000, 500]],             stdin: [], expect: { type: 'contains', parts: ["2000", "33.3"] } },
+    ]},
+  ],
+  sol: `def obtener_promedio(salarios):
+    return sum(salarios) / len(salarios)
+
+def generar_analisis_salarial(salarios):
+    salario_promedio = obtener_promedio(salarios)
+    salarios_altos = []
+    for salario in salarios:
+        if salario > salario_promedio and salario not in salarios_altos:
+            salarios_altos.append(salario)
+    return [salarios_altos, len(salarios_altos) / len(salarios) * 100]`,
+};
+
+/* ─── POTION RENDERER ────────────────────────────────────── */
+
+function renderPotion() {
+  const root = document.getElementById('potion-root');
+  const p = potion;
+  const el = mkEl('div', 'potion-card', `
+    <div class="potion-title">${p.title}</div>
+    <div class="potion-flavor">${p.flavor}</div>
+    <p style="color:var(--text-dim);font-size:.95rem;max-width:72ch;margin:0 0 1rem">${p.statement}</p>
+    <details class="hint" style="margin-top:0">
+      <summary>Ayuda de memoria</summary>
+      <div class="hint-body">${p.hint}</div>
+    </details>
+    <div class="answer-box" style="margin-top:1.2rem">
+      <span class="verify-note">Tu solución en Python</span>
+      <textarea class="cm-target" id="potion-editor">${escHtml(p.starter)}</textarea>
+      <div class="verify-row">
+        <button class="btn btn-primary" id="potion-verify">Verificar</button>
+        <span class="verify-status" id="potion-status"></span>
+      </div>
+      <div class="test-results" id="potion-results"></div>
+    </div>
+  `);
+  root.appendChild(el);
+
+  const editor = CodeMirror.fromTextArea(el.querySelector('textarea.cm-target'), {
+    mode: 'python', theme: 'underworld', lineNumbers: true,
+    matchBrackets: true, styleActiveLine: true,
+    indentUnit: 4, tabSize: 4, indentWithTabs: false, lineWrapping: true,
+    extraKeys: { Tab: cm => cm.execCommand('insertSoftTab') },
+  });
+  editor.setSize(null, 'auto');
+
+  const verifyBtn = document.getElementById('potion-verify');
+  const status    = document.getElementById('potion-status');
+  const results   = document.getElementById('potion-results');
+
+  verifyBtn.addEventListener('click', async () => {
+    const code = editor.getValue().trim();
+    if (!code) return;
+    verifyBtn.disabled = true;
+    status.textContent = 'Verificando…';
+    results.innerHTML = '';
+    try {
+      const allRows = [];
+      for (const spec of p.tests) allRows.push(...await runFunctionTests(code, spec));
+      results.innerHTML = buildTestResultsHtml(allRows);
+    } catch (err) {
+      results.innerHTML = `<div class="practice-note warn">Error: ${escHtml(err.message || String(err))}</div>`;
+    } finally {
+      verifyBtn.disabled = false;
+      status.textContent = '';
+    }
+  });
+}
+
+/* ─── DATA: EJERCICIOS DE PARCIAL ───────────────────────── */
+
+const examEjs = [
+  {
+    id: 'ej1',
+    badge: 'Parcial 1',
+    title: 'Análisis de Inscripciones',
+    statement: `Una plataforma educativa registra entregas de trabajos prácticos. Cada entrega es una cadena de texto. Una entrega es <em>válida</em> si contiene al menos una de las palabras clave del tema.<br><br>
+Implementá dos funciones:<br>
+<ul>
+<li><code>estado_frase(frase, palabras_clave)</code> — devuelve <code>"valida"</code> si alguna palabra clave aparece en la frase (ignorando mayúsculas), o <code>"invalida"</code> si no.</li>
+<li><code>analizar_inscripciones(entregas, palabras_clave)</code> — recibe una lista de entregas y las palabras clave, y devuelve una tupla <code>(cantidad_validas, cantidad_invalidas)</code>.</li>
+</ul>
+<b>Ejemplo:</b><br>
+<code>analizar_inscripciones(["lista con append", "hola mundo", "tupla inmutable"], ["lista", "tupla"])</code> → <code>(2, 1)</code>`,
+    hint: `¿Cómo verificás si una palabra aparece dentro de un texto? ¿Importa si está en mayúscula o minúscula — cómo lo normalizás? Resolvé primero el problema para una sola frase, y después pensá cómo usar eso para analizar toda la lista.`,
+    starter: `def estado_frase(frase, palabras_clave):
+    pass
+
+def analizar_inscripciones(entregas, palabras_clave):
+    pass`,
+    test: {
+      funcName: 'analizar_inscripciones',
+      cases: [
+        { args: [["lista con append", "hola mundo", "tupla inmutable"], ["lista", "tupla"]], stdin: [], expect: { type: 'contains', parts: ["2,1"] } },
+        { args: [["python basico", "listas y mas listas"], ["for", "while"]],               stdin: [], expect: { type: 'contains', parts: ["0,2"] } },
+        { args: [["Filter y Map", "indices y slicing"], ["filter", "indic"]],               stdin: [], expect: { type: 'contains', parts: ["2,0"] } },
+      ]
+    },
+    note: `Definí ambas funciones. El verificador prueba <code>analizar_inscripciones</code>, que debe usar <code>estado_frase</code> internamente.`,
+    sol: `def estado_frase(frase, palabras_clave):
+    for palabra in palabras_clave:
+        if palabra.lower() in frase.lower():
+            return "valida"
+    return "invalida"
+
+def analizar_inscripciones(entregas, palabras_clave):
+    validas = 0
+    invalidas = 0
+    for entrega in entregas:
+        if estado_frase(entrega, palabras_clave) == "valida":
+            validas += 1
+        else:
+            invalidas += 1
+    return (validas, invalidas)`,
+  },
+  {
+    id: 'ej2',
+    badge: 'Parcial 2',
+    title: 'Análisis Salarial',
+    statement: `Mismo enunciado que el Desafío Final, para practicar entregando desde acá.<br><br>
+Dada una lista de salarios mensuales, implementá:<br>
+<ul>
+<li><code>obtener_promedio(salarios)</code> — promedio de la lista</li>
+<li><code>generar_analisis_salarial(salarios)</code> — devuelve <code>[salarios_que_superan_el_promedio_sin_repetir, porcentaje]</code></li>
+</ul>
+<b>Ejemplo:</b> <code>generar_analisis_salarial([100, 200, 300, 50, 250, 300])</code> → <code>[[300, 250], 33.33...]</code>`,
+    hint: `¿Cómo calculás el promedio de una lista? ¿Qué condición tiene que cumplir un salario para ser "alto"? ¿Qué pasa si el mismo monto aparece más de una vez — cómo lo manejás? ¿Cómo expresás el porcentaje en función del total?`,
+    starter: `def obtener_promedio(salarios):
+    pass
+
+def generar_analisis_salarial(salarios):
+    pass`,
+    test: {
+      funcName: 'generar_analisis_salarial',
+      cases: [
+        { args: [[100, 200, 300, 50, 250, 300]], stdin: [], expect: { type: 'contains', parts: ["300", "250", "33.3"] } },
+        { args: [[1000, 2000, 500]],             stdin: [], expect: { type: 'contains', parts: ["2000", "33.3"] } },
+        { args: [[50, 50, 100]],                 stdin: [], expect: { type: 'contains', parts: ["100", "33.3"] } },
+      ]
+    },
+    note: `Definí ambas funciones para que el verificador pueda probarlas.`,
+    sol: `def obtener_promedio(salarios):
+    return sum(salarios) / len(salarios)
+
+def generar_analisis_salarial(salarios):
+    salario_promedio = obtener_promedio(salarios)
+    salarios_altos = []
+    for salario in salarios:
+        if salario > salario_promedio and salario not in salarios_altos:
+            salarios_altos.append(salario)
+    return [salarios_altos, len(salarios_altos) / len(salarios) * 100]`,
+  },
+  {
+    id: 'ej3',
+    badge: 'Parcial 3',
+    title: 'Control de Lote',
+    statement: `En una fábrica, cada vez que pasa un lote por control de calidad se ingresan las cantidades de productos. El proceso continúa hasta ingresar <code>0</code>. Si el total supera la cantidad mínima requerida, el lote está aprobado.<br><br>
+Implementá <code>controlar_lote(cantidad_min)</code> que:<ul>
+<li>Pida cantidades al usuario hasta recibir <code>0</code></li>
+<li>Imprima <code>"Lote aprobado"</code> o <code>"Lote rechazado"</code> según corresponda</li>
+<li>Devuelva el total acumulado</li>
+</ul>
+<b>Ejemplo:</b> con entradas <code>30, 50, 30, 0</code> y <code>cantidad_min=100</code> → imprime <code>"Lote aprobado"</code>, devuelve <code>110</code>.`,
+    hint: `¿Qué tipo de ciclo usás cuando no sabés de antemano cuántas veces vas a repetir? ¿Qué condición lo detiene? Lo que ingresa el usuario siempre es texto — ¿cómo lo convertís para poder sumarlo?`,
+    starter: `def controlar_lote(cantidad_min):
+    pass`,
+    test: {
+      funcName: 'controlar_lote',
+      cases: [
+        { args: [100], stdin: ["30", "50", "30", "0"], expect: { type: 'numeric', value: 110 } },
+        { args: [200], stdin: ["50", "50", "0"],       expect: { type: 'numeric', value: 100 } },
+        { args: [10],  stdin: ["5", "5", "5", "0"],    expect: { type: 'numeric', value: 15  } },
+      ]
+    },
+    note: `El verificador prueba el valor que devuelve la función. El <code>print()</code> de "Lote aprobado"/"Lote rechazado" es parte del ejercicio — el docente lo revisa en tu código.`,
+    sol: `def controlar_lote(cantidad_min):
+    total = 0
+    cant = int(input("Ingrese cantidad: "))
+    while cant != 0:
+        total += cant
+        cant = int(input("Ingrese cantidad: "))
+    if total >= cantidad_min:
+        print("Lote aprobado")
+    else:
+        print("Lote rechazado")
+    return total`,
+  },
+];
+
+/* ─── EXAM RENDERER ─────────────────────────────────────── */
+
+function renderExam() {
+  const root = document.getElementById('exam-root');
+
+  examEjs.forEach((p, idx) => {
+    const badgeStyle = 'background:rgba(74,130,245,.12);color:var(--accent);border:1px solid rgba(74,130,245,.25);';
+    const totalCases = p.test.cases.length;
+    const noteHtml = p.note
+      ? `<p style="color:var(--text-faint);font-size:.84rem;max-width:70ch;margin:.9rem 0 0">${p.note}</p>`
+      : '';
+
+    const el = mkEl('div', 'potion-card', `
+      <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem">
+        <span style="font-size:.75rem;font-family:var(--font-m);padding:.25rem .65rem;border-radius:99px;${badgeStyle}">${p.badge}</span>
+        <div class="potion-title" style="margin:0">${p.title}</div>
+      </div>
+      <p style="color:var(--text-dim);font-size:.95rem;max-width:72ch;margin:0 0 .8rem">${p.statement}</p>
+      <details class="hint" style="margin-top:0">
+        <summary>Ayuda de memoria</summary>
+        <div class="hint-body">${p.hint}</div>
+      </details>
+      ${noteHtml}
+      <div class="answer-box" style="margin-top:1.2rem">
+        <span class="verify-note">Tu solución en Python</span>
+        <textarea class="cm-target" id="exam-editor-${idx}">${escHtml(p.starter)}</textarea>
+        <div class="verify-row">
+          <button class="btn btn-primary" id="exam-verify-${idx}">Verificar</button>
+          <span class="verify-status" id="exam-status-${idx}"></span>
+        </div>
+        <div class="test-results" id="exam-results-${idx}"></div>
+        <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--border)">
+          <button class="btn btn-primary" id="exam-submit-${idx}">Entregar →</button>
+        </div>
+        <p id="exam-send-status-${idx}" class="send-status"></p>
+      </div>
+    `);
+    root.appendChild(el);
+
+    const editor = CodeMirror.fromTextArea(el.querySelector('textarea.cm-target'), {
+      mode: 'python', theme: 'underworld', lineNumbers: true,
+      matchBrackets: true, styleActiveLine: true,
+      indentUnit: 4, tabSize: 4, indentWithTabs: false, lineWrapping: true,
+      extraKeys: { Tab: cm => cm.execCommand('insertSoftTab') },
+    });
+    editor.setSize(null, 'auto');
+
+    let lastRows = [];
+    const verifyBtn = document.getElementById(`exam-verify-${idx}`);
+    const status    = document.getElementById(`exam-status-${idx}`);
+    const results   = document.getElementById(`exam-results-${idx}`);
+
+    verifyBtn.addEventListener('click', async () => {
+      const code = editor.getValue().trim();
+      if (!code) return;
+      verifyBtn.disabled = true;
+      status.textContent = 'Verificando…';
+      results.innerHTML = '';
+      try {
+        lastRows = await runFunctionTests(code, p.test);
+        results.innerHTML = buildTestResultsHtml(lastRows);
+      } catch (err) {
+        lastRows = [];
+        results.innerHTML = `<div class="practice-note warn">Error: ${escHtml(err.message || String(err))}</div>`;
+      } finally {
+        verifyBtn.disabled = false;
+        status.textContent = '';
+      }
+    });
+
+    const submitBtn  = document.getElementById(`exam-submit-${idx}`);
+    const sendStatus = document.getElementById(`exam-send-status-${idx}`);
+    submitBtn.addEventListener('click', () => {
+      if (!studentName) { sendStatus.textContent = 'Ingresá tu nombre al inicio para entregar.'; return; }
+      const code = editor.getValue().trim();
+      if (!code) { sendStatus.textContent = 'Escribí tu solución antes de entregar.'; return; }
+      const passed = lastRows.filter(r => r.pass).length;
+      submitBtn.disabled = true;
+      sendToSheet(
+        `U4pt2-Parcial-${idx + 1}`,
+        [{ pregunta: p.title, respuesta: code, correcta: lastRows.length > 0 && passed === totalCases }],
+        passed, totalCases, `exam-send-status-${idx}`
+      );
+      setTimeout(() => { submitBtn.disabled = false; }, 1500);
+    });
+  });
+}
+
+/* ─── SITE NAV ───────────────────────────────────────────── */
+function snavToggle() {
+  const panel   = document.getElementById('snav-panel');
+  const overlay = document.getElementById('snav-overlay');
+  const open = panel.classList.toggle('open');
+  overlay.classList.toggle('open', open);
+}
+function snavClose() {
+  document.getElementById('snav-panel').classList.remove('open');
+  document.getElementById('snav-overlay').classList.remove('open');
+}
+
+(function () {
+  const anchors = document.querySelectorAll('.snav-anchor[href^="#"]');
+  const secs    = Array.from(anchors).map(a => document.querySelector(a.getAttribute('href')));
+  function onScroll() {
+    let current = secs[0];
+    secs.forEach(s => { if (s && window.scrollY >= s.offsetTop - 120) current = s; });
+    anchors.forEach(a => {
+      a.classList.toggle('current', a.getAttribute('href') === '#' + (current && current.id));
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+/* ─── INIT ───────────────────────────────────────────────── */
+function initPage() {
+  renderQuiz();
+  renderBoons(boonsU4, 'boon-list-u4');
+  renderPotion();
+  renderExam();
+  setTimeout(() => {
+    document.querySelectorAll('.CodeMirror').forEach(cm => cm.CodeMirror && cm.CodeMirror.refresh());
+  }, 50);
+}
+</script>
+</body>
+</html>
