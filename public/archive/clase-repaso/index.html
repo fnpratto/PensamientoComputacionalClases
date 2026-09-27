@@ -454,39 +454,13 @@
     <p style="color:var(--text-dim);font-size:.92rem;margin:0 0 1.8rem;line-height:1.6">
       Quiz + 7 ejercicios de parcial · ¡Feliz Primavera!
     </p>
-    <!-- Paso 1: clave de la semana -->
-    <div id="gate-step-pass">
-      <label for="pass-input" style="display:block;text-align:left;font-family:var(--font-m);font-size:.78rem;color:var(--text-faint);margin-bottom:.35rem">
-        Clave de la clase
-      </label>
-      <input id="pass-input" type="password" placeholder="La que dijimos en clase"
-        autocomplete="off"
-        style="
-          width:100%;box-sizing:border-box;margin-bottom:1rem;
-          background:var(--bg);border:1px solid var(--border);
-          border-radius:6px;padding:.65rem .9rem;
-          color:var(--text);font-family:var(--font-m);font-size:.95rem;
-          outline:none;
-        "
-        onkeydown="if(event.key==='Enter')checkPass()"
-      />
-      <button id="pass-btn" onclick="checkPass()" style="
-        width:100%;padding:.75rem;border:none;border-radius:6px;
-        background:var(--accent);color:#fff;cursor:pointer;
-        font-family:var(--font-b);font-weight:700;font-size:.95rem;
-      ">
-        Entrar
-      </button>
-      <p id="pass-err" style="color:var(--bad);font-size:.8rem;margin:.6rem 0 0;display:none"></p>
-    </div>
-
-    <!-- Paso 2: nombre. Oculto hasta que la clave sea correcta. -->
-    <div id="gate-step-name" style="display:none">
+    <!-- Gate: solo pide el nombre, sin clave de clase. -->
+    <div id="gate-step-name">
     <label style="display:block;text-align:left;font-family:var(--font-m);font-size:.78rem;color:var(--text-faint);margin-bottom:.35rem">
       Nombre completo
     </label>
     <div style="position:relative;margin-bottom:1rem;">
-      <input id="name-input" type="text" placeholder="Buscá tu nombre o escribilo..."
+      <input id="name-input" type="text" placeholder="Escribí tu nombre..."
         autocomplete="off"
         style="
           width:100%;box-sizing:border-box;
@@ -495,18 +469,8 @@
           color:var(--text);font-family:var(--font-m);font-size:.95rem;
           outline:none;
         "
-        oninput="nameAcFilter()"
-        onfocus="nameAcFilter()"
-        onblur="setTimeout(nameAcHide,180)"
-        onkeydown="nameAcKeydown(event)"
+        onkeydown="if(event.key==='Enter')startSession()"
       />
-      <div id="name-ac-list" style="
-        display:none;position:absolute;left:0;right:0;top:100%;
-        background:var(--surface);border:1px solid var(--border);
-        border-top:none;border-radius:0 0 6px 6px;
-        max-height:220px;overflow-y:auto;z-index:100;
-        text-align:left;
-      "></div>
     </div>
     <button onclick="startSession()" style="
       width:100%;padding:.75rem;border:none;border-radius:6px;
@@ -595,93 +559,8 @@
 const SHEET_WEBHOOK = "https://script.google.com/macros/s/AKfycbxixKO-IHvlg3OzajxcbINbx6UwP0Li_tTuhI8MLQiIqPrNnmq7XVW9Cm_15B-8c6Li/exec";
 let studentName = '';
 
-/* ─── ALUMNOS ────────────────────────────────────────────── */
-/* El roster NO vive acá: son datos personales y esta página es pública.
-   Lo trae el Apps Script (hoja `Alumnos`) recién cuando la clave es correcta. */
-let ALUMNOS = [];
-
-let _nameAcIdx = -1;
-
-function nameAcFilter() {
-  const q = (document.getElementById('name-input').value || '').trim().toLowerCase();
-  const list = document.getElementById('name-ac-list');
-  const matches = q.length === 0 ? ALUMNOS : ALUMNOS.filter(n => n.toLowerCase().includes(q));
-  if (matches.length === 0) { list.style.display = 'none'; return; }
-  list.innerHTML = matches.map(n =>
-    `<div class="name-ac-item" data-name="${n.replace(/"/g,'&quot;')}"
-         onmousedown="nameAcSelect(this.dataset.name)">${n}</div>`
-  ).join('');
-  list.style.display = 'block';
-  _nameAcIdx = -1;
-}
-function nameAcHide() {
-  const list = document.getElementById('name-ac-list');
-  if (list) list.style.display = 'none';
-  _nameAcIdx = -1;
-}
-function nameAcSelect(name) {
-  document.getElementById('name-input').value = name;
-  nameAcHide();
-}
-function nameAcKeydown(e) {
-  const list = document.getElementById('name-ac-list');
-  const items = list ? list.querySelectorAll('.name-ac-item') : [];
-  if (e.key === 'ArrowDown') {
-    e.preventDefault();
-    _nameAcIdx = Math.min(_nameAcIdx + 1, items.length - 1);
-    items.forEach((el, i) => el.classList.toggle('ac-active', i === _nameAcIdx));
-    if (items[_nameAcIdx]) items[_nameAcIdx].scrollIntoView({ block: 'nearest' });
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault();
-    _nameAcIdx = Math.max(_nameAcIdx - 1, 0);
-    items.forEach((el, i) => el.classList.toggle('ac-active', i === _nameAcIdx));
-    if (items[_nameAcIdx]) items[_nameAcIdx].scrollIntoView({ block: 'nearest' });
-  } else if (e.key === 'Enter') {
-    if (_nameAcIdx >= 0 && items[_nameAcIdx]) {
-      nameAcSelect(items[_nameAcIdx].dataset.name);
-    } else { startSession(); }
-  } else if (e.key === 'Escape') { nameAcHide(); }
-}
-
 /* ─── NAME GATE ──────────────────────────────────────────── */
-/* Paso 1 del gate. La clave se valida en el Apps Script, nunca acá: si
-   estuviera en esta página cualquiera la leería con "ver código fuente".
-   El roster llega en la misma respuesta, solo si la clave es correcta. */
-async function checkPass() {
-  const input = document.getElementById('pass-input');
-  const btn   = document.getElementById('pass-btn');
-  const err   = document.getElementById('pass-err');
-  const pass  = input.value.trim();
-
-  err.style.display = 'none';
-  if (!pass) { err.textContent = 'Escribí la clave de la clase.'; err.style.display = 'block'; return; }
-
-  btn.disabled = true;
-  btn.textContent = 'Verificando…';
-  try {
-    const data = await fetchAuth(pass);
-    if (data && data.ok) {
-      ALUMNOS = Array.isArray(data.roster) ? data.roster : [];
-      document.getElementById('gate-step-pass').style.display = 'none';
-      document.getElementById('gate-step-name').style.display = 'block';
-      document.getElementById('name-input').focus();
-      return;
-    }
-    err.textContent = (data && data.error === 'no_password_configured')
-      ? 'Todavía no hay clave configurada. Avisale al docente.'
-      : 'Clave incorrecta.';
-    err.style.display = 'block';
-    input.select();
-  } catch (e) {
-    // Distinto de "clave incorrecta" a propósito: que no crea que se equivocó.
-    err.textContent = 'No se pudo verificar. Revisá tu conexión y probá de nuevo.';
-    err.style.display = 'block';
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Entrar';
-  }
-}
-
+/* Sin clave de clase: alcanza con el nombre para entrar. */
 function startSession() {
   const val = document.getElementById('name-input').value.trim();
   if (!val) { document.getElementById('name-gate-err').style.display = 'block'; return; }
@@ -731,12 +610,7 @@ function jsonp(params) {
 }
 
 function fetchSubmissions(sheetName) {
-  return jsonp({ action: 'submissions', sheet: sheetName });
-}
-
-/* Valida la clave de la semana; si es correcta viene el roster con la respuesta. */
-function fetchAuth(pass) {
-  return jsonp({ action: 'auth', pass: pass });
+  return jsonp({ sheet: sheetName });
 }
 
 /* Las entregas llegan de la planilla: son código ajeno, siempre escapado. */
