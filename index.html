@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Recap Clases · Pensamiento Computacional</title>
-<meta name="description" content="Todas las clases de Pensamiento Computacional, de la primera a la más reciente.">
+<meta name="description" content="Material de la clase práctica de Pensamiento Computacional, en base a lo publicado en pensamientocomputacional.dev.ar.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -97,7 +97,8 @@
     position: relative;
   }
 
-  .timeline li { position: relative; }
+  .timeline li { position: relative; min-width: 0; }
+  .timeline li.featured-li { margin-bottom: .6rem; }
 
   .timeline a {
     position: relative;
@@ -119,7 +120,13 @@
   }
   .timeline a.featured {
     border-color: var(--accent);
+    border-width: 2px;
+    padding: 1.3rem 1.45rem;
     background: linear-gradient(135deg, var(--accent-dim), var(--surface));
+    box-shadow: 0 0 0 1px var(--accent-dim), 0 10px 30px -8px rgba(229,48,80,.45);
+  }
+  .timeline a.featured:hover {
+    box-shadow: 0 0 0 1px var(--accent-dim), 0 14px 36px -8px rgba(229,48,80,.55);
   }
 
   .thumb {
@@ -163,18 +170,6 @@
     line-height: 1.45;
   }
 
-  .badge {
-    flex: none;
-    align-self: center;
-    font-family: var(--font-m);
-    font-size: .68rem;
-    color: var(--good);
-    border: 1px solid var(--good);
-    background: var(--good-bg);
-    border-radius: 999px;
-    padding: .25rem .7rem;
-    white-space: nowrap;
-  }
   .arrow {
     flex: none;
     align-self: center;
@@ -200,11 +195,11 @@
     <header>
       <div class="eyebrow">🌺 Pensamiento Computacional · Curso 11</div>
       <h1>Recap <span>Clases</span></h1>
-      <p>Todo el recorrido del curso, clase por clase. Elegí una para entrar.</p>
+      <p>Material de la clase práctica, en base a lo publicado en <a href="https://pensamientocomputacional.dev.ar/" style="color:inherit;text-decoration:underline">pensamientocomputacional.dev.ar</a>. Elegí una clase para entrar.</p>
     </header>
 
     <ul class="timeline">
-      <li>
+      <li class="featured-li">
         <a class="featured" href="/archive/clase-repaso/index.html">
           <span class="thumb">🌸</span>
           <span class="info">
@@ -212,7 +207,7 @@
             <span class="title">Clase de Repaso · Primavera</span>
             <span class="topics">Temas vistos: repaso integrador de todo el curso — quiz de lectura de código y 7 ejercicios de parcial.</span>
           </span>
-          <span class="badge">más reciente</span>
+          <span class="arrow">→</span>
         </a>
       </li>
       <li>
