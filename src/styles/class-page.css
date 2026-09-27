@@ -36,7 +36,7 @@
   --secondary:     #60a5fa;
   --secondary-rgb: 96, 165, 250;
   --code-string:   #93c5fd;
-  --hint-icon:     "💡";
+  --hint-icon:     none;
 }
 
 :root {

@@ -7,5 +7,5 @@ export const CLASSES = [
   { slug: 'unidad-4-pt1', href: '/archive/unidad-4-pt1/index.html', label: '🗂️ Estructuras de Datos · U4' },
   { slug: 'cap-4-listas-tuplas', href: '/archive/cap-4-listas-tuplas/index.html', label: '📋 El Archivo · U4.2' },
   { slug: 'clase-repaso', href: '/archive/clase-repaso/index.html', label: '🌸 Repaso · Primavera' },
-  { slug: 'clase-post-parcial', href: '/archive/clase-post-parcial/index.html', label: '📝 Post Parcial', hidden: true },
+  { slug: 'clase-post-parcial', href: '/archive/clase-post-parcial/index.html', label: '📝 Post Parcial' },
 ];

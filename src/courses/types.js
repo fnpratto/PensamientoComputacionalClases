@@ -47,8 +47,8 @@
  * @typedef {Object} Course
  * @property {string} slug
  * @property {string} title
- * @property {{emoji: string, title: [string, string], subtitle: string, buttonLabel: string, password?: string}} gate
- * @property {{badge: string, title: [string, string], subtitle: string, decoration: string}} hero
+ * @property {{emoji?: string, title: [string, string], subtitle: string, buttonLabel: string, password?: string}} gate
+ * @property {{badge: string, title: [string, string], subtitle: string, decoration?: string}} hero
  * @property {string} footer
  * @property {{label: string, quiz: string, exercises: string}} nav
  * @property {{eyebrow: string, title: string, description: string, sheet: string,

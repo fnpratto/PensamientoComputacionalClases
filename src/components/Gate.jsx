@@ -23,7 +23,7 @@ export default function Gate({ gate, onEnter }) {
     <div className="gate">
       <form className="gate-card" onSubmit={handleSubmit} noValidate>
         <div className="gate-kicker">Pensamiento Computacional · FIUBA</div>
-        <div className="gate-emoji" aria-hidden="true">{gate.emoji}</div>
+        {gate.emoji && <div className="gate-emoji" aria-hidden="true">{gate.emoji}</div>}
         <TwoToneTitle as="h1" className="gate-title" parts={gate.title} />
         <p className="gate-subtitle">{gate.subtitle}</p>
 
