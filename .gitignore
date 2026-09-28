@@ -5,3 +5,7 @@ dist/
 # Script de Google Apps Script: vive en el editor de Apps Script, no en git.
 # Se mantiene local como referencia/backup, pero fuera de control de versiones.
 apps-script-doGet.js
+
+# Datos personales de alumnos: nunca al repo (es público).
+*.xlsx
+*.csv
