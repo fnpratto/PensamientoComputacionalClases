@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clase de Repaso · Primavera 🌸</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/matchbrackets.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/selection/active-line.min.js" defer></script>
+  <style>
+    :root {
+      --bg:           #0c0607;
+      --bg-soft:      #130b0e;
+      --bg-muted:     #0f0809;
+      --surface:      #1c0e12;
+      --border:       #321620;
+      --border-strong:#522630;
+
+      --text:         #f5e6ea;
+      --text-dim:     #a07580;
+      --text-faint:   #5c3545;
+
+      --accent:       #e53050;
+      --accent-dim:   rgba(229,48,80,.15);
+      --accent-strong:#ff7090;
+
+      --good:         #5fce84;
+      --good-bg:      rgba(95,206,132,.13);
+      --bad:          #ff4d4d;
+      --bad-bg:       rgba(255,77,77,.13);
+      --amber:        #fbbf24;
+      --amber-bg:     rgba(251,191,36,.12);
+      --pink:         #f472b6;
+      --pink-bg:      rgba(244,114,182,.12);
+
+      --font-d: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+      --font-b: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+      --font-m: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+      --content-w: 720px;
+      --r: 10px;
+      --r-sm: 6px;
+    }
+    @media (min-width:860px)  { :root { --content-w:760px; } }
+    @media (min-width:1100px) { :root { --content-w:840px; } }
+    @media (min-width:1440px) { :root { --content-w:900px; } }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body {
+      margin: 0; overflow-x: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-b); font-size: 16px; line-height: 1.6;
+      padding-bottom: 4rem;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: rgba(229,48,80,.3); color: var(--accent-strong); }
+    h1,h2,h3 { font-family: var(--font-d); font-weight: 700; letter-spacing: -0.01em; color: var(--text); margin: 0; }
+    code {
+      font-family: var(--font-m);
+      background: var(--bg-muted); color: var(--accent-strong);
+      padding: .12rem .38rem; border-radius: 4px; font-size: .88em;
+    }
+    pre {
+      font-family: var(--font-m);
+      background: var(--bg-soft); border: 1px solid var(--border);
+      border-radius: var(--r-sm); padding: 1rem 1.1rem;
+      overflow-x: auto; font-size: .84rem; color: var(--text); line-height: 1.6;
+      margin: 0;
+    }
+
+    .eyebrow {
+      font-family: var(--font-m); font-size: .7rem; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--text-faint); margin-bottom: .5rem; display: block;
+    }
+    .tag-rose {
+      font-family: var(--font-m); font-size: .66rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--accent); display: inline-block;
+      background: var(--accent-dim); padding: .18rem .55rem; border-radius: 999px;
+      margin-bottom: .7rem;
+    }
+    .tag-pink {
+      font-family: var(--font-m); font-size: .66rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--pink); display: inline-block;
+      background: var(--pink-bg); padding: .18rem .55rem; border-radius: 999px;
+      margin-bottom: .7rem;
+    }
+
+    /* ── HERO ───────────────────────────────────── */
+    #hero {
+      min-height: 65vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 1.5rem 4rem;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(229,48,80,.14) 0%, transparent 60%),
+        radial-gradient(ellipse at 85% 90%, rgba(244,114,182,.08) 0%, transparent 50%),
+        var(--bg);
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    #hero::before {
+      content: "🌸 🌺 🌹 🌼 🌻 🌷";
+      position: absolute; top: 1.2rem; left: 50%; transform: translateX(-50%);
+      font-size: 1.4rem; letter-spacing: .7rem; opacity: .35;
+      white-space: nowrap;
+    }
+    .hero-badge {
+      font-family: var(--font-m); font-size: .72rem; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--accent);
+      background: var(--accent-dim);
+      padding: .35rem 1rem; border-radius: 999px; margin-bottom: 1.8rem;
+    }
+    .hero-title { font-size: clamp(2.1rem, 5.5vw, 3.4rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
+    .hero-title span { color: var(--accent); }
+    .hero-sub { color: var(--text-dim); max-width: 520px; margin: 0 auto 1.8rem; font-size: 1.05rem; }
+    .scroll-cue { color: var(--text-faint); font-size: .8rem; animation: bob 2.5s ease-in-out infinite; }
+    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+    /* ── SECTIONS ───────────────────────────────── */
+    .section-bg-a { background: var(--bg); border-top: 1px solid var(--border); }
+    .section-bg-b { background: var(--bg-soft); border-top: 1px solid var(--border); }
+    .chamber { max-width: var(--content-w); margin: 0 auto; padding: 4.5rem 1.5rem; }
+    .chamber-head { margin-bottom: 2.2rem; }
+    .chamber-head h2 { font-size: clamp(1.5rem, 3.6vw, 2rem); }
+    .chamber-head p { color: var(--text-dim); max-width: 560px; margin-top: .6rem; font-size: .98rem; }
+
+    /* ── PROGRESS ───────────────────────────────── */
+    .river-wrap { margin: 1.4rem 0 2.2rem; }
+    .river-track {
+      position: relative; height: 4px;
+      background: var(--border); border-radius: 999px; overflow: hidden; margin-bottom: .8rem;
+    }
+    .river-fill {
+      position: absolute; top: 0; left: 0; height: 100%; width: 0%;
+      background: var(--accent); border-radius: 999px; transition: width .4s ease;
+    }
+    .river-labels {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-m); font-size: .63rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--text-faint);
+    }
+    .river-labels span.done { color: var(--accent); font-weight: 600; }
+
+    .status-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.2rem; flex-wrap: wrap; gap: .8rem;
+    }
+    .score-tag { font-family: var(--font-m); font-size: .76rem; color: var(--text-dim); }
+    .score-tag b { color: var(--accent); }
+
+    /* ── CARDS ──────────────────────────────────── */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 1.8rem; }
+    .q-text { font-size: 1.1rem; font-weight: 500; margin-bottom: 1.2rem; color: var(--text); max-width: 70ch; }
+    .q-text pre, .card pre {
+      background: var(--bg-soft); border-color: var(--border); font-size: .83rem; margin: .6rem 0;
+    }
+
+    /* ── QUIZ OPTIONS ───────────────────────────── */
+    .options-grid { display: flex; flex-direction: column; gap: .6rem; }
+    .option-btn {
+      text-align: left; width: 100%;
+      background: var(--bg); border: 1px solid var(--border); color: var(--text);
+      font-family: var(--font-b); font-size: 1rem;
+      padding: .8rem 1.1rem; border-radius: var(--r-sm); cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .option-btn:hover:not([disabled]):not(.selected) { border-color: var(--border-strong); background: rgba(255,255,255,.04); }
+    .option-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .option-btn.selected {
+      border-color: var(--accent);
+      background: rgba(229,48,80,.12);
+      color: var(--accent-strong);
+      font-weight: 600;
+      box-shadow: 0 0 0 1px var(--accent) inset;
+    }
+    .option-btn.correct { border-color: var(--good); background: var(--good-bg); color: var(--good); }
+    .option-btn.wrong   { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+    .option-btn[disabled] { cursor: not-allowed; }
+    .option-btn[disabled]:not(.correct):not(.wrong):not(.selected) { opacity: .5; }
+
+    .quiz-nav { display: flex; justify-content: flex-end; gap: .7rem; margin-top: 1.4rem; flex-wrap: wrap; }
+
+    .feedback { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: .95rem; color: var(--text-dim); display: none; }
+    .feedback.show { display: block; }
+    .feedback.ok  { color: var(--good); }
+    .feedback.bad { color: var(--bad); }
+
+    /* ── HINTS ──────────────────────────────────── */
+    details.hint {
+      margin-top: 1rem; border: 1px solid var(--border);
+      border-radius: var(--r-sm); background: rgba(229,48,80,.03);
+    }
+    details.hint summary {
+      cursor: pointer; list-style: none; padding: .6rem .9rem;
+      font-family: var(--font-m); font-size: .73rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--accent);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    details.hint summary::-webkit-details-marker { display: none; }
+    details.hint summary::before { content: "🌸"; font-size: .9rem; }
+    details.hint[open] summary { border-bottom: 1px solid var(--border); }
+    details.hint .hint-body { padding: .8rem .9rem .9rem; font-size: .92rem; color: var(--text-dim); max-width: 70ch; }
+    details.hint .hint-body code { color: var(--accent-strong); }
+
+    /* ── SUMMARY ────────────────────────────────── */
+    .summary-card {
+      text-align: center; padding: 2.6rem 1.5rem;
+      border: 1px solid var(--border); border-radius: var(--r);
+      background: radial-gradient(ellipse at 50% 0%, rgba(229,48,80,.07), transparent 70%);
+    }
+    .summary-card .big-score { font-size: 2.8rem; font-weight: 800; color: var(--accent); margin: .4rem 0; }
+    .summary-card p { color: var(--text-dim); max-width: 460px; margin: .6rem auto 0; }
+    .cta-row { display: flex; justify-content: center; flex-wrap: wrap; gap: .7rem; margin-top: 1.4rem; }
+
+    .result-grid { display: flex; flex-direction: column; gap: .5rem; margin-top: 1.4rem; text-align: left; }
+    .result-chip {
+      border: 1px solid var(--border); border-radius: var(--r-sm); padding: .6rem .9rem; font-size: .84rem;
+    }
+    .result-chip.ok   { border-color: var(--good); background: var(--good-bg); }
+    .result-chip.bad  { border-color: var(--bad); background: var(--bad-bg); }
+    .result-chip-top  { display: flex; gap: .5rem; align-items: flex-start; }
+    .rc-icon          { font-weight: 700; flex-shrink: 0; }
+    .result-chip.ok .rc-icon  { color: var(--good); }
+    .result-chip.bad .rc-icon { color: var(--bad); }
+    .result-chip-answer { margin-top: .2rem; color: var(--text-faint); font-size: .8rem; }
+    .result-chip-answer span { color: var(--text-dim); }
+
+    /* ── BUTTONS ────────────────────────────────── */
+    .btn {
+      font-family: var(--font-m); font-size: .82rem; letter-spacing: .06em; text-transform: uppercase;
+      background: transparent; color: var(--text); border: 1px solid var(--border-strong);
+      padding: .72rem 1.4rem; border-radius: var(--r-sm); cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .btn:hover { border-color: var(--accent); background: rgba(229,48,80,.08); }
+    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .btn[disabled] { opacity: .4; cursor: not-allowed; }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+    .btn-primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
+    .btn-primary[disabled] { background: var(--border); border-color: var(--border); color: var(--text-faint); }
+
+    /* ── EXERCISE CARDS ─────────────────────────── */
+    .potion-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 2rem; margin-bottom: 1.2rem;
+      border-left: 3px solid var(--accent);
+    }
+    .potion-title { font-size: 1.3rem; font-weight: 800; color: var(--accent); margin-bottom: .2rem; }
+    ul.reqs { padding-left: 1.2rem; color: var(--text-dim); margin: .6rem 0 0; }
+    ul.reqs li { margin-bottom: .35rem; font-size: .95rem; }
+    ul.reqs code { color: var(--accent-strong); }
+
+    /* ── CODE EDITOR ────────────────────────────── */
+    .answer-box { margin-top: 1.2rem; }
+    .verify-note {
+      font-family: var(--font-m); font-size: .72rem; letter-spacing: .06em;
+      color: var(--text-faint); display: block; margin-bottom: .4rem;
+    }
+    .answer-box .CodeMirror {
+      height: auto; min-height: 130px; border: 1px solid var(--border);
+      border-radius: var(--r-sm); font-family: var(--font-m); font-size: .85rem; line-height: 1.55;
+    }
+    .answer-box .CodeMirror-focused { border-color: var(--accent); }
+    @media (max-width: 600px) {
+      .answer-box .CodeMirror { min-height: 45vh; font-size: 16px; }
+      .answer-box .CodeMirror-scroll { min-height: 45vh; }
+    }
+
+    /* ── CODEMIRROR THEME: floracion ────────────── */
+    .cm-s-floracion.CodeMirror { background: var(--bg-soft); color: var(--text); }
+    .cm-s-floracion .CodeMirror-gutters { background: var(--bg-muted); border-right: 1px solid var(--border); }
+    .cm-s-floracion .CodeMirror-linenumber { color: var(--text-faint); padding: 0 .6rem 0 .4rem; }
+    .cm-s-floracion .CodeMirror-cursor { border-left: 1.5px solid var(--accent); }
+    .cm-s-floracion .CodeMirror-selected { background: rgba(229,48,80,.18); }
+    .cm-s-floracion .CodeMirror-activeline-background { background: rgba(229,48,80,.05); }
+    .cm-s-floracion .CodeMirror-matchingbracket { color: var(--amber) !important; text-decoration: underline; }
+    .cm-s-floracion .cm-keyword { color: var(--accent); font-weight: 600; }
+    .cm-s-floracion .cm-def { color: var(--accent-strong); font-weight: 600; }
+    .cm-s-floracion .cm-builtin { color: var(--amber); }
+    .cm-s-floracion .cm-string, .cm-s-floracion .cm-string-2 { color: #f9a8d4; }
+    .cm-s-floracion .cm-number { color: var(--amber); }
+    .cm-s-floracion .cm-atom { color: var(--amber); }
+    .cm-s-floracion .cm-comment { color: var(--text-faint); font-style: italic; }
+    .cm-s-floracion .cm-operator { color: var(--text); }
+    .cm-s-floracion .cm-variable, .cm-s-floracion .cm-property { color: var(--text); }
+    .cm-s-floracion .cm-punctuation, .cm-s-floracion .cm-bracket { color: var(--text-dim); }
+    .CodeMirror-placeholder { color: var(--text-faint) !important; opacity: .7; }
+
+    /* ── VERIFY / TEST UI ───────────────────────── */
+    .verify-row { display: flex; align-items: center; gap: .8rem; margin-top: .8rem; flex-wrap: wrap; }
+    .verify-status { font-family: var(--font-m); font-size: .75rem; color: var(--text-faint); }
+
+    .practice-note-area, .test-results { margin-top: .9rem; }
+    .practice-note {
+      font-family: var(--font-m); font-size: .8rem; padding: .6rem .9rem;
+      border-radius: var(--r-sm); border: 1px solid var(--border); line-height: 1.5;
+    }
+    .practice-note.ok   { color: var(--good); border-color: var(--good); background: var(--good-bg); }
+    .practice-note.warn { color: var(--bad); border-color: var(--bad); background: var(--bad-bg); }
+
+    .test-item {
+      border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: .55rem .8rem; background: var(--bg-soft); margin-bottom: .4rem;
+    }
+    .test-item.pass { border-color: var(--good); }
+    .test-item.fail { border-color: var(--bad); }
+    .t-head {
+      display: flex; justify-content: space-between; gap: .6rem;
+      font-family: var(--font-m); font-size: .68rem; letter-spacing: .04em; text-transform: uppercase;
+    }
+    .test-item.pass .t-head { color: var(--good); }
+    .test-item.fail .t-head { color: var(--bad); }
+    .t-detail { margin-top: .3rem; color: var(--text-dim); font-size: .84rem; }
+
+    .send-status { font-family: var(--font-m); font-size: .8rem; color: var(--accent); margin-top: .5rem; }
+
+    /* ── SIDE NAV ───────────────────────────────── */
+    .snav-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.6); backdrop-filter: blur(3px); z-index: 8999;
+    }
+    .snav-overlay.open { display: block; }
+    .snav-tab {
+      position: fixed; left: 0; top: 50%; transform: translateY(-50%);
+      z-index: 9001; width: 26px; height: 80px;
+      background: rgba(12,6,7,.95); border: 1px solid rgba(229,48,80,.25);
+      border-left: none; border-radius: 0 6px 6px 0;
+      color: var(--accent); cursor: pointer;
+      font-family: var(--font-m); font-size: .6rem; letter-spacing: .12em;
+      writing-mode: vertical-rl;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color .2s;
+    }
+    .snav-tab:hover { border-color: var(--accent); }
+    .snav-panel {
+      position: fixed; left: 0; top: 0; bottom: 0; width: 248px;
+      background: rgba(12,6,7,.97);
+      border-right: 1px solid rgba(229,48,80,.15);
+      backdrop-filter: blur(12px); z-index: 9000;
+      transform: translateX(-100%); transition: transform .24s cubic-bezier(.25,.8,.25,1);
+      display: flex; flex-direction: column; overflow-y: auto;
+    }
+    .snav-panel.open { transform: translateX(0); }
+    .snav-header {
+      padding: 1.4rem 1.1rem 1rem;
+      border-bottom: 1px solid rgba(229,48,80,.1);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .snav-logo { font-family: var(--font-m); font-size: .8rem; letter-spacing: .12em; color: var(--accent); }
+    .snav-close {
+      background: none; border: none; color: var(--text-dim);
+      cursor: pointer; font-size: 1.1rem; line-height: 1;
+      padding: .2rem .4rem; border-radius: 3px;
+    }
+    .snav-body { padding: 1rem .8rem 2rem; flex: 1; }
+    .snav-section-label {
+      font-family: var(--font-m); font-size: .6rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--text-faint);
+      margin: 0 0 .5rem .3rem; display: block;
+    }
+    .snav-unit, .snav-anchor {
+      display: flex; align-items: center; gap: .6rem;
+      font-family: var(--font-m); font-size: .74rem;
+      color: var(--text-dim); text-decoration: none;
+      padding: .5rem .7rem; border-radius: 4px;
+      border-left: 2px solid transparent;
+      background: transparent; margin-bottom: .2rem;
+      transition: color .15s, background .15s;
+    }
+    .snav-unit:hover, .snav-anchor:hover { color: var(--text); background: rgba(229,48,80,.06); }
+    .snav-unit.active { color: var(--accent); border-left-color: var(--accent); background: rgba(229,48,80,.08); }
+    .snav-anchor.current { color: var(--accent); }
+    .u-num { font-size: .6rem; opacity: .7; min-width: 1.8rem; text-align: right; }
+    .snav-divider { border: none; border-top: 1px solid var(--border); margin: .6rem 0; }
+    @media (max-width: 600px) { .snav-tab { height: 60px; } }
+
+    footer {
+      max-width: var(--content-w); margin: 0 auto;
+      padding: 3rem 1.5rem 0; text-align: center;
+      color: var(--text-faint); font-family: var(--font-m); font-size: .74rem; opacity: .7;
+    }
+
+    .name-ac-item {
+      padding: .6rem .9rem; color: var(--text-dim); font-size: .9rem;
+      font-family: var(--font-m); cursor: pointer; border-bottom: 1px solid var(--border);
+    }
+    .name-ac-item:last-child { border-bottom: none; }
+    .name-ac-item:hover, .name-ac-item.ac-active {
+      background: rgba(229,48,80,.12); color: var(--accent-strong);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAME GATE ══════════════════════════════════════════════ -->
+<div id="name-gate" style="
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(229,48,80,.1) 0%, transparent 55%),
+    var(--bg);
+  padding:2rem;
+">
+  <div style="
+    max-width:420px; width:100%;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:14px; padding:2.4rem 2rem; text-align:center;
+  ">
+    <div style="font-family:var(--font-m);font-size:.7rem;letter-spacing:.14em;color:var(--text-faint);text-transform:uppercase;margin-bottom:1.4rem">
+      Pensamiento Computacional · FIUBA
+    </div>
+    <div style="font-size:2rem;margin-bottom:.8rem">🌸</div>
+    <h1 style="font-weight:800;font-size:1.6rem;color:var(--text);margin:0 0 .4rem">
+      Clase de <span style="color:var(--accent)">Repaso</span>
+    </h1>
+    <p style="color:var(--text-dim);font-size:.92rem;margin:0 0 1.8rem;line-height:1.6">
+      Quiz + 7 ejercicios de parcial · ¡Feliz Primavera!
+    </p>
+    <label style="display:block;text-align:left;font-family:var(--font-m);font-size:.78rem;color:var(--text-faint);margin-bottom:.35rem">
+      Nombre completo
+    </label>
+    <div style="position:relative;margin-bottom:1rem;">
+      <input id="name-input" type="text" placeholder="Buscá tu nombre o escribilo..."
+        autocomplete="off"
+        style="
+          width:100%;box-sizing:border-box;
+          background:var(--bg);border:1px solid var(--border);
+          border-radius:6px;padding:.65rem .9rem;
+          color:var(--text);font-family:var(--font-m);font-size:.95rem;
+          outline:none;
+        "
+        oninput="nameAcFilter()"
+        onfocus="nameAcFilter()"
+        onblur="setTimeout(nameAcHide,180)"
+        onkeydown="nameAcKeydown(event)"
+      />
+      <div id="name-ac-list" style="
+        display:none;position:absolute;left:0;right:0;top:100%;
+        background:var(--surface);border:1px solid var(--border);
+        border-top:none;border-radius:0 0 6px 6px;
+        max-height:220px;overflow-y:auto;z-index:100;
+        text-align:left;
+      "></div>
+    </div>
+    <button onclick="startSession()" style="
+      width:100%;padding:.75rem;border:none;border-radius:6px;
+      background:var(--accent);color:#fff;cursor:pointer;
+      font-family:var(--font-b);font-weight:700;font-size:.95rem;
+    ">
+      Empezar 🌸
+    </button>
+    <p id="name-gate-err" style="color:var(--bad);font-size:.8rem;margin:.6rem 0 0;display:none">
+      Ingresá tu nombre para continuar.
+    </p>
+  </div>
+</div>
+
+<!-- ══ CONTENIDO PRINCIPAL ════════════════════════════════════ -->
+<div id="main-content" style="display:none">
+
+<!-- ══ HERO ══════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-badge">🌺 Pensamiento Computacional · Curso 11: Retamozo, Pratto · Primavera 2026</div>
+  <h1 class="hero-title">Clase de <span>Repaso</span></h1>
+  <p class="hero-sub">Unidades 1–4 · Quiz de lectura de código + 7 ejercicios de parcial</p>
+  <div class="scroll-cue">▼</div>
+</section>
+
+<!-- ══ QUIZ ══════════════════════════════════════════════════ -->
+<div class="section-bg-a">
+  <div class="chamber" id="camara-quiz">
+    <div class="chamber-head">
+      <span class="eyebrow">Autoevaluación</span>
+      <h2>Quiz de Repaso</h2>
+      <p>8 preguntas de lectura de código. Seleccioná tu respuesta y confirmala antes de ver el resultado.</p>
+    </div>
+    <div id="quiz-root"></div>
+  </div>
+</div>
+
+<!-- ══ EJERCICIOS DE PARCIAL ═════════════════════════════════ -->
+<div class="section-bg-b">
+  <div class="chamber" id="camara-parcial">
+    <div class="chamber-head">
+      <span class="eyebrow">Ejercicios de Parcial</span>
+      <h2>Los 7 Desafíos 🌹</h2>
+      <p>Ejercicios integradores que combinan todo lo visto. Cada uno tiene tests automáticos y podés entregar tu solución directamente.</p>
+    </div>
+    <div id="exam-root"></div>
+  </div>
+</div>
+
+<footer>Clase de Repaso · Primavera 2026 · Pensamiento Computacional FIUBA 🌸</footer>
+
+</div><!-- /#main-content -->
+
+<!-- ══ SITE NAVIGATION ═══════════════════════════════════════ -->
+<div class="snav-overlay" id="snav-overlay" onclick="snavClose()"></div>
+<button class="snav-tab" onclick="snavToggle()" aria-label="Abrir menú">nav</button>
+<nav class="snav-panel" id="snav-panel" aria-label="Navegación del sitio">
+  <div class="snav-header">
+    <span class="snav-logo">PC · FIUBA 🌸</span>
+    <button class="snav-close" onclick="snavClose()" aria-label="Cerrar">✕</button>
+  </div>
+  <div class="snav-body">
+    <span class="snav-section-label">Clase</span>
+    <a class="snav-unit active" href="#">Repaso · Primavera</a>
+    <hr class="snav-divider">
+    <span class="snav-section-label">Secciones</span>
+    <a class="snav-anchor" href="#hero"          onclick="snavClose()">Inicio</a>
+    <a class="snav-anchor" href="#camara-quiz"   onclick="snavClose()">Quiz</a>
+    <a class="snav-anchor" href="#camara-parcial" onclick="snavClose()">7 Ejercicios</a>
+  </div>
+</nav>
+
+<!-- ══ SCRIPT ════════════════════════════════════════════════ -->
+<script>
+/* ─── CONFIG ─────────────────────────────────────────────── */
+const SHEET_WEBHOOK = "https://script.google.com/macros/s/AKfycbxixKO-IHvlg3OzajxcbINbx6UwP0Li_tTuhI8MLQiIqPrNnmq7XVW9Cm_15B-8c6Li/exec";
+let studentName = '';
+
+/* ─── ALUMNOS ────────────────────────────────────────────── */
+const ALUMNOS = [
+  "Ernesto Barragán","Alfonso Barreña Baroni","Tobias Barrios","Enzo Bruccieri",
+  "Kevin Nahuel Bustamante Flores","Elián Candia Candia",
+  "Angelique Tatiana Chazarreta Reyes","Jhoscen Maykel Jhair Chumacero Reyes",
+  "Lucas Cornejo Abad","Marcel Mihai Cuba Reyes","Tatiana Agustina Fernández",
+  "Noemi Flores","Lisandro Flores Chiachiare","Emilia Gonzalez Frutos",
+  "Tomás Gonzalo Grané","Antonio David Hochbaum","Daniela Ledesma",
+  "Matias Melita","Martina Oses","Milena María Ostojich Checa",
+  "Alison Michel Padilla Balderrama","Ian David Park","Agustín Pascale",
+  "Mauro Ivan Paz","Harold Perez","Francisco Román Pérez León","Gael Quesada",
+  "Dylan Quipildor","Agustín Regis","Bruno Nahuel Rodriguez Alfonzo",
+  "Lucas Gabriel Rodríguez Aray","Tiago Tomas Rodríguez Ormaechea",
+  "Arian Denis Ruibo","Bruno Amin Salinas Casco","Alejandro Sarta",
+  "Lautaro Slavsky","Maximo Yoel Suca","Juan Sulbaran",
+  "Matias Nicolas Tinnirello","Nicolas Wei","Sebastián Yu García",
+  "Bernardo Bautista","Dante Pinto","Enzo Lisicki","Ezequiel Mendoza",
+  "Guillermo Alvarez","Juan Bautista Angelero","Maika Abellido","Sebastián Angulo"
+];
+
+let _nameAcIdx = -1;
+
+function nameAcFilter() {
+  const q = (document.getElementById('name-input').value || '').trim().toLowerCase();
+  const list = document.getElementById('name-ac-list');
+  const matches = q.length === 0 ? ALUMNOS : ALUMNOS.filter(n => n.toLowerCase().includes(q));
+  if (matches.length === 0) { list.style.display = 'none'; return; }
+  list.innerHTML = matches.map(n =>
+    `<div class="name-ac-item" data-name="${n.replace(/"/g,'&quot;')}"
+         onmousedown="nameAcSelect(this.dataset.name)">${n}</div>`
+  ).join('');
+  list.style.display = 'block';
+  _nameAcIdx = -1;
+}
+function nameAcHide() {
+  const list = document.getElementById('name-ac-list');
+  if (list) list.style.display = 'none';
+  _nameAcIdx = -1;
+}
+function nameAcSelect(name) {
+  document.getElementById('name-input').value = name;
+  nameAcHide();
+}
+function nameAcKeydown(e) {
+  const list = document.getElementById('name-ac-list');
+  const items = list ? list.querySelectorAll('.name-ac-item') : [];
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    _nameAcIdx = Math.min(_nameAcIdx + 1, items.length - 1);
+    items.forEach((el, i) => el.classList.toggle('ac-active', i === _nameAcIdx));
+    if (items[_nameAcIdx]) items[_nameAcIdx].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    _nameAcIdx = Math.max(_nameAcIdx - 1, 0);
+    items.forEach((el, i) => el.classList.toggle('ac-active', i === _nameAcIdx));
+    if (items[_nameAcIdx]) items[_nameAcIdx].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter') {
+    if (_nameAcIdx >= 0 && items[_nameAcIdx]) {
+      nameAcSelect(items[_nameAcIdx].dataset.name);
+    } else { startSession(); }
+  } else if (e.key === 'Escape') { nameAcHide(); }
+}
+
+/* ─── NAME GATE ──────────────────────────────────────────── */
+function startSession() {
+  const val = document.getElementById('name-input').value.trim();
+  if (!val) { document.getElementById('name-gate-err').style.display = 'block'; return; }
+  studentName = val;
+  document.getElementById('name-gate').style.display = 'none';
+  document.getElementById('main-content').style.display = 'block';
+  initPage();
+}
+
+/* ─── SHEET SUBMIT ───────────────────────────────────────── */
+function sendToSheet(sheetName, results, score, total, statusElId) {
+  const statusEl = document.getElementById(statusElId);
+  if (!SHEET_WEBHOOK) { statusEl.textContent = 'Webhook no configurado.'; return; }
+  statusEl.textContent = 'Enviando…';
+  const body = new URLSearchParams({
+    sheet:     sheetName,
+    nombre:    studentName,
+    puntaje:   score + '/' + total,
+    preguntas: JSON.stringify(results.map(r => r.pregunta || r.q || '')),
+    respuestas:JSON.stringify(results.map(r => r.respuesta || r.chosen || '')),
+    correctas: JSON.stringify(results.map(r => r.correcta !== undefined ? r.correcta : r.correct)),
+    notas:     JSON.stringify(results.map(() => '')),
+  });
+  fetch(SHEET_WEBHOOK, { method:'POST', mode:'no-cors', body })
+    .then(() => { statusEl.textContent = '✓ Enviado a la planilla.'; })
+    .catch(() => { statusEl.textContent = '✗ Error al enviar. Avisale al docente.'; });
+}
+
+/* ─── PYODIDE ENGINE ─────────────────────────────────────── */
+const PCC_HARNESS_PY = `
+import sys, io, json, ast, builtins as _pcc_builtins
+
+def _pcc_check_practices(code, required_names_json):
+    required_names = json.loads(required_names_json) if required_names_json else []
+    result = {"parse_ok": True, "error": None, "defined_functions": [], "missing_required": []}
+    try:
+        tree = ast.parse(code)
+        names = [n.name for n in ast.walk(tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]
+        result["defined_functions"] = names
+        result["missing_required"] = [n for n in required_names if n not in names]
+    except SyntaxError as e:
+        result["parse_ok"] = False
+        result["error"] = str(e)
+    return json.dumps(result)
+
+def _pcc_run(code, func_name, args_json, stdin_json):
+    args_list = json.loads(args_json) if args_json else []
+    stdin_list = json.loads(stdin_json) if stdin_json else []
+    namespace = {}
+    output = io.StringIO()
+    old_stdout = sys.stdout
+    old_input = _pcc_builtins.input
+    inputs_iter = iter(stdin_list)
+    def _mock_input(prompt=""):
+        try:
+            return next(inputs_iter)
+        except StopIteration:
+            return "0"
+    _pcc_builtins.input = _mock_input
+    sys.stdout = output
+    result = {"ok": False, "error": None, "return_value": None, "stdout": ""}
+    try:
+        exec(code, namespace)
+        if func_name:
+            fn = namespace.get(func_name)
+            if not callable(fn):
+                raise NameError("No se encontro una funcion llamada '" + func_name + "'")
+            result["return_value"] = fn(*args_list)
+        result["ok"] = True
+    except Exception as e:
+        result["error"] = type(e).__name__ + ": " + str(e)
+    finally:
+        sys.stdout = old_stdout
+        _pcc_builtins.input = old_input
+        result["stdout"] = output.getvalue()
+    try:
+        return json.dumps(result)
+    except TypeError:
+        result["return_value"] = str(result["return_value"])
+        return json.dumps(result)
+`;
+
+let pyodidePromise = null;
+function getPyodide() {
+  if (!pyodidePromise) {
+    pyodidePromise = new Promise((resolve, reject) => {
+      const PYODIDE_URL = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+      const init = () => {
+        window.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/' })
+          .then(py => { py.runPython(PCC_HARNESS_PY); resolve(py); })
+          .catch(err => reject(err));
+      };
+      if (window.loadPyodide) { init(); return; }
+      const script = document.createElement('script');
+      script.src = PYODIDE_URL;
+      script.onload = init;
+      script.onerror = () => reject(new Error('No se pudo descargar Pyodide.'));
+      document.head.appendChild(script);
+    });
+  }
+  return pyodidePromise;
+}
+getPyodide().catch(() => {});
+
+async function pccRun(code, funcName, args, stdinArr) {
+  const py = await getPyodide();
+  const runFn = py.globals.get('_pcc_run');
+  const json = runFn(code, funcName || null, JSON.stringify(args || []), JSON.stringify(stdinArr || []));
+  return JSON.parse(json);
+}
+async function pccCheckPractices(code, requiredNames) {
+  const py = await getPyodide();
+  const checkFn = py.globals.get('_pcc_check_practices');
+  const json = checkFn(code, JSON.stringify(requiredNames || []));
+  return JSON.parse(json);
+}
+
+/* ─── TEST RUNNER ─────────────────────────────────────────── */
+function fmtVal(v) {
+  if (v === null || v === undefined) return '(nada)';
+  if (typeof v === 'string') return '"' + v + '"';
+  if (Array.isArray(v)) return '[' + v.map(fmtVal).join(', ') + ']';
+  return String(v);
+}
+
+function evalCase(actual, expect) {
+  switch (expect.type) {
+    case 'numeric': {
+      const num = typeof actual === 'number' ? actual : parseFloat(actual);
+      return !Number.isNaN(num) && Math.abs(num - expect.value) < (expect.tolerance ?? 0.01);
+    }
+    case 'bool':
+      return Boolean(actual) === Boolean(expect.value);
+    case 'exact': {
+      const n = s => (s||'').toLowerCase().trim().replace(/\s+/g,' ');
+      return n(String(actual)) === n(String(expect.value));
+    }
+    case 'contains': {
+      const s = String(actual||'').toLowerCase();
+      return expect.parts.every(p => s.includes(String(p).toLowerCase().trim()));
+    }
+    case 'stdout_contains': {
+      const s = (actual || '').toLowerCase();
+      return expect.parts.every(p => s.includes(String(p).toLowerCase().trim()));
+    }
+    default: return false;
+  }
+}
+
+async function runFunctionTests(code, spec) {
+  const rows = [];
+  for (const c of spec.cases) {
+    const isStdout = c.expect.type === 'stdout' || c.expect.type === 'stdout_contains';
+    const callLabel = spec.funcName + '(' + c.args.map(fmtVal).join(', ') + ')';
+    try {
+      const r = await pccRun(code, spec.funcName, c.args, c.stdin || []);
+      if (!r.ok) {
+        rows.push({ pass: false, label: callLabel, detail: 'Error al ejecutar: ' + r.error });
+      } else {
+        const actual = isStdout ? r.stdout : r.return_value;
+        const pass = evalCase(actual, c.expect);
+        let detail;
+        if (c.expect.type === 'stdout_contains') {
+          detail = pass
+            ? 'Imprimió el contenido esperado.'
+            : 'Se esperaba que imprimiera: ' + c.expect.parts.join(', ') + '.\nImprimió: ' + (r.stdout || '(nada)');
+        } else {
+          const expDesc = c.expect.value !== undefined ? fmtVal(c.expect.value) : c.expect.parts.join(', ');
+          detail = pass
+            ? 'Devolvió ' + fmtVal(r.return_value) + ', como se esperaba.'
+            : 'Devolvió ' + fmtVal(r.return_value) + ' — se esperaba ' + expDesc + '.';
+        }
+        rows.push({ pass, label: callLabel, detail });
+      }
+    } catch (err) {
+      rows.push({ pass: false, label: callLabel, detail: 'Error inesperado: ' + (err.message || err) });
+    }
+  }
+  return rows;
+}
+
+function buildPracticeNoteHtml(practice) {
+  if (!practice.parse_ok) return `<div class="practice-note warn">✗ Error de sintaxis: ${escHtml(practice.error)}</div>`;
+  if (practice.missing_required.length > 0)
+    return `<div class="practice-note warn">✗ No se encontró la función <code>${practice.missing_required[0]}</code>. Asegurate de definirla.</div>`;
+  return `<div class="practice-note ok">✓ Código válido. Funciones definidas: ${practice.defined_functions.join(', ')}</div>`;
+}
+
+function buildTestResultsHtml(rows) {
+  return rows.map(r => `
+    <div class="test-item ${r.pass ? 'pass' : 'fail'}">
+      <div class="t-head">
+        <span>${escHtml(r.label)}</span>
+        <span>${r.pass ? '✓ PASÓ' : '✗ FALLÓ'}</span>
+      </div>
+      <div class="t-detail">${escHtml(r.detail)}</div>
+    </div>`).join('');
+}
+
+/* ─── UTILS ──────────────────────────────────────────────── */
+function mkEl(tag, cls, html) {
+  const d = document.createElement(tag || 'div');
+  if (cls) d.className = cls;
+  d.innerHTML = html;
+  return d;
+}
+function norm(s)    { return (s || '').trim().replace(/\s+/g, ' '); }
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function buildResultGrid(results) {
+  return `<div class="result-grid">${results.map((r, i) => {
+    const ok = r.correcta !== undefined ? r.correcta : r.correct;
+    const pregunta = (r.pregunta || '').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+    return `<div class="result-chip ${ok ? 'ok' : 'bad'}">
+      <div class="result-chip-top">
+        <span class="rc-icon">${ok ? '✓' : '✗'}</span>
+        <span>${i+1}. ${escHtml(pregunta.length > 80 ? pregunta.slice(0,80)+'…' : pregunta)}</span>
+      </div>
+      <div class="result-chip-answer">Tu respuesta: <span>${escHtml(String(r.respuesta || '—'))}</span></div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   QUIZ DATA
+   ═══════════════════════════════════════════════════════════ */
+
+const sections      = ["Fundamentos", "Control de Flujo", "Colecciones"];
+const sectionLabels = ["U1–U2", "U3", "U4"];
+
+const questions = [
+  /* ── FUNDAMENTOS ── */
+  {
+    section: "Fundamentos",
+    q: `¿Qué imprime el siguiente código?<pre>def doblar(n):\n    print(n * 2)\n\nresultado = doblar(5)\nprint(resultado)</pre>`,
+    answers: ["10\nNone"],
+    options: ["10\n10", "10\nNone", "None\n10", "Error de sintaxis"],
+    hint: "¿Qué devuelve una función que solo tiene <code>print</code> y no tiene <code>return</code>? Si asignás ese resultado a una variable, ¿qué valor tendrá?",
+    feedback_ok: "Correcto. <code>doblar(5)</code> imprime <code>10</code> como efecto secundario, pero no devuelve nada — devuelve <code>None</code>. Al imprimir <code>resultado</code>, se ve <code>None</code>.",
+    feedback_bad: "La respuesta es <b>10 / None</b>. <code>doblar</code> hace un <code>print</code> (imprime 10) pero no tiene <code>return</code>, así que devuelve <code>None</code>. Eso es lo que se asigna a <code>resultado</code>.",
+  },
+  {
+    section: "Fundamentos",
+    q: `¿Qué imprime el siguiente código?<pre>def unir(a, b):\n    return a + b\n\nprint(unir("3", "4"))</pre>`,
+    answers: ["34"],
+    options: ["7", "34", '"34"', "TypeError"],
+    hint: '¿Qué tipo de dato es <code>"3"</code> — es el número 3 o algo diferente? ¿Qué hace el operador <code>+</code> cuando ambos operandos son strings?',
+    feedback_ok: 'Correcto. <code>"3"</code> y <code>"4"</code> son strings. El <code>+</code> entre strings los concatena, dando <code>"34"</code>. No son números, así que no suma 7.',
+    feedback_bad: 'La respuesta es <b>34</b>. <code>"3"</code> y <code>"4"</code> son cadenas de texto. Sumar strings los concatena: <code>"3" + "4" = "34"</code>.',
+  },
+  {
+    section: "Fundamentos",
+    q: `¿Qué imprime el siguiente código?<pre>def es_positivo(n):\n    if n > 0:\n        return True\n    return False\n\nprint(es_positivo(-3))\nprint(es_positivo(0))</pre>`,
+    answers: ["False\nFalse"],
+    options: ["True\nFalse", "False\nFalse", "True\nTrue", "False\nTrue"],
+    hint: "Evaluá cada llamada por separado: ¿<code>-3 > 0</code> es True o False? ¿Y <code>0 > 0</code>? Fijate qué devuelve la función en cada caso.",
+    feedback_ok: "Correcto. <code>-3 > 0</code> es False → devuelve False. <code>0 > 0</code> también es False → devuelve False. La condición es estricta (>, no >=).",
+    feedback_bad: "La respuesta es <b>False / False</b>. <code>-3 > 0</code> es False. <code>0 > 0</code> también es False (el cero no es positivo con esta definición).",
+  },
+  /* ── CONTROL DE FLUJO ── */
+  {
+    section: "Control de Flujo",
+    q: `¿Qué imprime el siguiente código?<pre>i = 1\ntotal = 0\nwhile i <= 4:\n    total += i\n    i += 2\nprint(total)</pre>`,
+    answers: ["4"],
+    options: ["4", "6", "10", "3"],
+    hint: "Seguí los valores de <code>i</code> y <code>total</code> paso a paso. Arrancás con <code>i=1</code>; ¿cuánto suma y cuánto salta en cada vuelta? ¿Cuántas veces entra al ciclo?",
+    feedback_ok: "Correcto. El ciclo corre con i=1 (total=1, i→3) y con i=3 (total=4, i→5). Con i=5 ya no entra. Resultado: 4.",
+    feedback_bad: "La respuesta es <b>4</b>. El ciclo entra con i=1 (total+=1→1, i+=2→3) y con i=3 (total+=3→4, i+=2→5). Con i=5 la condición i≤4 es falsa.",
+  },
+  {
+    section: "Control de Flujo",
+    q: `¿Qué imprime el siguiente código?<pre>def clasificar(n):\n    if n > 100:\n        return "alto"\n    elif n > 50:\n        return "medio"\n    elif n > 0:\n        return "bajo"\n    return "cero o negativo"\n\nprint(clasificar(75))</pre>`,
+    answers: ["medio"],
+    options: ["alto", "medio", "bajo", "cero o negativo"],
+    hint: "Las condiciones se evalúan en orden. En cuanto una es verdadera, se ejecuta ese bloque y se sale. ¿Cuál es la primera condición que cumple 75?",
+    feedback_ok: "Correcto. <code>75 > 100</code> es False. <code>75 > 50</code> es True → devuelve <code>\"medio\"</code>.",
+    feedback_bad: "La respuesta es <b>medio</b>. <code>75 > 100</code> es False. La siguiente, <code>75 > 50</code>, es True → se retorna <code>\"medio\"</code> y no se evalúan las demás.",
+  },
+  /* ── COLECCIONES ── */
+  {
+    section: "Colecciones",
+    q: `¿Qué imprime el siguiente código?<pre>for i in range(2, 10, 3):\n    print(i, end=" ")</pre>`,
+    answers: ["2 5 8"],
+    options: ["2 5 8", "2 5 8 11", "0 3 6 9", "2 3 4 5 6 7 8 9"],
+    hint: "¿Qué es el tercer argumento de <code>range</code>? Arrancando en 2 y saltando de a 3, ¿cuáles valores caen antes de llegar a 10?",
+    feedback_ok: "Correcto. <code>range(2, 10, 3)</code> genera 2, 5, 8. El siguiente sería 11 pero ya supera 10.",
+    feedback_bad: "La respuesta es <b>2 5 8</b>. <code>range(inicio, fin, paso)</code>: arranca en 2, salta de a 3, para antes de llegar a 10 → 2, 5, 8.",
+  },
+  {
+    section: "Colecciones",
+    q: `¿Qué imprime el siguiente código? <em>(la cadena es "primavera")</em><pre>s = "primavera"\nprint(s[-5:])\nprint(s[::2])</pre>`,
+    answers: ["avera\npiaea"],
+    options: ["avera\npiaea", "avera\nprmvr", "rimav\nprima", "vera\nprima"],
+    hint: "Para <code>s[-5:]</code>: ¿qué posición es <code>-5</code> en un string de 9 letras? Para <code>s[::2]</code>: tomás posiciones 0, 2, 4, 6, 8 — ¿qué letras son esas?",
+    feedback_ok: `Correcto. "primavera" tiene 9 letras. <code>s[-5:]</code> = posición 4 en adelante = "avera". <code>s[::2]</code> = letras en posiciones 0,2,4,6,8 = p,i,a,e,a = "piaea".`,
+    feedback_bad: `La respuesta es <b>avera / piaea</b>. <code>s[-5:]</code>: posición -5 en "primavera" = índice 4 → "avera". <code>s[::2]</code>: posiciones 0,2,4,6,8 = p,i,a,e,a = "piaea".`,
+  },
+  {
+    section: "Colecciones",
+    q: `¿Qué imprime el siguiente código?<pre>datos = [("Ana", 8), ("Luis", 5), ("Sol", 9)]\nfor nombre, nota in datos:\n    if nota >= 7:\n        print(nombre)</pre>`,
+    answers: ["Ana\nSol"],
+    options: ["Ana\nSol", "Luis", "Ana\nLuis\nSol", "8\n9"],
+    hint: "En el <code>for nombre, nota in datos</code>, ¿qué hace el desempaquetado? Evaluá la condición <code>nota >= 7</code> para cada tupla y anotá qué nombres se imprimen.",
+    feedback_ok: "Correcto. Ana tiene nota 8 (≥7 → imprime), Luis 5 (no imprime), Sol 9 (≥7 → imprime). Resultado: Ana, Sol.",
+    feedback_bad: "La respuesta es <b>Ana / Sol</b>. El desempaquetado asigna nombre y nota de cada tupla. Nota de Ana=8 ✓, Luis=5 ✗, Sol=9 ✓.",
+  },
+];
+
+/* ─── QUIZ ENGINE ─────────────────────────────────────────── */
+let state = { current: 0, score: 0, results: [], done: false, selected: null, answered: false };
+
+function renderQuiz() {
+  const root = document.getElementById('quiz-root');
+  root.innerHTML = '';
+  if (state.done) { renderSummary(root); return; }
+
+  const q       = questions[state.current];
+  const pct     = (state.current / questions.length) * 100;
+  const si      = sections.indexOf(q.section);
+  const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+
+  const card = mkEl('div', 'card', `
+    <span class="tag-rose">${q.section}</span>
+    <div class="q-text">${q.q}</div>
+    <div class="options-grid" id="options-grid">
+      ${shuffled.map(opt =>
+        `<button class="option-btn" data-val="${escHtml(opt)}" onclick="selectOption(this)">${opt.replace(/\n/g,'<br>')}</button>`
+      ).join('')}
+    </div>
+    <details class="hint">
+      <summary>Ayuda de memoria</summary>
+      <div class="hint-body">${q.hint}</div>
+    </details>
+    <div class="feedback" id="q-feedback"></div>
+    <div class="quiz-nav">
+      <button class="btn btn-primary" id="confirm-btn" disabled onclick="confirmAnswer()">
+        Confirmar respuesta ✓
+      </button>
+      <button class="btn btn-primary" id="next-btn" style="display:none" onclick="goNext()">
+        Siguiente pregunta →
+      </button>
+    </div>
+  `);
+
+  root.append(
+    mkEl('div', 'status-row', `
+      <div class="score-tag">
+        Pregunta <b>${state.current + 1}</b>/${questions.length} &nbsp;·&nbsp; Aciertos: <b>${state.score}</b>
+      </div>
+    `),
+    mkEl('div', 'river-wrap', `
+      <div class="river-track"><div class="river-fill" style="width:${pct}%"></div></div>
+      <div class="river-labels">
+        ${sectionLabels.map((l, i) => `<span class="${si >= i ? 'done' : ''}">${l}</span>`).join('')}
+      </div>
+    `),
+    card
+  );
+}
+
+function selectOption(btn) {
+  if (state.answered) return;
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.selected = btn.dataset.val;
+  const confirmBtn = document.getElementById('confirm-btn');
+  if (confirmBtn) confirmBtn.disabled = false;
+}
+
+function confirmAnswer() {
+  if (!state.selected || state.answered) return;
+  state.answered = true;
+  const q = questions[state.current];
+  const chosen = state.selected;
+  const isOk = q.answers.some(a => norm(a) === norm(chosen));
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = true;
+    b.classList.remove('selected');
+    const v = b.dataset.val || b.textContent.trim();
+    if (q.answers.some(a => norm(a) === norm(v))) b.classList.add('correct');
+    else if (norm(v) === norm(chosen))            b.classList.add('wrong');
+  });
+  const fb = document.getElementById('q-feedback');
+  fb.className = 'feedback show ' + (isOk ? 'ok' : 'bad');
+  fb.innerHTML = isOk ? q.feedback_ok : q.feedback_bad;
+  if (isOk) state.score++;
+  state.results.push({ pregunta: q.q.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(), respuesta: chosen, correcta: isOk });
+  const confirmBtn = document.getElementById('confirm-btn');
+  const nextBtn    = document.getElementById('next-btn');
+  if (confirmBtn) confirmBtn.style.display = 'none';
+  if (nextBtn)    nextBtn.style.display = 'inline-flex';
+}
+
+function goNext() {
+  state.current++;
+  state.selected = null;
+  state.answered = false;
+  if (state.current >= questions.length) state.done = true;
+  renderQuiz();
+}
+
+function renderSummary(root) {
+  const { score, results } = state;
+  const total = questions.length;
+  const msg = score >= total * 0.8 ? '¡Excelente repaso! Estás listo/a para el parcial 🌸' :
+              score >= total * 0.5 ? '¡Buen trabajo! Repasá las que fallaste antes del parcial.' :
+              'Aprovechá los ejercicios para reforzar lo que no quedó claro.';
+  root.append(mkEl('div', '', `
+    <div class="river-wrap">
+      <div class="river-track"><div class="river-fill" style="width:100%"></div></div>
+      <div class="river-labels">${sectionLabels.map(l => `<span class="done">${l}</span>`).join('')}</div>
+    </div>
+    <div class="summary-card">
+      <span class="eyebrow">Resultado del Quiz</span>
+      <div class="big-score">${score} / ${total}</div>
+      <p>${msg}</p>
+      ${buildResultGrid(results)}
+      <div class="cta-row">
+        <button class="btn btn-primary"
+          onclick="sendToSheet('Repaso-Quiz',state.results,state.score,${questions.length},'quiz-send-status')">
+          Enviar a planilla
+        </button>
+        <button class="btn"
+          onclick="document.getElementById('camara-parcial').scrollIntoView({behavior:'smooth'})">
+          Pasar a Ejercicios →
+        </button>
+      </div>
+      <p id="quiz-send-status" class="send-status"></p>
+    </div>
+  `));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EJERCICIOS DE PARCIAL
+   ═══════════════════════════════════════════════════════════ */
+
+const examEjs = [
+  /* ── EJ 1: COSTOS DE ENVÍO ──────────────────────────────── */
+  {
+    id: 'ej1',
+    badge: 'Ejercicio 1',
+    tag: 'while · acumuladores · input',
+    title: 'Registro de Costos de Envío',
+    statement: `Una empresa de envíos planifica sus transportes en base a la capacidad máxima de cada camión. Para cada pedido, el costo se calcula como: <code>precio_base + (precio_por_kilo × peso)</code>.<br><br>
+Implementá <code>planificar_envios(cap_max, precio_base, precio_x_kg)</code> que pida al usuario el peso de cada pedido hasta que el siguiente supere la capacidad máxima. En ese caso debe imprimir un mensaje indicando que no será incluido y terminar. Debe devolver el <strong>monto total a cobrar</strong>.<br><br>
+<b>Ejemplo</b> con <code>planificar_envios(20, 2000, 1000)</code> e inputs <code>4, 11, 0.5, 5</code>:<br>
+Los primeros tres pedidos (4+11+0.5=15.5 kg) entran. El cuarto (5 kg) excedería la capacidad → no se incluye.<br>
+Retorna: <code>21500</code>`,
+    hint: `¿Cuándo sabés si un nuevo pedido "cabe" — antes de agregarlo o después? Necesitás llevar la cuenta del peso total acumulado. ¿En qué parte del ciclo lo actualizás? ¿Dónde pedís el primer input — adentro o afuera del while?`,
+    starter: `def planificar_envios(cap_max, precio_base, precio_x_kg):\n    pass`,
+    test: {
+      funcName: 'planificar_envios',
+      cases: [
+        { args: [20, 2000, 1000], stdin: ["4", "11", "0.5", "5"], expect: { type: 'numeric', value: 21500 } },
+        { args: [5, 500, 100],    stdin: ["2", "1", "5"],          expect: { type: 'numeric', value: 1300 } },
+      ]
+    },
+    note: `El verificador prueba el valor de retorno (el monto total). Recordá actualizar el peso acumulado en cada iteración.`,
+  },
+
+  /* ── EJ 2: PREMIAR ALUMNOS ───────────────────────────────── */
+  {
+    id: 'ej2',
+    badge: 'Ejercicio 2',
+    tag: 'for · booleanos · funciones',
+    title: 'Merecen el Premio',
+    statement: `Antes de un examen difícil, los docentes prometen un día libre si la <strong>mayoría</strong> de los exámenes supera una nota mínima.<br><br>
+Implementá <code>merecen_premio(notas, minimo)</code> que reciba una lista de notas y una nota mínima, y devuelva <code>True</code> si más de la mitad de las notas superan el mínimo, o <code>False</code> si no.<br><br>
+<b>Ejemplos</b> con nota mínima <code>6</code>:<br>
+<code>[4, 8, 2, 9, 6, 7]</code> → <code>True</code> (4 de 6 superan el mínimo)<br>
+<code>[4, 3, 10, 10, 5, 2]</code> → <code>False</code> (solo 2 de 6 superan el mínimo)`,
+    hint: `¿Cómo contás cuántas notas superan el mínimo? Una vez que tenés ese conteo, ¿cómo comparás con "la mitad"? Pensá en qué devuelve la función — debería ser directamente un booleano, no un <code>if/else</code> que imprime.`,
+    starter: `def merecen_premio(notas, minimo):\n    pass`,
+    test: {
+      funcName: 'merecen_premio',
+      cases: [
+        { args: [[4, 8, 2, 9, 6, 7], 6], stdin: [], expect: { type: 'bool', value: true } },
+        { args: [[4, 3, 10, 10, 5, 2], 6], stdin: [], expect: { type: 'bool', value: false } },
+        { args: [[5, 5, 6], 7], stdin: [], expect: { type: 'bool', value: false } },
+      ]
+    },
+  },
+
+  /* ── EJ 3: STOCK DEL ALMACÉN ─────────────────────────────── */
+  {
+    id: 'ej3',
+    badge: 'Ejercicio 3',
+    tag: 'for · tuplas · split · format',
+    title: 'Stock del Almacén',
+    statement: `Carlos maneja un almacén y quiere digitalizar el cierre del día. Para cada producto le interesa saber cuánto vendió y actualizar el stock.<br><br>
+Implementá <code>gestionar_stock(productos)</code> que reciba una lista de tuplas <code>(nombre, stock)</code>. Para cada producto, debe pedir al usuario la cantidad vendida y el precio, usando el formato: <code>&lt;unidades&gt; - &lt;precio&gt;</code><br><br>
+Al finalizar debe imprimir la <strong>ganancia bruta total</strong> y devolver la lista de tuplas con el <strong>stock actualizado</strong>.<br><br>
+<b>Ejemplo</b> con <code>[("Leche", 5), ("Fideos", 12)]</code> e inputs <code>"3 - 1200"</code>, <code>"10 - 1500"</code>:<br>
+Imprime <code>Ganancias brutas: $18600</code>. Devuelve <code>[("Leche", 2), ("Fideos", 2)]</code>`,
+    hint: `El input tiene dos partes separadas por <code>" - "</code> — ¿cómo las separás? Recordá castear los valores. Para "actualizar" una tupla en Python tenés que crear una nueva. ¿Cómo la agregás a la lista de resultados?`,
+    starter: `def gestionar_stock(productos):\n    pass`,
+    test: {
+      funcName: 'gestionar_stock',
+      cases: [
+        { args: [[["Leche", 5], ["Fideos", 12]]], stdin: ["3 - 1200", "10 - 1500"], expect: { type: 'contains', parts: ["leche,2", "fideos,2"] } },
+        { args: [[["Chocolatada", 10]]],          stdin: ["0 - 4500"],               expect: { type: 'contains', parts: ["chocolatada,10"] } },
+      ]
+    },
+    note: `El verificador simula los inputs prefijados y comprueba el stock devuelto. Imprimí también la ganancia bruta total.`,
+  },
+
+  /* ── EJ 4: CODIFICAR NÚMEROS ─────────────────────────────── */
+  {
+    id: 'ej4',
+    badge: 'Ejercicio 4',
+    tag: 'strings · replace · range',
+    title: 'Codificar Números',
+    statement: `Formamos parte de La Resistencia 🕵️. Para compartir mensajes numéricos de forma segura usamos un sistema de sustitución: un código de 10 caracteres donde cada posición representa un dígito (posición 0 → representa al dígito '0', posición 1 → representa al '1', etc.).<br><br>
+Implementá <code>encriptar_numero(numero, codigo)</code> que reciba un número (entero o decimal) y un código secreto, y devuelva el número encriptado.<br>
+Si el código tiene menos de 10 caracteres, devolver <code>None</code>.<br><br>
+<b>Ejemplo:</b> <code>encriptar_numero(1234567890, "abcdefghij")</code> → <code>"bcdefghija"</code>`,
+    hint: `¿Cómo convertís el número en un string para poder recorrerlo caracter por caracter? Para cada dígito, ¿cómo obtenés el carácter de reemplazo del código? El punto decimal no es un dígito — ¿qué hacés con él?`,
+    starter: `def encriptar_numero(numero, codigo):\n    pass`,
+    test: {
+      funcName: 'encriptar_numero',
+      cases: [
+        { args: [1234567890, "abcdefghij"], stdin: [], expect: { type: 'exact', value: 'bcdefghija' } },
+        { args: [42, "abc"],               stdin: [], expect: { type: 'exact', value: 'null' } },
+        { args: [100, "0123456789"],        stdin: [], expect: { type: 'exact', value: '100' } },
+      ]
+    },
+  },
+
+  /* ── EJ 5: VALIDAR SITIO WEB ─────────────────────────────── */
+  {
+    id: 'ej5',
+    badge: 'Ejercicio 5',
+    tag: 'strings · slicing · tuplas · listas',
+    title: 'Validar Sitio Web',
+    statement: `Trabajamos en una empresa de hosting y necesitamos validar que los sitios web pedidos sean válidos antes de crearlos.<br><br>
+Implementá <code>validar_sitio_web_valido(sitio, pais, sitios_usados)</code> que reciba el nombre del sitio, el código de país (ej: <code>"ar"</code>) y una colección de sitios ya en uso.<br><br>
+La función debe validar que:
+<ul>
+<li>El sitio <strong>no esté en uso</strong></li>
+<li>Comience con <code>www.</code></li>
+<li>Termine con <code>.com.&lt;pais&gt;</code></li>
+<li>No sea vacío y no supere los 63 caracteres</li>
+</ul>
+Devolver una tupla <code>(sitio, lista_de_errores)</code>. Si no hay errores, la lista estará vacía.<br><br>
+<b>Ejemplo:</b> <code>validar_sitio_web_valido("test", "br", [])</code> → <code>('test', ['El sitio no comienza con www.', 'El sitio no finaliza con .com.br'])</code>`,
+    hint: `Chequeá cada condición por separado y usá <code>append</code> para ir acumulando errores. Para verificar el prefijo, ¿qué slicing necesitás? Para el sufijo, considerá que el código de país tiene largo variable.`,
+    starter: `def validar_sitio_web_valido(sitio, pais, sitios_usados):\n    pass`,
+    test: {
+      funcName: 'validar_sitio_web_valido',
+      cases: [
+        { args: ["www.test.com.ar", "ar", ["www.otro.com.ar"]], stdin: [], expect: { type: 'contains', parts: ["www.test.com.ar"] } },
+        { args: ["test", "br", []], stdin: [], expect: { type: 'contains', parts: ["comienza", "finaliza"] } },
+        { args: ["www.google.com.ar", "ar", ["www.google.com.ar"]], stdin: [], expect: { type: 'contains', parts: ["utilizado"] } },
+      ]
+    },
+    note: `El verificador verifica que los mensajes de error contienen las palabras clave esperadas.`,
+  },
+
+  /* ── EJ 6: PROMOCIÓN DEL BAZAR ───────────────────────────── */
+  {
+    id: 'ej6',
+    badge: 'Ejercicio 6',
+    tag: 'while · listas · remove · input',
+    title: 'Promoción del Bazar',
+    statement: `Un bazar hace una promo mensual: el cliente elige N artículos de un cajón de opciones.<br><br>
+Implementá <code>elegir_regalos(lista_opciones, cantidad)</code> que muestre las opciones disponibles y deje elegir al usuario mientras no haya completado la cantidad y queden opciones en el cajón.<br>
+Si elige una opción no disponible, mostrar un mensaje y volver a preguntar.<br>
+La función debe devolver la lista con los artículos elegidos.<br><br>
+<b>Ejemplo</b> con <code>["palangana","termo 1L","plato vidrio"]</code> y <code>cantidad=2</code>, eligiendo <code>"palangana"</code> y <code>"plato vidrio"</code>:<br>
+→ Devuelve <code>["palangana", "plato vidrio"]</code>`,
+    hint: `La condición del while tiene dos partes: ¿cuándo se cumplió la cantidad? ¿cuándo no quedan más opciones? Antes del while pedís el primer input — dentro del while lo pedís al final. ¿Cómo eliminás la opción elegida del cajón para que no se pueda elegir dos veces?`,
+    starter: `def elegir_regalos(lista_opciones, cantidad):\n    pass`,
+    test: {
+      funcName: 'elegir_regalos',
+      cases: [
+        { args: [["palangana", "termo 1L", "plato vidrio"], 2], stdin: ["palangana", "plato vidrio"], expect: { type: 'contains', parts: ["palangana", "plato vidrio"] } },
+        { args: [["silla", "mesa", "lampara"], 1],              stdin: ["mesa"],                      expect: { type: 'contains', parts: ["mesa"] } },
+      ]
+    },
+    note: `El verificador simula las elecciones del usuario con los inputs prefijados.`,
+  },
+
+  /* ── EJ 7: VALIDAR CONTRASEÑA ────────────────────────────── */
+  {
+    id: 'ej7',
+    badge: 'Ejercicio 7',
+    tag: 'strings · booleanos · for',
+    title: 'Validar Contraseña',
+    statement: `Implementá <code>es_contrasena_valida(contrasena)</code> que devuelva <code>True</code> si la contraseña cumple <em>todas</em> estas condiciones, o <code>False</code> si falla alguna:
+<ul>
+<li>Tiene al menos <strong>8 caracteres</strong></li>
+<li>Contiene al menos <strong>un dígito</strong></li>
+<li>Contiene al menos <strong>una letra mayúscula</strong></li>
+</ul>
+<b>Ejemplos:</b><br>
+<code>es_contrasena_valida("Abc12345")</code> → <code>True</code><br>
+<code>es_contrasena_valida("abc1234")</code> → <code>False</code> (muy corta)<br>
+<code>es_contrasena_valida("abcdefgh")</code> → <code>False</code> (sin dígitos)<br>
+<code>es_contrasena_valida("ABCDEFG1")</code> → <code>True</code>`,
+    hint: `Chequeá cada condición por separado antes de combinarlas. Para recorrer la contraseña caracter por caracter, ¿qué tipos de métodos de string te sirven? Una vez que tenés las tres condiciones individuales, ¿cómo las combinás con un operador lógico para devolver un solo booleano?`,
+    starter: `def es_contrasena_valida(contrasena):\n    pass`,
+    test: {
+      funcName: 'es_contrasena_valida',
+      cases: [
+        { args: ["Abc12345"], stdin: [], expect: { type: 'bool', value: true } },
+        { args: ["abc1234"],  stdin: [], expect: { type: 'bool', value: false } },
+        { args: ["abcdefgh"], stdin: [], expect: { type: 'bool', value: false } },
+        { args: ["ABCDEFG1"], stdin: [], expect: { type: 'bool', value: true } },
+      ]
+    },
+  },
+];
+
+/* ─── EXAM RENDERER ─────────────────────────────────────── */
+function renderExam() {
+  const root = document.getElementById('exam-root');
+
+  examEjs.forEach((p, idx) => {
+    const badgeStyle = 'background:rgba(229,48,80,.12);color:var(--accent);border:1px solid rgba(229,48,80,.25);';
+    const tagStyle = 'background:rgba(244,114,182,.10);color:var(--pink);border:1px solid rgba(244,114,182,.2);';
+    const totalCases = p.test.cases.length;
+    const noteHtml = p.note
+      ? `<p style="color:var(--text-faint);font-size:.84rem;max-width:70ch;margin:.9rem 0 0;font-family:var(--font-m)">${p.note}</p>`
+      : '';
+
+    const el = mkEl('div', 'potion-card', `
+      <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem;flex-wrap:wrap">
+        <span style="font-size:.75rem;font-family:var(--font-m);padding:.25rem .65rem;border-radius:99px;${badgeStyle}">${p.badge}</span>
+        <span style="font-size:.7rem;font-family:var(--font-m);padding:.2rem .55rem;border-radius:99px;${tagStyle}">${p.tag}</span>
+      </div>
+      <div class="potion-title">${p.title}</div>
+      <p style="color:var(--text-dim);font-size:.95rem;max-width:72ch;margin:.6rem 0 .8rem">${p.statement}</p>
+      <details class="hint" style="margin-top:0">
+        <summary>Pista</summary>
+        <div class="hint-body">${p.hint}</div>
+      </details>
+      ${noteHtml}
+      <div class="answer-box" style="margin-top:1.2rem">
+        <span class="verify-note">Tu solución en Python</span>
+        <textarea class="cm-target" id="exam-editor-${idx}">${escHtml(p.starter)}</textarea>
+        <div class="verify-row">
+          <button class="btn btn-primary" id="exam-verify-${idx}">Verificar</button>
+          <span class="verify-status" id="exam-status-${idx}"></span>
+        </div>
+        <div class="practice-note-area" id="exam-practice-${idx}"></div>
+        <div class="test-results" id="exam-results-${idx}"></div>
+        <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--border)">
+          <button class="btn btn-primary" id="exam-submit-${idx}">Entregar 🌸</button>
+        </div>
+        <p id="exam-send-status-${idx}" class="send-status"></p>
+      </div>
+    `);
+    root.appendChild(el);
+
+    const editor = CodeMirror.fromTextArea(el.querySelector('textarea.cm-target'), {
+      mode: 'python', theme: 'floracion', lineNumbers: true,
+      matchBrackets: true, styleActiveLine: true,
+      indentUnit: 4, tabSize: 4, indentWithTabs: false, lineWrapping: true,
+      extraKeys: { Tab: cm => cm.execCommand('insertSoftTab') },
+    });
+    editor.setSize(null, 'auto');
+
+    let lastRows = [];
+    const verifyBtn  = document.getElementById(`exam-verify-${idx}`);
+    const status     = document.getElementById(`exam-status-${idx}`);
+    const practiceEl = document.getElementById(`exam-practice-${idx}`);
+    const results    = document.getElementById(`exam-results-${idx}`);
+
+    verifyBtn.addEventListener('click', async () => {
+      const code = editor.getValue().trim();
+      if (!code) return;
+      verifyBtn.disabled = true;
+      status.textContent = 'Cargando intérprete…';
+      practiceEl.innerHTML = '';
+      results.innerHTML = '';
+      try {
+        const practice = await pccCheckPractices(code, [p.test.funcName]);
+        practiceEl.innerHTML = buildPracticeNoteHtml(practice);
+        status.textContent = 'Ejecutando tests…';
+        lastRows = await runFunctionTests(code, p.test);
+        results.innerHTML = buildTestResultsHtml(lastRows);
+      } catch (err) {
+        lastRows = [];
+        results.innerHTML = `<div class="practice-note warn">Error: ${escHtml(err.message || String(err))}</div>`;
+      } finally {
+        verifyBtn.disabled = false;
+        status.textContent = '';
+      }
+    });
+
+    const submitBtn  = document.getElementById(`exam-submit-${idx}`);
+    const sendStatus = document.getElementById(`exam-send-status-${idx}`);
+    submitBtn.addEventListener('click', () => {
+      if (!studentName) { sendStatus.textContent = 'Ingresá tu nombre al inicio para entregar.'; return; }
+      const code = editor.getValue().trim();
+      if (!code) { sendStatus.textContent = 'Escribí tu solución antes de entregar.'; return; }
+      const passed = lastRows.filter(r => r.pass).length;
+      submitBtn.disabled = true;
+      sendToSheet(
+        `Repaso-Parcial-${idx + 1}`,
+        [{ pregunta: p.title, respuesta: code, correcta: lastRows.length > 0 && passed === totalCases }],
+        passed, totalCases, `exam-send-status-${idx}`
+      );
+      setTimeout(() => { submitBtn.disabled = false; }, 1500);
+    });
+  });
+}
+
+/* ─── SITE NAV ───────────────────────────────────────────── */
+function snavToggle() {
+  const panel   = document.getElementById('snav-panel');
+  const overlay = document.getElementById('snav-overlay');
+  const open = panel.classList.toggle('open');
+  overlay.classList.toggle('open', open);
+}
+function snavClose() {
+  document.getElementById('snav-panel').classList.remove('open');
+  document.getElementById('snav-overlay').classList.remove('open');
+}
+(function () {
+  const anchors = document.querySelectorAll('.snav-anchor[href^="#"]');
+  const secs    = Array.from(anchors).map(a => document.querySelector(a.getAttribute('href')));
+  function onScroll() {
+    let current = secs[0];
+    secs.forEach(s => { if (s && window.scrollY >= s.offsetTop - 120) current = s; });
+    anchors.forEach(a => {
+      a.classList.toggle('current', a.getAttribute('href') === '#' + (current && current.id));
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+/* ─── INIT ───────────────────────────────────────────────── */
+function initPage() {
+  renderQuiz();
+  renderExam();
+  setTimeout(() => {
+    document.querySelectorAll('.CodeMirror').forEach(cm => cm.CodeMirror && cm.CodeMirror.refresh());
+  }, 50);
+}
+</script>
+</body>
+</html>

@@ -8,4 +8,5 @@ export const CLASSES = [
   { slug: 'cap-4-listas-tuplas', href: '/archive/cap-4-listas-tuplas/index.html', label: '📋 El Archivo · U4.2' },
   { slug: 'clase-repaso', href: '/archive/clase-repaso/index.html', label: '🌸 Repaso · Primavera' },
   { slug: 'clase-post-parcial', href: '/archive/clase-post-parcial/index.html', label: '📝 Post Parcial' },
+  { slug: 'clase-diccionarios', href: '/archive/clase-diccionarios/index.html', label: '🔑 Diccionarios · U4' },
 ];
