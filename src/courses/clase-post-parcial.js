@@ -6,9 +6,6 @@ export default {
     title: ['Clase', 'Post Parcial'],
     subtitle: 'Encontrá el error + ejercicios del primer parcial (ambos temas)',
     buttonLabel: 'Empezar',
-    // Traba liviana para que no entren antes de tiempo: queda visible en el
-    // bundle, así que no protege nada sensible.
-    password: 'te-para-3',
   },
   hero: {
     badge: 'Pensamiento Computacional · Curso 11: Retamozo, Pratto · 2026',
@@ -16,7 +13,7 @@ export default {
     subtitle: 'Encontrá el error en código real de parcial · Resolvé los ejercicios del primer parcial (ambos temas) con tests automáticos y mirá cómo los resolvieron tus compañeros',
   },
   footer: 'Clase Post Parcial · 2026 · Pensamiento Computacional FIUBA',
-  nav: { label: 'Post Parcial', quiz: 'Encontrá el error', exercises: 'Ejercicios del primer parcial' },
+  nav: { label: 'Post Parcial', quiz: 'Encontrá el error', exercises: 'Ejercicios del primer parcial', guide: 'Paso a paso' },
   quiz: {
     eyebrow: 'Autoevaluación',
     title: 'Encontrá el Error',
@@ -381,6 +378,258 @@ Por ejemplo, si se recibe <code>["Filatelia temática: puentes y caminos", "Obra
           ]
         },
         note: `Para los tests, la función se tiene que llamar <code>organizar_titulos(titulos)</code>.`,
+      },
+    ],
+  },
+  guide: {
+    eyebrow: 'Guía de estudio',
+    title: 'Paso a paso: cómo resolver el parcial',
+    description: 'Una forma de atacar cada ejercicio, con el razonamiento, el código comentado, una traza del ejemplo y los errores que más se corrigen. Primero intentá resolverlos arriba; después usá esto para comparar.',
+    method: {
+      title: 'Método general (para cualquier ejercicio)',
+      html: `<p class="guide-lead">Una receta que sirve para los seis ejercicios. La idea no es memorizar soluciones, sino tener un orden de ataque.</p>
+<ol class="guide-ol">
+  <li><strong>Leé el enunciado y marcá cuatro cosas:</strong> qué <em>recibe</em> la función, qué <em>devuelve</em>, qué pide por teclado (<code>input</code>) y qué <em>imprime</em>.</li>
+  <li><strong>Seguí el ejemplo a mano</strong> antes de escribir código. Si no entendés por qué da ese resultado, todavía no entendiste el problema.</li>
+  <li><strong>Identificá el patrón.</strong> En este parcial hay tres:
+    <ul>
+      <li><b>Ej. 1</b> — <code>while</code> con condición de corte y un acumulador (peso o tiempo).</li>
+      <li><b>Ej. 2</b> — <code>for</code> sobre una lista de tuplas: comparar y separar en dos listas.</li>
+      <li><b>Ej. 3</b> — transformar cada elemento (<code>map</code>) y ordenar (<code>sorted</code>).</li>
+    </ul>
+  </li>
+  <li><strong>Separá en funciones chicas:</strong> una que pide y parsea los datos, otra con la lógica.</li>
+  <li><strong>Armá el esqueleto:</strong> las variables necesarias y el <code>return</code> con el formato exacto del enunciado.</li>
+  <li><strong>Probá con el ejemplo y con un caso borde</strong> (por ejemplo, un valor que llena justo la capacidad).</li>
+</ol>
+<div class="guide-callout tip"><strong>En el examen:</strong> empezá por el ejercicio que te da más seguridad para asegurar puntos.</div>`,
+    },
+    groups: [
+      {
+        label: 'Tema 1',
+        items: [
+          {
+            tag: 'Tema 1 · Ej 1',
+            title: 'Estantería de la biblioteca',
+            enunciado: `<p>Implementá <code>guardar_libros(peso_max, id_estante)</code>. La función <mark class="hl hl-recibe">recibe la capacidad máxima del estante en kilogramos y un identificador</mark>. Debe <mark class="hl hl-input">pedir, uno por uno, el nombre del libro y su cantidad de hojas</mark> (cada hoja pesa 2 g) e ir guardándolos mientras no se supere la capacidad. Antes de cada pedido <mark class="hl hl-imprime">muestra el peso actual del estante</mark> y, cuando el próximo libro no entra, <mark class="hl hl-imprime">avisa que no se puede guardar</mark>. Al terminar <mark class="hl hl-devuelve">devuelve la tupla (id_estante, [libros_guardados])</mark>.</p>`,
+            html: `<h4>Unidades (la trampa del ejercicio)</h4>
+<p>Cada hoja pesa 2 gramos, pero el máximo viene en kilos: hay que convertir. Por ejemplo 748 hojas × 2 = 1496 g = 1.496 kg.</p>
+<p>Conviene trabajar todo en gramos (<code>peso_max * 1000</code>) y dividir por 1000 solo al imprimir. Así evitás errores de redondeo al sumar <code>float</code> (ese <code>1.7999999999999998</code> molesto).</p>
+<h4>La lógica en palabras</h4>
+<p>Pedir un libro → calcular su peso → ¿entra? → si entra, lo guardo y sumo el peso → pido otro. Si no entra, corto. "Entra" significa <code>peso_actual + peso &lt;= peso_max</code>: es <code>&lt;=</code>, no <code>&lt;</code>, porque un libro que deja la estantería justo en el máximo no la supera.</p>
+<h4>La estructura del ciclo</h4>
+<p>Hay que pedir un libro <em>antes</em> de saber si entra. El patrón es: pedir antes del <code>while</code>, y volver a pedir al final de cada vuelta.</p>
+<h4>Código</h4>
+<pre>def solicitar_ingreso(peso_actual):
+    print(f"Peso actual: {peso_actual / 1000} kg.")
+    ingreso = input("Ingrese un libro y cantidad de hojas: ")
+    libro, hojas = ingreso.split(" - ")
+    return libro, int(hojas) * 2          # peso en gramos
+
+def guardar_libros(peso_max, id_estante):
+    peso_max_g = peso_max * 1000          # kg -&gt; g
+    libros_guardados = []
+    peso_actual = 0
+    print(f"{id_estante} - Peso máximo: {peso_max} kg")
+
+    libro, peso = solicitar_ingreso(peso_actual)
+
+    while peso_actual + peso &lt;= peso_max_g:
+        peso_actual += peso
+        libros_guardados.append(libro)
+        libro, peso = solicitar_ingreso(peso_actual)
+
+    print("El libro no puede ser guardado porque se supera la capacidad máxima.")
+    return (id_estante, libros_guardados)</pre>
+<h4>Traza con el ejemplo (5, "a.est1" → máximo = 5000 g)</h4>
+<table class="guide-table">
+  <thead><tr><th>Vuelta</th><th>Libro (hojas)</th><th>peso (g)</th><th>acum + peso</th><th>¿≤ 5000?</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Física… (748)</td><td>1496</td><td>1496</td><td class="si">sí</td></tr>
+    <tr><td>2</td><td>Ing. electromagnética (152)</td><td>304</td><td>1800</td><td class="si">sí</td></tr>
+    <tr><td>3</td><td>Temas de Economía (325)</td><td>650</td><td>2450</td><td class="si">sí</td></tr>
+    <tr><td>4</td><td>Intro. a los Algoritmos (1780)</td><td>3560</td><td>6010</td><td class="no">no, corta</td></tr>
+  </tbody>
+</table>
+<div class="guide-callout bad"><strong>Errores típicos</strong>
+  <ul>
+    <li>No convertir g a kg (comparar gramos contra kilos).</li>
+    <li>Usar <code>&lt;</code> en lugar de <code>&lt;=</code>.</li>
+    <li>Usar <code>split("-")</code> en vez de <code>split(" - ")</code>: deja espacios en el nombre y no coincide con el resultado esperado.</li>
+    <li>Poner el <code>print</code> del mensaje final <em>dentro</em> del <code>while</code>.</li>
+  </ul>
+</div>`,
+          },
+          {
+            tag: 'Tema 1 · Ej 2',
+            title: 'Juego de lunfardo',
+            enunciado: `<p>Implementá <code>jugar_payada(diccionario)</code>. <mark class="hl hl-recibe">Recibe una lista de tuplas (palabra, significado)</mark>. Para cada palabra, <mark class="hl hl-input">le pregunta al jugador qué significa</mark> y la compara con el significado correcto. Al final <mark class="hl hl-devuelve">devuelve una tupla con dos listas: las palabras acertadas y las erradas</mark>. (No imprime nada: no toda función imprime.)</p>`,
+            html: `<h4>La lógica en palabras</h4>
+<p>Para cada tupla: pregunto → comparo con el significado correcto → si coincide, la palabra va a <code>acertadas</code>; si no, a <code>erradas</code>.</p>
+<h4>Estructura</h4>
+<p>Como hay que recorrer todos los elementos, es un <code>for</code>, desempaquetando la tupla directamente.</p>
+<h4>Código</h4>
+<pre>def jugar_payada(diccionario):
+    acertadas = []
+    erradas = []
+
+    for palabra, significado in diccionario:
+        respuesta = input(f"¿Qué significa '{palabra}'?: ")
+
+        if respuesta.lower() == significado.lower():
+            acertadas.append(palabra)
+        else:
+            erradas.append(palabra)
+
+    return (acertadas, erradas)</pre>
+<h4>Traza con el ejemplo</h4>
+<ul>
+  <li><code>vichar</code> → "mirar" == "mirar" → acertadas</li>
+  <li><code>pucho</code> → "fumar" != "cigarrillo" → erradas</li>
+  <li><code>chamuyar</code> → "hablar" == "hablar" → acertadas</li>
+  <li><code>gauchada</code> → "favor" == "favor" → acertadas</li>
+  <li><code>misho</code> → "pan" != "pobre" → erradas</li>
+</ul>
+<p>Resultado: <code>(["vichar", "chamuyar", "gauchada"], ["pucho", "misho"])</code>. Coincide con el enunciado.</p>
+<div class="guide-callout tip"><strong>Detalles:</strong> el <code>.lower()</code> en ambos lados hace que "Mirar" y "mirar" cuenten igual (podés sumar <code>.strip()</code> para ignorar espacios). Creá las dos listas <em>antes</em> del <code>for</code>, si no se reinician en cada vuelta.</div>`,
+          },
+          {
+            tag: 'Tema 1 · Ej 3',
+            title: 'Normalizar y ordenar el catálogo',
+            enunciado: `<p>Implementá <code>formatear_catalogo(catalogo)</code>. <mark class="hl hl-recibe">Recibe una lista de títulos</mark>. Tiene que normalizar cada título (sacar <code>" "</code>, <code>"."</code>, <code>","</code>, <code>"-"</code>, <code>"_"</code> y pasar a minúscula) y <mark class="hl hl-devuelve">devolver una lista nueva con los títulos formateados y ordenados alfabéticamente</mark>. Bonus: resolverlo sin ciclos. (No pide nada por teclado ni imprime.)</p>`,
+            html: `<h4>Dividir el problema en dos</h4>
+<p>Una función que formatea <em>un</em> título, y después aplicarla a toda la lista (<code>map</code>) y ordenar (<code>sorted</code>). Ejemplo: <code>"Álgebra lineal, 1"</code> → <code>"álgebralineal1"</code>.</p>
+<h4>Código</h4>
+<pre>def formatear_titulo(titulo):
+    formateado = titulo
+    for caracter in " -_,.":
+        formateado = formateado.replace(caracter, "")
+    return formateado.lower()
+
+def formatear_catalogo(catalogo):
+    formateado = list(map(formatear_titulo, catalogo))
+    return sorted(formateado)</pre>
+<h4>Versión del bonus (sin ningún ciclo)</h4>
+<p>La de arriba usa un <code>for</code> dentro de <code>formatear_titulo</code>. Para cumplir el bonus, encadenás los <code>replace</code>:</p>
+<pre>def formatear_titulo(titulo):
+    return (titulo.replace(" ", "").replace(".", "").replace(",", "")
+                  .replace("-", "").replace("_", "").lower())
+
+def formatear_catalogo(catalogo):
+    return sorted(map(formatear_titulo, catalogo))</pre>
+<div class="guide-callout warn"><strong>Ojo con el ejemplo del enunciado:</strong> espera <code>["álgebralineal1", "físicaparaingeniería", "introducciónalosalgoritmos"]</code>, pero <code>sorted</code> compara por código Unicode y "á" (225) es mayor que "z" (122), así que <code>"álgebralineal1"</code> quedaría al final. Si querés que coincida exactamente, ordená ignorando tildes usando <code>unicodedata.normalize("NFD", texto)</code> como <code>key</code>. Probablemente excede lo que se espera en el parcial; si podés, consultalo con la cátedra.</div>`,
+          },
+        ],
+      },
+      {
+        label: 'Tema 2',
+        items: [
+          {
+            tag: 'Tema 2 · Ej 1',
+            title: 'Exposición oral (temas y minutos)',
+            enunciado: `<p>Implementá <code>gestionar_exposicion(apellido, tiempo_max)</code>. <mark class="hl hl-recibe">Recibe el apellido del estudiante y el tiempo máximo en minutos</mark>. Debe <mark class="hl hl-input">pedir, uno por uno, un tema y cuántos minutos lleva</mark>, mientras quede tiempo. Antes de cada pedido <mark class="hl hl-imprime">muestra el tiempo disponible</mark> y, cuando no alcanza, <mark class="hl hl-imprime">avisa que no hay tiempo</mark>. Al terminar <mark class="hl hl-devuelve">devuelve (apellido, [temas_expuestos])</mark>.</p>`,
+            html: `<h4>Es el mismo patrón que el Ej. 1 del Tema 1</h4>
+<p>La diferencia: en vez de un peso que <em>sube</em> hasta un máximo, hay un tiempo que <em>baja</em> hasta 0. Y acá no hay conversión de unidades.</p>
+<h4>La condición</h4>
+<p>Un tema entra si alcanza el tiempo: <code>tiempo &lt;= tiempo_disponible</code> (lo mismo que <code>tiempo_disponible - tiempo &gt;= 0</code>). Si ocupa justo lo que queda, alcanza; con <code>&gt; 0</code> se rechazaría mal.</p>
+<h4>Código</h4>
+<pre>def solicitar_ingreso(tiempo_disponible):
+    print(f"Tiempo disponible: {tiempo_disponible} minutos.")
+    ingreso = input("Ingrese un tema y cantidad de minutos: ")
+    tema, minutos = ingreso.split(" - ")
+    return tema, int(minutos)
+
+def gestionar_exposicion(apellido, tiempo_max):
+    temas = []
+    tiempo_disponible = tiempo_max
+    print(f"{apellido} - Tiempo máximo: {tiempo_max} minutos")
+
+    tema, tiempo = solicitar_ingreso(tiempo_disponible)
+
+    while tiempo &lt;= tiempo_disponible:
+        temas.append(tema)
+        tiempo_disponible -= tiempo
+        tema, tiempo = solicitar_ingreso(tiempo_disponible)
+
+    print("No hay tiempo suficiente para desarrollar este tema.")
+    return (apellido, temas)</pre>
+<h4>Traza con el ejemplo ("Roca", 10)</h4>
+<table class="guide-table">
+  <thead><tr><th>Vuelta</th><th>Tema</th><th>min</th><th>disp. antes</th><th>¿entra?</th><th>disp. después</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Cataratas del Iguazú</td><td>3</td><td>10</td><td class="si">sí</td><td>7</td></tr>
+    <tr><td>2</td><td>Glaciar Perito Moreno</td><td>2</td><td>7</td><td class="si">sí</td><td>5</td></tr>
+    <tr><td>3</td><td>Quebrada de Humahuaca</td><td>4</td><td>5</td><td class="si">sí</td><td>1</td></tr>
+    <tr><td>4</td><td>Península Valdés</td><td>4</td><td>1</td><td class="no">no, corta</td><td>—</td></tr>
+  </tbody>
+</table>
+<div class="guide-callout warn"><strong>Ojo con el enunciado:</strong> después de "Quebrada de Humahuaca" muestra "Tiempo disponible: 2 minutos", pero 5 − 4 = 1. Es un error de tipeo del enunciado; el resultado final igual es correcto.</div>
+<div class="guide-callout bad"><strong>Errores típicos</strong>
+  <ul>
+    <li>Usar <code>&gt; 0</code> en lugar de <code>&gt;= 0</code> / <code>&lt;=</code> (rechaza un tema que llena justo el tiempo).</li>
+    <li><code>split("-")</code> en lugar de <code>split(" - ")</code>.</li>
+    <li>Olvidar convertir los minutos con <code>int()</code>.</li>
+  </ul>
+</div>`,
+          },
+          {
+            tag: 'Tema 2 · Ej 2',
+            title: 'Torneo de capitales',
+            enunciado: `<p>Implementá <code>evaluar_capitales(provincias)</code>. <mark class="hl hl-recibe">Recibe una lista de tuplas (provincia, capital)</mark>. Para cada provincia, <mark class="hl hl-input">le pregunta al jugador cuál es su capital</mark> y la compara. Al final <mark class="hl hl-devuelve">devuelve una tupla con dos listas: las provincias acertadas y las erradas</mark>. (No imprime nada.)</p>`,
+            html: `<h4>Es idéntico al Ej. 2 del Tema 1</h4>
+<p>Cambia solo el texto de la pregunta y qué se agrega a cada lista (acá, la provincia).</p>
+<h4>Código</h4>
+<pre>def evaluar_capitales(provincias):
+    acertadas = []
+    erradas = []
+
+    for provincia, capital in provincias:
+        respuesta = input(f"¿Cuál es la capital de {provincia}?: ")
+
+        if respuesta.lower() == capital.lower():
+            acertadas.append(provincia)
+        else:
+            erradas.append(provincia)
+
+    return (acertadas, erradas)</pre>
+<h4>Traza con el ejemplo</h4>
+<ul>
+  <li>Mendoza → "Mendoza" ✓</li>
+  <li>Salta → "Salta" ✓</li>
+  <li>Chubut → "Comodoro Rivadavia" ≠ "Rawson" ✗</li>
+  <li>Misiones → "Posadas" ✓</li>
+  <li>Neuquén → "San Martín de los Andes" ≠ "Neuquén" ✗</li>
+</ul>
+<p>Resultado: <code>(["Mendoza", "Salta", "Misiones"], ["Chubut", "Neuquén"])</code>. Coincide con el enunciado.</p>`,
+          },
+          {
+            tag: 'Tema 2 · Ej 3',
+            title: 'Normalizar exposiciones del museo',
+            enunciado: `<p>Implementá <code>organizar_titulos(titulos)</code>. <mark class="hl hl-recibe">Recibe una lista de nombres de exposiciones</mark>. Tiene que normalizar cada nombre (todo en mayúsculas, cada espacio por <code>_</code>, y eliminar <code>. , : -</code>) y <mark class="hl hl-devuelve">devolver una lista nueva, normalizada y ordenada alfabéticamente</mark>. Bonus: resolverlo sin ciclos. (No pide nada por teclado ni imprime.)</p>`,
+            html: `<h4>El orden de los pasos importa</h4>
+<p>Reemplazá los espacios por <code>_</code> y después eliminá los caracteres especiales, cuidando de no borrar el <code>_</code> nuevo. Como el <code>_</code> no está en la lista a eliminar, cualquier orden funciona; lo importante es no tocarlo.</p>
+<h4>Cómo queda un nombre</h4>
+<p><code>"Obras del Ing. Torroja"</code> → mayúsculas → <code>"OBRAS DEL ING. TORROJA"</code> → espacios a <code>_</code> → <code>"OBRAS_DEL_ING._TORROJA"</code> → sacar <code>.</code> → <code>"OBRAS_DEL_ING_TORROJA"</code>.</p>
+<h4>Código</h4>
+<pre>def formatear_titulo(titulo):
+    formateado = titulo.upper()
+    formateado = formateado.replace(" ", "_")
+    for caracter in ",.:-":
+        formateado = formateado.replace(caracter, "")
+    return formateado
+
+def organizar_titulos(titulos):
+    return sorted(list(map(formatear_titulo, titulos)))</pre>
+<h4>Versión del bonus (sin ciclos)</h4>
+<pre>def formatear_titulo(titulo):
+    return (titulo.upper().replace(" ", "_").replace(",", "")
+                  .replace(".", "").replace(":", "").replace("-", ""))
+
+def organizar_titulos(titulos):
+    return sorted(map(formatear_titulo, titulos))</pre>
+<p>Resultado del ejemplo: <code>["ACTIVIDADES_ESPACIALES", "FILATELIA_TEMÁTICA_PUENTES_Y_CAMINOS", "OBRAS_DEL_ING_TORROJA"]</code>. Acá la tilde está en el medio del nombre, así que no afecta el orden.</p>`,
+          },
+        ],
       },
     ],
   },

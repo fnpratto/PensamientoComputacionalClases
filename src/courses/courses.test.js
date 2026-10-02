@@ -8,7 +8,7 @@ const pages = import.meta.glob('../pages/*.jsx');
 const courses = import.meta.glob('./clase-*.js', { eager: true, import: 'default' });
 const slugs = Object.keys(pages).map(p => p.match(/([^/]+)\.jsx$/)[1]);
 const courseFor = slug => courses[`./${slug}.js`];
-const EXPECT_TYPES = ['numeric', 'bool', 'exact', 'contains', 'stdout_contains'];
+const EXPECT_TYPES = ['numeric', 'bool', 'exact', 'json', 'contains', 'stdout_contains'];
 
 describe.each(slugs)('clase %s', slug => {
   it('tiene página, datos y entrada en el catálogo', () => {

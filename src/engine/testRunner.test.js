@@ -33,6 +33,28 @@ describe('evaluateCase', () => {
     expect(evaluateCase(null, { type: 'contains', parts: ['x'] })).toBe(false);
   });
 
+  it('json compara en profundidad e ignora el orden de las claves', () => {
+    expect(evaluateCase(
+      { 'nombre': 'Ana', 'edad': 20 },
+      { type: 'json', value: { 'edad': 20, 'nombre': 'Ana' } },
+    )).toBe(true);
+    // listas de diccionarios: el orden de la lista sí importa
+    expect(evaluateCase(
+      [{ 'a': 1 }, { 'b': 2 }],
+      { type: 'json', value: [{ 'a': 1 }, { 'b': 2 }] },
+    )).toBe(true);
+    expect(evaluateCase(
+      [{ 'b': 2 }, { 'a': 1 }],
+      { type: 'json', value: [{ 'a': 1 }, { 'b': 2 }] },
+    )).toBe(false);
+    // 7.0 (Python) llega como 7: tiene que seguir coincidiendo
+    expect(evaluateCase(
+      { 'promedio': 7 },
+      { type: 'json', value: { 'promedio': 7.0 } },
+    )).toBe(true);
+    expect(evaluateCase({ 'a': 1 }, { type: 'json', value: { 'a': 2 } })).toBe(false);
+  });
+
   it('un tipo desconocido nunca pasa', () => {
     expect(evaluateCase(1, { type: 'otro' })).toBe(false);
   });

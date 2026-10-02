@@ -4,11 +4,25 @@ export function formatValue(v) {
   if (v === null || v === undefined) return '(nada)';
   if (typeof v === 'string') return `"${v}"`;
   if (Array.isArray(v)) return `[${v.map(formatValue).join(', ')}]`;
+  if (typeof v === 'object') return `{${Object.entries(v).map(([k, val]) => `${k}: ${formatValue(val)}`).join(', ')}}`;
   return String(v);
 }
 
 const lower = s => String(s ?? '').toLowerCase().trim();
 const squash = s => String(s).toLowerCase().trim().replace(/\s+/g, ' ');
+
+/**
+ * Forma canónica para comparar diccionarios/listas de diccionarios: ordena las
+ * claves (en Python el orden de las claves no cuenta para la igualdad) pero
+ * respeta el orden de las listas, que sí es significativo.
+ */
+function canonical(v) {
+  if (Array.isArray(v)) return `[${v.map(canonical).join(',')}]`;
+  if (v && typeof v === 'object') {
+    return `{${Object.keys(v).sort().map(k => `${JSON.stringify(k)}:${canonical(v[k])}`).join(',')}}`;
+  }
+  return JSON.stringify(v ?? null);
+}
 
 /**
  * Compara el valor obtenido con lo esperado por un caso de test.
@@ -26,6 +40,8 @@ export function evaluateCase(actual, expect) {
       return Boolean(actual) === Boolean(expect.value);
     case 'exact':
       return squash(actual) === squash(expect.value);
+    case 'json':
+      return canonical(actual) === canonical(expect.value);
     case 'contains':
     case 'stdout_contains': {
       const s = lower(actual);

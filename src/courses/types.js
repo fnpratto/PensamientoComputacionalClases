@@ -17,8 +17,8 @@
 
 /**
  * @typedef {Object} Expectation
- * @property {'numeric'|'bool'|'exact'|'contains'|'stdout_contains'} type
- * @property {*} [value]
+ * @property {'numeric'|'bool'|'exact'|'json'|'contains'|'stdout_contains'} type
+ * @property {*} [value]           Para 'numeric', 'bool', 'exact' y 'json'. En 'json' se compara en profundidad (sirve para diccionarios y listas de diccionarios).
  * @property {number} [tolerance]  Solo para 'numeric'.
  * @property {string[]} [parts]    Textos que tienen que aparecer.
  * @property {string[]} [absent]   Textos que NO tienen que aparecer.
@@ -44,19 +44,45 @@
  */
 
 /**
+ * @typedef {Object} GuideItem
+ * @property {string} title
+ * @property {string} [tag]        Etiqueta corta (ej: "Tema 1 · Ej 1").
+ * @property {string} [enunciado]  HTML del enunciado, con las 4 cosas marcadas con <mark class="hl hl-recibe|hl-devuelve|hl-input|hl-imprime">. Si está, el ejercicio es interactivo: el alumno completa las 4 cosas y después revela la solución.
+ * @property {string} html         HTML: el paso a paso del ejercicio (solución).
+ */
+
+/**
+ * @typedef {Object} GuideGroup
+ * @property {string} label    Encabezado del grupo (ej: "Tema 1").
+ * @property {GuideItem[]} items
+ */
+
+/**
+ * @typedef {Object} Guide
+ * @property {string} eyebrow
+ * @property {string} title
+ * @property {string} description
+ * @property {'before-exercises'|'after-exercises'} [placement]  Dónde va la sección (por defecto, después de los ejercicios).
+ * @property {{title: string, html: string}} [method]   Bloque siempre visible (método general o intro del machete).
+ * @property {GuideGroup[]} groups                       Cada tema/ejercicio va en un acordeón.
+ * @property {{title: string, html: string}} [closing]  Cierre (plantillas o tabla de referencia).
+ */
+
+/**
  * @typedef {Object} Course
  * @property {string} slug
  * @property {string} title
  * @property {{emoji?: string, title: [string, string], subtitle: string, buttonLabel: string, password?: string}} gate
  * @property {{badge: string, title: [string, string], subtitle: string, decoration?: string}} hero
  * @property {string} footer
- * @property {{label: string, quiz: string, exercises: string}} nav
+ * @property {{label: string, quiz: string, exercises: string, guide?: string}} nav
  * @property {{eyebrow: string, title: string, description: string, sheet: string,
  *   sections: {name: string, label: string}[],
  *   summary: {high: string, mid: string, low: string},
  *   questions: Question[]}} quiz
  * @property {{eyebrow: string, title: string, description: string, sheetPrefix: string,
  *   submitLabel: string, items: Exercise[]}} exercises
+ * @property {Guide} [guide]
  */
 
 export {};
