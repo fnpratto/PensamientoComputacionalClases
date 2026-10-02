@@ -1,5 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Html from './Html.jsx';
+import { highlightPython } from '../engine/pyHighlight.js';
+
+/**
+ * Como <Html>, pero colorea los bloques <pre> de código Python que haya dentro.
+ * No se usa para el enunciado (que lleva marcas y ejemplos de entrada/salida).
+ */
+function HighlightedHtml({ html, className }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    ref.current?.querySelectorAll('pre:not([data-hl])').forEach(pre => {
+      pre.innerHTML = highlightPython(pre.textContent);
+      pre.setAttribute('data-hl', '');
+    });
+  }, [html]);
+  return <div ref={ref} className={className} dangerouslySetInnerHTML={{ __html: html }} />;
+}
 
 /* Las cuatro cosas a marcar en el enunciado (método general, paso 1). El `key`
    coincide con la clase hl-<key> que usan las marcas del enunciado. */
@@ -66,7 +82,7 @@ function GuideExercise({ item }) {
           </>
         )}
 
-        {(!interactive || revealed) && <Html html={item.html} />}
+        {(!interactive || revealed) && <HighlightedHtml html={item.html} />}
       </div>
     </details>
   );
@@ -84,7 +100,7 @@ export default function Guide({ guide }) {
       {guide.method && (
         <div className="guide-card">
           <h3>{guide.method.title}</h3>
-          <Html html={guide.method.html} />
+          <HighlightedHtml html={guide.method.html} />
         </div>
       )}
 
@@ -100,7 +116,7 @@ export default function Guide({ guide }) {
       {guide.closing && (
         <div className="guide-card guide-closing">
           <h3>{guide.closing.title}</h3>
-          <Html html={guide.closing.html} />
+          <HighlightedHtml html={guide.closing.html} />
         </div>
       )}
     </div>
