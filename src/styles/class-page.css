@@ -523,6 +523,21 @@ a.class-menu-link:hover { background: var(--accent-dim); }
 .guide-legend-chip.hl-input    { background: rgba(var(--hl-input), .15);    color: rgb(var(--hl-input));    border: 1px solid rgba(var(--hl-input), .4); }
 .guide-legend-chip.hl-imprime  { background: rgba(var(--hl-imprime), .15);  color: rgb(var(--hl-imprime));  border: 1px solid rgba(var(--hl-imprime), .4); }
 
+/* ── Coloreo del código de las soluciones ── */
+/* Sintaxis: solo color de texto (tonos que no chocan con los 4 semánticos). */
+.guide pre .tok-com     { color: #6f7e95; font-style: italic; }
+.guide pre .tok-str     { color: var(--code-string); }
+.guide pre .tok-num     { color: #f0966b; }
+.guide pre .tok-kw      { color: #c792ea; font-weight: 600; }
+.guide pre .tok-def     { color: #ffcb6b; font-weight: 600; }
+.guide pre .tok-builtin { color: #89ddff; }
+.guide pre .tok-var     { color: var(--text); }
+/* Las cuatro cosas: mismo color que el enunciado, con un fondo tenue para que "resalten". */
+.guide pre .tok-recibe   { color: rgb(var(--hl-recibe));   background: rgba(var(--hl-recibe), .16);   border-radius: 3px; }
+.guide pre .tok-devuelve { color: rgb(var(--hl-devuelve)); background: rgba(var(--hl-devuelve), .18); border-radius: 3px; padding: 0 .2em; font-weight: 600; }
+.guide pre .tok-input    { color: rgb(var(--hl-input));    background: rgba(var(--hl-input), .26);    border-radius: 3px; padding: 0 .1em; font-weight: 600; }
+.guide pre .tok-imprime  { color: rgb(var(--hl-imprime));  background: rgba(var(--hl-imprime), .16);  border-radius: 3px; padding: 0 .1em; font-weight: 600; }
+
 .guide-card {
   background: var(--surface); border: 1px solid var(--border);
   border-left: 3px solid var(--g);

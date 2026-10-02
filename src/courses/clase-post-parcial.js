@@ -411,7 +411,25 @@ Por ejemplo, si se recibe <code>["Filatelia temática: puentes y caminos", "Obra
           {
             tag: 'Tema 1 · Ej 1',
             title: 'Estantería de la biblioteca',
-            enunciado: `<p>Implementá <code>guardar_libros(peso_max, id_estante)</code>. La función <mark class="hl hl-recibe">recibe la capacidad máxima del estante en kilogramos y un identificador</mark>. Debe <mark class="hl hl-input">pedir, uno por uno, el nombre del libro y su cantidad de hojas</mark> (cada hoja pesa 2 g) e ir guardándolos mientras no se supere la capacidad. Antes de cada pedido <mark class="hl hl-imprime">muestra el peso actual del estante</mark> y, cuando el próximo libro no entra, <mark class="hl hl-imprime">avisa que no se puede guardar</mark>. Al terminar <mark class="hl hl-devuelve">devuelve la tupla (id_estante, [libros_guardados])</mark>.</p>`,
+            enunciado: `Una biblioteca cuenta con varias estanterías para almacenar sus libros. Para evitar que una estantería supere su capacidad máxima de peso, el encargado quiere utilizar un programa que le permita registrar los libros que va guardando en cada estante.<br><br>
+Se sabe que cada hoja de un libro pesa aproximadamente 2 gramos. Por lo tanto, a partir de la cantidad de hojas de un libro se puede calcular su peso.<br><br>
+Implementar una función que dada <mark class="hl hl-recibe">una capacidad máxima que puede soportar un estante (expresada en kilogramos) y un identificador del mismo</mark>, <mark class="hl hl-input">le solicite al usuario, uno por uno, el nombre del libro y la cantidad de hojas que posee</mark>. Antes de guardar cada libro, deberá calcular su peso y verificar que, al incorporarlo, no se supere la capacidad máxima del estante. El ingreso de libros deberá continuar mientras haya espacio disponible. Cuando el próximo libro no pueda ser guardado porque haría que se supere la capacidad máxima, se deberá finalizar la carga.<br><br>
+Finalmente, la función deberá <mark class="hl hl-devuelve">devolver una tupla con el siguiente formato: <code>(identificador_estante, [libros_guardados])</code></mark> donde <code>libros_guardados</code> contiene los nombres de todos los libros que pudieron ser almacenados en el estante.<br><br>
+Ejemplo de ejecución si se recibe: <code>5</code>, <code>a.est1</code>
+<pre><mark class="hl hl-imprime">a.est1 - Peso máximo: 5 kg</mark>
+<mark class="hl hl-imprime">Peso actual: 0 kg.</mark>
+Ingrese un libro y cantidad de hojas: Física para ciencias e ingeniería - 748
+
+<mark class="hl hl-imprime">Peso actual: 1.496 kg.</mark>
+Ingrese un libro y cantidad de hojas: Ingeniería electromagnética - 152
+
+<mark class="hl hl-imprime">Peso actual: 1.8 kg.</mark>
+Ingrese un libro y cantidad de hojas: Temas de Economía - 325
+
+<mark class="hl hl-imprime">Peso actual: 2.45 kg.</mark>
+Ingrese un libro y cantidad de hojas: Introducción a los Algoritmos - 1780
+<mark class="hl hl-imprime">El libro no puede ser guardado porque se supera la capacidad máxima.</mark></pre>
+La función deberá devolver: <code>("a.est1", ["Física para ciencias e ingeniería", "Ingeniería electromagnética", "Temas de Economía"])</code>`,
             html: `<h4>Unidades (la trampa del ejercicio)</h4>
 <p>Cada hoja pesa 2 gramos, pero el máximo viene en kilos: hay que convertir. Por ejemplo 748 hojas × 2 = 1496 g = 1.496 kg.</p>
 <p>Conviene trabajar todo en gramos (<code>peso_max * 1000</code>) y dividir por 1000 solo al imprimir. Así evitás errores de redondeo al sumar <code>float</code> (ese <code>1.7999999999999998</code> molesto).</p>
@@ -463,7 +481,18 @@ def guardar_libros(peso_max, id_estante):
           {
             tag: 'Tema 1 · Ej 2',
             title: 'Juego de lunfardo',
-            enunciado: `<p>Implementá <code>jugar_payada(diccionario)</code>. <mark class="hl hl-recibe">Recibe una lista de tuplas (palabra, significado)</mark>. Para cada palabra, <mark class="hl hl-input">le pregunta al jugador qué significa</mark> y la compara con el significado correcto. Al final <mark class="hl hl-devuelve">devuelve una tupla con dos listas: las palabras acertadas y las erradas</mark>. (No imprime nada: no toda función imprime.)</p>`,
+            enunciado: `La biblioteca de FIUBA quiere armar un juego a modo de homenaje al <em>Martín Fierro</em>, donde el jugador se enfrenta a la máquina en una especie de "payada" para ver quién sabe más de lunfardo. El programa cuenta con una lista de tuplas ya creada, donde cada tupla tiene una palabra en lunfardo y su significado correcto en castellano. Por ejemplo:
+<pre>diccionario = [("vichar", "mirar"), ("pucho", "cigarrillo"), ("chamuyar", "hablar"),
+            ("gauchada", "favor"), ("misho", "pobre")]</pre>
+Se pide implementar una función que <mark class="hl hl-recibe">reciba un diccionario con el formato especificado</mark> y, para cada elemento, <mark class="hl hl-input">le pregunte al jugador cuál cree que es el significado de la palabra en lunfardo</mark>. Al finalizar se debe <mark class="hl hl-devuelve">devolver una tupla con  dos listas: una con las palabras que el jugador acertó y otra con las que se equivocó</mark>.<br>
+Por ejemplo, dada la lista <code>diccionario</code> de arriba, si la interacción con el jugador fuera la siguiente:
+<pre>¿Qué significa 'vichar'?: mirar
+¿Qué significa 'pucho'?: fumar
+¿Qué significa 'chamuyar'?: hablar
+¿Qué significa 'gauchada'?: favor
+¿Qué significa 'misho'?: pan</pre>
+La función debería devolver:
+<pre>(["vichar", "chamuyar", "gauchada"], ["pucho", "misho"])</pre>`,
             html: `<h4>La lógica en palabras</h4>
 <p>Para cada tupla: pregunto → comparo con el significado correcto → si coincide, la palabra va a <code>acertadas</code>; si no, a <code>erradas</code>.</p>
 <h4>Estructura</h4>
@@ -496,7 +525,11 @@ def guardar_libros(peso_max, id_estante):
           {
             tag: 'Tema 1 · Ej 3',
             title: 'Normalizar y ordenar el catálogo',
-            enunciado: `<p>Implementá <code>formatear_catalogo(catalogo)</code>. <mark class="hl hl-recibe">Recibe una lista de títulos</mark>. Tiene que normalizar cada título (sacar <code>" "</code>, <code>"."</code>, <code>","</code>, <code>"-"</code>, <code>"_"</code> y pasar a minúscula) y <mark class="hl hl-devuelve">devolver una lista nueva con los títulos formateados y ordenados alfabéticamente</mark>. Bonus: resolverlo sin ciclos. (No pide nada por teclado ni imprime.)</p>`,
+            enunciado: `El catálogo de una biblioteca se encuentra desordenado y los títulos de los libros presentan diferentes formatos, lo que dificulta encontrar rápidamente los libros que se necesitan. Para solucionar este problema, se desea desarrollar una función que permita normalizar y ordenar los títulos del catálogo.<br><br>
+Por ejemplo si se recibe el catálogo: <code>["Física_Para_Ingeniería", "Introducción a los algoritmos", "Álgebra lineal, 1"]</code> se debe devolver <code>["álgebralineal1", "físicaparaingeniería", "introducciónalosalgoritmos"]</code> .<br><br>
+La función deberá <mark class="hl hl-recibe">recibir una lista con los títulos de los libros</mark> y <mark class="hl hl-devuelve">devolver una nueva lista con los títulos formateados y ordenados alfabéticamente</mark>. El formateo de cada título incluye eliminar los caracteres especiales (incluyendo espacios) y pasar todo el texto a minúscula.<br><br>
+Los únicos caracteres especiales que deberán eliminarse son: <code>“ “</code>  <code>“.”</code>  <code>“,”</code>   <code>“-”</code>  <code>“_”</code><br><br>
+<b>Bonus:</b> intentar resolver el ejercicio sin utilizar ciclos (<code>for</code> / <code>while</code>).`,
             html: `<h4>Dividir el problema en dos</h4>
 <p>Una función que formatea <em>un</em> título, y después aplicarla a toda la lista (<code>map</code>) y ordenar (<code>sorted</code>). Ejemplo: <code>"Álgebra lineal, 1"</code> → <code>"álgebralineal1"</code>.</p>
 <h4>Código</h4>
@@ -527,7 +560,26 @@ def formatear_catalogo(catalogo):
           {
             tag: 'Tema 2 · Ej 1',
             title: 'Exposición oral (temas y minutos)',
-            enunciado: `<p>Implementá <code>gestionar_exposicion(apellido, tiempo_max)</code>. <mark class="hl hl-recibe">Recibe el apellido del estudiante y el tiempo máximo en minutos</mark>. Debe <mark class="hl hl-input">pedir, uno por uno, un tema y cuántos minutos lleva</mark>, mientras quede tiempo. Antes de cada pedido <mark class="hl hl-imprime">muestra el tiempo disponible</mark> y, cuando no alcanza, <mark class="hl hl-imprime">avisa que no hay tiempo</mark>. Al terminar <mark class="hl hl-devuelve">devuelve (apellido, [temas_expuestos])</mark>.</p>`,
+            enunciado: `Una profesora de Geografía está preparando una evaluación oral sobre los distintos puntos turísticos de Argentina. Como debe evaluar a muchos estudiantes, decidió asignarle a cada uno un tiempo máximo de exposición, que puede variar según el estudiante. Para organizar las evaluaciones, necesita un programa que le permita registrar los temas desarrollados por cada alumno y controlar el tiempo utilizado.<br><br>
+Implementar una función que dado <mark class="hl hl-recibe">el apellido del estudiante y el tiempo máximo disponible para su exposición</mark>, <mark class="hl hl-input">le solicite al estudiante el nombre de un tema y la cantidad de minutos que le tomará desarrollarlo</mark>. Los ingresos continuarán mientras quede tiempo suficiente para incorporar un nuevo tema. Cuando el tiempo disponible no sea suficiente para incorporar otro tema, deberá finalizar la carga.<br><br>
+Al finalizar, la función deberá <mark class="hl hl-devuelve">devolver una tupla con el siguiente formato: <code>(apellido_estudiante, [temas_expuestos])</code></mark> donde <code>temas_expuestos</code> contiene los nombres de los temas que fueron registrados durante la exposición.<br><br>
+Ejemplo de ejecución si se recibe: <code>"Roca"</code>, <code>10</code>
+<pre><mark class="hl hl-imprime">Roca - Tiempo máximo: 10 minutos</mark>
+
+<mark class="hl hl-imprime">Tiempo disponible: 10 minutos.</mark>
+Ingrese un tema y cantidad de minutos: Cataratas del Iguazú - 3
+
+<mark class="hl hl-imprime">Tiempo disponible: 7 minutos.</mark>
+Ingrese un tema y cantidad de minutos: Glaciar Perito Moreno - 2
+
+<mark class="hl hl-imprime">Tiempo disponible: 5 minutos.</mark>
+Ingrese un tema y cantidad de minutos: Quebrada de Humahuaca - 4
+
+<mark class="hl hl-imprime">Tiempo disponible: 2 minutos.</mark>
+Ingrese un tema y cantidad de minutos: Península Valdés - 4
+
+<mark class="hl hl-imprime">No hay tiempo suficiente para desarrollar este tema.</mark></pre>
+La función deberá devolver: <code>("Roca", ["Cataratas del Iguazú", "Glaciar Perito Moreno", "Quebrada de Humahuaca"])</code>`,
             html: `<h4>Es el mismo patrón que el Ej. 1 del Tema 1</h4>
 <p>La diferencia: en vez de un peso que <em>sube</em> hasta un máximo, hay un tiempo que <em>baja</em> hasta 0. Y acá no hay conversión de unidades.</p>
 <h4>La condición</h4>
@@ -575,7 +627,18 @@ def gestionar_exposicion(apellido, tiempo_max):
           {
             tag: 'Tema 2 · Ej 2',
             title: 'Torneo de capitales',
-            enunciado: `<p>Implementá <code>evaluar_capitales(provincias)</code>. <mark class="hl hl-recibe">Recibe una lista de tuplas (provincia, capital)</mark>. Para cada provincia, <mark class="hl hl-input">le pregunta al jugador cuál es su capital</mark> y la compara. Al final <mark class="hl hl-devuelve">devuelve una tupla con dos listas: las provincias acertadas y las erradas</mark>. (No imprime nada.)</p>`,
+            enunciado: `En FIUBA quieren armar un torneo de geografía para poner a prueba cuánto saben los estudiantes sobre capitales de provincias argentinas. Para esto se cuenta con una lista de tuplas donde cada elemento contiene el nombre de la provincia y su capital, por ejemplo:
+<pre>provincias = [("Mendoza", "Mendoza"), ("Salta", "Salta"), ("Chubut", "Rawson"),
+              ("Misiones", "Posadas"), ("Neuquén", "Neuquén")]</pre>
+Se pide implementar una función que <mark class="hl hl-recibe">reciba una lista de provincias con el formato específicado</mark> y, para cada una, <mark class="hl hl-input">le pregunte al jugador cuál es su capital</mark>. Al finalizar se debe <mark class="hl hl-devuelve">devolver una tupla con dos listas: una con las provincias que el jugador acertó y otra con las que se equivocó</mark>.<br><br>
+Por ejemplo, dada la lista <code>provincias</code> de arriba, si la interacción con el jugador fuera la siguiente:
+<pre>¿Cuál es la capital de Mendoza?: Mendoza
+¿Cuál es la capital de Salta?: Salta
+¿Cuál es la capital de Chubut?: Comodoro Rivadavia
+¿Cuál es la capital de Misiones?: Posadas
+¿Cuál es la capital de Neuquén?: San Martín de los Andes</pre>
+La función debería devolver:
+<pre>(["Mendoza", "Salta", "Misiones"], ["Chubut", "Neuquén"])</pre>`,
             html: `<h4>Es idéntico al Ej. 2 del Tema 1</h4>
 <p>Cambia solo el texto de la pregunta y qué se agrega a cada lista (acá, la provincia).</p>
 <h4>Código</h4>
@@ -605,7 +668,16 @@ def gestionar_exposicion(apellido, tiempo_max):
           {
             tag: 'Tema 2 · Ej 3',
             title: 'Normalizar exposiciones del museo',
-            enunciado: `<p>Implementá <code>organizar_titulos(titulos)</code>. <mark class="hl hl-recibe">Recibe una lista de nombres de exposiciones</mark>. Tiene que normalizar cada nombre (todo en mayúsculas, cada espacio por <code>_</code>, y eliminar <code>. , : -</code>) y <mark class="hl hl-devuelve">devolver una lista nueva, normalizada y ordenada alfabéticamente</mark>. Bonus: resolverlo sin ciclos. (No pide nada por teclado ni imprime.)</p>`,
+            enunciado: `Para una exposición del Museo de Ciencia y Técnica de la FIUBA, se está recopilando información sobre las distintas exposiciones disponibles para organizar una próxima visita guiada. Sin embargo, la información se encuentra almacenada utilizando distintos formatos para los títulos, lo que dificulta su organización y gestión. Para facilitar esta tarea, se necesita un programa que permita normalizar los nombres de las exposiciones y devolverlos ordenados alfabéticamente.<br><br>
+Implementar una función que, <mark class="hl hl-recibe">dada una lista con los nombres de todas las exposiciones disponibles</mark>, <mark class="hl hl-devuelve">devuelva una nueva lista en la que cada nombre esté normalizado</mark> según los siguientes criterios:
+<ul>
+<li>Todas las letras deben estar en mayúsculas.</li>
+<li>Cada espacio debe ser reemplazado por un guion bajo <b>(<code>_</code>)</b>.</li>
+<li>Se deben eliminar los siguientes caracteres especiales: <code>“.,:-”</code></li>
+<li>Los nombres resultantes deben estar ordenados alfabéticamente.</li>
+</ul>
+Por ejemplo, si se recibe <code>["Filatelia temática: puentes y caminos", "Obras del Ing. Torroja", "Actividades espaciales"]</code>  se deberá devolver <code>["ACTIVIDADES_ESPACIALES", "FILATELIA_TEMÁTICA_PUENTES_Y_CAMINOS", "OBRAS_DEL_ING_TORROJA"]</code> .<br><br>
+<b>Bonus:</b> intentar resolver el ejercicio sin utilizar ciclos (<code>for</code> / <code>while</code>).`,
             html: `<h4>El orden de los pasos importa</h4>
 <p>Reemplazá los espacios por <code>_</code> y después eliminá los caracteres especiales, cuidando de no borrar el <code>_</code> nuevo. Como el <code>_</code> no está en la lista a eliminar, cualquier orden funciona; lo importante es no tocarlo.</p>
 <h4>Cómo queda un nombre</h4>
