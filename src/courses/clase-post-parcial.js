@@ -549,8 +549,7 @@ def formatear_catalogo(catalogo):
                   .replace("-", "").replace("_", "").lower())
 
 def formatear_catalogo(catalogo):
-    return sorted(map(formatear_titulo, catalogo))</pre>
-<div class="guide-callout warn"><strong>Ojo con el ejemplo del enunciado:</strong> espera <code>["álgebralineal1", "físicaparaingeniería", "introducciónalosalgoritmos"]</code>, pero <code>sorted</code> compara por código Unicode y "á" (225) es mayor que "z" (122), así que <code>"álgebralineal1"</code> quedaría al final. Si querés que coincida exactamente, ordená ignorando tildes usando <code>unicodedata.normalize("NFD", texto)</code> como <code>key</code>. Probablemente excede lo que se espera en el parcial; si podés, consultalo con la cátedra.</div>`,
+    return sorted(map(formatear_titulo, catalogo))</pre>`,
           },
         ],
       },
