@@ -83,10 +83,12 @@ export default function ExerciseCard({ exercise, sheet, submitLabel, studentName
       <h3 className="exercise-title">{exercise.title}</h3>
       <Html className="exercise-statement" html={exercise.statement} />
 
-      <details className="hint">
-        <summary>Pista</summary>
-        <Html className="hint-body" html={exercise.hint} />
-      </details>
+      {exercise.hint && (
+        <details className="hint">
+          <summary>Pista</summary>
+          <Html className="hint-body" html={exercise.hint} />
+        </details>
+      )}
       {exercise.note && <Html as="p" className="exercise-note" html={exercise.note} />}
 
       <div className="answer-box">
@@ -104,14 +106,20 @@ export default function ExerciseCard({ exercise, sheet, submitLabel, studentName
 
         <TestResults report={report} />
 
-        <div className="submit-row">
-          <button type="button" className="btn btn-primary" disabled={busy !== null} onClick={handleSubmit}>
-            {submitLabel}
-          </button>
-        </div>
-        {sendStatus && <p className="send-status" role="status">{sendStatus}</p>}
+        {/* Sin submitLabel la clase es solo de práctica: no se entrega ni se
+            muestra la galería de soluciones de los demás. */}
+        {submitLabel && (
+          <>
+            <div className="submit-row">
+              <button type="button" className="btn btn-primary" disabled={busy !== null} onClick={handleSubmit}>
+                {submitLabel}
+              </button>
+            </div>
+            {sendStatus && <p className="send-status" role="status">{sendStatus}</p>}
 
-        {submitted && <SolutionGallery sheet={sheet} />}
+            {submitted && <SolutionGallery sheet={sheet} />}
+          </>
+        )}
       </div>
     </article>
   );

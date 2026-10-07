@@ -8,7 +8,9 @@ const pages = import.meta.glob('../pages/*.jsx');
 const courses = import.meta.glob('./clase-*.js', { eager: true, import: 'default' });
 const slugs = Object.keys(pages).map(p => p.match(/([^/]+)\.jsx$/)[1]);
 const courseFor = slug => courses[`./${slug}.js`];
-const EXPECT_TYPES = ['numeric', 'bool', 'exact', 'json', 'contains', 'stdout_contains'];
+const EXPECT_TYPES = ['numeric', 'bool', 'exact', 'json', 'contains', 'stdout_contains', 'file_exact', 'file_contains'];
+const PARTS_TYPES = ['contains', 'stdout_contains', 'file_contains'];
+const FILE_TYPES = ['file_exact', 'file_contains'];
 
 describe.each(slugs)('clase %s', slug => {
   it('tiene página, datos y entrada en el catálogo', () => {
@@ -47,10 +49,13 @@ describe.each(slugs)('clase %s', slug => {
       for (const c of cases) {
         expect(Array.isArray(c.args), ex.title).toBe(true);
         expect(EXPECT_TYPES, ex.title).toContain(c.expect.type);
-        if (['contains', 'stdout_contains'].includes(c.expect.type)) {
+        if (PARTS_TYPES.includes(c.expect.type)) {
           expect(c.expect.parts?.length, ex.title).toBeGreaterThan(0);
         } else {
           expect(c.expect.value, ex.title).toBeDefined();
+        }
+        if (FILE_TYPES.includes(c.expect.type)) {
+          expect(c.expect.path, ex.title).toBeTruthy();
         }
       }
     }

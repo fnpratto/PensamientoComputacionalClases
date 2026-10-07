@@ -1,0 +1,16 @@
+#Eliminatorias
+Chile;23;Messi
+Peru;41;Alvarez
+Uruguay;67;Messi
+#CopaAmerica
+Canada;49;Alvarez
+Colombia;112;Lautaro
+Brasil;78;Messi
+Ecuador;5;DiMaria
+#Amistosos
+Francia;12;Messi
+Panama;88;Lautaro
+#Mundial
+Mexico;64;Messi
+Polonia;46;Alvarez
+Croacia;34;Alvarez

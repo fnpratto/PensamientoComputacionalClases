@@ -6,9 +6,6 @@ export default {
     title: ['Clase de', 'Diccionarios'],
     subtitle: 'Errores comunes al usar diccionarios + ejercicios de la Unidad 4',
     buttonLabel: 'Empezar',
-    // Traba liviana para que no entren antes de tiempo: queda visible en el
-    // bundle, así que no protege nada sensible.
-    password: 'te-para-3',
   },
   hero: {
     badge: 'Pensamiento Computacional · Curso 11: Retamozo, Pratto · 2026',
