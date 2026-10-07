@@ -1,0 +1,4 @@
+[ ] Armar la bandera gigante
+[x] Imprimir las entradas
+[ ] Comprar la camiseta con el 10
+[x] Avisar en el grupo de WhatsApp

@@ -7,24 +7,56 @@ import SideNav from './SideNav.jsx';
 import Quiz from './quiz/Quiz.jsx';
 import ExerciseList from './exercises/ExerciseList.jsx';
 import Guide from './Guide.jsx';
+import Feedback from './Feedback.jsx';
 
 const QUIZ_ID = 'camara-quiz';
+const ANIMATION_ID = 'camara-animacion';
 const EXERCISES_ID = 'camara-parcial';
 const GUIDE_ID = 'camara-paso-a-paso';
+const FEEDBACK_ID = 'camara-feedback';
 
-/** @param {{course: import('../courses/types.js').Course}} props */
-export default function ClassPage({ course }) {
+/**
+ * Arma la página a partir de los datos de la clase. Las secciones de quiz y
+ * ejercicios van siempre; la guía, la animación y el feedback son opcionales.
+ *
+ * `slots` trae los componentes que una clase puntual necesita y que no se
+ * pueden describir como datos — hoy solo `animation`. Así los archivos de
+ * src/courses/ siguen siendo data pura.
+ *
+ * @param {{course: import('../courses/types.js').Course, slots?: {animation?: import('react').ReactNode}}} props
+ */
+export default function ClassPage({ course, slots = {} }) {
   const [studentName, setStudentName] = useState('');
-  const { quiz, exercises, guide } = course;
+  const { quiz, exercises, guide, animation, feedback } = course;
   const guideFirst = guide && guide.placement === 'before-exercises';
+  const showAnimation = Boolean(animation && slots.animation);
+
+  // Las variantes alternan el fondo entre secciones consecutivas, así que se
+  // cuentan en el orden en que se renderizan y no se pueden fijar a mano.
+  const guideIds = guide ? [GUIDE_ID] : [];
+  const order = [
+    QUIZ_ID,
+    ...(showAnimation ? [ANIMATION_ID] : []),
+    ...(guideFirst ? guideIds : []),
+    EXERCISES_ID,
+    ...(guideFirst ? [] : guideIds),
+    ...(feedback ? [FEEDBACK_ID] : []),
+  ];
+  const variantOf = id => (order.indexOf(id) % 2 === 0 ? 'a' : 'b');
 
   const guideSection = guide && (
-    <Section id={GUIDE_ID} variant={guideFirst ? 'b' : 'a'} eyebrow={guide.eyebrow} title={guide.title} description={guide.description}>
+    <Section id={GUIDE_ID} variant={variantOf(GUIDE_ID)} eyebrow={guide.eyebrow} title={guide.title} description={guide.description}>
       <Guide guide={guide} />
     </Section>
   );
 
-  const guideAnchor = guide ? [{ id: GUIDE_ID, label: course.nav.guide || 'Paso a paso' }] : [];
+  const anchorsFor = id => {
+    if (id === QUIZ_ID) return { id, label: course.nav.quiz };
+    if (id === ANIMATION_ID) return { id, label: course.nav.animation || 'Demo' };
+    if (id === GUIDE_ID) return { id, label: course.nav.guide || 'Paso a paso' };
+    if (id === EXERCISES_ID) return { id, label: course.nav.exercises };
+    return { id, label: course.nav.feedback || 'Feedback' };
+  };
 
   return (
     <>
@@ -34,17 +66,29 @@ export default function ClassPage({ course }) {
         <main>
           <Hero hero={course.hero} />
 
-          <Section id={QUIZ_ID} variant="a" eyebrow={quiz.eyebrow} title={quiz.title} description={quiz.description}>
-            <Quiz quiz={quiz} studentName={studentName} nextSectionId={guideFirst ? GUIDE_ID : EXERCISES_ID} />
+          <Section id={QUIZ_ID} variant={variantOf(QUIZ_ID)} eyebrow={quiz.eyebrow} title={quiz.title} description={quiz.description}>
+            <Quiz quiz={quiz} studentName={studentName} nextSectionId={order[1] ?? EXERCISES_ID} />
           </Section>
+
+          {showAnimation && (
+            <Section id={ANIMATION_ID} variant={variantOf(ANIMATION_ID)} eyebrow={animation.eyebrow} title={animation.title} description={animation.description}>
+              {slots.animation}
+            </Section>
+          )}
 
           {guideFirst && guideSection}
 
-          <Section id={EXERCISES_ID} variant={guideFirst ? 'a' : 'b'} eyebrow={exercises.eyebrow} title={exercises.title} description={exercises.description}>
+          <Section id={EXERCISES_ID} variant={variantOf(EXERCISES_ID)} eyebrow={exercises.eyebrow} title={exercises.title} description={exercises.description}>
             <ExerciseList exercises={exercises} studentName={studentName} />
           </Section>
 
           {!guideFirst && guideSection}
+
+          {feedback && (
+            <Section id={FEEDBACK_ID} variant={variantOf(FEEDBACK_ID)} eyebrow={feedback.eyebrow} title={feedback.title} description={feedback.description}>
+              <Feedback feedback={feedback} />
+            </Section>
+          )}
 
           <footer className="page-footer">{course.footer}</footer>
         </main>
@@ -54,13 +98,7 @@ export default function ClassPage({ course }) {
 
       <SideNav
         label={course.nav.label}
-        anchors={[
-          { id: 'hero', label: 'Inicio' },
-          { id: QUIZ_ID, label: course.nav.quiz },
-          ...(guideFirst ? guideAnchor : []),
-          { id: EXERCISES_ID, label: course.nav.exercises },
-          ...(guideFirst ? [] : guideAnchor),
-        ]}
+        anchors={[{ id: 'hero', label: 'Inicio' }, ...order.map(anchorsFor)]}
       />
     </>
   );

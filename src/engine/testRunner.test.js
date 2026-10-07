@@ -55,6 +55,17 @@ describe('evaluateCase', () => {
     expect(evaluateCase({ 'a': 1 }, { type: 'json', value: { 'a': 2 } })).toBe(false);
   });
 
+  it('file_exact y file_contains comparan el contenido del archivo', () => {
+    const contenido = 'Dibu\nRomero\nMessi\n';
+    expect(evaluateCase(contenido, { type: 'file_exact', path: 'p.txt', value: contenido })).toBe(true);
+    expect(evaluateCase('Dibu\nMessi\n', { type: 'file_exact', path: 'p.txt', value: contenido })).toBe(false);
+    expect(evaluateCase(contenido, { type: 'file_contains', path: 'p.txt', parts: ['messi'] })).toBe(true);
+    expect(evaluateCase(contenido, { type: 'file_contains', path: 'p.txt', parts: ['dibu'], absent: ['alvarez'] })).toBe(true);
+    expect(evaluateCase(contenido, { type: 'file_contains', path: 'p.txt', parts: ['alvarez'] })).toBe(false);
+    // archivo que no se creó: actualFor lo pasa como '' y nada matchea
+    expect(evaluateCase('', { type: 'file_contains', path: 'p.txt', parts: ['messi'] })).toBe(false);
+  });
+
   it('un tipo desconocido nunca pasa', () => {
     expect(evaluateCase(1, { type: 'otro' })).toBe(false);
   });
@@ -90,6 +101,27 @@ describe('runFunctionTests', () => {
     expect(rows[1].label).toBe('doblar(3)');
     expect(rows[1].detail).toBe('Devolvió 7 — se esperaba 6.');
     expect(calls[2].stdin).toEqual(['hola']);
+  });
+
+  it('pasa los archivos sembrados y verifica los que quedaron', async () => {
+    const specArchivos = {
+      funcName: 'guardar',
+      cases: [
+        { args: [], files: { 'base.txt': 'hola\n' },
+          expect: { type: 'file_exact', path: 'salida.txt', value: 'hola\n' } },
+        { args: [], expect: { type: 'file_contains', path: 'falta.txt', parts: ['x'] } },
+      ],
+    };
+    const vistos = [];
+    const rows = await runFunctionTests('code', specArchivos, async (code, fn, args, stdin, files) => {
+      vistos.push(files);
+      return { ok: true, return_value: null, stdout: '', files: { 'salida.txt': 'hola\n' } };
+    });
+
+    expect(vistos[0]).toEqual({ 'base.txt': 'hola\n' });
+    expect(vistos[1]).toEqual({});
+    expect(rows[0]).toMatchObject({ pass: true, detail: 'salida.txt quedó con el contenido esperado.' });
+    expect(rows[1]).toMatchObject({ pass: false, detail: 'No se creó el archivo falta.txt. Quedaron: salida.txt.' });
   });
 
   it('reporta los errores de Python y las excepciones del runner', async () => {

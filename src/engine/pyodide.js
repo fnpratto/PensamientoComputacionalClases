@@ -29,9 +29,16 @@ export function getPyodide() {
   return pyodidePromise;
 }
 
-export async function runPython(code, funcName, args = [], stdin = []) {
+/**
+ * Corre el código del alumno. `files` siembra el directorio de trabajo (los
+ * ejercicios de archivos necesitan sus .txt); el resultado trae en `files` los
+ * archivos que quedaron, para poder verificar lo que el código escribió.
+ */
+export async function runPython(code, funcName, args = [], stdin = [], files = {}) {
   const py = await getPyodide();
-  const json = py.globals.get('_pcc_run')(code, funcName || null, JSON.stringify(args), JSON.stringify(stdin));
+  const json = py.globals.get('_pcc_run')(
+    code, funcName || null, JSON.stringify(args), JSON.stringify(stdin), JSON.stringify(files),
+  );
   return JSON.parse(json);
 }
 

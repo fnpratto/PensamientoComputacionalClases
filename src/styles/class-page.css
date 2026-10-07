@@ -58,6 +58,26 @@
   --hint-icon:     none;
 }
 
+/* Celeste y sol, como la camiseta. */
+[data-theme="archivos"] {
+  --bg:            #050b11;
+  --bg-soft:       #091219;
+  --bg-muted:      #070f15;
+  --surface:       #0f1c27;
+  --border:        #1b2e3e;
+  --border-strong: #2a4458;
+  --text:          #e8f1f8;
+  --text-dim:      #8ca4b8;
+  --text-faint:    #566b7e;
+  --accent:        #75aadb;
+  --accent-rgb:    117, 170, 219;
+  --accent-strong: #a8cdf0;
+  --secondary:     #f2b705;
+  --secondary-rgb: 242, 183, 5;
+  --code-string:   #a8cdf0;
+  --hint-icon:     "⚽";
+}
+
 :root {
   --accent-dim:       rgba(var(--accent-rgb), .15);
   --accent-faint:     rgba(var(--accent-rgb), .05);
@@ -584,7 +604,7 @@ details.guide-acc[open] > summary { border-bottom: 1px solid var(--border); }
 .guide-body h4 { color: var(--text); font-size: .95rem; font-weight: 700; margin: 1.3rem 0 .4rem; }
 .guide-body h4:first-child { margin-top: 0; }
 .guide-body p { margin: .45rem 0; max-width: 74ch; }
-.guide-body ul { padding-left: 1.2rem; margin: .4rem 0; }
+.guide-body ul, .guide-body ol { padding-left: 1.2rem; margin: .4rem 0; }
 .guide-body li { margin-bottom: .3rem; }
 .guide-body code { color: var(--g-strong); }
 .guide-body pre { margin: .6rem 0; }
@@ -610,3 +630,25 @@ details.guide-acc[open] > summary { border-bottom: 1px solid var(--border); }
 .guide-callout.bad  { border-left-color: var(--bad);   background: var(--bad-bg); }
 .guide-callout.bad strong { color: var(--bad); }
 .guide-callout.bad code { color: var(--text); }
+
+/* ── FEEDBACK ──────────────────────────────────────────────── */
+.feedback {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 1.6rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 1.4rem;
+}
+/* El QR va sobre blanco siempre: con el fondo oscuro no lo lee la cámara. */
+.feedback-qr {
+  display: block; flex: 0 0 auto; line-height: 0;
+  background: #fff; padding: .7rem; border-radius: var(--r-sm);
+  border: 1px solid var(--border-strong);
+}
+.feedback-qr:hover { border-color: var(--accent); }
+.feedback-body { flex: 1 1 18rem; min-width: 0; }
+.feedback-note { color: var(--text-dim); font-size: .95rem; margin: 0 0 1rem; max-width: 46ch; }
+.feedback-link {
+  display: inline-block; font-weight: 600; font-size: .95rem;
+  color: var(--bg); background: var(--accent);
+  padding: .6rem 1.1rem; border-radius: var(--r-sm); text-decoration: none;
+}
+.feedback-link:hover { background: var(--accent-strong); }

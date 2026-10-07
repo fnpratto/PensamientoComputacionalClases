@@ -188,6 +188,17 @@
     font-family: var(--font-m);
   }
 
+  .feedback-cta {
+    margin-top: 2.6rem;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-dim);
+    font-size: .9rem;
+  }
+  .feedback-cta a { color: var(--accent); font-weight: 600; text-decoration: none; white-space: nowrap; }
+  .feedback-cta a:hover { text-decoration: underline; }
+
 </style>
 </head>
 <body>
@@ -200,7 +211,18 @@
 
     <ul class="timeline">
       <li class="featured-li">
-        <a class="featured" href="/archive/clase-diccionarios/index.html">
+        <a class="featured" href="/archive/clase-archivos/index.html">
+          <span class="thumb">📂</span>
+          <span class="info">
+            <span class="label">Unidad 5</span>
+            <span class="title">Archivos y Errores</span>
+            <span class="topics">Temas vistos: persistencia, modos de apertura, leer y escribir archivos, y manejo de errores con try / except. Demo animada, apunte y 14 ejercicios con tests automáticos.</span>
+          </span>
+          <span class="arrow">→</span>
+        </a>
+      </li>
+      <li>
+        <a href="/archive/clase-diccionarios/index.html">
           <span class="thumb">🔑</span>
           <span class="info">
             <span class="label">Unidad 4</span>
@@ -289,7 +311,13 @@
       </li>
     </ul>
 
+    <p class="feedback-cta">
+      ¿Nos das una mano para mejorar la clase?
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHXspjNmFyFKBorgadUxrksfIs-tbQVNRqAuX6sGUkbBeKAg/viewform" target="_blank" rel="noreferrer">Completá el formulario de feedback →</a>
+    </p>
+
     <footer>Pensamiento Computacional · FIUBA · Curso 11 — Retamozo, Pratto</footer>
   </main>
+  <script type="module" src="/src/analytics.js"></script>
 </body>
 </html>

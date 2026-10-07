@@ -9,4 +9,5 @@ export const CLASSES = [
   { slug: 'clase-repaso', href: '/archive/clase-repaso/index.html', label: '🌸 Repaso · Primavera' },
   { slug: 'clase-post-parcial', href: '/archive/clase-post-parcial/index.html', label: '📝 Post Parcial' },
   { slug: 'clase-diccionarios', href: '/archive/clase-diccionarios/index.html', label: '🔑 Diccionarios · U4' },
+  { slug: 'clase-archivos', href: '/archive/clase-archivos/index.html', label: '📂 Archivos y Errores · U5' },
 ];
