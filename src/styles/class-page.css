@@ -58,7 +58,7 @@
   --hint-icon:     none;
 }
 
-/* Celeste y sol, como la camiseta. */
+/* Celeste y blanco, como la bandera. */
 [data-theme="archivos"] {
   --bg:            #050b11;
   --bg-soft:       #091219;
@@ -72,8 +72,8 @@
   --accent:        #75aadb;
   --accent-rgb:    117, 170, 219;
   --accent-strong: #a8cdf0;
-  --secondary:     #f2b705;
-  --secondary-rgb: 242, 183, 5;
+  --secondary:     #ffffff;
+  --secondary-rgb: 255, 255, 255;
   --code-string:   #a8cdf0;
   --hint-icon:     "⚽";
 }

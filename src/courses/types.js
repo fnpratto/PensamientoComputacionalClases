@@ -39,7 +39,7 @@
  * @property {string} [tag]
  * @property {string} title
  * @property {string} statement    HTML.
- * @property {string} hint         HTML.
+ * @property {string} [hint]       HTML. Sin hint no se muestra el acordeón "Pista".
  * @property {string} [note]       HTML.
  * @property {string} starter
  * @property {{funcName: string, cases: TestCase[]}} test
@@ -77,7 +77,7 @@
  * @property {{emoji?: string, title: [string, string], subtitle: string, buttonLabel: string, password?: string}} gate
  * @property {{badge: string, title: [string, string], subtitle: string, decoration?: string}} hero
  * @property {string} footer
- * @property {{label: string, quiz: string, exercises: string, guide?: string, animation?: string, feedback?: string}} nav
+ * @property {{label: string, quiz: string, exercises: string, guide?: string, animation?: string, review?: string, feedback?: string}} nav
  * @property {{eyebrow: string, title: string, description: string}} [animation]  Encabezado de la sección de la demo. El componente en sí lo pasa la página por `slots.animation`.
  * @property {{eyebrow: string, title: string, description: string, url: string, note?: string}} [feedback]  Formulario de feedback del cierre.
  * @property {{eyebrow: string, title: string, description: string, sheet: string,
@@ -85,8 +85,10 @@
  *   summary: {high: string, mid: string, low: string},
  *   questions: Question[]}} quiz
  * @property {{eyebrow: string, title: string, description: string, sheetPrefix: string,
- *   submitLabel: string, items: Exercise[]}} exercises
+ *   submitLabel?: string, items: Exercise[]}} exercises  Sin submitLabel no hay entrega ni galería de soluciones.
  * @property {Guide} [guide]
+ * @property {{eyebrow: string, title: string, description: string, sheetPrefix: string,
+ *   submitLabel?: string, items: Exercise[]}} [review]  Corrección de código después de los ejercicios; mismo formato que `exercises`.
  */
 
 export {};

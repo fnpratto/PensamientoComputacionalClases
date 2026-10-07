@@ -13,6 +13,7 @@ const QUIZ_ID = 'camara-quiz';
 const ANIMATION_ID = 'camara-animacion';
 const EXERCISES_ID = 'camara-parcial';
 const GUIDE_ID = 'camara-paso-a-paso';
+const REVIEW_ID = 'camara-correccion';
 const FEEDBACK_ID = 'camara-feedback';
 
 /**
@@ -27,7 +28,7 @@ const FEEDBACK_ID = 'camara-feedback';
  */
 export default function ClassPage({ course, slots = {} }) {
   const [studentName, setStudentName] = useState('');
-  const { quiz, exercises, guide, animation, feedback } = course;
+  const { quiz, exercises, guide, animation, feedback, review } = course;
   const guideFirst = guide && guide.placement === 'before-exercises';
   const showAnimation = Boolean(animation && slots.animation);
 
@@ -40,6 +41,7 @@ export default function ClassPage({ course, slots = {} }) {
     ...(guideFirst ? guideIds : []),
     EXERCISES_ID,
     ...(guideFirst ? [] : guideIds),
+    ...(review ? [REVIEW_ID] : []),
     ...(feedback ? [FEEDBACK_ID] : []),
   ];
   const variantOf = id => (order.indexOf(id) % 2 === 0 ? 'a' : 'b');
@@ -55,6 +57,7 @@ export default function ClassPage({ course, slots = {} }) {
     if (id === ANIMATION_ID) return { id, label: course.nav.animation || 'Demo' };
     if (id === GUIDE_ID) return { id, label: course.nav.guide || 'Paso a paso' };
     if (id === EXERCISES_ID) return { id, label: course.nav.exercises };
+    if (id === REVIEW_ID) return { id, label: course.nav.review || 'Corrección' };
     return { id, label: course.nav.feedback || 'Feedback' };
   };
 
@@ -83,6 +86,12 @@ export default function ClassPage({ course, slots = {} }) {
           </Section>
 
           {!guideFirst && guideSection}
+
+          {review && (
+            <Section id={REVIEW_ID} variant={variantOf(REVIEW_ID)} eyebrow={review.eyebrow} title={review.title} description={review.description}>
+              <ExerciseList exercises={review} studentName={studentName} />
+            </Section>
+          )}
 
           {feedback && (
             <Section id={FEEDBACK_ID} variant={variantOf(FEEDBACK_ID)} eyebrow={feedback.eyebrow} title={feedback.title} description={feedback.description}>

@@ -2,3 +2,6 @@
 [x] Imprimir las entradas
 [ ] Comprar la camiseta con el 10
 [x] Avisar en el grupo de WhatsApp
+[ ] Conseguir el bombo
+[x] Reservar el micro
+[ ] Pintar el banderazo
