@@ -22,6 +22,7 @@ describe.each(slugs)('clase %s', slug => {
 
   it('cada pregunta del quiz está bien armada', () => {
     const { quiz } = courseFor(slug);
+    if (!quiz) return;   // el quiz es opcional (ej: una clase pensada como tarea)
     const sectionNames = quiz.sections.map(s => s.name);
 
     expect(quiz.questions.length).toBeGreaterThan(0);
