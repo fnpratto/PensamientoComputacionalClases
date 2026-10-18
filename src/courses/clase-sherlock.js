@@ -3,17 +3,10 @@
    están armados para que el análisis con pandas/numpy apunte a un culpable.
    Datos descargables para Colab en public/datos/clase-sherlock/. */
 
-import { bibliotecasQuiz } from './_bibliotecas-quiz.js';
 import { bibliotecasGuide } from './_bibliotecas-guide.js';
 
-// ── Escena del crimen: pisadas por sospechoso y por sala ─────
-const HUELLAS = [
-  'Moran,Hall,12', 'Adler,Hall,8', 'Hudson,Hall,5', 'Lestrade,Hall,10',
-  'Moran,Galeria,15', 'Adler,Galeria,6', 'Hudson,Galeria,4', 'Lestrade,Galeria,9',
-  'Moran,Boveda,20', 'Adler,Boveda,2', 'Hudson,Boveda,1', 'Lestrade,Boveda,3',
-].join('\n') + '\n';
-const HUELLAS_CSV = { 'huellas.csv': `sospechoso,sala,pisadas\n${HUELLAS}` };
-
+// Única evidencia que usa la página: los indicios para el peritaje de código.
+// La investigación completa (pandas/numpy paso a paso) vive en la notebook de Colab.
 const INDICIOS = { 'indicios.csv': 'sospechoso,cabellos\nMoran,14\nAdler,8\nHudson,22\nLestrade,5\n' };
 
 /** @type {import('./types.js').Course} */
@@ -36,17 +29,15 @@ export default {
   footer: 'Sherlock Forense · Unidad 6 · Pensamiento Computacional FIUBA 🔍',
   nav: {
     label: 'Sherlock Forense',
-    quiz: 'Quiz de nivelación',
     guide: 'Apunte',
-    exercises: 'La investigación',
     review: 'Peritaje de código',
     feedback: 'Feedback',
   },
 
-  quiz: { ...bibliotecasQuiz, sheet: 'Sherlock-Quiz' },
-
+  // Sin quiz de nivelación ni machete: esta clase es tarea, ya vieron el tema.
   guide: {
     ...bibliotecasGuide,
+    closing: null,
     title: 'pandas, numpy y matplotlib para el peritaje',
     method: {
       title: 'El caso: huellas en la escena del crimen',
@@ -57,118 +48,22 @@ Adler,Hall,8
 Moran,Boveda,20
 ...</pre>
 <p>Descargá la evidencia para Colab: <a href="/datos/clase-sherlock/huellas.csv" download>huellas.csv</a> · <a href="/datos/clase-sherlock/indicios.csv" download>indicios.csv</a>. Un buen detective no acusa por una corazonada: filtra, agrupa, mide y <b>deja que los datos señalen al culpable</b>.</p>
-<p>📓 <a href="/datos/clase-sherlock/sherlock-forense.ipynb" download><b>Descargá la notebook para Colab</b></a>: tiene todos los pasos de la investigación listos para completar. Abrila en <a href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Google Colab</a> y subí la evidencia (los dos CSV).</p>`,
+<p>📓 <a href="/datos/clase-sherlock/sherlock-forense.ipynb" download><b>Descargá la notebook para Colab</b></a>: tiene todos los pasos de la investigación listos para completar, incluido el informe pericial final. Abrila en <a href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Google Colab</a> y subí la evidencia (los dos CSV).</p>`,
     },
-  },
-
-  // ── La investigación (ejercicios autocorregidos) ───────────
-  exercises: {
-    eyebrow: 'La investigación',
-    title: 'Seguir las huellas con pandas y numpy',
-    description: 'La evidencia ya está cargada (huellas.csv). Cada función es un paso de la investigación; al final vas a poder señalar al culpable. Verificá cada paso antes de seguir.',
-    sheetPrefix: 'Sherlock-',
-    items: [
+    groups: [
+      ...bibliotecasGuide.groups,
       {
-        badge: 'Pista 1',
-        title: 'Pisadas en una sala',
-        statement: `<code>huellas.csv</code> tiene, por cada sospechoso y sala, la cantidad de pisadas.
-<pre>sospechoso,sala,pisadas
-Moran,Hall,12
-Adler,Hall,8
-...</pre>
-<p>Escribí <code>total_pisadas_en_sala(archivo, sala)</code> que <b>devuelva</b> el total de pisadas registradas en esa sala (sumando a todos los sospechosos).</p>`,
-        hint: 'Filtrás las filas de esa sala y sumás la columna pisadas. Devolvé un <code>int</code>.',
-        starter: 'import pandas as pd\n\ndef total_pisadas_en_sala(archivo, sala):\n    pass',
-        test: {
-          funcName: 'total_pisadas_en_sala',
-          cases: [
-            { args: ['huellas.csv', 'Boveda'], files: HUELLAS_CSV, expect: { type: 'numeric', value: 26 } },
-            { args: ['huellas.csv', 'Hall'], files: HUELLAS_CSV, expect: { type: 'numeric', value: 35 } },
-          ],
-        },
-      },
-      {
-        badge: 'Pista 2',
-        title: '¿Quién pisó la bóveda?',
-        statement: `Escribí <code>pisadas_por_sospechoso(archivo, sala)</code> que <b>devuelva un diccionario</b> <code>{sospechoso: pisadas}</code> con las pisadas de cada uno en esa sala.
-<pre>pisadas_por_sospechoso('huellas.csv', 'Boveda')
-{'Moran': 20, 'Adler': 2, 'Hudson': 1, 'Lestrade': 3}</pre>
-<p>Ya empieza a aparecer un nombre sospechoso...</p>`,
-        hint: 'Filtrás por sala, agrupás por sospechoso sumando pisadas, y <code>.to_dict()</code>.',
-        starter: 'import pandas as pd\n\ndef pisadas_por_sospechoso(archivo, sala):\n    pass',
-        test: {
-          funcName: 'pisadas_por_sospechoso',
-          cases: [
-            { args: ['huellas.csv', 'Boveda'], files: HUELLAS_CSV,
-              expect: { type: 'json', value: { Moran: 20, Adler: 2, Hudson: 1, Lestrade: 3 } } },
-            { args: ['huellas.csv', 'Hall'], files: HUELLAS_CSV,
-              expect: { type: 'json', value: { Moran: 12, Adler: 8, Hudson: 5, Lestrade: 10 } } },
-          ],
-        },
-      },
-      {
-        badge: 'Pista 3',
-        title: 'El más presente en la escena',
-        statement: `Escribí <code>sospechoso_mas_presente(archivo)</code> que <b>devuelva</b> el nombre del sospechoso con más pisadas sumando <b>todas</b> las salas.`,
-        hint: 'Agrupá por sospechoso, sumá y usá <code>.idxmax()</code>.',
-        starter: 'import pandas as pd\n\ndef sospechoso_mas_presente(archivo):\n    pass',
-        test: {
-          funcName: 'sospechoso_mas_presente',
-          cases: [
-            { args: ['huellas.csv'], files: HUELLAS_CSV, expect: { type: 'exact', value: 'Moran' } },
-            { args: ['huellas.csv'], files: { 'huellas.csv': 'sospechoso,sala,pisadas\nAdler,Hall,99\nMoran,Hall,1\n' },
-              expect: { type: 'exact', value: 'Adler' } },
-          ],
-        },
-      },
-      {
-        badge: 'Pista 4',
-        title: 'Promedio de una medición',
-        statement: `El perito midió la <b>profundidad</b> (en mm) de varias pisadas. Escribí <code>promedio(valores)</code> que reciba una <b>lista</b> y <b>devuelva</b> el promedio, redondeado a 2 decimales con <code>round(x, 2)</code>.
-<pre>promedio([10, 20, 30, 40, 50])
-30.0</pre>`,
-        hint: 'Pasá la lista a <code>np.array</code> y usá <code>.mean()</code>.',
-        starter: 'import numpy as np\n\ndef promedio(valores):\n    pass',
-        test: {
-          funcName: 'promedio',
-          cases: [
-            { args: [[10, 20, 30, 40, 50]], expect: { type: 'numeric', value: 30.0 } },
-            { args: [[5, 10, 7, 3]], expect: { type: 'numeric', value: 6.25 } },
-          ],
-        },
-      },
-      {
-        badge: 'Pista 5',
-        title: 'La medición que no encaja',
-        statement: `Entre las profundidades medidas hay una que se sale de lo normal: esa es la pisada del culpable, la que <b>más se aleja del promedio</b>. Escribí <code>medida_mas_rara(valores)</code> que <b>devuelva la posición</b> (índice) de esa medición.
-<pre>medida_mas_rara([22, 24, 21, 23, 25, 60, 22, 23])
-5</pre>`,
-        hint: 'Con numpy: la distancia al promedio es <code>np.abs(a - a.mean())</code>, y <code>.argmax()</code> te da la posición de la más grande. Devolvé un <code>int</code>.',
-        starter: 'import numpy as np\n\ndef medida_mas_rara(valores):\n    pass',
-        test: {
-          funcName: 'medida_mas_rara',
-          cases: [
-            { args: [[22, 24, 21, 23, 25, 60, 22, 23]], expect: { type: 'numeric', value: 5 } },
-            { args: [[5, 6, 5, 7, 6, 5, 40]], expect: { type: 'numeric', value: 6 } },
-          ],
-        },
-      },
-      {
-        badge: 'Caso cerrado',
-        title: '¿Quién fue?',
-        statement: `Hora de acusar. Escribí <code>identificar_culpable(archivo, sala)</code> que <b>devuelva</b> el nombre del sospechoso con <b>más pisadas en esa sala</b> (el lugar del crimen es la <code>Boveda</code>).
-<pre>identificar_culpable('huellas.csv', 'Boveda')
-'Moran'</pre>`,
-        hint: 'Filtrás por sala, ordenás por pisadas de mayor a menor y mirás la primera fila; o agrupás por sospechoso y usás <code>.idxmax()</code>.',
-        starter: 'import pandas as pd\n\ndef identificar_culpable(archivo, sala):\n    pass',
-        test: {
-          funcName: 'identificar_culpable',
-          cases: [
-            { args: ['huellas.csv', 'Boveda'], files: HUELLAS_CSV, expect: { type: 'exact', value: 'Moran' } },
-            { args: ['huellas.csv', 'Hall'], files: { 'huellas.csv': 'sospechoso,sala,pisadas\nMoran,Hall,3\nAdler,Hall,9\n' },
-              expect: { type: 'exact', value: 'Adler' } },
-          ],
-        },
+        label: 'Producto final (para Colab)',
+        items: [
+          {
+            tag: 'Integrador · estilo parcial',
+            title: 'Informe pericial: concentración en la escena (Incisos A y B)',
+            html: `<p>Con la evidencia completa <code>huellas.csv</code> (<code>sospechoso,sala,pisadas</code>), en Colab. <b>Base:</b> archivos, pandas, numpy y matplotlib — armar un DataFrame desde un archivo y operar, o guardar el resultado en un archivo. <b>Siempre graficar.</b> La escena del crimen es la <code>Boveda</code>.</p>
+<p><b>Inciso A.</b> Escribí <code>analizar_y_graficar_sospechas(ruta_archivo)</code> que: (1) calcule con <b>NumPy</b> el promedio de pisadas por registro de todo el archivo; (2) calcule, para cada sospechoso, su <b>índice de concentración en la escena</b> <code>indice = (pisadas_en_la_Boveda / pisadas_totales_del_sospechoso) * 100</code>; y (3) grafique un <b>gráfico de barras</b> con los sospechosos en el eje X y su índice (%) en el eje Y. El pico es el principal sospechoso.</p>
+<p><b>Inciso B.</b> Escribí <code>exportar_sospechosos_sala(ruta_archivo, sala)</code> que, con <b>Pandas</b>: (1) filtre solo las filas de esa sala; (2) las ordene de mayor a menor por <code>pisadas</code>; y (3) exporte el resultado a un CSV <code>sospechosos_sala.csv</code>.</p>
+<p>La notebook descargable trae las dos celdas listas para completar.</p>`,
+          },
+        ],
       },
     ],
   },

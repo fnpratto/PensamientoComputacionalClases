@@ -17,8 +17,9 @@ const REVIEW_ID = 'camara-correccion';
 const FEEDBACK_ID = 'camara-feedback';
 
 /**
- * Arma la página a partir de los datos de la clase. Las secciones de quiz y
- * ejercicios van siempre; la guía, la animación y el feedback son opcionales.
+ * Arma la página a partir de los datos de la clase. Todas las secciones son
+ * opcionales: el quiz, los ejercicios, la guía, la animación, la corrección y
+ * el feedback se muestran solo si la clase los define.
  *
  * `slots` trae los componentes que una clase puntual necesita y que no se
  * pueden describir como datos — hoy solo `animation`. Así los archivos de
@@ -31,15 +32,17 @@ export default function ClassPage({ course, slots = {} }) {
   const { quiz, exercises, guide, animation, feedback, review, packages } = course;
   const guideFirst = guide && guide.placement === 'before-exercises';
   const showAnimation = Boolean(animation && slots.animation);
+  const showQuiz = Boolean(quiz);
+  const showExercises = Boolean(exercises);
 
   // Las variantes alternan el fondo entre secciones consecutivas, así que se
   // cuentan en el orden en que se renderizan y no se pueden fijar a mano.
   const guideIds = guide ? [GUIDE_ID] : [];
   const order = [
-    QUIZ_ID,
+    ...(showQuiz ? [QUIZ_ID] : []),
     ...(showAnimation ? [ANIMATION_ID] : []),
     ...(guideFirst ? guideIds : []),
-    EXERCISES_ID,
+    ...(showExercises ? [EXERCISES_ID] : []),
     ...(guideFirst ? [] : guideIds),
     ...(review ? [REVIEW_ID] : []),
     ...(feedback ? [FEEDBACK_ID] : []),
@@ -69,9 +72,11 @@ export default function ClassPage({ course, slots = {} }) {
         <main>
           <Hero hero={course.hero} />
 
-          <Section id={QUIZ_ID} variant={variantOf(QUIZ_ID)} eyebrow={quiz.eyebrow} title={quiz.title} description={quiz.description}>
-            <Quiz quiz={quiz} studentName={studentName} nextSectionId={order[1] ?? EXERCISES_ID} />
-          </Section>
+          {showQuiz && (
+            <Section id={QUIZ_ID} variant={variantOf(QUIZ_ID)} eyebrow={quiz.eyebrow} title={quiz.title} description={quiz.description}>
+              <Quiz quiz={quiz} studentName={studentName} nextSectionId={order[1] ?? EXERCISES_ID} />
+            </Section>
+          )}
 
           {showAnimation && (
             <Section id={ANIMATION_ID} variant={variantOf(ANIMATION_ID)} eyebrow={animation.eyebrow} title={animation.title} description={animation.description}>
@@ -81,9 +86,11 @@ export default function ClassPage({ course, slots = {} }) {
 
           {guideFirst && guideSection}
 
-          <Section id={EXERCISES_ID} variant={variantOf(EXERCISES_ID)} eyebrow={exercises.eyebrow} title={exercises.title} description={exercises.description}>
-            <ExerciseList exercises={exercises} studentName={studentName} packages={packages} />
-          </Section>
+          {showExercises && (
+            <Section id={EXERCISES_ID} variant={variantOf(EXERCISES_ID)} eyebrow={exercises.eyebrow} title={exercises.title} description={exercises.description}>
+              <ExerciseList exercises={exercises} studentName={studentName} packages={packages} />
+            </Section>
+          )}
 
           {!guideFirst && guideSection}
 
