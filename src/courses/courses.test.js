@@ -38,11 +38,15 @@ describe.each(slugs)('clase %s', slug => {
   });
 
   it('cada ejercicio tiene enunciado, starter y tests válidos', () => {
-    const { exercises } = courseFor(slug);
-    const funcNames = exercises.items.map(e => e.test.funcName);
+    const course = courseFor(slug);
+    // `exercises` y `review` son ambos opcionales y con el mismo formato.
+    const blocks = [course.exercises, course.review].filter(Boolean);
+    expect(blocks.length, 'una clase debería tener al menos ejercicios o corrección').toBeGreaterThan(0);
+    const items = blocks.flatMap(b => b.items);
+    const funcNames = items.map(e => e.test.funcName);
 
     expect(new Set(funcNames).size).toBe(funcNames.length);
-    for (const ex of exercises.items) {
+    for (const ex of items) {
       const { funcName, cases } = ex.test;
       expect(ex.statement, ex.title).toBeTruthy();
       // El starter define la función pedida. Puede tener imports arriba
