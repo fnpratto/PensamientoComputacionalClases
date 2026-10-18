@@ -78,6 +78,46 @@
   --hint-icon:     "⚽";
 }
 
+/* Verde subte porteño sobre túnel oscuro. */
+[data-theme="subte"] {
+  --bg:            #07100b;
+  --bg-soft:       #0b1812;
+  --bg-muted:      #09130d;
+  --surface:       #10211a;
+  --border:        #1b3528;
+  --border-strong: #2a5240;
+  --text:          #e6f5ec;
+  --text-dim:      #8db6a0;
+  --text-faint:    #557061;
+  --accent:        #2ec56f;
+  --accent-rgb:    46, 197, 111;
+  --accent-strong: #74e6a2;
+  --secondary:     #f5c518;
+  --secondary-rgb: 245, 197, 24;
+  --code-string:   #74e6a2;
+  --hint-icon:     "🚇";
+}
+
+/* Noir: sepia y ámbar de lámpara de escritorio. */
+[data-theme="sherlock"] {
+  --bg:            #0c0a07;
+  --bg-soft:       #14100b;
+  --bg-muted:      #0f0c08;
+  --surface:       #1d1811;
+  --border:        #332a1d;
+  --border-strong: #52432c;
+  --text:          #f3ead9;
+  --text-dim:      #b09a7a;
+  --text-faint:    #776552;
+  --accent:        #d9a441;
+  --accent-rgb:    217, 164, 65;
+  --accent-strong: #f0c874;
+  --secondary:     #c7843d;
+  --secondary-rgb: 199, 132, 61;
+  --code-string:   #f0c874;
+  --hint-icon:     "🔍";
+}
+
 :root {
   --accent-dim:       rgba(var(--accent-rgb), .15);
   --accent-faint:     rgba(var(--accent-rgb), .05);

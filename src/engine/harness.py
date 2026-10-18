@@ -13,6 +13,17 @@ def _pcc_check_practices(code, required_names_json):
         result["error"] = str(e)
     return json.dumps(result)
 
+def _pcc_default(o):
+    """Convierte tipos de numpy/pandas (int64, arrays, Series) a tipos nativos
+    para que json.dumps no explote. Solo se llama sobre lo que json no sabe
+    serializar: los escalares numpy.float64 ya son float de Python y pasan solos."""
+    if hasattr(o, "tolist"):      # ndarray, escalar numpy, Index
+        return o.tolist()
+    if hasattr(o, "to_dict"):     # Series / DataFrame
+        return o.to_dict()
+    return str(o)
+
+
 def _pcc_read_dir(path):
     """Contenido de los archivos de texto que quedaron en el directorio.
     Lo binario y los subdirectorios se ignoran: los ejercicios trabajan con .txt."""
@@ -76,7 +87,7 @@ def _pcc_run(code, func_name, args_json, stdin_json, files_json=None):
         os.chdir(old_cwd)
         shutil.rmtree(sandbox, ignore_errors=True)
     try:
-        return json.dumps(result)
+        return json.dumps(result, default=_pcc_default)
     except TypeError:
         result["return_value"] = str(result["return_value"])
-        return json.dumps(result)
+        return json.dumps(result, default=_pcc_default)

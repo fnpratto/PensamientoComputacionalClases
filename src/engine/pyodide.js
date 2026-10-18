@@ -30,6 +30,17 @@ export function getPyodide() {
 }
 
 /**
+ * Carga paquetes oficiales de Pyodide (ej: numpy, pandas) sobre la instancia
+ * compartida. `loadPackage` es idempotente y cachea, así que llamarla de más
+ * no cuesta nada. Las clases que no declaran `packages` no cargan nada extra.
+ */
+export async function loadPackages(names = []) {
+  const py = await getPyodide();
+  if (names.length) await py.loadPackage(names);
+  return py;
+}
+
+/**
  * Corre el código del alumno. `files` siembra el directorio de trabajo (los
  * ejercicios de archivos necesitan sus .txt); el resultado trae en `files` los
  * archivos que quedaron, para poder verificar lo que el código escribió.

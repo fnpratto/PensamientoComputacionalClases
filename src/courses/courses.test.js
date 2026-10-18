@@ -44,7 +44,10 @@ describe.each(slugs)('clase %s', slug => {
     for (const ex of exercises.items) {
       const { funcName, cases } = ex.test;
       expect(ex.statement, ex.title).toBeTruthy();
-      expect(ex.starter, ex.title).toMatch(new RegExp(`^def ${funcName}\\(`));
+      // El starter define la función pedida. Puede tener imports arriba
+      // (las clases de bibliotecas arrancan con `import pandas as pd`), así
+      // que basta con que el `def` esté al principio de alguna línea.
+      expect(ex.starter, ex.title).toMatch(new RegExp(`(^|\\n)def ${funcName}\\(`));
       expect(cases.length, ex.title).toBeGreaterThan(0);
       for (const c of cases) {
         expect(Array.isArray(c.args), ex.title).toBe(true);

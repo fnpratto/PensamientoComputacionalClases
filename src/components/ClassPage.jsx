@@ -28,7 +28,7 @@ const FEEDBACK_ID = 'camara-feedback';
  */
 export default function ClassPage({ course, slots = {} }) {
   const [studentName, setStudentName] = useState('');
-  const { quiz, exercises, guide, animation, feedback, review } = course;
+  const { quiz, exercises, guide, animation, feedback, review, packages } = course;
   const guideFirst = guide && guide.placement === 'before-exercises';
   const showAnimation = Boolean(animation && slots.animation);
 
@@ -82,14 +82,14 @@ export default function ClassPage({ course, slots = {} }) {
           {guideFirst && guideSection}
 
           <Section id={EXERCISES_ID} variant={variantOf(EXERCISES_ID)} eyebrow={exercises.eyebrow} title={exercises.title} description={exercises.description}>
-            <ExerciseList exercises={exercises} studentName={studentName} />
+            <ExerciseList exercises={exercises} studentName={studentName} packages={packages} />
           </Section>
 
           {!guideFirst && guideSection}
 
           {review && (
             <Section id={REVIEW_ID} variant={variantOf(REVIEW_ID)} eyebrow={review.eyebrow} title={review.title} description={review.description}>
-              <ExerciseList exercises={review} studentName={studentName} />
+              <ExerciseList exercises={review} studentName={studentName} packages={packages} />
             </Section>
           )}
 

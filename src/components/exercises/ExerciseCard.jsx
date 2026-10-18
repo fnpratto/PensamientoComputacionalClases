@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState } from 'react';
-import { checkPractices } from '../../engine/pyodide.js';
+import { checkPractices, loadPackages } from '../../engine/pyodide.js';
 import { runFunctionTests } from '../../engine/testRunner.js';
 import { submitResults } from '../../services/sheets.js';
 import Html from '../Html.jsx';
@@ -11,9 +11,9 @@ const CodeEditor = lazy(() => import('./CodeEditor.jsx'));
 
 /**
  * @param {{exercise: import('../../courses/types.js').Exercise, sheet: string,
- *   submitLabel: string, studentName: string}} props
+ *   submitLabel: string, studentName: string, packages?: string[]}} props
  */
-export default function ExerciseCard({ exercise, sheet, submitLabel, studentName }) {
+export default function ExerciseCard({ exercise, sheet, submitLabel, studentName, packages = [] }) {
   const { test } = exercise;
   const [code, setCode] = useState(exercise.starter);
   const [busy, setBusy] = useState(null); // null | 'verify' | 'submit'
@@ -26,6 +26,10 @@ export default function ExerciseCard({ exercise, sheet, submitLabel, studentName
     setReport(null);
     setProgress('Cargando intérprete…');
     try {
+      if (packages.length) {
+        setProgress('Cargando numpy y pandas…');
+        await loadPackages(packages);
+      }
       const practice = await checkPractices(source, [test.funcName]);
       setProgress('Ejecutando tests…');
       const rows = await runFunctionTests(source, test);
