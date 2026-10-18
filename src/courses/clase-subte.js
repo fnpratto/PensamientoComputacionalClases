@@ -122,18 +122,18 @@ fecha,linea,estacion,pasajeros        # subte_diario_por_estacion.csv
   exercises: {
     eyebrow: 'Ejercicios',
     title: 'Primeras pistas con pandas y numpy',
-    description: 'Calentamos con un recorte real: la semana del 18 al 24 de marzo de 2024 (archivo viajes.csv) y las estaciones de la Línea B (estaciones.csv), ya cargados. El dataset completo y el desafío final "¿qué día fue el más raro?" quedan para Colab (están en el apunte).',
+    description: 'Calentamos con un recorte real: la semana del 18 al 24 de marzo de 2024 (archivo viajes.csv) y las estaciones de la Línea B (estaciones.csv), ya cargados. Cada ejercicio es una consigna estilo parcial. El dataset completo y el integrador final (análisis de la demanda y días pico) quedan para Colab (están en el apunte).',
     sheetPrefix: 'Subte-',
     items: [
       {
         badge: 'Ejercicio 1',
         title: 'Pasajeros de un día',
-        statement: `<code>viajes.csv</code> tiene una fila por línea y por día, con la columna <code>pasajeros</code>.
+        statement: `El equipo de datos de SBASE le pasa a Mateo el archivo <code>viajes.csv</code>, con una fila por línea y por día.
 <pre>fecha,linea,pasajeros
 2024-03-18,A,176568
 2024-03-18,B,210625
 ...</pre>
-<p>Escribí <code>total_del_dia(archivo, fecha)</code> que <b>devuelva</b> el total de pasajeros de todo el subte en esa fecha (sumando todas las líneas).</p>`,
+<p>Para el informe diario, le piden a Mateo que escriba <code>total_del_dia(archivo, fecha)</code> que <b>devuelva</b> el total de pasajeros de todo el subte en esa fecha (sumando todas las líneas).</p>`,
         hint: 'Primero filtrás las filas de esa fecha, después sumás la columna pasajeros. Devolvé un <code>int</code>.',
         starter: 'import pandas as pd\n\ndef total_del_dia(archivo, fecha):\n    pass',
         test: {
@@ -147,7 +147,7 @@ fecha,linea,estacion,pasajeros        # subte_diario_por_estacion.csv
       {
         badge: 'Ejercicio 2',
         title: 'Pasajeros por línea de un día',
-        statement: `Escribí <code>pasajeros_por_linea(archivo, fecha)</code> que <b>devuelva un diccionario</b> <code>{linea: pasajeros}</code> con lo de cada línea en esa fecha.
+        statement: `Al jefe de Mateo no le alcanza con el total: quiere el desglose por línea de ese día. Le piden que escriba <code>pasajeros_por_linea(archivo, fecha)</code> que <b>devuelva un diccionario</b> <code>{linea: pasajeros}</code> con lo de cada línea en esa fecha.
 <pre>pasajeros_por_linea('viajes.csv', '2024-03-19')
 {'A': 186305, 'B': 217518, 'C': 142881, 'D': 176043, 'E': 96802, 'H': 110126}</pre>`,
         hint: 'Filtrás por fecha y agrupás por línea sumando pasajeros. <code>.to_dict()</code> lo convierte en diccionario.',
@@ -165,7 +165,7 @@ fecha,linea,estacion,pasajeros        # subte_diario_por_estacion.csv
       {
         badge: 'Ejercicio 3',
         title: 'La línea más usada',
-        statement: `Escribí <code>linea_mas_usada(archivo)</code> que <b>devuelva</b> la letra de la línea con más pasajeros sumando <b>todos</b> los días del archivo.`,
+        statement: `La gerencia quiere saber qué línea mueve más gente en toda la semana para priorizar mantenimiento. Le piden a Mateo que escriba <code>linea_mas_usada(archivo)</code> que <b>devuelva</b> la letra de la línea con más pasajeros sumando <b>todos</b> los días del archivo.`,
         hint: 'Agrupá por línea, sumá y usá <code>.idxmax()</code> para quedarte con la de mayor total.',
         starter: 'import pandas as pd\n\ndef linea_mas_usada(archivo):\n    pass',
         test: {
@@ -180,12 +180,12 @@ fecha,linea,estacion,pasajeros        # subte_diario_por_estacion.csv
       {
         badge: 'Ejercicio 4',
         title: 'Top de estaciones',
-        statement: `<code>estaciones.csv</code> tiene los pasajeros por estación de la Línea B el 19/3.
+        statement: `Para reforzar molinetes, a Mateo le dan <code>estaciones.csv</code> con los pasajeros por estación de la Línea B el 19/3.
 <pre>fecha,linea,estacion,pasajeros
 2024-03-19,B,Rosas,23952
 2024-03-19,B,Federico Lacroze,21935
 ...</pre>
-<p>Escribí <code>top_estaciones(archivo, n)</code> que <b>devuelva una lista</b> con los nombres de las <code>n</code> estaciones con más pasajeros, de mayor a menor.</p>`,
+<p>Le piden que escriba <code>top_estaciones(archivo, n)</code> que <b>devuelva una lista</b> con los nombres de las <code>n</code> estaciones con más pasajeros, de mayor a menor.</p>`,
         hint: 'Ordená por pasajeros de mayor a menor, quedate con las primeras <code>n</code> filas y devolvé la columna estacion como lista (<code>.tolist()</code>).',
         starter: 'import pandas as pd\n\ndef top_estaciones(archivo, n):\n    pass',
         test: {
@@ -201,7 +201,7 @@ fecha,linea,estacion,pasajeros        # subte_diario_por_estacion.csv
       {
         badge: 'Ejercicio 5',
         title: 'Promedio de pasajeros',
-        statement: `Escribí <code>promedio(valores)</code> que reciba una <b>lista</b> de pasajeros por día y <b>devuelva</b> el promedio, redondeado a 2 decimales con <code>round(x, 2)</code>.
+        statement: `Mateo tiene una <b>lista</b> con los pasajeros de cada día de una línea y necesita el valor típico para comparar. Le piden que escriba <code>promedio(valores)</code> que <b>devuelva</b> el promedio, redondeado a 2 decimales con <code>round(x, 2)</code>.
 <pre>promedio([10, 20, 30, 40, 50])
 30.0</pre>`,
         hint: 'Convertí la lista a <code>np.array</code> y usá <code>.mean()</code>.',
@@ -217,7 +217,7 @@ fecha,linea,estacion,pasajeros        # subte_diario_por_estacion.csv
       {
         badge: 'Ejercicio 6',
         title: 'El día más raro',
-        statement: `El día más "raro" es el que <b>más se aleja del promedio</b> (para arriba o para abajo). Escribí <code>dia_mas_raro(valores)</code> que reciba una lista de pasajeros por día y <b>devuelva la posición</b> (índice) del día más raro.
+        statement: `A Mateo le piden detectar automáticamente el día que se despega del resto: el día más "raro" es el que <b>más se aleja del promedio</b> (para arriba o para abajo). Tiene que escribir <code>dia_mas_raro(valores)</code> que reciba una lista de pasajeros por día y <b>devuelva la posición</b> (índice) del día más raro.
 <pre>dia_mas_raro([100, 102, 98, 101, 99, 250, 100])
 5</pre>`,
         hint: 'Con numpy: calculá el promedio, la distancia de cada día al promedio con <code>np.abs(a - a.mean())</code>, y la posición del más grande con <code>.argmax()</code>. Devolvé un <code>int</code>.',

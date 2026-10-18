@@ -85,12 +85,12 @@ Moran,Boveda,20
       {
         badge: 'Pista 1',
         title: 'Pisadas en una sala',
-        statement: `<code>huellas.csv</code> tiene, por cada sospechoso y sala, la cantidad de pisadas.
+        statement: `Sherlock te pone al frente del análisis. El sistema de sensores dejó <code>huellas.csv</code>, con la cantidad de pisadas de cada sospechoso en cada sala.
 <pre>sospechoso,sala,pisadas
 Moran,Hall,12
 Adler,Hall,8
 ...</pre>
-<p>Escribí <code>total_pisadas_en_sala(archivo, sala)</code> que <b>devuelva</b> el total de pisadas registradas en esa sala (sumando a todos los sospechosos).</p>`,
+<p>Te pide que escribas <code>total_pisadas_en_sala(archivo, sala)</code> que <b>devuelva</b> el total de pisadas registradas en esa sala (sumando a todos los sospechosos).</p>`,
         hint: 'Filtrás las filas de esa sala y sumás la columna pisadas. Devolvé un <code>int</code>.',
         starter: 'import pandas as pd\n\ndef total_pisadas_en_sala(archivo, sala):\n    pass',
         test: {
@@ -104,7 +104,7 @@ Adler,Hall,8
       {
         badge: 'Pista 2',
         title: '¿Quién pisó la bóveda?',
-        statement: `Escribí <code>pisadas_por_sospechoso(archivo, sala)</code> que <b>devuelva un diccionario</b> <code>{sospechoso: pisadas}</code> con las pisadas de cada uno en esa sala.
+        statement: `Para saber quién estuvo en el lugar del crimen, Sherlock te pide el desglose por sospechoso de una sala. Escribí <code>pisadas_por_sospechoso(archivo, sala)</code> que <b>devuelva un diccionario</b> <code>{sospechoso: pisadas}</code> con las pisadas de cada uno en esa sala.
 <pre>pisadas_por_sospechoso('huellas.csv', 'Boveda')
 {'Moran': 20, 'Adler': 2, 'Hudson': 1, 'Lestrade': 3}</pre>
 <p>Ya empieza a aparecer un nombre sospechoso...</p>`,
@@ -123,7 +123,7 @@ Adler,Hall,8
       {
         badge: 'Pista 3',
         title: 'El más presente en la escena',
-        statement: `Escribí <code>sospechoso_mas_presente(archivo)</code> que <b>devuelva</b> el nombre del sospechoso con más pisadas sumando <b>todas</b> las salas.`,
+        statement: `Sherlock sospecha de quien más se movió por toda la escena. Te pide que escribas <code>sospechoso_mas_presente(archivo)</code> que <b>devuelva</b> el nombre del sospechoso con más pisadas sumando <b>todas</b> las salas.`,
         hint: 'Agrupá por sospechoso, sumá y usá <code>.idxmax()</code>.',
         starter: 'import pandas as pd\n\ndef sospechoso_mas_presente(archivo):\n    pass',
         test: {
@@ -138,7 +138,7 @@ Adler,Hall,8
       {
         badge: 'Pista 4',
         title: 'Promedio de una medición',
-        statement: `El perito midió la <b>profundidad</b> (en mm) de varias pisadas. Escribí <code>promedio(valores)</code> que reciba una <b>lista</b> y <b>devuelva</b> el promedio, redondeado a 2 decimales con <code>round(x, 2)</code>.
+        statement: `El perito midió la <b>profundidad</b> (en mm) de varias pisadas y Sherlock te pide el valor típico para comparar. Escribí <code>promedio(valores)</code> que reciba una <b>lista</b> y <b>devuelva</b> el promedio, redondeado a 2 decimales con <code>round(x, 2)</code>.
 <pre>promedio([10, 20, 30, 40, 50])
 30.0</pre>`,
         hint: 'Pasá la lista a <code>np.array</code> y usá <code>.mean()</code>.',
@@ -154,7 +154,7 @@ Adler,Hall,8
       {
         badge: 'Pista 5',
         title: 'La medición que no encaja',
-        statement: `Entre las profundidades medidas hay una que se sale de lo normal: esa es la pisada del culpable, la que <b>más se aleja del promedio</b>. Escribí <code>medida_mas_rara(valores)</code> que <b>devuelva la posición</b> (índice) de esa medición.
+        statement: `Entre las profundidades medidas hay una que no encaja: esa es la pisada del culpable, la que <b>más se aleja del promedio</b>. Sherlock te pide que escribas <code>medida_mas_rara(valores)</code> que <b>devuelva la posición</b> (índice) de esa medición.
 <pre>medida_mas_rara([22, 24, 21, 23, 25, 60, 22, 23])
 5</pre>`,
         hint: 'Con numpy: la distancia al promedio es <code>np.abs(a - a.mean())</code>, y <code>.argmax()</code> te da la posición de la más grande. Devolvé un <code>int</code>.',
@@ -170,7 +170,7 @@ Adler,Hall,8
       {
         badge: 'Caso cerrado',
         title: '¿Quién fue?',
-        statement: `Hora de acusar. Escribí <code>identificar_culpable(archivo, sala)</code> que <b>devuelva</b> el nombre del sospechoso con <b>más pisadas en esa sala</b> (el lugar del crimen es la <code>Boveda</code>).
+        statement: `Hora de acusar: Sherlock te pide el veredicto. Escribí <code>identificar_culpable(archivo, sala)</code> que <b>devuelva</b> el nombre del sospechoso con <b>más pisadas en esa sala</b> (el lugar del crimen es la <code>Boveda</code>).
 <pre>identificar_culpable('huellas.csv', 'Boveda')
 'Moran'</pre>`,
         hint: 'Filtrás por sala, ordenás por pisadas de mayor a menor y mirás la primera fila; o agrupás por sospechoso y usás <code>.idxmax()</code>.',
