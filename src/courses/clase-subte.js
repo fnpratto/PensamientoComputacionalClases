@@ -68,6 +68,22 @@ export default {
   // ── Apunte: el compartido + links a los datos reales + el desafío final ──
   guide: {
     ...bibliotecasGuide,
+    closing: {
+      title: bibliotecasGuide.closing.title,
+      html: `${bibliotecasGuide.closing.html}
+<p class="guide-lead" style="margin-top:1.2rem">Estructura de un gráfico con matplotlib (machete):</p>
+<pre>_, ax = plt.subplots()
+
+ax.plot(x, y, label="Etiqueta de la curva")
+
+ax.set_title("Título del gráfico")
+ax.set_xlabel("Descripción en Eje X")
+ax.set_ylabel("Descripción en Eje Y")
+
+ax.legend()
+ax.grid()
+plt.show()</pre>`,
+    },
     title: 'pandas, numpy y matplotlib con los datos del subte',
     method: {
       title: 'Los datos: molinetes reales del subte (SBASE 2024)',
@@ -90,16 +106,12 @@ fecha,linea,estacion,pasajeros        # subte_diario_por_estacion.csv
         label: 'Producto final (para Colab)',
         items: [
           {
-            tag: 'Desafío',
-            title: '¿Qué día fue el más raro del año y por qué?',
-            html: `<p>Con el dataset completo <code>subte_diario_por_linea.csv</code>, en Colab:</p>
-<pre>df = pd.read_csv('subte_diario_por_linea.csv')
-diario = df.groupby('fecha')['pasajeros'].sum()   # total de todo el subte por día
-
-media = diario.mean()
-raro = (diario - media).abs().idxmax()            # el día que más se aleja del promedio
-print('El día más raro fue', raro)</pre>
-<p>Después graficá la serie con <code>plt.plot</code> y marcá ese día, y escribí la conclusión: ¿el día más raro es un pico hacia arriba o hacia abajo? ¿Es un feriado, un evento, un paro? Pista detectivesca: comparar un domingo contra un martes no es justo. Probá mirar <b>solo los días de semana</b> y vas a encontrar los feriados (Año Nuevo, Navidad, Carnaval, 1º de mayo...) asomando como los más alejados del promedio.</p>`,
+            tag: 'Integrador · estilo parcial',
+            title: 'Análisis de la demanda y días pico (Incisos A y B)',
+            html: `<p>Con el dataset completo <code>subte_diario_por_linea.csv</code>, en Colab. <b>Base:</b> archivos, pandas, numpy y matplotlib — armar un DataFrame desde un archivo y operar, o guardar el resultado en un archivo. <b>Siempre graficar.</b></p>
+<p><b>Inciso A.</b> Mateo mencionó que sabía algo de Python y trabaja en Amoba, por eso mismo le dan un CSV con los pasajeros diarios del subte en 2024, <code>subte_diario_por_linea.csv</code> (<code>fecha,linea,pasajeros</code>), y le piden que escriba <code>analizar_y_graficar_demanda(ruta_archivo)</code> que: (1) calcule el promedio de pasajeros por día de todo el subte (sumando las líneas de cada fecha); (2) calcule, para cada línea, su <b>porcentaje de participación</b> en la demanda total del año <code>participacion = (total_de_la_linea / total_general) * 100</code>; y (3) grafique las líneas y su participación (gráfico de barras).</p>
+<p><b>Inciso B.</b> Como Mateo hizo un gran trabajo, ahora le piden que escriba <code>exportar_dias_pico(ruta_archivo, linea, n)</code> que: (1) filtre solo las filas de la línea recibida por parámetro; (2) las ordene de mayor a menor según <code>pasajeros</code>; y (3) exporte las <code>n</code> primeras filas (los <code>n</code> días de mayor demanda) a un CSV <code>dias_pico.csv</code>.</p>
+<p>Conclusión: ¿qué línea concentra más demanda? ¿Los días pico son hábiles o fin de semana, y por qué? La notebook descargable trae las dos celdas listas para completar.</p>`,
           },
         ],
       },

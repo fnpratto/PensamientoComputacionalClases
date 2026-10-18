@@ -3,7 +3,6 @@
    están armados para que el análisis con pandas/numpy apunte a un culpable.
    Datos descargables para Colab en public/datos/clase-sherlock/. */
 
-import { bibliotecasQuiz } from './_bibliotecas-quiz.js';
 import { bibliotecasGuide } from './_bibliotecas-guide.js';
 
 // ── Escena del crimen: pisadas por sospechoso y por sala ─────
@@ -36,17 +35,16 @@ export default {
   footer: 'Sherlock Forense · Unidad 6 · Pensamiento Computacional FIUBA 🔍',
   nav: {
     label: 'Sherlock Forense',
-    quiz: 'Quiz de nivelación',
     guide: 'Apunte',
     exercises: 'La investigación',
     review: 'Peritaje de código',
     feedback: 'Feedback',
   },
 
-  quiz: { ...bibliotecasQuiz, sheet: 'Sherlock-Quiz' },
-
+  // Sin quiz de nivelación ni machete: esta clase es tarea, ya vieron el tema.
   guide: {
     ...bibliotecasGuide,
+    closing: null,
     title: 'pandas, numpy y matplotlib para el peritaje',
     method: {
       title: 'El caso: huellas en la escena del crimen',
@@ -57,8 +55,24 @@ Adler,Hall,8
 Moran,Boveda,20
 ...</pre>
 <p>Descargá la evidencia para Colab: <a href="/datos/clase-sherlock/huellas.csv" download>huellas.csv</a> · <a href="/datos/clase-sherlock/indicios.csv" download>indicios.csv</a>. Un buen detective no acusa por una corazonada: filtra, agrupa, mide y <b>deja que los datos señalen al culpable</b>.</p>
-<p>📓 <a href="/datos/clase-sherlock/sherlock-forense.ipynb" download><b>Descargá la notebook para Colab</b></a>: tiene todos los pasos de la investigación listos para completar. Abrila en <a href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Google Colab</a> y subí la evidencia (los dos CSV).</p>`,
+<p>📓 <a href="/datos/clase-sherlock/sherlock-forense.ipynb" download><b>Descargá la notebook para Colab</b></a>: tiene todos los pasos de la investigación listos para completar, incluido el informe pericial final. Abrila en <a href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Google Colab</a> y subí la evidencia (los dos CSV).</p>`,
     },
+    groups: [
+      ...bibliotecasGuide.groups,
+      {
+        label: 'Producto final (para Colab)',
+        items: [
+          {
+            tag: 'Integrador · estilo parcial',
+            title: 'Informe pericial: concentración en la escena (Incisos A y B)',
+            html: `<p>Con la evidencia completa <code>huellas.csv</code> (<code>sospechoso,sala,pisadas</code>), en Colab. <b>Base:</b> archivos, pandas, numpy y matplotlib — armar un DataFrame desde un archivo y operar, o guardar el resultado en un archivo. <b>Siempre graficar.</b> La escena del crimen es la <code>Boveda</code>.</p>
+<p><b>Inciso A.</b> Escribí <code>analizar_y_graficar_sospechas(ruta_archivo)</code> que: (1) calcule con <b>NumPy</b> el promedio de pisadas por registro de todo el archivo; (2) calcule, para cada sospechoso, su <b>índice de concentración en la escena</b> <code>indice = (pisadas_en_la_Boveda / pisadas_totales_del_sospechoso) * 100</code>; y (3) grafique un <b>gráfico de barras</b> con los sospechosos en el eje X y su índice (%) en el eje Y. El pico es el principal sospechoso.</p>
+<p><b>Inciso B.</b> Escribí <code>exportar_sospechosos_sala(ruta_archivo, sala)</code> que, con <b>Pandas</b>: (1) filtre solo las filas de esa sala; (2) las ordene de mayor a menor por <code>pisadas</code>; y (3) exporte el resultado a un CSV <code>sospechosos_sala.csv</code>.</p>
+<p>La notebook descargable trae las dos celdas listas para completar.</p>`,
+          },
+        ],
+      },
+    ],
   },
 
   // ── La investigación (ejercicios autocorregidos) ───────────
