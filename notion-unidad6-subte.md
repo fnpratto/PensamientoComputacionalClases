@@ -27,8 +27,9 @@ Evaluación de Código: 2, 4*
 
 ### Ejercicios
 
-**1. Promedio de pasajeros.** Escribir `promedio(valores)` que reciba una lista de pasajeros
-por día y devuelva el promedio redondeado a 2 decimales.
+**1. Promedio de pasajeros.** Mateo tiene una lista con los pasajeros de cada día de una línea y
+necesita el valor típico para comparar. Le piden `promedio(valores)` que reciba una lista y
+devuelva el promedio redondeado a 2 decimales.
 
 ```python
 promedio([10, 20, 30, 40, 50])   # -> 30.0
@@ -43,8 +44,9 @@ def promedio(valores):
     return round(np.array(valores).mean(), 2)
 ```
 
-**2. El día más raro.** El día más raro es el que **más se aleja del promedio** (para arriba
-o para abajo). Escribir `dia_mas_raro(valores)` que devuelva la posición (índice) de ese día.
+**2. El día más raro.** A Mateo le piden detectar el día que se despega del resto: el día más raro
+es el que **más se aleja del promedio** (para arriba o para abajo). `dia_mas_raro(valores)` devuelve
+la posición (índice) de ese día.
 
 ```python
 dia_mas_raro([100, 102, 98, 101, 99, 250, 100])   # -> 5
@@ -114,7 +116,8 @@ Evaluación de Código: 1, 3*
 
 Trabajamos con `subte_diario_por_linea.csv` (`fecha, linea, pasajeros`) salvo que se indique.
 
-**1. Pasajeros de un día.** Escribir `total_del_dia(archivo, fecha)` que devuelva el total de
+**1. Pasajeros de un día.** El equipo de datos de SBASE le pasa a Mateo `subte_diario_por_linea.csv`
+y, para el informe diario, le piden `total_del_dia(archivo, fecha)` que devuelva el total de
 pasajeros de todo el subte en esa fecha (sumando todas las líneas).
 
 ```python
@@ -131,8 +134,9 @@ def total_del_dia(archivo, fecha):
     return int(df[df['fecha'] == fecha]['pasajeros'].sum())
 ```
 
-**2. Pasajeros por línea.** Escribir `pasajeros_por_linea(archivo, fecha)` que devuelva un
-diccionario `{linea: pasajeros}` con lo de cada línea en esa fecha.
+**2. Pasajeros por línea.** Al jefe de Mateo no le alcanza con el total: quiere el desglose por
+línea de ese día. Le piden `pasajeros_por_linea(archivo, fecha)` que devuelva un diccionario
+`{linea: pasajeros}` con lo de cada línea en esa fecha.
 
 ```python
 pasajeros_por_linea('subte_diario_por_linea.csv', '2024-03-19')
@@ -150,8 +154,9 @@ def pasajeros_por_linea(archivo, fecha):
     return del_dia.groupby('linea')['pasajeros'].sum().to_dict()
 ```
 
-**3. La línea más usada.** Escribir `linea_mas_usada(archivo)` que devuelva la letra de la
-línea con más pasajeros sumando todos los días.
+**3. La línea más usada.** La gerencia quiere priorizar mantenimiento según qué línea mueve más
+gente. Le piden `linea_mas_usada(archivo)` que devuelva la letra de la línea con más pasajeros
+sumando todos los días.
 
 ```python
 linea_mas_usada('subte_diario_por_linea.csv')   # -> 'B'
@@ -167,12 +172,12 @@ def linea_mas_usada(archivo):
     return df.groupby('linea')['pasajeros'].sum().idxmax()
 ```
 
-**4. Top de estaciones.** Usando `subte_diario_por_estacion.csv`, escribir
-`top_estaciones(archivo, n)` que devuelva una lista con los nombres de las `n` estaciones
-con más pasajeros, de mayor a menor.
+**4. Top de estaciones.** Para reforzar molinetes, a Mateo le dan `subte_diario_por_estacion.csv`
+y le piden un ranking: `top_estaciones(archivo, linea, fecha, n)` que devuelva una lista con los
+nombres de las `n` estaciones con más pasajeros de esa línea ese día, de mayor a menor.
 
 ```python
-top_estaciones('subte_diario_por_estacion.csv', 3)
+top_estaciones('subte_diario_por_estacion.csv', 'B', '2024-03-19', 3)
 # -> ['Rosas', 'Federico Lacroze', 'Leandro N. Alem']
 ```
 
@@ -181,9 +186,10 @@ Resolución:
 ```python
 import pandas as pd
 
-def top_estaciones(archivo, n):
+def top_estaciones(archivo, linea, fecha, n):
     df = pd.read_csv(archivo)
-    ordenado = df.sort_values('pasajeros', ascending=False)
+    del_dia = df[(df['linea'] == linea) & (df['fecha'] == fecha)]
+    ordenado = del_dia.sort_values('pasajeros', ascending=False)
     return ordenado.head(n)['estacion'].tolist()
 ```
 
