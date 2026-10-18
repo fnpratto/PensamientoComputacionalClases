@@ -11,9 +11,15 @@ registro de cuántas **pisadas** dejó cada sospechoso en cada sala.
 
 > Los dos archivos están en `public/datos/clase-sherlock/`. En Colab: `pd.read_csv('huellas.csv')`.
 
-Sospechosos: **Moran, Adler, Hudson, Lestrade**. Salas: **Hall, Galeria, Boveda** (la bóveda es la
-escena del crimen). Cada consigna está en **estilo parcial**: Sherlock te pone al frente del
-análisis y te pide algo.
+El registro es un desastre: hay **decenas de sospechosos** (muchos sin ningún sentido en el caso —
+hasta figuran Godzilla, un pingüino y Keyboard Cat) y un montón de salas (Hall, Galeria, Oficina,
+Pasillo, Deposito, Boveda, Cafeteria, Azotea, Subsuelo, Jardin...). La `Boveda` es la escena del
+crimen. Los nombres que importan en el caso son **Moran, Adler, Hudson, Lestrade, Gregson, Moriarty,
+Watson, Baynes**. Cada consigna está en **estilo parcial**: Sherlock te pone al frente del análisis
+y te pide algo.
+
+> Pista: el que dejó más pisadas **en total** no tiene por qué ser el culpable (un guardia patrulla
+> todo el museo, y hay ruido por todos lados). El dato clave es quién se **concentró en la bóveda**.
 
 ---
 

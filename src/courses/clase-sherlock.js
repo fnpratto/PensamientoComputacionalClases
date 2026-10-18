@@ -7,7 +7,7 @@ import { bibliotecasGuide } from './_bibliotecas-guide.js';
 
 // Única evidencia que usa la página: los indicios para el peritaje de código.
 // La investigación completa (pandas/numpy paso a paso) vive en la notebook de Colab.
-const INDICIOS = { 'indicios.csv': 'sospechoso,cabellos\nMoran,14\nAdler,8\nHudson,22\nLestrade,5\n' };
+const INDICIOS = { 'indicios.csv': 'sospechoso,cabellos\nBaynes,14\nEl Gato del Museo,30\nConserje Wiggins,7\nMoriarty,15\nUn Turista Perdido,5\nWatson,24\nJardinero Mudo,27\nMoran,25\nLestrade,9\nGodzilla,25\nInspector Bradstreet,8\nVigilante Nocturno,18\nRepartidor de Pizza,11\nPaloma Mensajera,16\nUn PingUino,30\nFantasma del Museo,3\nHudson,0\nAdler,15\nElvis,0\nNessie,23\nMimo Callejero,11\nRobot Aspiradora,9\nWally,6\nKeyboard Cat,20\nGregson,3\nSenora de la Limpieza,18\n' };
 
 /** @type {import('./types.js').Course} */
 export default {
@@ -42,11 +42,13 @@ export default {
     method: {
       title: 'El caso: huellas en la escena del crimen',
       html: `<p class="guide-lead">Anoche robaron una obra de la bóveda del museo. El sistema de sensores dejó un registro de cuántas <b>pisadas</b> dejó cada sospechoso en cada sala. Esa es nuestra evidencia:</p>
-<pre>sospechoso,sala,pisadas          # huellas.csv
-Moran,Hall,12
-Adler,Hall,8
-Moran,Boveda,20
+<pre>sospechoso,sala,pisadas          # huellas.csv (decenas de sospechosos y salas)
+Gregson,Hall,40
+Gregson,Pasillo,50
+El Gato del Museo,Subsuelo,43
+Godzilla,Cafeteria,42
 ...</pre>
+<p>Ojo: el que más pisadas dejó <b>en total</b> no tiene por qué ser el culpable (el guardia patrulla todo el museo). Hay que mirar <b>la escena</b>: quién se concentró en la bóveda.</p>
 <p>Descargá la evidencia para Colab: <a href="/datos/clase-sherlock/huellas.csv" download>huellas.csv</a> · <a href="/datos/clase-sherlock/indicios.csv" download>indicios.csv</a>. Un buen detective no acusa por una corazonada: filtra, agrupa, mide y <b>deja que los datos señalen al culpable</b>.</p>
 <p>📓 <a href="/datos/clase-sherlock/sherlock-forense.ipynb" download><b>Descargá la notebook para Colab</b></a>: tiene todos los pasos de la investigación listos para completar, incluido el informe pericial final. Abrila en <a href="https://colab.research.google.com/" target="_blank" rel="noreferrer">Google Colab</a> y subí la evidencia (los dos CSV).</p>`,
     },
@@ -88,7 +90,7 @@ Moran,Boveda,20
         test: {
           funcName: 'sospechosos_con_cabellos',
           cases: [
-            { args: ['indicios.csv'], files: INDICIOS, expect: { type: 'json', value: ['Moran', 'Hudson'] } },
+            { args: ['indicios.csv'], files: INDICIOS, expect: { type: 'json', value: ['Baynes', 'El Gato del Museo', 'Moriarty', 'Watson', 'Jardinero Mudo', 'Moran', 'Godzilla', 'Vigilante Nocturno', 'Repartidor de Pizza', 'Paloma Mensajera', 'Un PingUino', 'Adler', 'Nessie', 'Mimo Callejero', 'Keyboard Cat', 'Senora de la Limpieza'] } },
             { args: ['indicios.csv'], files: { 'indicios.csv': 'sospechoso,cabellos\nAdler,30\nMoran,2\n' },
               expect: { type: 'json', value: ['Adler'] } },
           ],
