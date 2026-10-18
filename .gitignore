@@ -6,6 +6,9 @@ dist/
 # Se mantiene local como referencia/backup, pero fuera de control de versiones.
 apps-script-doGet.js
 
-# Datos personales de alumnos: nunca al repo (es público).
+
 *.xlsx
-*.csv
+
+# Excepción: los datasets públicos de las clases (datos abiertos del GCBA /
+# datos ficticios) sí van al repo, porque son material de la clase.
+!public/datos/**/*.csv

@@ -1,16 +1,17 @@
 import { useEffect } from 'react';
-import { getPyodide } from '../../engine/pyodide.js';
+import { loadPackages } from '../../engine/pyodide.js';
 import ExerciseCard from './ExerciseCard.jsx';
 
 /**
- * @param {{exercises: import('../../courses/types.js').Course['exercises'], studentName: string}} props
+ * @param {{exercises: import('../../courses/types.js').Course['exercises'], studentName: string, packages?: string[]}} props
  */
-export default function ExerciseList({ exercises, studentName }) {
+export default function ExerciseList({ exercises, studentName, packages = [] }) {
   // Pyodide pesa varios MB: se empieza a bajar apenas se entra, así el
-  // primer "Verificar" no espera la descarga entera.
+  // primer "Verificar" no espera la descarga entera. Si la clase usa paquetes
+  // (numpy/pandas), también se precargan acá.
   useEffect(() => {
-    getPyodide().catch(() => {});
-  }, []);
+    loadPackages(packages).catch(() => {});
+  }, [packages]);
 
   return exercises.items.map((exercise, i) => (
     <ExerciseCard
@@ -19,6 +20,7 @@ export default function ExerciseList({ exercises, studentName }) {
       sheet={`${exercises.sheetPrefix}${i + 1}`}
       submitLabel={exercises.submitLabel}
       studentName={studentName}
+      packages={packages}
     />
   ));
 }

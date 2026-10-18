@@ -74,6 +74,7 @@
  * @typedef {Object} Course
  * @property {string} slug
  * @property {string} title
+ * @property {string[]} [packages]  Paquetes de Pyodide a cargar antes de verificar (ej: ['numpy', 'pandas']). Sin esto no se carga nada extra.
  * @property {{emoji?: string, title: [string, string], subtitle: string, buttonLabel: string, password?: string}} gate
  * @property {{badge: string, title: [string, string], subtitle: string, decoration?: string}} hero
  * @property {string} footer
