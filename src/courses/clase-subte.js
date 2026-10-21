@@ -144,7 +144,7 @@ export default {
   exercises: {
     eyebrow: 'Ejercicios',
     title: 'NumPy y pandas',
-    description: 'Primero NumPy con listas de pasajeros, después pandas con los CSV del subte (un recorte real ya cargado con los mismos nombres de archivo). Probá tu solución con Verificar; la resolución está al final de cada ejercicio.',
+    description: 'Primero NumPy con listas de pasajeros, después pandas con los CSV del subte (un recorte real ya cargado con los mismos nombres de archivo). Probá tu solución con Verificar: corre los tests automáticos.',
     sheetPrefix: 'Subte-',
     items: [
       /* ── NumPy ── */
@@ -163,10 +163,6 @@ export default {
             { args: [[1, 2, 2]], expect: { type: 'numeric', value: 1.67, tolerance: 0.001 } },
           ],
         },
-        solution: `<pre>import numpy as np
-
-def calcular_promedio(valores):
-    return round(np.array(valores).mean(), 2)</pre>`,
       },
       {
         badge: 'NumPy · Ejercicio 2',
@@ -182,18 +178,6 @@ def calcular_promedio(valores):
             { args: [[50, 52, 48, 51, 49, 53, 47, 5]], expect: { type: 'numeric', value: 7 } },
           ],
         },
-        solution: `<pre>import numpy as np
-
-def obtener_dia_mas_raro(valores):
-    a = np.array(valores)
-    distancias = (a - a.mean()) ** 2
-    return list(distancias).index(distancias.max())</pre>
-<ul>
-<li><code>a - a.mean()</code> le resta el promedio a cada día: nos da qué tan lejos está cada uno, con signo (negativo si está por debajo del promedio).</li>
-<li><code>** 2</code> eleva todo al cuadrado, así los negativos dejan de serlo y nos quedamos con la <b>distancia</b> al promedio, sin importar si el día fue alto o bajo. Cuanto más lejos del promedio, más grande el número.</li>
-<li><code>distancias.max()</code> es la distancia más grande, y <code>.index(...)</code> nos dice en qué posición está (igual que con cualquier lista).</li>
-</ul>
-<p>Otra forma: <code>np.abs()</code> calcula la distancia absoluta respecto del promedio y <code>argmax()</code> devuelve la posición de la distancia máxima: <code>np.abs(a - a.mean()).argmax()</code>.</p>`,
       },
       {
         badge: 'NumPy · Ejercicio 3',
@@ -210,12 +194,6 @@ def obtener_dia_mas_raro(valores):
             { args: [[7, 7, 7, 7], [7, 7, 7, 7]], expect: { type: 'numeric', value: 0.0 } },
           ],
         },
-        solution: `<pre>import numpy as np
-
-def calcular_distancia(semana1, semana2):
-    a = np.array(semana1)
-    b = np.array(semana2)
-    return ((a - b) ** 2).sum() ** 0.5</pre>`,
       },
 
       /* ── pandas ── */
@@ -235,12 +213,6 @@ def calcular_distancia(semana1, semana2):
             { args: ['subte_diario_por_linea.csv', '2024-03-23'], files: POR_LINEA, expect: { type: 'numeric', value: 434467 } },
           ],
         },
-        solution: `<pre>import pandas as pd
-
-def calcular_total_del_dia(archivo, fecha):
-    df = pd.read_csv(archivo)
-    del_dia = df[df['fecha'] == fecha]
-    return del_dia['pasajeros'].sum()</pre>`,
       },
       {
         badge: 'pandas · Ejercicio 2',
@@ -257,12 +229,6 @@ def calcular_total_del_dia(archivo, fecha):
             { args: ['subte_diario_por_linea.csv', 'H', '2024-03-24'], files: POR_LINEA, expect: { type: 'numeric', value: 29959 } },
           ],
         },
-        solution: `<pre>import pandas as pd
-
-def obtener_pasajeros_de_la_linea(archivo, linea, fecha):
-    df = pd.read_csv(archivo)
-    filtrado = df[(df['fecha'] == fecha) &amp; (df['linea'] == linea)]
-    return filtrado['pasajeros'].sum()</pre>`,
       },
       {
         badge: 'pandas · Ejercicio 3',
@@ -279,18 +245,6 @@ def obtener_pasajeros_de_la_linea(archivo, linea, fecha):
               expect: { type: 'exact', value: 'A' } },
           ],
         },
-        solution: `<pre>import pandas as pd
-
-def obtener_linea_mas_usada(archivo):
-    df = pd.read_csv(archivo)
-    mejor_linea = None
-    mejor_total = 0
-    for linea in ['A', 'B', 'C', 'D', 'E', 'H']:
-        total = df[df['linea'] == linea]['pasajeros'].sum()
-        if total &gt; mejor_total:
-            mejor_total = total
-            mejor_linea = linea
-    return mejor_linea</pre>`,
       },
       {
         badge: 'pandas · Ejercicio 4',
@@ -310,13 +264,6 @@ def obtener_linea_mas_usada(archivo):
               expect: { type: 'json', value: ['2024-03-21', '2024-03-22'] } },
           ],
         },
-        solution: `<pre>import pandas as pd
-
-def obtener_dias_mas_concurridos(archivo, estacion, n):
-    df = pd.read_csv(archivo)
-    de_la_estacion = df[df['estacion'] == estacion]
-    ordenado = de_la_estacion.sort_values(by=['pasajeros'], ascending=False)
-    return list(ordenado['fecha'].head(n))</pre>`,
       },
     ],
   },
@@ -349,15 +296,6 @@ def obtener_dias_mas_concurridos(archivo, estacion, n):
             { args: [[2], [1, 5]], expect: { type: 'exact', value: 'null' } },
           ],
         },
-        solution: `<p>Compara <code>vector1</code> consigo mismo, así que la condición nunca es verdadera. Tiene que ser <code>len(vector1) != len(vector2)</code>. Además, no estamos usando numpy:</p>
-<pre>import numpy as np
-
-def calcular_producto_escalar(vector1, vector2):
-    m1 = np.array(vector1)
-    m2 = np.array(vector2)
-    if m1.size != m2.size:
-        return None
-    return np.dot(m1, m2)</pre>`,
       },
       {
         badge: 'NumPy',
@@ -383,10 +321,6 @@ def calcular_producto_escalar(vector1, vector2):
             { args: [3], expect: { type: 'json', value: [[1, 0, 0], [0, 1, 0], [0, 0, 1]] } },
           ],
         },
-        solution: `<pre>import numpy as np
-
-def obtener_matriz_identidad(tamaño):
-    return np.eye(tamaño)</pre>`,
       },
       {
         badge: 'pandas',
@@ -416,17 +350,6 @@ def obtener_matriz_identidad(tamaño):
             },
           ],
         },
-        solution: `<p>Errores:</p>
-<ul>
-<li><code>df[2]</code> no selecciona la columna por su nombre. Debemos usar <code>df['pasajeros']</code>.</li>
-<li><code>'100000'</code> es una cadena de texto; debemos comparar contra el número <code>100000</code>.</li>
-<li>Conviene devolver el resultado con <code>return</code> para poder reutilizarlo.</li>
-</ul>
-<pre>import pandas as pd
-
-def lineas_llenas(archivo):
-    df = pd.read_csv(archivo)
-    return df[df['pasajeros'] &gt; 100000]</pre>`,
       },
     ],
   },
@@ -435,7 +358,7 @@ def lineas_llenas(archivo):
   appendix: {
     eyebrow: 'Para Colab',
     title: 'matplotlib y la tarea',
-    description: 'Los gráficos no se pueden autocorregir en la página: estos se resuelven en Colab, con el dataset completo. Abrí cada ejercicio para ver la consigna y su resolución.',
+    description: 'Los gráficos no se pueden autocorregir en la página: estos se resuelven en Colab, con el dataset completo. Abrí cada ejercicio para ver la consigna.',
     method: {
       title: '¿Qué gráfico uso en cada caso?',
       html: `<table class="guide-table">
@@ -455,94 +378,22 @@ def lineas_llenas(archivo):
           {
             tag: 'Ejercicio 1',
             title: 'Barras por línea',
-            html: `<p>Graficar el total de pasajeros de 2024 por línea.</p>
-<details class="hint solution"><summary>Ver resolución</summary><div class="hint-body"><pre>import pandas as pd
-import matplotlib.pyplot as plt
-
-df = pd.read_csv('subte_diario_por_linea.csv')
-
-lineas = ['A', 'B', 'C', 'D', 'E', 'H']
-totales = []
-for linea in lineas:
-    totales.append(df[df['linea'] == linea]['pasajeros'].sum())
-
-fig, ax = plt.subplots()
-ax.bar(lineas, totales)
-ax.set_title('Pasajeros por línea — 2024')
-ax.set_xlabel('Línea')
-ax.set_ylabel('Pasajeros')
-plt.show()</pre></div></details>`,
+            html: `<p>Graficar el total de pasajeros de 2024 por línea.</p>`,
           },
           {
             tag: 'Ejercicio 2',
             title: 'Serie temporal con el día más raro',
-            html: `<p>Graficar el total diario de todo el subte y marcar el día que más se aleja del promedio.</p>
-<details class="hint solution"><summary>Ver resolución</summary><div class="hint-body"><pre>import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-
-def obtener_dia_mas_raro(valores):
-    a = np.array(valores)
-    distancias = (a - a.mean()) ** 2
-    return list(distancias).index(distancias.max())
-
-df = pd.read_csv('subte_diario_por_linea.csv')
-linea_b = df[df['linea'] == 'B']
-pasajeros = list(linea_b['pasajeros'])
-
-raro = obtener_dia_mas_raro(pasajeros)
-
-fig, ax = plt.subplots()
-ax.plot(pasajeros, label='Pasajeros diarios')
-ax.scatter(raro, pasajeros[raro], color='red', label='Día más raro')
-ax.set_title('Pasajeros por día — línea B, 2024')
-ax.set_xlabel('Día registrado')
-ax.set_ylabel('Pasajeros')
-ax.legend()
-ax.grid()
-plt.show()</pre></div></details>`,
+            html: `<p>Graficar el total diario de todo el subte y marcar el día que más se aleja del promedio.</p>`,
           },
           {
             tag: 'Ejercicio 3 · opcional',
             title: 'Histograma',
-            html: `<p>Graficar cómo se distribuyen los pasajeros diarios de la línea B. ¿Qué forma tiene? ¿Qué explica esa forma?</p>
-<details class="hint solution"><summary>Ver resolución</summary><div class="hint-body"><pre>import pandas as pd
-import matplotlib.pyplot as plt
-
-df = pd.read_csv('subte_diario_por_linea.csv')
-linea_b = df[df['linea'] == 'B']
-pasajeros = list(linea_b['pasajeros'])
-
-fig, axs = plt.subplots()
-axs.hist(pasajeros, bins=20)
-axs.set_title('Distribución de pasajeros diarios — línea B')
-axs.set_xlabel('Pasajeros en un día')
-axs.set_ylabel('Cantidad de días')
-plt.show()</pre></div></details>`,
+            html: `<p>Graficar cómo se distribuyen los pasajeros diarios de la línea B. ¿Qué forma tiene? ¿Qué explica esa forma?</p>`,
           },
           {
             tag: 'Ejercicio 4 · opcional',
             title: 'Torta: ¿qué porcentaje del subte usa cada línea?',
-            html: `<p>Graficar qué porcentaje del total de pasajeros de 2024 representa cada línea. ¿Qué muestra de distinto una torta respecto de las barras del ejercicio 1?</p>
-<details class="hint solution"><summary>Ver resolución</summary><div class="hint-body"><pre>import pandas as pd
-import matplotlib.pyplot as plt
-
-df = pd.read_csv('subte_diario_por_linea.csv')
-
-lineas = ['A', 'B', 'C', 'D', 'E', 'H']
-totales = []
-for linea in lineas:
-    totales.append(df[df['linea'] == linea]['pasajeros'].sum())
-
-fig, ax = plt.subplots()
-ax.pie(totales, labels=lineas, autopct='%1.1f%%')
-ax.set_title('Porcentaje de pasajeros por línea — 2024')
-plt.show()</pre>
-<ul>
-<li><code>labels</code> pone el nombre de cada porción y <code>autopct='%1.1f%%'</code> escribe el porcentaje con un decimal (ambos están en el apunte).</li>
-<li>La torta no lleva <code>set_xlabel</code> ni <code>set_ylabel</code>, porque no tiene ejes.</li>
-<li>Para discutir: la torta responde "¿cuánto del total?" y las barras responden "¿cuál es más grande?". ¿Cuál se lee mejor con 6 líneas? ¿Y con 30 estaciones?</li>
-</ul></div></details>`,
+            html: `<p>Graficar qué porcentaje del total de pasajeros de 2024 representa cada línea. ¿Qué muestra de distinto una torta respecto de las barras del ejercicio 1?</p>`,
           },
         ],
       },

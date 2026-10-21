@@ -125,13 +125,6 @@ export default function ExerciseCard({ exercise, sheet, submitLabel, studentName
           </>
         )}
       </div>
-
-      {exercise.solution && (
-        <details className="hint solution">
-          <summary>Ver resolución</summary>
-          <Html className="hint-body" html={exercise.solution} />
-        </details>
-      )}
     </article>
   );
 }

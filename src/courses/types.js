@@ -41,7 +41,6 @@
  * @property {string} statement    HTML.
  * @property {string} [hint]       HTML. Sin hint no se muestra el acordeón "Pista".
  * @property {string} [note]       HTML.
- * @property {string} [solution]   HTML. Resolución, colapsada al final de la tarjeta. Sin esto no se muestra.
  * @property {string} starter
  * @property {{funcName: string, cases: TestCase[]}} test
  */
