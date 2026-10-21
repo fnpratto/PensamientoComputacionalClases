@@ -14,6 +14,7 @@ const ANIMATION_ID = 'camara-animacion';
 const EXERCISES_ID = 'camara-parcial';
 const GUIDE_ID = 'camara-paso-a-paso';
 const REVIEW_ID = 'camara-correccion';
+const APPENDIX_ID = 'camara-anexo';
 const FEEDBACK_ID = 'camara-feedback';
 
 /**
@@ -29,7 +30,7 @@ const FEEDBACK_ID = 'camara-feedback';
  */
 export default function ClassPage({ course, slots = {} }) {
   const [studentName, setStudentName] = useState('');
-  const { quiz, exercises, guide, animation, feedback, review, packages } = course;
+  const { quiz, exercises, guide, animation, feedback, review, appendix, packages } = course;
   const guideFirst = guide && guide.placement === 'before-exercises';
   const showAnimation = Boolean(animation && slots.animation);
   const showQuiz = Boolean(quiz);
@@ -45,6 +46,7 @@ export default function ClassPage({ course, slots = {} }) {
     ...(showExercises ? [EXERCISES_ID] : []),
     ...(guideFirst ? [] : guideIds),
     ...(review ? [REVIEW_ID] : []),
+    ...(appendix ? [APPENDIX_ID] : []),
     ...(feedback ? [FEEDBACK_ID] : []),
   ];
   const variantOf = id => (order.indexOf(id) % 2 === 0 ? 'a' : 'b');
@@ -61,6 +63,7 @@ export default function ClassPage({ course, slots = {} }) {
     if (id === GUIDE_ID) return { id, label: course.nav.guide || 'Paso a paso' };
     if (id === EXERCISES_ID) return { id, label: course.nav.exercises };
     if (id === REVIEW_ID) return { id, label: course.nav.review || 'Corrección' };
+    if (id === APPENDIX_ID) return { id, label: course.nav.appendix || 'Anexo' };
     return { id, label: course.nav.feedback || 'Feedback' };
   };
 
@@ -97,6 +100,12 @@ export default function ClassPage({ course, slots = {} }) {
           {review && (
             <Section id={REVIEW_ID} variant={variantOf(REVIEW_ID)} eyebrow={review.eyebrow} title={review.title} description={review.description}>
               <ExerciseList exercises={review} studentName={studentName} packages={packages} />
+            </Section>
+          )}
+
+          {appendix && (
+            <Section id={APPENDIX_ID} variant={variantOf(APPENDIX_ID)} eyebrow={appendix.eyebrow} title={appendix.title} description={appendix.description}>
+              <Guide guide={appendix} />
             </Section>
           )}
 

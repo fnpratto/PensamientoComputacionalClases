@@ -84,8 +84,7 @@ Godzilla,Cafeteria,42
 <pre>def sospechosos_con_cabellos(archivo):
     df = pd.read_csv(archivo)
     mayores = df[df['cabellos'] > '10']
-    print(mayores)</pre>
-<p>Dos problemas: compara contra el texto <code>'10'</code> en vez del número <code>10</code>, y <code>print</code> en vez de <code>return</code> (y hay que devolver solo los nombres).</p>`,
+    print(mayores)</pre>`,
         starter: "import pandas as pd\n\ndef sospechosos_con_cabellos(archivo):\n    df = pd.read_csv(archivo)\n    mayores = df[df['cabellos'] > '10']\n    print(mayores)",
         test: {
           funcName: 'sospechosos_con_cabellos',
@@ -99,14 +98,13 @@ Godzilla,Cafeteria,42
       {
         badge: 'Informe 2',
         title: 'Promedio de profundidad',
-        statement: `Esta función tendría que devolver el promedio de una lista de profundidades, pero da error y además no aprovecha numpy. Arreglala (podés hacerlo en una línea con numpy).
+        statement: `Esta función tendría que devolver el promedio de una lista de profundidades, pero da error. Encontrá los errores y arreglala.
 <pre>def promedio_profundidad(valores):
     array = np.array(valores)
     for d in array:
         suma += d
         cant += d
-    return suma / cant</pre>
-<p>Errores: <code>suma</code> y <code>cant</code> nunca se inicializan, <code>cant += d</code> debería contar de a uno, y numpy ya tiene <code>.mean()</code>.</p>`,
+    return suma / cant</pre>`,
         starter: 'import numpy as np\n\ndef promedio_profundidad(valores):\n    array = np.array(valores)\n    for d in array:\n        suma += d\n        cant += d\n    return suma / cant',
         test: {
           funcName: 'promedio_profundidad',
