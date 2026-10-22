@@ -166,32 +166,37 @@ export default {
       },
       {
         badge: 'NumPy · Ejercicio 2',
-        title: 'El día más raro',
-        statement: `<p>El día más raro es el que <b>más se aleja del promedio</b>, tanto hacia arriba como hacia abajo. Escribir una función que busque el día más raro y devuelva su posición (índice).</p>
+        title: 'Pasajeros por hora',
+        statement: `<p>Una estación recibe 100 pasajeros en la hora 0 y, a partir de ahí, 20 más cada hora que pasa. Escribir una función que devuelva un array con los pasajeros acumulados para <code>n</code> horas.</p>
 <p><b>Ejemplo</b></p>
-<pre>obtener_dia_mas_raro([100, 102, 98, 101, 99, 250, 100])  # -&gt; 5</pre>`,
-        starter: 'import numpy as np\n\ndef obtener_dia_mas_raro(valores):\n    pass',
+<pre>calcular_pasajeros_por_hora(4)  # -&gt; [100 120 140 160]</pre>`,
+        starter: 'import numpy as np\n\ndef calcular_pasajeros_por_hora(n):\n    pass',
         test: {
-          funcName: 'obtener_dia_mas_raro',
+          funcName: 'calcular_pasajeros_por_hora',
           cases: [
-            { args: [[100, 102, 98, 101, 99, 250, 100]], expect: { type: 'numeric', value: 5 } },
-            { args: [[50, 52, 48, 51, 49, 53, 47, 5]], expect: { type: 'numeric', value: 7 } },
+            { args: [4], expect: { type: 'json', value: [100, 120, 140, 160] } },
+            { args: [1], expect: { type: 'json', value: [100] } },
+            { args: [5], expect: { type: 'json', value: [100, 120, 140, 160, 180] } },
           ],
         },
       },
       {
         badge: 'NumPy · Ejercicio 3',
-        title: 'Distancia entre dos semanas',
-        statement: `<p>Se quiere comparar dos semanas de pasajeros (dos listas de la misma longitud). La <b>distancia</b> entre ellas es la raíz cuadrada de la suma de las diferencias al cuadrado, día por día. Escribir una función que la calcule.</p>
+        title: 'Graficar la curva de un modelo',
+        statement: `<p>Un modelo simple estima los pasajeros de una estación según la hora del día <code>h</code> (entre 0 y 24):</p>
+<p><b>pasajeros(h) = 200 + 50 · h − 2 · h²</b></p>
+<p>Escribir una función que:</p>
+<ol>
+<li>Calcule los pasajeros estimados con la fórmula.</li>
+<li>Devuelva la cantidad máxima de pasajeros estimada.</li>
+</ol>
 <p><b>Ejemplo</b></p>
-<pre>calcular_distancia([1, 2, 3], [4, 6, 3])  # -&gt; 5.0</pre>`,
-        starter: 'import numpy as np\n\ndef calcular_distancia(semana1, semana2):\n    pass',
+<pre>graficar_pasajeros_estimados()  # -&gt; máximo de pasajeros</pre>`,
+        starter: 'import numpy as np\n\ndef graficar_pasajeros_estimados():\n    pass',
         test: {
-          funcName: 'calcular_distancia',
+          funcName: 'graficar_pasajeros_estimados',
           cases: [
-            { args: [[1, 2, 3], [4, 6, 3]], expect: { type: 'numeric', value: 5.0 } },
-            { args: [[0, 0], [3, 4]], expect: { type: 'numeric', value: 5.0 } },
-            { args: [[7, 7, 7, 7], [7, 7, 7, 7]], expect: { type: 'numeric', value: 0.0 } },
+            { args: [], expect: { type: 'numeric', value: 625.0, tolerance: 1 } },
           ],
         },
       },
@@ -387,8 +392,8 @@ export default {
           },
           {
             tag: 'Ejercicio 3 · opcional',
-            title: 'Histograma',
-            html: `<p>Graficar cómo se distribuyen los pasajeros diarios de la línea B. ¿Qué forma tiene? ¿Qué explica esa forma?</p>`,
+            title: 'Puntos',
+            html: `<p>Graficar los pasajeros de la línea B con un punto por cada día.</p>`,
           },
           {
             tag: 'Ejercicio 4 · opcional',
