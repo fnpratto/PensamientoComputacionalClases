@@ -76,7 +76,7 @@ export default {
     ...bibliotecasGuide,
     eyebrow: 'El caso',
     title: 'Los datos: molinetes reales del subte (SBASE 2024)',
-    description: 'Dataset: Subte: Viajes Molinetes, de SBASE (portal de datos abiertos del GCBA), año 2024. Abrí cada tema para ver qué vamos a usar.',
+    description: 'Dataset: Subte: Viajes Molinetes, de SBASE (portal de datos abiertos del GCBA), año 2024.',
     method: {
       title: 'El caso',
       html: `<p class="guide-lead">Limpiamos y agregamos los datos originales en dos archivos CSV:</p>
@@ -293,6 +293,8 @@ export default {
         suma += vector1[i] * vector2[i]
     return suma</pre>`,
         starter: 'def calcular_producto_escalar(vector1, vector2):\n    if len(vector1) != len(vector1):\n        return None\n\n    suma = 0\n    for i in range(len(vector1)):\n        suma += vector1[i] * vector2[i]\n    return suma',
+        note: 'Podés testear tu función aquí: llamala con distintos vectores para verificar que devuelve el resultado correcto.',
+        playground: true,
         test: {
           funcName: 'calcular_producto_escalar',
           cases: [
@@ -318,7 +320,8 @@ export default {
         matriz.append(fila)
     return matriz</pre>`,
         starter: 'def obtener_matriz_identidad(tamaño):\n    matriz = []\n    for i in range(tamaño):\n        fila = []\n        for j in range(tamaño):\n            if i == j:\n                fila.append(1)\n            else:\n                fila.append(0)\n        matriz.append(fila)\n    return matriz',
-        note: 'Los tests ya pasan con esta versión: el desafío es reemplazarla por numpy sin que dejen de pasar.',
+        note: 'Los tests ya pasan con esta versión: el desafío es reemplazarla por numpy sin que dejen de pasar. Probá tu función con distintos tamaños.',
+        playground: true,
         test: {
           funcName: 'obtener_matriz_identidad',
           cases: [
@@ -336,6 +339,8 @@ export default {
     llenas = df[df[2] &gt; '100000']
     print(llenas)</pre>`,
         starter: "def lineas_llenas(archivo):\n    df = pd.read_csv(archivo)\n    llenas = df[df[2] > '100000']\n    print(llenas)",
+        note: 'Probá tu función con el CSV del subte: debería devolver solo las filas con más de 100000 pasajeros.',
+        playground: true,
         test: {
           funcName: 'lineas_llenas',
           cases: [
