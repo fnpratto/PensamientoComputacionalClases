@@ -90,50 +90,6 @@ export default {
 <p>En la página, los ejercicios corren sobre un recorte real de esos mismos archivos (la semana del 18 al 24 de marzo de 2024), ya cargado.</p>`,
     },
     groups: [
-      {
-        label: 'Qué vamos a ver',
-        items: [
-          {
-            tag: 'Unidad 6',
-            title: 'NumPy',
-            html: `<ul>
-<li>Arrays: cómo crearlos, atributos, mutabilidad</li>
-<li>Operaciones con arrays, ecuaciones</li>
-</ul>
-<p><i>Recomendación de la cátedra:</i> NumPy: 5, 6, 7, 8, 9 · Evaluación de Código: 2, 4.</p>`,
-          },
-          {
-            tag: 'Unidad 6',
-            title: 'pandas',
-            html: `<ul>
-<li>Series: comparación con arrays</li>
-<li>DataFrames desde csv o diccionarios</li>
-<li>Atributos y métodos</li>
-<li>Acceso a filas</li>
-<li>Modificar filas y valores</li>
-<li>Filtrado</li>
-<li>Ordenamiento</li>
-<li>Archivos csv</li>
-</ul>
-<p><i>Recomendación de la cátedra:</i></p>
-<ul>
-<li>Pandas Básico: 6, 8, 9, 12, 14, 17, 19, 21, 22.</li>
-<li>Pandas CSV: 1, 2, 5, 6, 7.</li>
-<li>Evaluación de Código: 1, 3.</li>
-</ul>`,
-          },
-          {
-            tag: 'pandas',
-            title: 'Antes de empezar: ¿cómo formateamos el dataset?',
-            html: `<p>En nuestro análisis vamos a estar revisando cantidad de pasajeros totales por fecha, línea de subte y pasajeros en total. El dataset original trae muchas más columnas de las que necesitamos. ¿Cómo deberíamos formatearlo para que nos quede más útil?</p>
-<ul>
-<li>Eliminar columnas que no sirvan y quedarnos con las que sí: <code>fecha</code>, <code>linea</code>, <code>pax_total</code>.</li>
-<li>Formatear el texto de las líneas para pasar de <code>"LineaA"</code> → <code>"A"</code>.</li>
-<li>Cambiarle el nombre a la columna <code>pax_total</code> → <code>pasajeros</code>.</li>
-</ul>`,
-          },
-        ],
-      },
       ...bibliotecasGuide.groups
         .filter(g => g.label !== 'matplotlib (para Colab)')
         .map(g => ({ ...g, label: `Apunte · ${g.label}` })),
@@ -379,7 +335,19 @@ export default {
 <tr><td>Dispersión</td><td>Marcar puntos o ver la relación entre dos variables</td><td><code>ax.scatter(...)</code></td></tr>
 <tr><td>Torta</td><td>Ver qué porcentaje del total representa cada categoría (conviene con pocas categorías)</td><td><code>ax.pie(...)</code></td></tr>
 </tbody>
-</table>`,
+</table>
+<p style="margin-top:1.2rem"><b>Machete: estructura de un gráfico</b></p>
+<pre>fig, ax = plt.subplots()
+
+ax.plot(x, y, label="Etiqueta de la curva")
+
+ax.set_title("Título del gráfico")
+ax.set_xlabel("Descripción en Eje X")
+ax.set_ylabel("Descripción en Eje Y")
+
+ax.legend()
+ax.grid()
+plt.show()</pre>`,
     },
     groups: [
       {
@@ -387,23 +355,23 @@ export default {
         items: [
           {
             tag: 'Ejercicio 1',
-            title: 'Barras por línea',
-            html: `<p>Graficar el total de pasajeros de 2024 por línea.</p>`,
+            title: 'Pasajeros totales de 2024 por línea',
+            html: `<p>Para cada línea (A, B, C, D, E, H), mostrá cuántos pasajeros tuvo en todo 2024. Parte del ejercicio es elegir qué tipo de gráfico comunica mejor esta comparación.</p>`,
           },
           {
             tag: 'Ejercicio 2',
-            title: 'Serie temporal con el día más raro',
-            html: `<p>Graficar el total diario de todo el subte y marcar el día que más se aleja del promedio.</p>`,
+            title: 'El día más raro a lo largo del año',
+            html: `<p>Mostrá cómo fue cambiando el total diario de pasajeros durante el año y resaltá el día que más se aleja del promedio. Elegí el gráfico que mejor cuente esta historia.</p>`,
           },
           {
-            tag: 'Ejercicio 3 · opcional',
-            title: 'Puntos',
-            html: `<p>Graficar los pasajeros de la línea B con un punto por cada día.</p>`,
+            tag: 'Ejercicio 3',
+            title: 'Pasajeros día a día de la línea B',
+            html: `<p>Mostrá el valor de cada día de la línea B como datos individuales, sin suavizarlos ni unirlos. ¿Qué gráfico conviene para esto?</p>`,
           },
           {
-            tag: 'Ejercicio 4 · opcional',
-            title: 'Torta: ¿qué porcentaje del subte usa cada línea?',
-            html: `<p>Graficar qué porcentaje del total de pasajeros de 2024 representa cada línea. ¿Qué muestra de distinto una torta respecto de las barras del ejercicio 1?</p>`,
+            tag: 'Ejercicio 4',
+            title: 'Cuánto del subte usa cada línea',
+            html: `<p>Mostrá qué parte del total de pasajeros de 2024 aporta cada línea. ¿Qué gráfico conviene para ver cuánto pesa cada una sobre el total?</p>`,
           },
         ],
       },
@@ -424,20 +392,6 @@ export default {
         ],
       },
     ],
-    closing: {
-      title: 'Machete: estructura de un gráfico',
-      html: `<pre>fig, ax = plt.subplots()
-
-ax.plot(x, y, label="Etiqueta de la curva")
-
-ax.set_title("Título del gráfico")
-ax.set_xlabel("Descripción en Eje X")
-ax.set_ylabel("Descripción en Eje Y")
-
-ax.legend()
-ax.grid()
-plt.show()</pre>`,
-    },
   },
 
   feedback: {
