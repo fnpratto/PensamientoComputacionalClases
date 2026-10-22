@@ -19,7 +19,6 @@ export default {
     eyebrow: 'Autoevaluación',
     title: 'Errores comunes con diccionarios',
     description: 'Cada código tiene un error típico al usar diccionarios. Leelo con atención y elegí cuál es el problema.',
-    sheet: 'Diccionarios-Quiz',
     sections: [
       { name: 'Acceso', label: 'Acceso' },
       { name: 'Mutabilidad', label: 'Mutabilidad' },
@@ -173,7 +172,6 @@ export default {
     title: 'Ejercicios de diccionarios',
     description: 'Los ejercicios recomendados por la cátedra. Probá tu solución con los tests automáticos, entregala, y después mirá cómo los resolvieron tus compañeros.',
     sheetPrefix: 'Diccionarios-',
-    submitLabel: 'Entregar',
     items: [
       /* ── EJ 1 · STOCK ── */
       {

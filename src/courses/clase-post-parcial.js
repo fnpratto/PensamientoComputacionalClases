@@ -18,7 +18,6 @@ export default {
     eyebrow: 'Autoevaluación',
     title: 'Encontrá el Error',
     description: 'Cada código tiene algo que en el parcial se corrige. Leelo con atención y elegí cuál es el problema.',
-    sheet: 'PostParcial-Quiz',
     sections: [
       { name: 'Ciclos', label: 'Ciclos' },
       { name: 'Funciones', label: 'Funciones' },
@@ -154,7 +153,6 @@ export default {
     title: 'Ejercicios del primer parcial (ambos temas)',
     description: 'Los ejercicios que se tomaron en los dos temas del primer parcial, con el enunciado original. Probá tu solución con los tests automáticos, entregala, y después mirá las soluciones de tus compañeros.',
     sheetPrefix: 'PostParcial-',
-    submitLabel: 'Entregar',
     items: [
       /* Los enunciados son textuales del parcial: no corregirlos ni reescribirlos. */
 

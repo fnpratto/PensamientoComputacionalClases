@@ -82,10 +82,10 @@
  * @property {{label: string, quiz: string, exercises: string, guide?: string, animation?: string, review?: string, appendix?: string, feedback?: string}} nav
  * @property {{eyebrow: string, title: string, description: string}} [animation]  Encabezado de la sección de la demo. El componente en sí lo pasa la página por `slots.animation`.
  * @property {{eyebrow: string, title: string, description: string, url: string, note?: string}} [feedback]  Formulario de feedback del cierre.
- * @property {{eyebrow: string, title: string, description: string, sheet: string,
+ * @property {{eyebrow: string, title: string, description: string, sheet?: string,
  *   sections: {name: string, label: string}[],
  *   summary: {high: string, mid: string, low: string},
- *   questions: Question[]}} quiz
+ *   questions: Question[]}} quiz  Sin `sheet` el quiz es solo autoevaluación: no manda resultados a la planilla (clase cerrada).
  * @property {{eyebrow: string, title: string, description: string, sheetPrefix: string,
  *   submitLabel?: string, items: Exercise[]}} exercises  Sin submitLabel no hay entrega ni galería de soluciones.
  * @property {Guide} [guide]

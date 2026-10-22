@@ -20,7 +20,6 @@ export default {
     eyebrow: 'Autoevaluación',
     title: 'Quiz de Repaso',
     description: '8 preguntas de lectura de código. Seleccioná tu respuesta y confirmala antes de ver el resultado.',
-    sheet: 'Repaso-Quiz',
     sections: [
       { name: 'Fundamentos', label: 'U1–U2' },
       { name: 'Control de Flujo', label: 'U3' },
@@ -114,7 +113,6 @@ export default {
     title: 'Los 7 Desafíos 🌹',
     description: 'Ejercicios integradores que combinan todo lo visto. Cada uno tiene tests automáticos y podés entregar tu solución directamente.',
     sheetPrefix: 'Repaso-Parcial-',
-    submitLabel: 'Entregar 🌸',
     items: [
       /* ── EJ 1: COSTOS DE ENVÍO ──────────────────────────────── */
       {

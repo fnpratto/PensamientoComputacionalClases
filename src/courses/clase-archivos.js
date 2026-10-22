@@ -109,7 +109,6 @@ export default {
     eyebrow: 'Quiz de nivelación',
     title: '¿Desde dónde arrancamos?',
     description: '10 preguntas, sin nota. Sirve para ver qué sabemos de archivos y errores antes de empezar. Una sola opción correcta por pregunta.',
-    sheet: 'Archivos-Quiz',
     sections: [
       { name: 'Persistencia', label: 'Persistencia' },
       { name: 'Modos', label: 'Modos de apertura' },

@@ -32,6 +32,10 @@ export default function Quiz({ quiz, studentName, nextSectionId }) {
     setCurrent(next);
     if (next < questions.length) return;
 
+    // Sin `sheet` la clase está cerrada: el quiz funciona como autoevaluación
+    // pero no se manda nada a la planilla.
+    if (!quiz.sheet) return;
+
     setSendStatus('sending');
     submitResults(quiz.sheet, studentName, results, score, questions.length)
       .then(() => setSendStatus('sent'))
