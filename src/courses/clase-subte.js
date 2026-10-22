@@ -294,7 +294,7 @@ export default {
     return suma</pre>`,
         starter: 'def calcular_producto_escalar(vector1, vector2):\n    if len(vector1) != len(vector1):\n        return None\n\n    suma = 0\n    for i in range(len(vector1)):\n        suma += vector1[i] * vector2[i]\n    return suma',
         note: 'Podés testear tu función aquí: llamala con distintos vectores para verificar que devuelve el resultado correcto.',
-        playground: true,
+        playground: { sample: 'print(calcular_producto_escalar([1, 2, 3], [4, 5, 6]))\nprint(calcular_producto_escalar([1, 2, 3], [1, 2]))' },
         test: {
           funcName: 'calcular_producto_escalar',
           cases: [
@@ -321,7 +321,7 @@ export default {
     return matriz</pre>`,
         starter: 'def obtener_matriz_identidad(tamaño):\n    matriz = []\n    for i in range(tamaño):\n        fila = []\n        for j in range(tamaño):\n            if i == j:\n                fila.append(1)\n            else:\n                fila.append(0)\n        matriz.append(fila)\n    return matriz',
         note: 'Los tests ya pasan con esta versión: el desafío es reemplazarla por numpy sin que dejen de pasar. Probá tu función con distintos tamaños.',
-        playground: true,
+        playground: { sample: 'print(obtener_matriz_identidad(3))' },
         test: {
           funcName: 'obtener_matriz_identidad',
           cases: [
@@ -340,7 +340,7 @@ export default {
     print(llenas)</pre>`,
         starter: "def lineas_llenas(archivo):\n    df = pd.read_csv(archivo)\n    llenas = df[df[2] > '100000']\n    print(llenas)",
         note: 'Probá tu función con el CSV del subte: debería devolver solo las filas con más de 100000 pasajeros.',
-        playground: true,
+        playground: { sample: "lineas_llenas('subte_diario_por_linea.csv')" },
         test: {
           funcName: 'lineas_llenas',
           cases: [

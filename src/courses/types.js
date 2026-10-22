@@ -41,6 +41,7 @@
  * @property {string} statement    HTML.
  * @property {string} [hint]       HTML. Sin hint no se muestra el acordeón "Pista".
  * @property {string} [note]       HTML.
+ * @property {boolean | {sample?: string, files?: Object<string,string>, stdin?: string[]}} [playground]  Habilita un cuadro para llamar a la función con entradas propias. `sample` es el snippet inicial; `files`/`stdin` siembran el entorno (por defecto usa los del primer caso de test).
  * @property {string} starter
  * @property {{funcName: string, cases: TestCase[]}} test
  */

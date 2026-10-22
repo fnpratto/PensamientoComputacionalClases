@@ -12,3 +12,4 @@ apps-script-doGet.js
 # Excepción: los datasets públicos de las clases (datos abiertos del GCBA /
 # datos ficticios) sí van al repo, porque son material de la clase.
 !public/datos/**/*.csv
+repaso.md

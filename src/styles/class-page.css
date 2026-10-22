@@ -118,6 +118,26 @@
   --hint-icon:     "🔍";
 }
 
+/* Repaso: teal/verde-azulado con ámbar, distinto de dicc (violeta) y archivos (celeste). */
+[data-theme="repaso-dicc"] {
+  --bg:            #050f0e;
+  --bg-soft:       #091817;
+  --bg-muted:      #071312;
+  --surface:       #0f211f;
+  --border:        #19352f;
+  --border-strong: #27524a;
+  --text:          #e6f5f1;
+  --text-dim:      #8db6ab;
+  --text-faint:    #55706a;
+  --accent:        #14b8a6;
+  --accent-rgb:    20, 184, 166;
+  --accent-strong: #5eead4;
+  --secondary:     #f59e0b;
+  --secondary-rgb: 245, 158, 11;
+  --code-string:   #5eead4;
+  --hint-icon:     "📚";
+}
+
 :root {
   --accent-dim:       rgba(var(--accent-rgb), .15);
   --accent-faint:     rgba(var(--accent-rgb), .05);
@@ -321,6 +341,31 @@ details.hint summary::before { content: var(--hint-icon); font-size: .9rem; }
 details.hint[open] summary { border-bottom: 1px solid var(--border); }
 .hint-body { padding: .8rem .9rem .9rem; font-size: .92rem; color: var(--text-dim); max-width: 70ch; }
 
+/* ── PLAYGROUND (probar la función con entradas propias) ── */
+.playground {
+  margin-top: 1.2rem; border: 1px dashed var(--border-strong); border-radius: var(--r-sm);
+  background: rgba(var(--secondary-rgb), .04); padding: 0;
+}
+.playground summary {
+  cursor: pointer; list-style: none; padding: .6rem .9rem;
+  font-family: var(--font-m); font-size: .73rem; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--secondary);
+  display: flex; align-items: center; gap: .5rem;
+}
+.playground summary::-webkit-details-marker { display: none; }
+.playground summary::before { content: "▶"; font-size: .7rem; }
+.playground[open] summary::before { content: "▼"; }
+.playground[open] summary { border-bottom: 1px solid var(--border); }
+.playground > *:not(summary) { margin-left: .9rem; margin-right: .9rem; }
+.playground-note { font-size: .85rem; color: var(--text-dim); max-width: 70ch; margin: .8rem 0; }
+.playground-output {
+  margin: .9rem 0 1rem; padding: .7rem .9rem; border-radius: var(--r-sm);
+  background: var(--bg-muted); border: 1px solid var(--border);
+  font-family: var(--font-m); font-size: .82rem; color: var(--text);
+  white-space: pre-wrap; word-break: break-word; max-height: 300px; overflow: auto;
+}
+.playground-output.warn { color: var(--bad); border-color: var(--bad); background: var(--bad-bg); }
+
 .summary-card {
   text-align: center; padding: 2.6rem 1.5rem;
   border: 1px solid var(--border); border-radius: var(--r);
@@ -354,6 +399,8 @@ details.hint[open] summary { border-bottom: 1px solid var(--border); }
 .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
 .btn-primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
 .btn-primary[disabled] { background: var(--border); border-color: var(--border); color: var(--text-faint); }
+.btn-secondary { border-color: var(--border-strong); color: var(--text); font-weight: 600; }
+.btn-secondary:hover { border-color: var(--secondary); background: rgba(var(--secondary-rgb), .08); }
 
 /* ── EJERCICIOS ────────────────────────────────────────── */
 .exercise-card {

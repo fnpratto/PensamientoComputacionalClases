@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState } from 'react';
-import { checkPractices, loadPackages } from '../../engine/pyodide.js';
+import { checkPractices, loadPackages, runPython } from '../../engine/pyodide.js';
 import { runFunctionTests } from '../../engine/testRunner.js';
 import { submitResults } from '../../services/sheets.js';
 import Html from '../Html.jsx';
@@ -9,18 +9,48 @@ import SolutionGallery from './SolutionGallery.jsx';
 // CodeMirror es la mayor parte del bundle: se baja recién al llegar a los ejercicios.
 const CodeEditor = lazy(() => import('./CodeEditor.jsx'));
 
+// Snippet por defecto del playground: una llamada a la función del ejercicio.
+const defaultSnippet = funcName => `print(${funcName}(...))`;
+
 /**
  * @param {{exercise: import('../../courses/types.js').Exercise, sheet: string,
  *   submitLabel: string, studentName: string, packages?: string[]}} props
  */
 export default function ExerciseCard({ exercise, sheet, submitLabel, studentName, packages = [] }) {
   const { test } = exercise;
+  // `playground` puede ser true o { sample, files, stdin }: habilita un
+  // cuadro para llamar a la función con entradas propias y ver qué devuelve.
+  const play = exercise.playground === true ? {} : (exercise.playground || null);
   const [code, setCode] = useState(exercise.starter);
   const [busy, setBusy] = useState(null); // null | 'verify' | 'submit'
   const [progress, setProgress] = useState('');
   const [report, setReport] = useState(null); // {practice, rows} | {error}
   const [sendStatus, setSendStatus] = useState('');
   const [submitted, setSubmitted] = useState(false);
+
+  const [snippet, setSnippet] = useState(play ? (play.sample ?? defaultSnippet(test.funcName)) : '');
+  const [playBusy, setPlayBusy] = useState(false);
+  const [playOut, setPlayOut] = useState(null); // null | {stdout, error, ...}
+
+  // Corre el código del alumno + el snippet de prueba como un solo programa
+  // (sin funcName: se ejecuta tal cual y se captura lo que imprime). Los
+  // archivos se siembran desde el playground o, si no, desde el primer caso.
+  async function handlePlay() {
+    const source = code.trim();
+    if (!source || !snippet.trim()) return;
+    setPlayBusy(true);
+    setPlayOut(null);
+    try {
+      if (packages.length) await loadPackages(packages);
+      const files = play.files ?? test.cases[0]?.files ?? {};
+      const result = await runPython(`${source}\n\n${snippet}`, null, [], play.stdin ?? [], files);
+      setPlayOut(result);
+    } catch (err) {
+      setPlayOut({ error: err.message || String(err) });
+    } finally {
+      setPlayBusy(false);
+    }
+  }
 
   async function verify(source) {
     setReport(null);
@@ -109,6 +139,32 @@ export default function ExerciseCard({ exercise, sheet, submitLabel, studentName
         </div>
 
         <TestResults report={report} />
+
+        {play && (
+          <details className="playground">
+            <summary>Probar tu función</summary>
+            <p className="playground-note">
+              Escribí una llamada a tu función y tocá <b>Probar</b> para ver qué devuelve o imprime.
+              Usá <code>print(...)</code> para ver el valor devuelto.
+            </p>
+            <Suspense fallback={<div className="code-editor-placeholder">Cargando editor…</div>}>
+              <CodeEditor initialValue={snippet} onChange={setSnippet} label={`Probar: ${exercise.title}`} />
+            </Suspense>
+            <div className="verify-row">
+              <button type="button" className="btn btn-secondary" disabled={busy !== null || playBusy} onClick={handlePlay}>
+                Probar
+              </button>
+              <span className="verify-status" role="status">{playBusy ? 'Ejecutando…' : ''}</span>
+            </div>
+            {playOut && (
+              <pre className={`playground-output ${playOut.error ? 'warn' : ''}`}>
+                {playOut.error
+                  ? `Error: ${playOut.error}`
+                  : (playOut.stdout || '(sin salida — acordate de usar print)')}
+              </pre>
+            )}
+          </details>
+        )}
 
         {/* Sin submitLabel la clase es solo de práctica: no se entrega ni se
             muestra la galería de soluciones de los demás. */}
