@@ -104,7 +104,8 @@ Godzilla,Cafeteria,42
     for d in array:
         suma += d
         cant += d
-    return suma / cant</pre>`,
+    return suma / cant</pre>
+<p><b>Aclaración:</b> este ejercicio es independiente del resto del caso. Es solo para practicar NumPy: la función recibe una lista/array cualquiera de números (<code>valores</code>) y no sale de ningún archivo de la investigación.</p>`,
         starter: 'import numpy as np\n\ndef promedio_profundidad(valores):\n    array = np.array(valores)\n    for d in array:\n        suma += d\n        cant += d\n    return suma / cant',
         test: {
           funcName: 'promedio_profundidad',
