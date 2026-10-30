@@ -9,7 +9,7 @@ import { QRCodeSVG } from 'qrcode.react';
  */
 export default function Feedback({ feedback }) {
   return (
-    <div className="feedback">
+    <div className="feedback-card">
       <a
         className="feedback-qr"
         href={feedback.url}

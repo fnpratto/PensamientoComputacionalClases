@@ -739,7 +739,7 @@ details.guide-acc[open] > summary { border-bottom: 1px solid var(--border); }
 .guide-callout.bad code { color: var(--text); }
 
 /* ── FEEDBACK ──────────────────────────────────────────────── */
-.feedback {
+.feedback-card {
   display: flex; flex-wrap: wrap; align-items: center; gap: 1.6rem;
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--r-sm); padding: 1.4rem;

@@ -1,7 +1,7 @@
 /* Quiz de Repaso · Diccionarios, Archivos y Bibliotecas
-   Clase corta de repaso antes del parcial: solo un quiz de 8 preguntas "con
-   trampa" (dicc, archivos, numpy, pandas y matplotlib). Sin apunte ni
-   ejercicios: la clase es el quiz. Los resultados van a la planilla. */
+   Clase corta de repaso antes del parcial: solo un quiz de 8 preguntas
+   (dicc, archivos, numpy, pandas y matplotlib). Sin apunte ni ejercicios:
+   la clase es el quiz. Los resultados van a la planilla. */
 
 /** @type {import('./types.js').Course} */
 export default {
@@ -10,13 +10,13 @@ export default {
   gate: {
     emoji: '🧠',
     title: ['Quiz de Repaso', 'Dicc · Archivos · Bibliotecas'],
-    subtitle: 'Repaso rápido antes del parcial · 8 preguntas con trampa, menos de 10 minutos',
+    subtitle: 'Repaso rápido antes del parcial · 8 preguntas, menos de 10 minutos',
     buttonLabel: 'Empezar el quiz',
   },
   hero: {
     badge: '🧠 Pensamiento Computacional · Curso 11: Retamozo, Pratto · 2026',
     title: ['Quiz de', 'Repaso'],
-    subtitle: '8 preguntas con trampa sobre diccionarios, archivos y bibliotecas (numpy, pandas y matplotlib). Una sola opción correcta por pregunta; unos 70 segundos cada una.',
+    subtitle: '8 preguntas sobre diccionarios, archivos y bibliotecas (numpy, pandas y matplotlib). Una sola opción correcta por pregunta; unos 70 segundos cada una.',
     decoration: '🧠 🔑 📂 🔢 🐼 📊',
   },
   footer: 'Quiz de Repaso · Pensamiento Computacional FIUBA 🧠',
@@ -30,7 +30,7 @@ export default {
     eyebrow: 'Quiz de repaso',
     title: 'Quiz de repaso: diccionarios, archivos y bibliotecas',
     description:
-      '8 preguntas con trampa, de unos 70 segundos cada una (menos de 10 minutos en total). Una sola opción correcta por pregunta. Repasamos diccionarios, archivos y bibliotecas (numpy, pandas y matplotlib).',
+      '8 preguntas, de unos 70 segundos cada una (menos de 10 minutos en total). Una sola opción correcta por pregunta. Repasamos diccionarios, archivos y bibliotecas (numpy, pandas y matplotlib).',
     sheet: 'RepasoQuiz',
     sections: [
       { name: 'Diccionarios', label: 'Diccionarios' },
@@ -38,8 +38,8 @@ export default {
       { name: 'Bibliotecas', label: 'Bibliotecas' },
     ],
     summary: {
-      high: '¡Genial! Caíste en pocas (o ninguna) de las trampas. Tenés los temas afilados para el parcial.',
-      mid: 'Bien. Fijate las que fallaste: casi todas eran "con trampa" (<code>get</code>, los modos de archivo, el <code>&amp;</code> de pandas, <code>legend</code>). Volvé a las diapositivas de esos temas.',
+      high: '¡Genial! Respondiste muy bien. Tenés los temas afilados para el parcial.',
+      mid: 'Bien. Fijate las que fallaste: los puntos finos de <code>get</code>, los modos de archivo, el <code>&amp;</code> de pandas y <code>legend</code>. Volvé a las diapositivas de esos temas.',
       low: 'Tranqui, para eso es el repaso. Volvé a las diapositivas y Colabs de diccionarios, archivos y bibliotecas: estas preguntas apuntan justo a los errores más comunes.',
     },
     questions: [
