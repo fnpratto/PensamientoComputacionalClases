@@ -77,7 +77,7 @@ export default function ClassPage({ course, slots = {} }) {
 
           {showQuiz && (
             <Section id={QUIZ_ID} variant={variantOf(QUIZ_ID)} eyebrow={quiz.eyebrow} title={quiz.title} description={quiz.description}>
-              <Quiz quiz={quiz} studentName={studentName} nextSectionId={order[1] ?? EXERCISES_ID} />
+              <Quiz quiz={quiz} studentName={studentName} nextSectionId={order[1]} />
             </Section>
           )}
 

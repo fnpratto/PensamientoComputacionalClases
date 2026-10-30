@@ -13,4 +13,5 @@ export const CLASSES = [
   { slug: 'clase-subte', href: '/archive/clase-subte/index.html', label: '🚇 Detectives del Subte · U6' },
   { slug: 'clase-repaso-dicc-archivos', href: '/archive/clase-repaso-dicc-archivos/index.html', label: '📚 Repaso · Diccionarios y Archivos' },
   { slug: 'clase-sherlock', href: '/archive/clase-sherlock/index.html', label: '🔍 Sherlock Forense · U6 · Tarea' },
+  { slug: 'clase-quiz-repaso', href: '/archive/clase-quiz-repaso/index.html', label: '🧠 Quiz de Repaso · Dicc, Archivos y Bibliotecas' },
 ];

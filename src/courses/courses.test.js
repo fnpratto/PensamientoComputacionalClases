@@ -41,7 +41,11 @@ describe.each(slugs)('clase %s', slug => {
     const course = courseFor(slug);
     // `exercises` y `review` son ambos opcionales y con el mismo formato.
     const blocks = [course.exercises, course.review].filter(Boolean);
-    expect(blocks.length, 'una clase debería tener al menos ejercicios o corrección').toBeGreaterThan(0);
+    if (blocks.length === 0) {
+      // Una clase sin ejercicios ni corrección es válida si es solo un quiz.
+      expect(course.quiz, 'una clase necesita al menos ejercicios, corrección o un quiz').toBeTruthy();
+      return;
+    }
     const items = blocks.flatMap(b => b.items);
     const funcNames = items.map(e => e.test.funcName);
 

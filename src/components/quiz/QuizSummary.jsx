@@ -25,9 +25,11 @@ export default function QuizSummary({ score, total, results, messages, sendStatu
         ))}
       </ol>
 
-      <div className="cta-row">
-        <button type="button" className="btn btn-primary" onClick={onContinue}>Pasar a Ejercicios →</button>
-      </div>
+      {onContinue && (
+        <div className="cta-row">
+          <button type="button" className="btn btn-primary" onClick={onContinue}>Pasar a Ejercicios →</button>
+        </div>
+      )}
       {sendStatus && <p className="send-status" role="status">{sendStatus}</p>}
     </div>
   );

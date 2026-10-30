@@ -118,6 +118,26 @@
   --hint-icon:     "🔍";
 }
 
+/* Quiz de repaso: fucsia eléctrico sobre violeta oscuro, con cian — repaso integrador. */
+[data-theme="quiz-repaso"] {
+  --bg:            #0b0712;
+  --bg-soft:       #120b1c;
+  --bg-muted:      #0e0916;
+  --surface:       #1b1228;
+  --border:        #2f1f45;
+  --border-strong: #4a3167;
+  --text:          #f2e9fb;
+  --text-dim:      #a690c0;
+  --text-faint:    #6a5484;
+  --accent:        #d946ef;
+  --accent-rgb:    217, 70, 239;
+  --accent-strong: #ec8cf7;
+  --secondary:     #38bdf8;
+  --secondary-rgb: 56, 189, 248;
+  --code-string:   #ec8cf7;
+  --hint-icon:     "🧠";
+}
+
 /* Repaso: teal/verde-azulado con ámbar, distinto de dicc (violeta) y archivos (celeste). */
 [data-theme="repaso-dicc"] {
   --bg:            #050f0e;

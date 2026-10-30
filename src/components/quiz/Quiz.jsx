@@ -52,7 +52,7 @@ export default function Quiz({ quiz, studentName, nextSectionId }) {
           results={results}
           messages={quiz.summary}
           sendStatus={sendStatus && SEND_STATUS[sendStatus]}
-          onContinue={() => document.getElementById(nextSectionId)?.scrollIntoView({ behavior: 'smooth' })}
+          onContinue={nextSectionId ? () => document.getElementById(nextSectionId)?.scrollIntoView({ behavior: 'smooth' }) : null}
         />
       </>
     );
